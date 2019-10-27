@@ -9,3 +9,16 @@
 ### feature_name: test
 ### Описание задачи:
 - Необходимо исправить ошибку в приложении
+
+## Как обновить склонированный (forked) репозиторий
+Добавить исходный оригинальный репозиторий и назвать его `upstream`
+> `git remote add upstream https://github.com/ArtemPrivet/FocusStartHomeworks.git`
+
+Загрузить все изменения в удаленном репозитории
+> `git fetch upstream`
+
+Влить все изменения в свой локальный репозиторий
+> `git merge upstream/master`
+
+Отправить изменения на свой удаленный репозиторий
+> `git push`
