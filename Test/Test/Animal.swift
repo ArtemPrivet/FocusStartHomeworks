@@ -17,7 +17,7 @@ struct Animal {
 			return nil
 		}
 		self.name = name
-		self.legCount = legCount
+		self.legCount = legCount // comment
 	}
 
 
