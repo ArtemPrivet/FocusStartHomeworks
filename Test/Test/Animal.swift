@@ -5,9 +5,12 @@
 //  Created by Artem Orlov on 26/10/2019.
 //
 
-struct Animal {
-	let name :String
+struct Animal
+{
+
+	let name: String
 	let legCount: Int
+
 	func move() {
 		print("\(name) with \(legCount) legs is moving")
 	}
@@ -19,7 +22,4 @@ struct Animal {
 		self.name = name
 		self.legCount = legCount
 	}
-
-
-	
 }
