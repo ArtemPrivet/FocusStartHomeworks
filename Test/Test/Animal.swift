@@ -5,8 +5,7 @@
 //  Created by Artem Orlov on 26/10/2019.
 //
 
-struct Animal
-{
+struct Animal {
 	let name: String
 	let legCount: Int
 
