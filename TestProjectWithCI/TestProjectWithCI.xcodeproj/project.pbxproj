@@ -11,7 +11,8 @@
 		CEB50A3E236ED8BC000FCD1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A3D236ED8BC000FCD1A /* ViewController.swift */; };
 		CEB50A43236ED8C1000FCD1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A42236ED8C1000FCD1A /* Assets.xcassets */; };
 		CEB50A46236ED8C1000FCD1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A44236ED8C1000FCD1A /* LaunchScreen.storyboard */; };
-		CEB50A51236ED8C1000FCD1A /* TestProjectWithCITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* TestProjectWithCITests.swift */; };
+		CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */; };
+		CEB50A5D236EDC19000FCD1A /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A5C236EDC19000FCD1A /* Calculator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,8 +33,9 @@
 		CEB50A45236ED8C1000FCD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEB50A47236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEB50A4C236ED8C1000FCD1A /* TestProjectWithCITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestProjectWithCITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEB50A50236ED8C1000FCD1A /* TestProjectWithCITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectWithCITests.swift; sourceTree = "<group>"; };
+		CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		CEB50A52236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CEB50A5C236EDC19000FCD1A /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 			children = (
 				CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */,
 				CEB50A3D236ED8BC000FCD1A /* ViewController.swift */,
+				CEB50A5C236EDC19000FCD1A /* Calculator.swift */,
 				CEB50A5B236ED8E0000FCD1A /* SupportingFiles */,
 			);
 			path = TestProjectWithCI;
@@ -85,7 +88,7 @@
 		CEB50A4F236ED8C1000FCD1A /* TestProjectWithCITests */ = {
 			isa = PBXGroup;
 			children = (
-				CEB50A50236ED8C1000FCD1A /* TestProjectWithCITests.swift */,
+				CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */,
 				CEB50A52236ED8C1000FCD1A /* Info.plist */,
 			);
 			path = TestProjectWithCITests;
@@ -203,6 +206,7 @@
 			files = (
 				CEB50A3E236ED8BC000FCD1A /* ViewController.swift in Sources */,
 				CEB50A3A236ED8BC000FCD1A /* AppDelegate.swift in Sources */,
+				CEB50A5D236EDC19000FCD1A /* Calculator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB50A51236ED8C1000FCD1A /* TestProjectWithCITests.swift in Sources */,
+				CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +397,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JJHX98NUDV;
-				INFOPLIST_FILE = TestProjectWithCITests/SupportingFiles/Info.plist;
+				INFOPLIST_FILE = TestProjectWithCITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -415,7 +419,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JJHX98NUDV;
-				INFOPLIST_FILE = TestProjectWithCITests/SupportingFiles/Info.plist;
+				INFOPLIST_FILE = TestProjectWithCITests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

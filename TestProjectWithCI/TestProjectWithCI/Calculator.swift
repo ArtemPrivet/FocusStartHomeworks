@@ -1,17 +1,14 @@
 //
-//  ViewController.swift
+//  Calculator.swift
 //  TestProjectWithCI
 //
 //  Created by MisnikovRoman on 03.11.2019.
 //  Copyright © 2019 MisnikovRoman. All rights reserved.
 //
 
-import UIKit
-
-class ViewController: UIViewController
+struct Calculator
 {
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func calculate() -> Int {
+        return 0
     }
 }
-
