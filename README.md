@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks.svg?branch=master)](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks)
+[![Build Status](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks.svg?branch=test%2FsetupCI)](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks)
 # Домашнее задание для iOS школы Focus Start
 
 ### Правила сдачи домашнего задания:
