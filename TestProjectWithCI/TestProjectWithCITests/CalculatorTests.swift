@@ -9,25 +9,26 @@
 import XCTest
 @testable import TestProjectWithCI
 
-class CalculatorTests: XCTestCase
+// swiftlint:disable implicitly_unwrapped_optional
+final class CalculatorTests: XCTestCase
 {
-    // MARK: - Тестируемые объекты
-    var calculator: Calculator!
+	// MARK: - Тестируемые объекты
+	var calculator: Calculator!
 
-    // MARK: - Настройки до/после тестов
-    override func setUp() {
-        super.setUp()
-        self.calculator = Calculator()
-    }
-    override func tearDown() {
-        self.calculator = nil
-        super.tearDown()
-    }
+	// MARK: - Настройки до/после тестов
+	override func setUp() {
+		super.setUp()
+		self.calculator = Calculator()
+	}
+	override func tearDown() {
+		self.calculator = nil
+		super.tearDown()
+	}
 
-    // MARK: - Тесты
-    func testCalculation() {
-        let result = self.calculator.calculate()
-        let expectedResult = 0
-        XCTAssertEqual(result, expectedResult)
-    }
+	// MARK: - Тесты
+	func testCalculation() {
+		let result = self.calculator.calculate()
+		let expectedResult = 0
+		XCTAssertEqual(result, expectedResult)
+	}
 }

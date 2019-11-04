@@ -8,7 +8,7 @@
 
 struct Calculator
 {
-    func calculate() -> Int {
-        return 0
-    }
+	func calculate() -> Int {
+		return 0
+	}
 }
