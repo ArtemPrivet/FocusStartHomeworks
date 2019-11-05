@@ -68,6 +68,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA1EB5812364B88C0060405A /* Build configuration list for PBXNativeTarget "Test" */;
 			buildPhases = (
+				C6DCC4F123708A77007DA050 /* ShellScript */,
 				CA1EB56B2364B8890060405A /* Sources */,
 				CA1EB56C2364B8890060405A /* Frameworks */,
 				CA1EB56D2364B8890060405A /* Resources */,
@@ -94,6 +95,7 @@
 				TargetAttributes = {
 					CA1EB56E2364B8890060405A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -128,6 +130,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C6DCC4F123708A77007DA050 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		CA1EB5862364BD4D0060405A /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -302,7 +321,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = artemorlov.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -321,7 +340,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = artemorlov.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
