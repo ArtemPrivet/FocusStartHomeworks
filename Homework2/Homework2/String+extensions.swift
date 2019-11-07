@@ -18,3 +18,14 @@
 // с '+7', '7' и '8'. Номер можно вводить и со скобками и с черточками
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
+
+extension String
+{
+	func reversedWords() -> String {
+		return ""
+	}
+
+	func validate() -> Bool {
+		return false
+	}
+}
