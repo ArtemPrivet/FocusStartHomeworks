@@ -24,7 +24,7 @@ final class StringTests: XCTestCase
 		"78121231212",
 		"9991233311",
 		"+7(981)123456",
-		"7911123f4567"
+		"7911123f4567",
 	]
 
 	func testReverseWords() {
@@ -34,15 +34,15 @@ final class StringTests: XCTestCase
 	}
 
 	func testPhoneNumbers() {
-		self.testPhoneNumbers.forEach {
-			let isValid = testPhoneNumbers.validate()
+		self.correctPhoneNumbers.forEach {
+			let isValid = $0.validate()
 			XCTAssertEqual(isValid, true)
 		}
 	}
 
 	func testWrongPhoneNumbers() {
 		self.wrongPhoneNumbers.forEach {
-			let isValid = testPhoneNumbers.validate()
+			let isValid = $0.validate()
 			XCTAssertEqual(isValid, false)
 		}
 	}
