@@ -9,10 +9,23 @@
 import XCTest
 @testable import Homework2
 
-// swiftlint:disable implicitly_unwrapped_optional
 final class StringTests: XCTestCase
 {
 	private let string = "проверка ввода"
+	private let correctPhoneNumbers = [
+		"+79111234567",
+		"89990103200",
+		"7(912)1236311",
+		"+7 919 737 31 11",
+		"+7 (912) 123-45-67",
+	]
+	private let wrongPhoneNumbers = [
+		"123",
+		"78121231212",
+		"9991233311",
+		"+7(981)123456",
+		"7911123f4567"
+	]
 
 	func testReverseWords() {
 		let reversedString = string.reversedWords()
@@ -20,9 +33,17 @@ final class StringTests: XCTestCase
 		XCTAssertEqual(reversedString, expectedResult)
 	}
 
-	func testSubstring() {
-		let substring = string.substring(from: 3, to: 8)
-		let expectedResult = "верка "
-		XCTAssertEqual(string.reversedWords(), expectedResult)
+	func testPhoneNumbers() {
+		self.testPhoneNumbers.forEach {
+			let isValid = testPhoneNumbers.validate()
+			XCTAssertEqual(isValid, true)
+		}
+	}
+
+	func testWrongPhoneNumbers() {
+		self.wrongPhoneNumbers.forEach {
+			let isValid = testPhoneNumbers.validate()
+			XCTAssertEqual(isValid, false)
+		}
 	}
 }
