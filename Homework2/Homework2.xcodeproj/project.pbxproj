@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CEB50A3A236ED8BC000FCD1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */; };
-		CEB50A3E236ED8BC000FCD1A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A3D236ED8BC000FCD1A /* ViewController.swift */; };
 		CEB50A43236ED8C1000FCD1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A42236ED8C1000FCD1A /* Assets.xcassets */; };
 		CEB50A46236ED8C1000FCD1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A44236ED8C1000FCD1A /* LaunchScreen.storyboard */; };
 		CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */; };
@@ -28,7 +27,6 @@
 /* Begin PBXFileReference section */
 		CEB50A36236ED8BC000FCD1A /* Homework2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Homework2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CEB50A3D236ED8BC000FCD1A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CEB50A42236ED8C1000FCD1A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CEB50A45236ED8C1000FCD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEB50A47236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -78,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */,
-				CEB50A3D236ED8BC000FCD1A /* ViewController.swift */,
 				CEB50A5C236EDC19000FCD1A /* String+Extensions.swift */,
 				CEB50A5B236ED8E0000FCD1A /* SupportingFiles */,
 			);
@@ -226,7 +223,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB50A3E236ED8BC000FCD1A /* ViewController.swift in Sources */,
 				CEB50A3A236ED8BC000FCD1A /* AppDelegate.swift in Sources */,
 				CEB50A5D236EDC19000FCD1A /* String+Extensions.swift in Sources */,
 			);
