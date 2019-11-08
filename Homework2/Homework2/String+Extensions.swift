@@ -22,10 +22,10 @@
 extension String
 {
 	func reversedWords() -> String {
-		let splitedString = split(separator: " ")
+		let splittedArray = split(separator: " ")
 		var reversedWords = ""
-		for word in splitedString{
-			if word == splitedString.last {
+		for (index, word) in splittedArray.enumerated() {
+			if index == splittedArray.count - 1 {
 				reversedWords += word.reversed()
 			}
 			else {
@@ -49,25 +49,20 @@ extension String
 			let firstIndex = filteredStr.startIndex
 			let secondIndex = filteredStr.index(firstIndex, offsetBy: 1)
 			if filteredStr[firstIndex] == "+" && filteredStr[secondIndex] == "7" {
-				if codeValidation(filteredStr: filteredStr, start: secondIndex) {
-					return true
-				}
+				return codeValidation(filteredStr: filteredStr, start: secondIndex)
 			}
 		}
 		//Если номер начинается с  7 или 8
 		if filteredStr.count == 11 {
 			let firstIndex = filteredStr.startIndex
 			if filteredStr[firstIndex] == "7" || filteredStr[firstIndex] == "8" {
-				if codeValidation(filteredStr: filteredStr, start: firstIndex) {
-					return true
-				}
+				return codeValidation(filteredStr: filteredStr, start: firstIndex)
 			}
 		}
 		return false
 	}
 
 	private func codeValidation(filteredStr: String, start: String.Index) -> Bool {
-
 		let firstIndex = filteredStr.index(start, offsetBy: 1)
 		let secondIndex = filteredStr.index(firstIndex, offsetBy: 3)
 		let buffer = Int(filteredStr[firstIndex..<secondIndex])
