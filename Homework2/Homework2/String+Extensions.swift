@@ -22,7 +22,11 @@
 // Надеюсь import можно было сделать))) (Для CharacterSet)
 import Foundation
 
-typealias PunctuationMark = (mark: Character, index: Int)
+struct PunctuationMark
+{
+	let mark: Character
+	let index: Int
+}
 
 extension String
 {
@@ -57,11 +61,6 @@ extension String
 		let pattern = "^(\\+7|7|8)(\\s)?(\\s|\\()?9[0-9]{2}(\\s|\\))?(\\s)?[0-9]{3}(\\s|\\-)?[0-9]{2}(\\s|\\-)?[0-9]{2}$"
 
 		let result = self.range(of: pattern, options: .regularExpression, range: nil, locale: nil)
-		if result != nil   {
-			return true
-		}
-		else {
-			return false
-		}
+		return result != nil
 	}
 }
