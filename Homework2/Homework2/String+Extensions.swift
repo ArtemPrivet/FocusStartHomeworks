@@ -36,6 +36,7 @@ extension String
 			guard character.isNumber || allowedCharacter.contains(character) else { return false }
 			characterArray.append(character)
 		}
+		guard characterArray.count >= 11 else { return false }
 		if characterArray[0] == "7" || characterArray[0] == "8" ||
 		(characterArray[0] == "+" && characterArray[1] == "7") {
 			let intArray = characterArray.compactMap{ Int(String($0)) }
