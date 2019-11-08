@@ -19,13 +19,30 @@
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
 
+import Foundation
+
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		components(separatedBy: " ").reduce(into: []) { $0.append(String($1.reversed())) }.joined(separator: " ")
 	}
 
+	/// Validate russian phone number
 	func validate() -> Bool {
-		return false
+		let regex = "^(\\+7|8|7)+[\\s\\-]?\\(?[9][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"
+ 		return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: self)
+	}
+
+	/// Validate phone number for all counties
+	func validateForAllCountries() -> Bool {
+		do {
+			let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+			let matches = detector.matches(in: self, options: [], range: NSRange(location: 0, length: self.count))
+			guard let result = matches.first else { return false }
+			return result.resultType == .phoneNumber && result.range.location == 0 && result.range.length == self.count
+		}
+		catch {
+			return false
+		}
 	}
 }
