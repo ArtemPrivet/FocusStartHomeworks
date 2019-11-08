@@ -22,10 +22,10 @@
 extension String
 {
 	func reversedWords() -> String {
-		let splittedArray = split(separator: " ")
+		let splitted = split(separator: " ")
 		var reversedWords = ""
-		for (index, word) in splittedArray.enumerated() {
-			if index == splittedArray.count - 1 {
+		for (index, word) in splitted.enumerated() {
+			if index == splitted.count - 1 {
 				reversedWords += word.reversed()
 			}
 			else {
@@ -43,29 +43,29 @@ extension String
 			}
 		}
 		//Удаляем все лишнее
-		let filteredStr = self.filter("+0123456789.".contains)
+		let filtered = self.filter("+0123456789.".contains)
 		//Если номер начинается с "+7"
-		if filteredStr.count == 12 {
-			let firstIndex = filteredStr.startIndex
-			let secondIndex = filteredStr.index(firstIndex, offsetBy: 1)
-			if filteredStr[firstIndex] == "+" && filteredStr[secondIndex] == "7" {
-				return codeValidation(filteredStr: filteredStr, start: secondIndex)
+		if filtered.count == 12 {
+			let firstIndex = filtered.startIndex
+			let secondIndex = filtered.index(firstIndex, offsetBy: 1)
+			if filtered.prefix(2) == "+7" {
+				return findCodeAndCheck(filtered: filtered, start: secondIndex)
 			}
 		}
 		//Если номер начинается с  7 или 8
-		if filteredStr.count == 11 {
-			let firstIndex = filteredStr.startIndex
-			if filteredStr[firstIndex] == "7" || filteredStr[firstIndex] == "8" {
-				return codeValidation(filteredStr: filteredStr, start: firstIndex)
+		if filtered.count == 11 {
+			let firstIndex = filtered.startIndex
+			if filtered[firstIndex] == "7" || filtered[firstIndex] == "8" {
+				return findCodeAndCheck(filtered: filtered, start: firstIndex)
 			}
 		}
 		return false
 	}
 
-	private func codeValidation(filteredStr: String, start: String.Index) -> Bool {
-		let firstIndex = filteredStr.index(start, offsetBy: 1)
-		let secondIndex = filteredStr.index(firstIndex, offsetBy: 3)
-		let buffer = Int(filteredStr[firstIndex..<secondIndex])
+	private func findCodeAndCheck(filtered: String, start: String.Index) -> Bool {
+		let firstIndex = filtered.index(start, offsetBy: 1)
+		let secondIndex = filtered.index(firstIndex, offsetBy: 3)
+		let buffer = Int(filtered[firstIndex..<secondIndex])
 		if let code = buffer {
 			if code >= 900 && code <= 999 {
 				return true
