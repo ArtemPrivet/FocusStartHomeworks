@@ -24,15 +24,10 @@ import Foundation
 extension String
 {
 	func reversedWords() -> String {
-		var reversedWords = ""
-		let separator = " "
-		for word in self.components(separatedBy: separator) {
-			let reversedChars = word.reversed()
-			let reversedString = String(reversedChars)
-			reversedWords += (reversedString + separator)
-		}
-		reversedWords.removeLast()
-		return reversedWords
+		return self.components(separatedBy: " ")
+			.map { $0.reversed() }
+			.map { String($0) }
+			.joined(separator: " ")
 	}
 
 	func validate() -> Bool {
