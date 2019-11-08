@@ -30,14 +30,12 @@ extension String
 	}
 
 	func validate() -> Bool {
-		var isValidated = true
 		let allowedCharacter: Set<Character> = ["+", "(", ")", " ", "-", "+"]
 		var characterArray = [Character]()
-		self.forEach { character in
-			guard character.isNumber || allowedCharacter.contains(character) else { isValidated = false; return }
+		for character in self {
+			guard character.isNumber || allowedCharacter.contains(character) else { return false }
 			characterArray.append(character)
 		}
-		guard isValidated == true else { return false }
 		if characterArray[0] == "7" || characterArray[0] == "8" ||
 		(characterArray[0] == "+" && characterArray[1] == "7") {
 			let intArray = characterArray.compactMap{ Int(String($0)) }
