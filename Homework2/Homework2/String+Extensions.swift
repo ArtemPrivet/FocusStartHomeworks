@@ -24,10 +24,7 @@ extension String
 {
 	func reversedWords() -> String {
 		let wordArray = self.components(separatedBy: " ")
-		var reversedWordsArray = [String]()
-		for word in wordArray {
-			reversedWordsArray.append(String(word.reversed()))
-		}
+		let reversedWordsArray = wordArray.map { String($0.reversed()) }
 		return reversedWordsArray.joined(separator: " ")
 	}
 
