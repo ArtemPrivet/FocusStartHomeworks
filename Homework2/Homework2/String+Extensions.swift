@@ -22,10 +22,62 @@
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+	var newString: String = ""
+
+	if self.contains(" ") {
+	let wordsArray = self.components(separatedBy: " ")
+	for wordIndex in wordsArray.indices {
+	let newWord = String(wordsArray[wordIndex].reversed())
+	newString += newWord
+	if wordIndex < (wordsArray.count - 1) {
+	newString += " "
+	}
+	}
+	}
+	else {
+	newString = String(self.reversed())
+	}
+
+	return newString
 	}
 
 	func validate() -> Bool {
-		return false
+	var number = self
+	var result = false
+	repeat  {
+	 if let elementIndex = number.firstIndex(of: " ") {
+	number.remove(at: elementIndex)
 	}
+	if let elementIndex = number.firstIndex(of: " ") {
+	number.remove(at: elementIndex)
+	}
+	if let elementIndex = number.firstIndex(of: "(") {
+	number.remove(at: elementIndex)
+	}
+	if let elementIndex = number.firstIndex(of: ")") {
+	number.remove(at: elementIndex)
+	}
+	if let elementIndex = number.firstIndex(of: "-") {
+	number.remove(at: elementIndex)
+	}
+	} while number.contains(" ") || number.contains("(") || number.contains(")") || number.contains("-")
+
+	if number.hasPrefix("7") || number.hasPrefix("8") {
+	number.removeFirst()
+	}
+	else if number.hasPrefix("+7") {
+	number = String(number.dropFirst(2))
+	}
+	else {
+	number.insert("?", at: number.startIndex)
+	}
+	let code = number.prefix(3)
+	if let codeInt = Int(code) {
+	if codeInt >= 900 && codeInt <= 999 && number.count == 10 && (Int(number) != nil) {
+	result = true
+	}
+	}
+	print(result)
+return result
+}
 }
