@@ -23,7 +23,6 @@ import Foundation
 extension String
 {
 	func reversedWords() -> String {
-		return ""
 		var reversedWordsArr = [String]()
 		let wordsArr = self.split(separator: " ")
 		_ = wordsArr.map {
@@ -40,9 +39,8 @@ extension String
 		}
 		return reversedWordsArr.joined(separator: " ")
 	}
-	
+
 	func validate() -> Bool {
-		return false
 		let regex = "^((8|\\+7|7)[\\-]?)(\\(?9\\d{2}\\)?[\\-]?)(\\d{3}[\\-]?)(\\d{2}[\\-]?)(\\d{2}[\\-]?)$"
 		let phoneTest = NSPredicate(format: "SELF MATCHES %@", regex)
 		return phoneTest.evaluate(with: self.split(separator: " ").joined(separator: ""))
@@ -53,5 +51,4 @@ extension String
 		// [\\- ]?) - "-" опциональный элемент
 		// (\\d{3}[\\- ]?) - сопоставление, чтобы было 3 цифры, после которых "-" опциональный элемент
 	}
-	
 }
