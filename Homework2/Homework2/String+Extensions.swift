@@ -36,6 +36,43 @@ extension String
 	}
 
 	func validate() -> Bool {
-		return false
+		func validate() -> Bool {
+			//Проверяем наличие символов в строке
+			for char in self {
+				if (char >= "a" && char <= "z") || (char >= "A" && char <= "Z") {
+				   return false
+				}
+			}
+			//Удаляем все лишнее
+			let filtered = self.filter("+0123456789.".contains)
+			//Если номер начинается с "+7"
+			if filtered.count == 12 {
+				let firstIndex = filtered.startIndex
+				let secondIndex = filtered.index(firstIndex, offsetBy: 1)
+				if filtered.prefix(2) == "+7" {
+					return findCodeAndCheck(filtered: filtered, start: secondIndex)
+				}
+			}
+			//Если номер начинается с  7 или 8
+			if filtered.count == 11 {
+				let firstIndex = filtered.startIndex
+				if filtered[firstIndex] == "7" || filtered[firstIndex] == "8" {
+					return findCodeAndCheck(filtered: filtered, start: firstIndex)
+				}
+			}
+			return false
+		}
+
+		private func findCodeAndCheck(filtered: String, start: String.Index) -> Bool {
+			let firstIndex = filtered.index(start, offsetBy: 1)
+			let secondIndex = filtered.index(firstIndex, offsetBy: 3)
+			let buffer = Int(filtered[firstIndex..<secondIndex])
+			if let code = buffer {
+				if code >= 900 && code <= 999 {
+					return true
+				}
+			}
+			return false
+		}
 	}
 }
