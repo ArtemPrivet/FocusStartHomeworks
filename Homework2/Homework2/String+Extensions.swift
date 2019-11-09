@@ -23,21 +23,11 @@ import Foundation
 extension String
 {
 	func reversedWords() -> String {
-		var reversedWordsArr = [String]()
-		let wordsArr = self.split(separator: " ")
-		_ = wordsArr.map {
-			var lettersArr = [Character]()
-			var reversedWord = ""
-			for letter in $0 {
-				lettersArr.append(letter)
-			}
-			lettersArr.reverse()
-			_ = lettersArr.map {
-				reversedWord += String($0)
-			}
-			reversedWordsArr.append(reversedWord)
-		}
-		return reversedWordsArr.joined(separator: " ")
+		let reversedWordsArr = self
+			.split(separator: " ")
+			.map { String($0.reversed()) }
+			.joined(separator: " ")
+		return reversedWordsArr
 	}
 
 	func validate() -> Bool {
