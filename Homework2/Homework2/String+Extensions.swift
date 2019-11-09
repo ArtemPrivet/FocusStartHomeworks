@@ -31,17 +31,15 @@ extension String
 
 	func validate() -> Bool {
 		let allowedCharacter: Set<Character> = ["(", ")", " ", "-", "+"]
-		var characterArray = [Character]()
+		var characters = [Character]()
 		for character in self {
 			guard character.isNumber || allowedCharacter.contains(character) else { return false }
-			characterArray.append(character)
+			characters.append(character)
 		}
-		guard characterArray.count >= 11 else { return false }
-		if characterArray[0] == "7" || characterArray[0] == "8" ||
-		(characterArray[0] == "+" && characterArray[1] == "7") {
-			let intArray = characterArray.compactMap{ Int(String($0)) }
-			return intArray.count == 11 && intArray[1] == 9
-			}
-		return false
+		guard characters.count >= 11 else { return false }
+		guard characters[0] == "7" || characters[0] == "8" ||
+		(characters[0] == "+" && characters[1] == "7") else { return false }
+		let intArray = characters.filter { $0.isNumber }
+		return intArray.count == 11 && intArray[1] == "9"
 		}
 }
