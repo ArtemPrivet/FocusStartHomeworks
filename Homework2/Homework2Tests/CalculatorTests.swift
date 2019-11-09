@@ -46,4 +46,11 @@ final class StringTests: XCTestCase
 			XCTAssertEqual(isValid, false)
 		}
 	}
+
+	func testPhoneNumbersForAllWorld() {
+		self.correctPhoneNumbers.forEach {
+			let isValid = $0.validateForAllCountries()
+			XCTAssertEqual(isValid, true)
+		}
+	}
 }
