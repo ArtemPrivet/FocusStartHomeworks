@@ -19,13 +19,20 @@
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
 
+import Foundation
+
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		return self.components(separatedBy: " ")
+			.map { $0.reversed() }
+			.map { String($0) }
+			.joined(separator: " ")
 	}
 
 	func validate() -> Bool {
-		return false
+		let regex = "^(\\+7|7|8)+[\\s\\-]?\\(?[9][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"
+		let format = "SELF MATCHES %@"
+		return NSPredicate(format: format, regex).evaluate(with: self)
 	}
 }
