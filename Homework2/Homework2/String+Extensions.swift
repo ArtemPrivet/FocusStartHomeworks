@@ -22,10 +22,26 @@
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		let result = self
+		.components(separatedBy: " ")
+		.map { String($0.reversed()) }
+		.joined(separator: " ")
+		return result
 	}
 
 	func validate() -> Bool {
+		let allowedCharacter: Set<Character> = ["(", ")", " ", "-", "+"]
+		var characterArray = [Character]()
+		for character in self {
+			guard character.isNumber || allowedCharacter.contains(character) else { return false }
+			characterArray.append(character)
+		}
+		guard characterArray.count >= 11 else { return false }
+		if characterArray[0] == "7" || characterArray[0] == "8" ||
+		(characterArray[0] == "+" && characterArray[1] == "7") {
+			let intArray = characterArray.compactMap{ Int(String($0)) }
+			return intArray.count == 11 && intArray[1] == 9
+			}
 		return false
-	}
+		}
 }
