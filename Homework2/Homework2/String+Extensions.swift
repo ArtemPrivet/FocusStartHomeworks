@@ -19,13 +19,30 @@
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
 
+import Foundation
+
 extension String
 {
-	func reversedWords() -> String {
-		return ""
-	}
+  func reversedWords() -> String {
+    let result = self.components(separatedBy: " ")
+      .map { String($0.reversed()) }
+      .reduce("", { $0 + $1 + " " })
+    return String(result.dropLast())
+  }
 
-	func validate() -> Bool {
-		return false
-	}
+  func validate() -> Bool {
+    let phoneNumber = self.replacingOccurrences(of: " ", with: "")
+    let pattern = "^(8|7|\\+7)[\\(]?(9)\\d{2}[\\)]?\\d{3}[\\-]?\\d{2}[\\-]?\\d{2}$"
+    do {
+      let regex = try NSRegularExpression(pattern: pattern,
+                        options: .caseInsensitive)
+      let result = regex.firstMatch(in: phoneNumber,
+                      options: NSRegularExpression.MatchingOptions(rawValue: 0),
+                      range: NSRange(location: 0, length: phoneNumber.count)) != nil
+      return result
+    }
+    catch {
+      return false
+    }
+  }
 }
