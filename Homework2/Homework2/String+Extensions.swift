@@ -18,14 +18,47 @@
 // с '+7', '7' и '8'. Номер можно вводить и со скобками и с черточками
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
+import Foundation
+
+struct PunctuationMark
+{
+	let mark: Character
+	let index: Int
+}
 
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		let setOfPunctuationMarks: CharacterSet = [" ", ",", ".", "!", "?", ":", "-"]
+
+		var punctuationMarks: [PunctuationMark] = []
+
+		for (index, char) in self.enumerated() {
+			if let charAsciiValue = char.asciiValue {
+				if setOfPunctuationMarks.contains(Unicode.Scalar(charAsciiValue)) {
+					punctuationMarks.append(PunctuationMark(mark: char, index: index))
+				}
+			}
+		}
+
+		var splittedString = self.components(separatedBy: setOfPunctuationMarks)
+		splittedString = splittedString.filter { !$0.isEmpty }
+		splittedString = splittedString.map { String($0.reversed()) }
+
+		var result = splittedString.joined()
+
+		for punctuationMark in punctuationMarks {
+			result.insert(punctuationMark.mark, at: result.index(result.startIndex, offsetBy: punctuationMark.index))
+		}
+
+		return result
 	}
 
 	func validate() -> Bool {
-		return false
+
+		let pattern = "^(\\+7|7|8)(\\s)?(\\s|\\()?9[0-9]{2}(\\s|\\))?(\\s)?[0-9]{3}(\\s|\\-)?[0-9]{2}(\\s|\\-)?[0-9]{2}$"
+
+		let result = self.range(of: pattern, options: .regularExpression, range: nil, locale: nil)
+		return result != nil
 	}
 }
