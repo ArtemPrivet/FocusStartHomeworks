@@ -22,7 +22,17 @@
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		let splitted = split(separator: " ")
+		var reversedWords = ""
+		for (index, word) in splitted.enumerated() {
+			if index == splitted.count - 1 {
+				reversedWords += word.reversed()
+			}
+			else {
+				reversedWords += word.reversed() + " "
+			}
+		}
+		return reversedWords
 	}
 
 	func validate() -> Bool {
