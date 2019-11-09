@@ -22,10 +22,43 @@
 extension String
 {
 	func reversedWords() -> String {
-		return ""
+		let arrayOfwords = self.components(separatedBy: " ")
+		var string = ""
+		for char in 0..<arrayOfwords.count {
+			if string.isEmpty == false {
+				string += " "
+			}
+			string += arrayOfwords[char].reversed()
+		}
+		return string
 	}
 
 	func validate() -> Bool {
-		return false
+		var phoneNumber = ""
+		var digitNumber = ""
+		for char in self {
+			switch char {
+			case "+": phoneNumber += String(char)
+			case "a"..."z": return false
+			case "0"..."9": digitNumber += String(char)
+			default: continue
+			}
+		}
+		guard digitNumber.first == "7" || digitNumber.first == "8" else { return false }
+		phoneNumber += digitNumber
+
+		if phoneNumber.first == "+" {
+			guard phoneNumber.count == 12 else { return false }
+			for (index, char) in phoneNumber.enumerated() where index == 2 {
+					guard char == "9" else { return char == "9" }
+			}
+		}
+		else {
+			guard phoneNumber.count == 11 else { return false }
+				for (index, char) in phoneNumber.enumerated() where index == 1 {
+					guard char == "9" else { return char == "9" }
+				}
+			}
+		return true
 	}
 }
