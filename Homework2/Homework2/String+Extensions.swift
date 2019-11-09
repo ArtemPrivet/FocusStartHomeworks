@@ -21,11 +21,22 @@
 
 extension String
 {
-	func reversedWords() -> String {
-		return ""
+
+	mutating func reversedWords() -> String {
+		let stringg = self
+		//let reversedString = String(string.reversed())
+		let result = stringg.split(separator: " ").map { String($0.reversed()) }.joined(separator: " ")
+
+		return String(result)
 	}
 
 	func validate() -> Bool {
+		let stringg = self
+		let result = stringg.first
+		if result == "+" || result == "7" || result == "8" {
+
+			return true
+		}
 		return false
 	}
 }
