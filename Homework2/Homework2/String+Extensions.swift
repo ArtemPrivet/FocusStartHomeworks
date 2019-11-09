@@ -23,9 +23,10 @@ import Foundation
 extension String
 {
 	func reversedWords() -> String {
-		let wordArray = self.components(separatedBy: " ")
-		let reversedWordsArray = wordArray.map { String($0.reversed()) }
-		return reversedWordsArray.joined(separator: " ")
+		return self
+			.components(separatedBy: " ")
+			.map { String($0.reversed()) }
+			.joined(separator: " ")
 	}
 
 	func validate() -> Bool {
