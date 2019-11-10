@@ -25,12 +25,12 @@ extension String
 		var newString: String = ""
 		let separator = " "
 
-		if self.contains(" ") {
+		if self.contains(separator) {
 			let wordsArray = self.components(separatedBy: separator)
-			for (wordIndex, newWord)	in wordsArray.enumerated() {
+			for (wordIndex, newWord) in wordsArray.enumerated() {
 				newString += newWord.reversed()
 				if wordIndex < (wordsArray.endIndex - 1) {
-					newString += " "
+					newString += separator
 				}
 			}
 		}
