@@ -22,15 +22,15 @@
 extension String
 {
 	func reversedWords() -> String {
-		let arrayOfwords = self.components(separatedBy: " ")
-		var string = ""
-		for char in 0..<arrayOfwords.count {
-			if string.isEmpty == false {
-				string += " "
+		let arrayOfWords = self.components(separatedBy: " ")
+		var result = ""
+		for word in arrayOfWords {
+			if result.isEmpty == false {
+				result += " "
 			}
-			string += arrayOfwords[char].reversed()
+			result += word.reversed()
 		}
-		return string
+		return result
 	}
 
 	func validate() -> Bool {
