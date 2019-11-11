@@ -23,9 +23,11 @@ import Foundation
 extension String
 {
 
-	mutating func reversedWords() -> String {
+	 func reversedWords() -> String {
 
-		let result = self.split(separator: " ").map { String($0.reversed()) }.joined(separator: " ")
+		let result = self.split(separator: " ")
+			.map { String($0.reversed()) }
+			.joined(separator: " ")
 
 		return String(result)
 	}

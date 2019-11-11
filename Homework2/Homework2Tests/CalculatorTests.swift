@@ -11,7 +11,7 @@ import XCTest
 
 final class StringTests: XCTestCase
 {
-	private var string = "проверка ввода"
+	private let string = "проверка ввода"
 	private let correctPhoneNumbers = [
 		"+79111234567",
 		"89990103200",
