@@ -23,17 +23,17 @@ import Foundation
 extension String
 {
 	func reversedWords() -> String {
-		let reversedWordsArr = self
+		let reversedWords = self
 			.split(separator: " ")
 			.map { String($0.reversed()) }
 			.joined(separator: " ")
-		return reversedWordsArr
+		return reversedWords
 	}
 
 	func validate() -> Bool {
 		let regex = "^((8|\\+7|7)[\\-]?)(\\(?9\\d{2}\\)?[\\-]?)(\\d{3}[\\-]?)(\\d{2}[\\-]?)(\\d{2}[\\-]?)$"
-		let phoneTest = NSPredicate(format: "SELF MATCHES %@", regex)
-		return phoneTest.evaluate(with: self.split(separator: " ").joined(separator: ""))
+		let phonePredicate = NSPredicate(format: "SELF MATCHES %@", regex)
+		return phonePredicate.evaluate(with: self.split(separator: " ").joined(separator: ""))
 		// ((8|\\+7|7)[\\- ]?) 8 или +7 или 7, "-" опциональный элемент
 		// (\\(?9 "(" опциональный элемент, 9 обязательный
 		// \\d{2} сопоставление, чтобы было 2 цифры
