@@ -18,25 +18,21 @@
 // с '+7', '7' и '8'. Номер можно вводить и со скобками и с черточками
 // и пробелами.
 // Сигнатура метода: .validate() -> Bool
+import Foundation
 
 extension String
 {
 
 	mutating func reversedWords() -> String {
-		let stringg = self
-		//let reversedString = String(string.reversed())
-		let result = stringg.split(separator: " ").map { String($0.reversed()) }.joined(separator: " ")
+
+		let result = self.split(separator: " ").map { String($0.reversed()) }.joined(separator: " ")
 
 		return String(result)
 	}
 
 	func validate() -> Bool {
-		let stringg = self
-		let result = stringg.first
-		if result == "+" || result == "7" || result == "8" {
-
-			return true
-		}
-		return false
+		let mainNumber = "^(\\+7|7|8)+[\\s\\-]?\\(?[9][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$"
+ 		let format = "SELF MATCHES %@"
+ 		return NSPredicate(format: format, mainNumber).evaluate(with: self)
 	}
 }
