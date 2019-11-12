@@ -8,7 +8,7 @@
 
 extension Sequence
 {
-	func customMap<T>(_ transform: (Self.Element) -> (T)) -> [T] {
+	func customMap<T>(_ transform: (Element) -> (T)) -> [T] {
 		 var mapped = [T]()
 		 for elem in self {
 			 mapped.append(transform(elem))
@@ -24,7 +24,7 @@ extension Sequence
 		 return initialResult
 	 }
 
-	 func customCompactMap<T>(_ transform: (Self.Element) -> (T?)) -> [T] {
+	 func customCompactMap<T>(_ transform: (Element) -> (T?)) -> [T] {
 		 var mapped = [T]()
 		 for elem in self {
 			if let transformed = transform(elem) {
