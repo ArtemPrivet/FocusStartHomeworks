@@ -11,7 +11,7 @@
 		CEB50A43236ED8C1000FCD1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A42236ED8C1000FCD1A /* Assets.xcassets */; };
 		CEB50A46236ED8C1000FCD1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A44236ED8C1000FCD1A /* LaunchScreen.storyboard */; };
 		CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */; };
-		CEB50A5D236EDC19000FCD1A /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A5C236EDC19000FCD1A /* String+Extensions.swift */; };
+		CEB50A5D236EDC19000FCD1A /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A5C236EDC19000FCD1A /* Sequence+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,7 +33,7 @@
 		CEB50A4C236ED8C1000FCD1A /* Homework3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Homework3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		CEB50A52236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CEB50A5C236EDC19000FCD1A /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		CEB50A5C236EDC19000FCD1A /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,7 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */,
-				CEB50A5C236EDC19000FCD1A /* String+Extensions.swift */,
+				CEB50A5C236EDC19000FCD1A /* Sequence+Extensions.swift */,
 				CEB50A5B236ED8E0000FCD1A /* SupportingFiles */,
 			);
 			path = Homework3;
@@ -224,7 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB50A3A236ED8BC000FCD1A /* AppDelegate.swift in Sources */,
-				CEB50A5D236EDC19000FCD1A /* String+Extensions.swift in Sources */,
+				CEB50A5D236EDC19000FCD1A /* Sequence+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
