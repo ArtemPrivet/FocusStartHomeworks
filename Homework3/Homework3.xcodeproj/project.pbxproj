@@ -10,7 +10,7 @@
 		CEB50A3A236ED8BC000FCD1A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A39236ED8BC000FCD1A /* AppDelegate.swift */; };
 		CEB50A43236ED8C1000FCD1A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A42236ED8C1000FCD1A /* Assets.xcassets */; };
 		CEB50A46236ED8C1000FCD1A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEB50A44236ED8C1000FCD1A /* LaunchScreen.storyboard */; };
-		CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */; };
+		CEB50A51236ED8C1000FCD1A /* Homework3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A50236ED8C1000FCD1A /* Homework3Tests.swift */; };
 		CEB50A5D236EDC19000FCD1A /* Sequence+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB50A5C236EDC19000FCD1A /* Sequence+Extensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -31,7 +31,7 @@
 		CEB50A45236ED8C1000FCD1A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CEB50A47236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEB50A4C236ED8C1000FCD1A /* Homework3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Homework3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
+		CEB50A50236ED8C1000FCD1A /* Homework3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Homework3Tests.swift; sourceTree = "<group>"; };
 		CEB50A52236ED8C1000FCD1A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEB50A5C236EDC19000FCD1A /* Sequence+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,7 +85,7 @@
 		CEB50A4F236ED8C1000FCD1A /* Homework3Tests */ = {
 			isa = PBXGroup;
 			children = (
-				CEB50A50236ED8C1000FCD1A /* CalculatorTests.swift */,
+				CEB50A50236ED8C1000FCD1A /* Homework3Tests.swift */,
 				CEB50A52236ED8C1000FCD1A /* Info.plist */,
 			);
 			path = Homework3Tests;
@@ -232,7 +232,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB50A51236ED8C1000FCD1A /* CalculatorTests.swift in Sources */,
+				CEB50A51236ED8C1000FCD1A /* Homework3Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
