@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -30,22 +30,22 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
-		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+		let expectedNumbers = numbers.reduce(0, sumSquare)
+		let expectedStrings = strings.reduce("", additionString)
 
-		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
-		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
+		let actualNumbers = numbers.customReduce(0, sumSquare)
+		let actualStrings = strings.customReduce("", additionString)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(convertToasciiValue)
+		let expectedStrings = strings.compactMap(convertToInt)
 
-		let actualString = string.customCompactMap { $0.asciiValue }
-		let actualStrings = strings.customCompactMap { Int($0) }
+		let actualString = string.customCompactMap(convertToasciiValue)
+		let actualStrings = strings.customCompactMap(convertToInt)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -64,5 +64,21 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func sumSquare(_ value: Int, _ squareElement: Int) -> Int {
+		return value + (squareElement * squareElement)
+	}
+
+	private func additionString(_ lhString: String, _ rhString: String) -> String {
+		return lhString + " " + rhString
+	}
+
+	private func convertToasciiValue(_ char: Character) -> UInt8? {
+		return char.asciiValue
+	}
+
+	private func convertToInt(_ value: String) -> Int? {
+		return Int(value)
 	}
 }
