@@ -77,12 +77,12 @@ private extension SequenceTest
 		string + "!"
 	}
 
-	private func sumOf(_ number1: Int, andSquareOf number2: Int) -> Int {
-		number1 + square(of: number2)
+	private func sumOf(_ first: Int, andSquareOf second: Int) -> Int {
+		first + square(of: second)
 	}
 
-	private func withSpaceBetwin(_ string1: String, and string2: String) -> String {
-		string1 + " " + string2
+	private func withSpaceBetwin(_ left: String, and right: String) -> String {
+		left + " " + right
 	}
 
 	private func asciiValue(of character: Character) -> UInt8? {
