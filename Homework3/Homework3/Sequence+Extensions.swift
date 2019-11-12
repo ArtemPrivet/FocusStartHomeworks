@@ -10,24 +10,24 @@ extension Sequence
 {
 	func customMap<T>(_ transform: (Element) -> (T)) -> [T] {
 		 var mapped = [T]()
-		 for elem in self {
-			 mapped.append(transform(elem))
+		 for element in self {
+			 mapped.append(transform(element))
 		 }
 		 return mapped
 	 }
 
 	 func customReduce<T>(_ initialResult: T, _ nextPartialResult: (T, Element) -> (T)) -> T {
 		 var initialResult = initialResult
-		 for elem in self {
-			 initialResult = nextPartialResult(initialResult, elem)
+		 for element in self {
+			 initialResult = nextPartialResult(initialResult, element)
 		 }
 		 return initialResult
 	 }
 
 	 func customCompactMap<T>(_ transform: (Element) -> (T?)) -> [T] {
 		 var mapped = [T]()
-		 for elem in self {
-			if let transformed = transform(elem) {
+		 for element in self {
+			if let transformed = transform(element) {
 				mapped.append(transformed)
 			}
 		}
