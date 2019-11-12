@@ -1,6 +1,6 @@
 //
-//  Homework2Tests.swift
-//  Homework2Tests
+//  Homework3Tests.swift
+//  Homework3Tests
 //
 //  Created by MisnikovRoman on 03.11.2019.
 //  Copyright © 2019 MisnikovRoman. All rights reserved.
@@ -29,7 +29,7 @@ final class SequenceTest: XCTestCase
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
-	func testCustoReduce() {
+	func testCustomReduce() {
 		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
 		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
 
