@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -41,11 +41,11 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(asciiOnly)
+		let expectedStrings = strings.compactMap(toInt)
 
-		let actualString = string.customCompactMap { $0.asciiValue }
-		let actualStrings = strings.customCompactMap { Int($0) }
+		let actualString = string.customCompactMap(asciiOnly)
+		let actualStrings = strings.customCompactMap(toInt)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -64,5 +64,13 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func asciiOnly(_ char: Character) -> UInt8? {
+		return char.asciiValue
+	}
+
+	private func toInt(_ string: String) -> Int? {
+		return Int(string)
 	}
 }
