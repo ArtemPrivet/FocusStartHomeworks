@@ -14,10 +14,13 @@ extension Sequence
 		return transformed
 	}
 
-	func customReduce<Result>(_ ininital: Result, updateAccumulatingResult: (inout Result, Element) -> Result) -> Result {
+	func customReduce<Result>(
+		_ ininital: Result,
+		_ updateAccumulatingResult: (Result, Element) -> Result
+	) -> Result {
 		var result = ininital
 		forEach { element in
-			result = updateAccumulatingResult(&result, element)
+			result = updateAccumulatingResult(result, element)
 		}
 		return result
 	}
