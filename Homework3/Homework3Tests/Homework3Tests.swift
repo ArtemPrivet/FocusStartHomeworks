@@ -40,6 +40,17 @@ final class SequenceTest: XCTestCase
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
+	func testCustomReduceUseInto() {
+		let expectedNumbers = numbers.reduce(into: 0, addToResult)
+		let expectedStrings = strings.reduce(into: "", concatenateToResult)
+
+		let actualNumbers = numbers.customReduce(into: 0, addToResult)
+		let actualStrings = strings.customReduce(into: "", concatenateToResult)
+
+		XCTAssertEqual(expectedNumbers, actualNumbers)
+		XCTAssertEqual(expectedStrings, actualStrings)
+	}
+
 	func testCustomCompactMap() {
 		let expectedString = string.compactMap(asciiValue)
 		let expectedStrings = strings.compactMap(int)
@@ -80,5 +91,13 @@ private extension SequenceTest
 
 	private func int(of string: String) -> Int? {
 		Int(string)
+	}
+
+	private func addToResult(_ result: inout Int, number: Int) {
+		result += number
+	}
+
+	private func concatenateToResult(_ result: inout String, string: String) {
+		result += " " + string
 	}
 }
