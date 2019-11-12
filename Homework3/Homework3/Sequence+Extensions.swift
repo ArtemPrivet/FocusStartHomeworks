@@ -8,15 +8,29 @@
 
 extension Sequence
 {
-	func customMap() {
-		// ...
+	func customMap<T>(using closure: (Element) -> T) -> [T] {
+		var result: [T] = []
+		for element in self {
+			result.append(closure(element))
+		}
+		return result
 	}
 
-	func customReduce() {
-		// ...
+	func customReduce<T>(_ accumulator: T, using closure: (T, Element) -> T) -> T {
+		var result = accumulator
+		for element in self {
+			result = closure( result, element)
+		}
+		return result
 	}
 
-	func customCompactMap() {
-		//...
+	func customCompactMap<T>(using closure: (Element) -> T?) -> [T] {
+		var result: [T] = []
+		for element in self {
+			if let newElement = closure(element) {
+				result.append(newElement)
+			}
+		}
+		return result
 	}
 }
