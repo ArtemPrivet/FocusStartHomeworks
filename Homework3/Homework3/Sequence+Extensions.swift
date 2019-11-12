@@ -8,15 +8,32 @@
 
 extension Sequence
 {
-	func customMap() {
-		// ...
+
+	func customMap<T>(_ transform: (Element) throws -> T) rethrows -> [T] {
+		return try compactMap(transform)
 	}
 
-	func customReduce() {
-		// ...
+	func customReduce<Result>(_ initialResult: Result,
+							  _ nextPartialResult: (Result, Element) throws -> Result) rethrows -> Result {
+		try customReduce(into: initialResult) {
+			let nextPartialResult = try nextPartialResult($0, $1)
+			$0 = nextPartialResult
+		}
 	}
 
-	func customCompactMap() {
-		//...
+	func customReduce<Result>(into result: Result,
+							  _ updateAccumulatingResult: (inout Result, Element) throws -> Swift.Void) rethrows -> Result {
+		var result = result
+		try forEach { try updateAccumulatingResult(&result, $0) }
+		return result
+	}
+
+	func customCompactMap<ElementOfResult>(
+		_ transform: (Element) throws -> ElementOfResult?) rethrows -> [ElementOfResult] {
+		try customReduce(into: []) {
+			if let transformElement = try transform($1) {
+				$0.append(transformElement)
+			}
+		}
 	}
 }
