@@ -30,8 +30,8 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
-		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+		let expectedNumbers = numbers.reduce(0, sumOfSquare)
+		let expectedStrings = strings.reduce("", sumOfStrings)
 
 		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
 		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
@@ -41,8 +41,8 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(getAsciiValue)
+		let expectedStrings = strings.compactMap(transformToInt)
 
 		let actualString = string.customCompactMap { $0.asciiValue }
 		let actualStrings = strings.customCompactMap { Int($0) }
@@ -64,5 +64,21 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func sumOfSquare(_ result: Int, _ element: Int) -> Int {
+		return result + (element * element)
+	}
+
+	private func sumOfStrings(_ result: String, _ element: String) -> String {
+		return result + " " + element
+	}
+
+	private func getAsciiValue(_ element: Character) -> UInt8? {
+		return element.asciiValue
+	}
+
+	private func transformToInt(_ element: String) -> Int? {
+		return Int(element)
 	}
 }
