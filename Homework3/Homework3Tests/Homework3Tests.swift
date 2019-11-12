@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -30,22 +30,22 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
-		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+		let expectedNumbers = numbers.reduce(0, sumOf)
+		let expectedStrings = strings.reduce("", withSpaceBetwin)
 
-		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
-		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
+		let actualNumbers = numbers.customReduce(0, sumOf)
+		let actualStrings = strings.customReduce("", withSpaceBetwin)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(asciiValue)
+		let expectedStrings = strings.compactMap(int)
 
-		let actualString = string.customCompactMap { $0.asciiValue }
-		let actualStrings = strings.customCompactMap { Int($0) }
+		let actualString = string.customCompactMap(asciiValue)
+		let actualStrings = strings.customCompactMap(int)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -55,14 +55,30 @@ final class SequenceTest: XCTestCase
 private extension SequenceTest
 {
 	private func square(of number: Int) -> Int {
-		return number * number
+		number * number
 	}
 
 	private func uppercase(_ char: Character) -> String {
-		return char.uppercased()
+		char.uppercased()
 	}
 
 	private func withExclamationMark(_ string: String) -> String {
-		return string + "!"
+		string + "!"
+	}
+
+	private func sumOf(_ number1: Int, andSquareOf number2: Int) -> Int {
+		number1 + square(of: number2)
+	}
+
+	private func withSpaceBetwin(_ string1: String, and string2: String) -> String {
+		string1 + " " + string2
+	}
+
+	private func asciiValue(of character: Character) -> UInt8? {
+		character.asciiValue
+	}
+
+	private func int(of string: String) -> Int? {
+		Int(string)
 	}
 }
