@@ -20,6 +20,8 @@
 		CA33EE42237ACA1900B5D09F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA33EE45237ACA1A00B5D09F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA33EE47237ACA1A00B5D09F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Regular.ttf"; sourceTree = "<group>"; };
+		CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FiraSans-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +54,7 @@
 		CA33EE38237ACA1500B5D09F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
 				CA33EE4F237ACD0E00B5D09F /* Controllers */,
 				CA33EE4E237ACCF700B5D09F /* SupportingFiles */,
@@ -83,6 +86,23 @@
 				CA33EE39237ACA1500B5D09F /* AppDelegate.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		CA33EE56237AD43200B5D09F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CA33EE57237AD43E00B5D09F /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CA33EE57237AD43E00B5D09F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */,
+				CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
