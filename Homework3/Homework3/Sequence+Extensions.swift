@@ -15,10 +15,10 @@ extension Sequence
 	}
 
 	func customReduce<Result>(
-		_ initial: Result,
+		_ initital: Result,
 		_ updateAccumulatingResult: (Result, Element) -> Result
 	) -> Result {
-		var result = initial
+		var result = initital
 		forEach { element in
 			result = updateAccumulatingResult(result, element)
 		}
