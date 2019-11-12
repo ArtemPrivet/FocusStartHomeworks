@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -30,22 +30,22 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
-		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+		let expectedNumbers = numbers.reduce(0, squareSumm)
+		let expectedStrings = strings.reduce("", stringWithSpaces)
 
-		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
-		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
+		let actualNumbers = numbers.customReduce(0, prepare: squareSumm)
+		let actualStrings = strings.customReduce("", prepare: stringWithSpaces)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(someAscii)
+		let expectedStrings = strings.compactMap(goToInt)
 
-		let actualString = string.customCompactMap { $0.asciiValue }
-		let actualStrings = strings.customCompactMap { Int($0) }
+		let actualString = string.customCompactMap(someAscii)
+		let actualStrings = strings.customCompactMap(goToInt)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -65,4 +65,19 @@ private extension SequenceTest
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
 	}
+
+	private func goToInt(_ stroka: String) -> Int? {
+		return Int(stroka)
+	}
+
+	private func someAscii(_ char: Character) -> UInt8? {
+ 		return char.asciiValue
+ 	}
+
+	private func stringWithSpaces(_ string1: String, _ string2: String) -> String {
+		return string1 + " " + string2
+	}
+ 	private func squareSumm(summ: Int, digit: Int) -> Int {
+ 		return summ + (digit * digit)
+ 	}
 }

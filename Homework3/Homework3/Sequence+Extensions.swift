@@ -8,15 +8,26 @@
 
 extension Sequence
 {
-	func customMap() {
-		// ...
+	func customMap<T>(_ prepare: (Element) -> T) -> [T] {
+		var result = [T]()
+		self.forEach { result.append(prepare($0))
+		}
+		return result
 	}
 
-	func customReduce() {
-		// ...
+	func customReduce<T>(_ firstElement: T, prepare: (T, Element) -> T) -> T {
+		var result = firstElement
+		self.forEach { result = prepare(result, $0)
+		}
+		return result
 	}
 
-	func customCompactMap() {
-		//...
+	func customCompactMap<T>(_ prepare: (Element) -> T?) -> [T] {
+		var result = [T]()
+		self.forEach {
+			guard let newElement = prepare($0) else { return }
+			result.append(newElement)
+		}
+		return result
 	}
 }
