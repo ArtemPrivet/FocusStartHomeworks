@@ -62,8 +62,8 @@ private extension SequenceTest
 		return char.uppercased()
 	}
 
-	private func withExclamationMark(_ changable: String) -> String {
-		return changable + "!"
+	private func withExclamationMark(_ changeString: String) -> String {
+		return changeString + "!"
 	}
 
 	private func convertToInt(_ yourString: String) -> Int? {
