@@ -9,41 +9,60 @@
 import XCTest
 @testable import Homework3
 
-final class StringTests: XCTestCase
+final class SequenceTest: XCTestCase
 {
 	private let string = "проверка ввода"
-	private let correctPhoneNumbers = [
-		"+79111234567",
-		"89990103200",
-		"7(912)1236311",
-		"+7 919 737 31 11",
-		"+7 (912) 123-45-67",
-	]
-	private let wrongPhoneNumbers = [
-		"123",
-		"78121231212",
-		"9991233311",
-		"+7(981)123456",
-		"7911123f4567",
-	]
+	private let numbers = [1, 7, 8, 3, 6, 4, 5, 0, 1]
+	private let strings = ["1", "2", "3", "b"]
 
-	func testReverseWords() {
-		let reversedString = string.reversedWords()
-		let expectedResult = "акреворп адовв"
-		XCTAssertEqual(reversedString, expectedResult)
+	func testCustomMap() {
+		let expectedString = string.map(uppercase)
+		let expectedNumbers = numbers.map(square)
+		let expectedStrings = strings.map(withExclamationMark)
+
+		let actualString = string.customMap { $0.uppercased() }
+		let actualNumbers = numbers.customMap { $0 * $0 }
+		let actualStrings = strings.customMap { $0 + "!" }
+
+		XCTAssertEqual(expectedString, actualString)
+		XCTAssertEqual(expectedNumbers, actualNumbers)
+		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
-	func testPhoneNumbers() {
-		self.correctPhoneNumbers.forEach {
-			let isValid = $0.validate()
-			XCTAssertEqual(isValid, true)
-		}
+	func testCustoReduce() {
+		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
+		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+
+		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
+		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
+
+		XCTAssertEqual(expectedNumbers, actualNumbers)
+		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
-	func testWrongPhoneNumbers() {
-		self.wrongPhoneNumbers.forEach {
-			let isValid = $0.validate()
-			XCTAssertEqual(isValid, false)
-		}
+	func testCustomCompactMap() {
+		let expectedString = string.compactMap { $0.asciiValue }
+		let expectedStrings = strings.compactMap { Int($0) }
+
+		let actualString = string.customCompactMap { $0.asciiValue }
+		let actualStrings = strings.customCompactMap { Int($0) }
+
+		XCTAssertEqual(expectedString, actualString)
+		XCTAssertEqual(expectedStrings, actualStrings)
+	}
+}
+
+private extension SequenceTest
+{
+	private func square(of number: Int) -> Int {
+		return number * number
+	}
+
+	private func uppercase(_ char: Character) -> String {
+		return char.uppercased()
+	}
+
+	private func withExclamationMark(_ string: String) -> String {
+		return string + "!"
 	}
 }

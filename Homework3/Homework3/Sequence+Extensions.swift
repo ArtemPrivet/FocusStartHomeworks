@@ -17,6 +17,6 @@ extension Sequence
 	}
 
 	func customCompactMap() {
-		// ...
+		//...
 	}
 }
