@@ -11,9 +11,9 @@ import XCTest
 
 final class SequenceTest: XCTestCase
 {
-	private let string = "проверка ввода"
-	private let numbers = [1, 7, 8, 3, 6, 4, 5, 0, 1]
-	private let strings = ["1", "2", "3", "b"]
+	private var string = "проверка ввода"
+	private var numbers = [1, 7, 8, 3, 6, 4, 5, 0, 1]
+	private var strings = ["1", "2", "3", "b"]
 
 	func testCustomMap() {
 		let expectedString = string.map(uppercase)
@@ -64,5 +64,21 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func addSquareOfTheNext(_ num1: Int, _ num2: Int) -> Int {
+		return num1 + (num2 * num2)
+	}
+
+	private func spaceSeparated(_ word1: String, _ word2: String) -> String {
+		return word1 + " " + word2
+	}
+
+	private func convertToAsciiValue(_ char: Character) -> UInt8? {
+		return char.asciiValue
+	}
+
+	private func convertToInt(_ string: String) -> Int? {
+		return Int(string)
 	}
 }

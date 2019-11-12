@@ -8,15 +8,29 @@
 
 extension Sequence
 {
-	func customMap() {
-		// ...
-	}
+	func customMap<T>(_ transform: (Self.Element) -> (T)) -> [T] {
+		 var mapped = [T]()
+		 for elem in self {
+			 mapped.append(transform(elem))
+		 }
+		 return mapped
+	 }
 
-	func customReduce() {
-		// ...
-	}
+	 func customReduce<T>(_ initialResult: T, _ nextPartialResult: (T, Element) -> (T)) -> T {
+		 var initialResult = initialResult
+		 for elem in self {
+			 initialResult = nextPartialResult(initialResult, elem)
+		 }
+		 return initialResult
+	 }
 
-	func customCompactMap() {
-		//...
-	}
+	 func customCompactMap<T>(_ transform: (Self.Element) -> (T?)) -> [T] {
+		 var mapped = [T]()
+		 for elem in self {
+			if let transformed = transform(elem) {
+				mapped.append(transformed)
+			}
+		}
+		return mapped
+	 }
 }
