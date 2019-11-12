@@ -30,10 +30,10 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0, squareSumm)
+		let expectedNumbers = numbers.reduce(0, squareSum)
 		let expectedStrings = strings.reduce("", stringWithSpaces)
 
-		let actualNumbers = numbers.customReduce(0, prepare: squareSumm)
+		let actualNumbers = numbers.customReduce(0, prepare: squareSum)
 		let actualStrings = strings.customReduce("", prepare: stringWithSpaces)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -41,11 +41,11 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap(someAscii)
-		let expectedStrings = strings.compactMap(goToInt)
+		let expectedString = string.compactMap(returnAscii)
+		let expectedStrings = strings.compactMap(convertToInt)
 
-		let actualString = string.customCompactMap(someAscii)
-		let actualStrings = strings.customCompactMap(goToInt)
+		let actualString = string.customCompactMap(returnAscii)
+		let actualStrings = strings.customCompactMap(convertToInt)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -62,22 +62,22 @@ private extension SequenceTest
 		return char.uppercased()
 	}
 
-	private func withExclamationMark(_ string: String) -> String {
-		return string + "!"
+	private func withExclamationMark(_ changable: String) -> String {
+		return changable + "!"
 	}
 
-	private func goToInt(_ stroka: String) -> Int? {
-		return Int(stroka)
+	private func convertToInt(_ yourString: String) -> Int? {
+		return Int(yourString)
 	}
 
-	private func someAscii(_ char: Character) -> UInt8? {
+	private func returnAscii(_ char: Character) -> UInt8? {
  		return char.asciiValue
  	}
 
-	private func stringWithSpaces(_ string1: String, _ string2: String) -> String {
-		return string1 + " " + string2
+	private func stringWithSpaces(_ firstString: String, _ secondString: String) -> String {
+		return firstString + " " + secondString
 	}
- 	private func squareSumm(summ: Int, digit: Int) -> Int {
- 		return summ + (digit * digit)
+ 	private func squareSum(sum: Int, digit: Int) -> Int {
+ 		return sum + (digit * digit)
  	}
 }
