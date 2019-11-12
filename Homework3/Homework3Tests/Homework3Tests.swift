@@ -11,9 +11,9 @@ import XCTest
 
 final class SequenceTest: XCTestCase
 {
-	private var string = "проверка ввода"
-	private var numbers = [1, 7, 8, 3, 6, 4, 5, 0, 1]
-	private var strings = ["1", "2", "3", "b"]
+	private let string = "проверка ввода"
+	private let numbers = [1, 7, 8, 3, 6, 4, 5, 0, 1]
+	private let strings = ["1", "2", "3", "b"]
 
 	func testCustomMap() {
 		let expectedString = string.map(uppercase)
