@@ -30,11 +30,11 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0, sumOfSquares)
-		let expectedStrings = strings.reduce(" ", addSpaceBetween)
+		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
+		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
 
-		let actualNumbers = numbers.customReduce(0, sumOfSquares)
-		let actualStrings = strings.customReduce(" ", addSpaceBetween)
+		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
+		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)

@@ -10,16 +10,16 @@ extension Sequence
 {
 	func customMap<T>(_ transform: (Element) -> T) -> [T] {
 		var result: [T] = []
-		for el in self {
-			result.append(transform(el))
+		for element in self {
+			result.append(transform(element))
 		}
 		return result
 	}
 
 	func customReduce<T>(_ initialResult: T, _ nextPartialResult: (T, Element) -> T) -> T {
 		var result = initialResult
-		for el in self {
-			result = nextPartialResult(result, el)
+		for element in self {
+			result = nextPartialResult(result, element)
 		}
 		return result
 	}
