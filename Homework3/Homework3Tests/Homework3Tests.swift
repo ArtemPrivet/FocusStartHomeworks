@@ -31,10 +31,10 @@ final class SequenceTest: XCTestCase
 
 	func testCustomReduce() {
 		let expectedNumbers = numbers.reduce(0, sumOf)
-		let expectedStrings = strings.reduce("", withSpaceBetwin)
+		let expectedStrings = strings.reduce("", withSpaceBetween)
 
 		let actualNumbers = numbers.customReduce(0, sumOf)
-		let actualStrings = strings.customReduce("", withSpaceBetwin)
+		let actualStrings = strings.customReduce("", withSpaceBetween)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -81,7 +81,7 @@ private extension SequenceTest
 		first + square(of: second)
 	}
 
-	private func withSpaceBetwin(_ left: String, and right: String) -> String {
+	private func withSpaceBetween(_ left: String, and right: String) -> String {
 		left + " " + right
 	}
 

@@ -16,8 +16,7 @@ extension Sequence
 	func customReduce<Result>(_ initialResult: Result,
 							  _ nextPartialResult: (Result, Element) throws -> Result) rethrows -> Result {
 		try customReduce(into: initialResult) {
-			let nextPartialResult = try nextPartialResult($0, $1)
-			$0 = nextPartialResult
+			$0 = try nextPartialResult($0, $1)
 		}
 	}
 
