@@ -30,11 +30,11 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { toModifyArray($0, $1) }
-		let expectedStrings = strings.reduce("") { toModifyString($0, $1) }
+		let expectedNumbers = numbers.reduce(0, toModifyArray)
+		let expectedStrings = strings.reduce("", toModifyString)
 
-		let actualNumbers = numbers.customReduce(0) { toModifyArray($0, $1) }
-		let actualStrings = strings.customReduce("") { toModifyString($0, $1) }
+		let actualNumbers = numbers.customReduce(0, toModifyArray)
+		let actualStrings = strings.customReduce("", toModifyString)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
