@@ -30,11 +30,11 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0, toModifyArray)
-		let expectedStrings = strings.reduce("", toModifyString)
+		let expectedNumbers = numbers.reduce(0, toArray)
+		let expectedStrings = strings.reduce("", toString)
 
-		let actualNumbers = numbers.customReduce(0, toModifyArray)
-		let actualStrings = strings.customReduce("", toModifyString)
+		let actualNumbers = numbers.customReduce(0, toArray)
+		let actualStrings = strings.customReduce("", toString)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -66,10 +66,10 @@ private extension SequenceTest
 		return string + "!"
 	}
 
-	private func toModifyArray(_ firstNumber: Int, _ secondNumber: Int) -> Int {
+	private func toArray(_ firstNumber: Int, _ secondNumber: Int) -> Int {
 		return firstNumber + secondNumber * secondNumber
 	}
-	private func toModifyString(_ firstCharacter: String, _ secondCharacter: String) -> String {
+	private func toString(_ firstCharacter: String, _ secondCharacter: String) -> String {
 		return firstCharacter + " " + secondCharacter
 	}
 }
