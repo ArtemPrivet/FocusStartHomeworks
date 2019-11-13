@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -30,10 +30,10 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
+		let expectedNumbers = numbers.reduce(0) { toModifyArray($0, $1) }
 		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
 
-		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
+		let actualNumbers = numbers.customReduce(0) { toModifyArray($0, $1) }
 		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -64,5 +64,9 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func toModifyArray(_ firstNumber: Int, _ secondNumber: Int) -> Int {
+		return firstNumber + secondNumber * secondNumber
 	}
 }

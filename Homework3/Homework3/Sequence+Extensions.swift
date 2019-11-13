@@ -8,14 +8,14 @@
 
 extension Sequence
 {
-	func customMap <T>(customFunction: (Self.Element) -> T) -> [T]? {
+	func customMap <T>(_ customFunction: (Self.Element) -> T) -> [T]? {
 		var result = [T]()
 		for element in self {
 			result.append(customFunction(element))
 		}
 		return result
 	}
-	func customReduce <T>(_ initialValue: T, customFunction: (T, Self.Element) -> T) -> T {
+	func customReduce <T>(_ initialValue: T, _ customFunction: (T, Self.Element) -> T) -> T {
 		var result = initialValue
 		for singleElement in self {
 			result = customFunction(result, singleElement)
