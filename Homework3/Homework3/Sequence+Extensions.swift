@@ -17,11 +17,11 @@ extension Sequence
 	}
 
 	func customReduce<T>(_ initialResult: T, _ nextPartialResult: (T, Element) -> T) -> T {
-		var initialResult = initialResult
+		var finalResult = initialResult
 		for element in self {
-			initialResult = nextPartialResult(initialResult, element)
+			finalResult = nextPartialResult(finalResult, element)
 		}
-		return initialResult
+		return finalResult
 	}
 
 	func customCompactMap<T>(_ transform: (Element) -> T?) -> [T] {
