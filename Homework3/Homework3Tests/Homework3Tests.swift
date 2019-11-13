@@ -20,9 +20,9 @@ final class SequenceTest: XCTestCase
 		let expectedNumbers = numbers.map(square)
 		let expectedStrings = strings.map(withExclamationMark)
 
-		let actualString = string.customMap { $0.uppercased() }
-		let actualNumbers = numbers.customMap { $0 * $0 }
-		let actualStrings = strings.customMap { $0 + "!" }
+		let actualString = string.customMap(uppercase)
+		let actualNumbers = numbers.customMap(square)
+		let actualStrings = strings.customMap(withExclamationMark)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedNumbers, actualNumbers)
@@ -30,22 +30,22 @@ final class SequenceTest: XCTestCase
 	}
 
 	func testCustomReduce() {
-		let expectedNumbers = numbers.reduce(0) { $0 + $1 * $1 }
-		let expectedStrings = strings.reduce("") { $0 + " " + $1 }
+		let expectedNumbers = numbers.reduce(0, sumOfSquares)
+		let expectedStrings = strings.reduce(" ", addSpaceBetween)
 
-		let actualNumbers = numbers.customReduce(0) { $0 + $1 * $1 }
-		let actualStrings = strings.customReduce("") { $0 + " " + $1 }
+		let actualNumbers = numbers.customReduce(0, sumOfSquares)
+		let actualStrings = strings.customReduce(" ", addSpaceBetween)
 
 		XCTAssertEqual(expectedNumbers, actualNumbers)
 		XCTAssertEqual(expectedStrings, actualStrings)
 	}
 
 	func testCustomCompactMap() {
-		let expectedString = string.compactMap { $0.asciiValue }
-		let expectedStrings = strings.compactMap { Int($0) }
+		let expectedString = string.compactMap(getAscii)
+		let expectedStrings = strings.compactMap(convertStringToInt)
 
-		let actualString = string.customCompactMap { $0.asciiValue }
-		let actualStrings = strings.customCompactMap { Int($0) }
+		let actualString = string.customCompactMap(getAscii)
+		let actualStrings = strings.customCompactMap(convertStringToInt)
 
 		XCTAssertEqual(expectedString, actualString)
 		XCTAssertEqual(expectedStrings, actualStrings)
@@ -64,5 +64,21 @@ private extension SequenceTest
 
 	private func withExclamationMark(_ string: String) -> String {
 		return string + "!"
+	}
+
+	private func addSpaceBetween(_ firstString: String, _ secondString: String) -> String {
+		return firstString + " " + secondString
+	}
+
+	private func sumOfSquares(_ sum: Int, _ number: Int) -> Int {
+		return sum + (number * number)
+	}
+
+	private func convertStringToInt(_ string: String) -> Int? {
+		return Int(string)
+	}
+
+	private func getAscii(_ char: Character) -> UInt8? {
+		return char.asciiValue
 	}
 }
