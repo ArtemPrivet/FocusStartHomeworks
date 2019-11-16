@@ -12,6 +12,10 @@
 		CA33EE43237ACA1900B5D09F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE42237ACA1900B5D09F /* Assets.xcassets */; };
 		CA33EE46237ACA1A00B5D09F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE44237ACA1A00B5D09F /* LaunchScreen.storyboard */; };
 		CA33EE76237EF41600B5D09F /* CalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE75237EF41600B5D09F /* CalculatorTests.swift */; };
+		E9315D1223805A1000D772F0 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
+		E9315D1323805A1300D772F0 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
+		E9410A0923804C82003B3822 /* BackgroundVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9410A0823804C82003B3822 /* BackgroundVIew.swift */; };
+		E9410A0C2380518C003B3822 /* ScreenLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9410A0B2380518C003B3822 /* ScreenLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,8 @@
 		CA33EE73237EF41600B5D09F /* CalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA33EE75237EF41600B5D09F /* CalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTests.swift; sourceTree = "<group>"; };
 		CA33EE77237EF41600B5D09F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9410A0823804C82003B3822 /* BackgroundVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundVIew.swift; sourceTree = "<group>"; };
+		E9410A0B2380518C003B3822 /* ScreenLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +85,7 @@
 			children = (
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
+				E9410A0A23805101003B3822 /* Views */,
 				CA33EE4F237ACD0E00B5D09F /* Controllers */,
 				CA33EE4E237ACCF700B5D09F /* SupportingFiles */,
 			);
@@ -135,6 +142,15 @@
 				CA33EE77237EF41600B5D09F /* Info.plist */,
 			);
 			path = CalculatorTests;
+			sourceTree = "<group>";
+		};
+		E9410A0A23805101003B3822 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E9410A0823804C82003B3822 /* BackgroundVIew.swift */,
+				E9410A0B2380518C003B3822 /* ScreenLabel.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,7 +235,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9315D1223805A1000D772F0 /* FiraSans-Light.ttf in Resources */,
 				CA33EE46237ACA1A00B5D09F /* LaunchScreen.storyboard in Resources */,
+				E9315D1323805A1300D772F0 /* FiraSans-Regular.ttf in Resources */,
 				CA33EE43237ACA1900B5D09F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -259,8 +277,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9410A0C2380518C003B3822 /* ScreenLabel.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
+				E9410A0923804C82003B3822 /* BackgroundVIew.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
