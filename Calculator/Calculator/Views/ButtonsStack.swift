@@ -13,11 +13,10 @@ final class ButtonsStack: UIStackView
 	var cells: [Button] = []
 	var rows: [UIStackView] = []
 	private let cellsCount: Int
-
 	private var currentRow: UIStackView?
 
-	let rowSize: Int
-	let rowHeight: CGFloat
+	private let rowSize: Int
+	private let rowHeight: CGFloat
 
 	init(rowSize: Int, rowHeight: CGFloat, cellsCount: Int) {
 		self.rowSize = rowSize
@@ -51,7 +50,7 @@ final class ButtonsStack: UIStackView
 		return row
 	}
 
-	 private func addCell(button: Button) {
+	private func addCell(button: Button) {
 		let isFirstCellOfRow = self.cells.count % self.rowSize == 0
 
 		if currentRow == nil || isFirstCellOfRow {
@@ -85,7 +84,7 @@ final class ButtonsStack: UIStackView
 			addCell(button: button)
 		}
 	}
-// MARK: Configure Buttons View
+	// MARK: Configure Buttons View
 	private func configureOperatorsButtonsBackground() {
 		//configure side buttons view
 		for stack in rows {
