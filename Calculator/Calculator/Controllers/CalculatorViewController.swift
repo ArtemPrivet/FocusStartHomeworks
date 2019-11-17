@@ -10,8 +10,23 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
+	override func loadView() {
+		view = BackgroundView()
+	}
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+		configureButtons()
+	}
+
+	private func configureButtons() {
+		guard let view = view as? BackgroundView else { return }
+		for button in view.buttonsStack.cells {
+			button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+		}
+	}
+
+	@objc private func buttonTapped(_ sender: UIButton) {
+		//TODO: Добавить обработку кнопок
+		sender.blink()
 	}
 }
