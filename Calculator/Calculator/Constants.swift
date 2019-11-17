@@ -10,5 +10,9 @@ import UIKit
 
 enum Colors
 {
-	static let coolGray = UIColor(red: 196 / 255, green: 196 / 255, blue: 196 / 255, alpha: 1.0)
+	static let colorGray = UIColor(red: 0.686, green: 0.686, blue: 0.686, alpha: 1)
+	static let colorDarkGray = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
+	static let colorOrange = UIColor(red: 1, green: 0.584, blue: 0, alpha: 1)
+	static let colorWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+	static let colorBlack = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
 }

@@ -23,15 +23,9 @@ final class ButtonView: UIButton
 	func setupButton() {
 		setTitleColor(.white, for: .normal)
 
-		backgroundColor	= Colors.coolGray
+		backgroundColor	= Colors.colorGray
 		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 30)
-		setTitle("AC", for: .normal)
+//		setTitle(String(self.tag), for: .normal)
 		setTitleColor(.black, for: .normal)
-		layer.cornerRadius = 75 / 667 / 2 * 667
-	}
-
-	override func layoutIfNeeded() {
-		super.layoutIfNeeded()
-//		layer.cornerRadius = self.bounds.height / 2
 	}
 }
