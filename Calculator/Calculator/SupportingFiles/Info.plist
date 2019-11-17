@@ -39,5 +39,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>FiraSans-Light.ttf</string>
+		<string>FiraSans-Regular.ttf</string>
+	</array>
 </dict>
 </plist>
