@@ -1,5 +1,5 @@
 //
-//  UIButton+Animation.swift
+//  Button+Animation.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 17.11.2019.
