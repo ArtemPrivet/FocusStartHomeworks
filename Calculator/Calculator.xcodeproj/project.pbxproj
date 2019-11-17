@@ -12,6 +12,7 @@
 		5C3DDCE12381665500634918 /* ButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3DDCE02381665500634918 /* ButtonsStackView.swift */; };
 		5C3DDCE323817DE000634918 /* CalcalatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3DDCE223817DE000634918 /* CalcalatorView.swift */; };
 		5C4E69D42381969900CFC190 /* OperationButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E69D32381969900CFC190 /* OperationButtons.swift */; };
+		5C4E69D62381C9C900CFC190 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4E69D52381C9C900CFC190 /* Extensions.swift */; };
 		5C854BA7238124BB00D8C08C /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BA6238124BB00D8C08C /* ButtonView.swift */; };
 		5C854BC82381343500D8C08C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BC72381343500D8C08C /* Constants.swift */; };
 		5C854BCC2381391A00D8C08C /* RowButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BCB2381391A00D8C08C /* RowButtonsStackView.swift */; };
@@ -41,6 +42,7 @@
 		5C3DDCE02381665500634918 /* ButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsStackView.swift; sourceTree = "<group>"; };
 		5C3DDCE223817DE000634918 /* CalcalatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcalatorView.swift; sourceTree = "<group>"; };
 		5C4E69D32381969900CFC190 /* OperationButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationButtons.swift; sourceTree = "<group>"; };
+		5C4E69D52381C9C900CFC190 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		5C854BA6238124BB00D8C08C /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ButtonView.swift; path = ../ButtonView.swift; sourceTree = "<group>"; };
 		5C854BC72381343500D8C08C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5C854BCB2381391A00D8C08C /* RowButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowButtonsStackView.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				5C854BA8238124C400D8C08C /* Views */,
 				5C854BC72381343500D8C08C /* Constants.swift */,
 				5C4E69D32381969900CFC190 /* OperationButtons.swift */,
+				5C4E69D52381C9C900CFC190 /* Extensions.swift */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
+				5C4E69D62381C9C900CFC190 /* Extensions.swift in Sources */,
 				5C4E69D42381969900CFC190 /* OperationButtons.swift in Sources */,
 				5C854BCC2381391A00D8C08C /* RowButtonsStackView.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,

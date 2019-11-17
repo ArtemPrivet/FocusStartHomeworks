@@ -27,7 +27,14 @@ final class CalcalatorView: UIView
 		backgroundColor = .white
 		addSubview(buttonsStackView)
 		addSubview(resultLabel)
-		resultLabel.backgroundColor = .white //DELETE
+		//Вынести настройку resultLabel в отдельную функцию
+//		resultLabel.backgroundColor = .white //DELETE
+		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
+		resultLabel.textColor = Colors.colorWhite
+		resultLabel.textAlignment = .right
+		resultLabel.text = "0"
+		resultLabel.adjustsFontSizeToFitWidth = true
+
 		createNumbersButtons()
 		createOtherButtons()
 		setRowsButtons()
@@ -134,6 +141,7 @@ final class CalcalatorView: UIView
 			case 0...10:
 				button.backgroundColor = Colors.colorDarkGray
 				button.setTitleColor(Colors.colorWhite, for: .normal)
+				button.tag == 10 ? button.setTitle(",", for: .normal) : nil
 			case 11...15:
 				button.backgroundColor = Colors.colorOrange
 				button.setTitleColor(Colors.colorWhite, for: .normal)

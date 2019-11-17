@@ -14,6 +14,7 @@ final class CalculatorViewController: UIViewController
 
 	var buttons = [ButtonView]()
 	var resultLabel = UILabel()
+	var resultNumber = 0
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,6 +25,7 @@ final class CalculatorViewController: UIViewController
 	override func loadView() {
 		let calcView = CalcalatorView()
 		self.view = calcView
+		resultLabel = calcView.resultLabel
 		buttons = calcView.buttons
 	}
 
@@ -46,5 +48,8 @@ final class CalculatorViewController: UIViewController
 
 	@objc func pressSomeButton(_ sender: ButtonView) {
 		print(sender.tag)
+		resultNumber = resultNumber * 10 + sender.tag
+		print(resultNumber)
+		resultLabel.text = String(resultNumber).inserting(separator: " ", every: 3)
 	}
 }
