@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension UIButton
+extension Button
 {
 	func blink() {
 		let originalBg = self.backgroundColor
