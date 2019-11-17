@@ -26,7 +26,7 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func buttonTapped(_ sender: UIButton) {
-		//TODO: Добавить обработку кнопок
+		//Добавить обработку кнопок
 		sender.blink()
 	}
 }

@@ -22,7 +22,6 @@ final class ScreenLabel: UILabel
 
 	private func setup() {
 		translatesAutoresizingMaskIntoConstraints = false
-		backgroundColor = .gray
 		font = UIFont(name: "FiraSans-Light", size: 94)
 		minimumScaleFactor = 0.5
 		textColor = .white

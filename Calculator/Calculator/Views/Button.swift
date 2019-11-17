@@ -23,8 +23,8 @@ final class Button: UIButton
 	}
 
 	private func setup() {
-		setTitle("0", for: .normal)
 		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 32)
+		titleLabel?.textAlignment = .center
 		backgroundColor = .darkGray
 	}
 
@@ -38,19 +38,5 @@ final class Button: UIButton
 			bounds = bounds.offsetBy(dx: bounds.size.width / 4, dy: 0)
 		}
 		layer.cornerRadius = bounds.size.height / 2
-	}
-}
-
-extension UIButton
-{
-	func blink() {
-		let originalBg = self.backgroundColor
-		self.backgroundColor = .white
-		UIView.animate(withDuration: 0.5,
-					   delay: 0.0,
-					   options: [.curveLinear],
-					   animations: { self.backgroundColor = originalBg },
-					   completion: nil
-		)
 	}
 }

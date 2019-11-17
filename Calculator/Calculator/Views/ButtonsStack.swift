@@ -10,8 +10,9 @@ import UIKit
 
 final class ButtonsStack: UIStackView
 {
-	var cells: [UIButton] = []
+	var cells: [Button] = []
 	var rows: [UIStackView] = []
+	private let cellsCount: Int
 
 	private var currentRow: UIStackView?
 
@@ -21,13 +22,12 @@ final class ButtonsStack: UIStackView
 	init(rowSize: Int, rowHeight: CGFloat, cellsCount: Int) {
 		self.rowSize = rowSize
 		self.rowHeight = rowHeight
+		self.cellsCount = cellsCount
 		super.init(frame: .zero)
 		setup()
-		for _ in 0..<cellsCount {
-			let button = Button()
-			addCell(button: button)
-		}
-		configureOperatorsButtons()
+		fillGridWithCells()
+		configureOperatorsButtonsBackground()
+		setButtonTitles()
 	}
 
 	@available(*, unavailable)
@@ -51,7 +51,7 @@ final class ButtonsStack: UIStackView
 		return row
 	}
 
-	 private func addCell(button: UIButton) {
+	 private func addCell(button: Button) {
 		let isFirstCellOfRow = self.cells.count % self.rowSize == 0
 
 		if currentRow == nil || isFirstCellOfRow {
@@ -79,15 +79,23 @@ final class ButtonsStack: UIStackView
 		}
 	}
 
-	private func configureOperatorsButtons() {
-		//TODO: configure side buttons operators
-		for button in rows {
-			if let lastInRow = button.arrangedSubviews.last as? Button {
+	private func fillGridWithCells() {
+		for _ in 0..<cellsCount {
+			let button = Button()
+			addCell(button: button)
+		}
+	}
+// MARK: Configure Buttons View
+	private func configureOperatorsButtonsBackground() {
+		//configure side buttons view
+		for stack in rows {
+			if let lastInRow = stack.arrangedSubviews.last as? Button {
 				lastInRow.backgroundColor = .orange
 				lastInRow.setTitleColor(.white, for: .normal)
 			}
 		}
-		//TODO: configure first row operators
+
+		//configure first row buttons view
 		if let firstRow = rows.first {
 			for button in firstRow.arrangedSubviews {
 				if let button = button as? Button {
@@ -96,6 +104,22 @@ final class ButtonsStack: UIStackView
 					button.backgroundColor = .lightGray
 				}
 			}
+		}
+	}
+
+	private func setButtonTitles() {
+		let titles = [
+			"AC", "⁺∕₋", "%", "÷",
+			"7", "8", "9", "×",
+			"4", "5", "6", "−",
+			"1", "2", "3", "+",
+			"0", ",", "=",
+		]
+
+		for (index, button) in cells.enumerated() {
+			button.setTitle(titles[index], for: .normal)
+			button.titleLabel?.adjustsFontSizeToFitWidth = true
+			button.titleLabel?.minimumScaleFactor = 0.5
 		}
 	}
 }
