@@ -15,6 +15,10 @@ final class CalculatorViewController: UIViewController
 	private let zero = "0"
 	private var calc = Calculator()
 
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
+
 	// MARK: - VC LIFE CYCLE METHODS
 	override func loadView() {
 		view = calculatorView
