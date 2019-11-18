@@ -11,9 +11,19 @@ import SnapKit
 
 final class ResultView: UIView
 {
-	var resultLabel: UILabel = {
+
+	var text: String? {
+		set {
+			resultLabel.text = newValue
+		}
+		get {
+			resultLabel.text
+		}
+	}
+
+	private var resultLabel: UILabel = {
 		let label = UILabel()
-		label.text = "000 000 000"
+		label.text = "0"//"000 000 000"
 		label.textAlignment = .right
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
 		label.adjustsFontSizeToFitWidth = true

@@ -12,28 +12,33 @@ import SnapKit
 enum Type
 {
 	case digit(Int)
-	case operators(String)
+	case `operator`(String)
+	case other(String)
 }
 
 final class ButtonView: UIView
 {
 	var title: String?
 
-	lazy var button: UIButton = {
+	typealias Action = (String) -> Void
+
+	private var tapHandler: Action
+	private lazy var button: UIButton = {
 		let button = UIButton()
 		button.setTitle(self.title, for: .normal)
 		button.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 36)
-		//button.titleLabel?.textAlignment = .left
+		button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
 		return button
 	}()
 
-	init(type: Type) {
+	init(type: Type, tapHandler: @escaping Action) {
 		var title = ""
 		switch type {
 		case .digit(let number): title = "\(number)"
-		case .operators(let text): title = text
+		case .`operator`(let  text), .other(let  text): title = text
 		}
 		self.title = title
+		self.tapHandler = tapHandler
 		super.init(frame: .zero)
 		setup()
 	}
@@ -58,5 +63,14 @@ final class ButtonView: UIView
 		button.snp.makeConstraints { maker in
 			maker.edges.equalToSuperview()
 		}
+	}
+}
+
+// MARK: - Actions
+@objc extension ButtonView
+{
+	func action(_ sender: UIButton) {
+		guard let title = sender.titleLabel?.text else { return }
+		tapHandler(title)
 	}
 }

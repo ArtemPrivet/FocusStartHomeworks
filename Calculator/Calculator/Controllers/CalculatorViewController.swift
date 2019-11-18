@@ -12,6 +12,38 @@ import SnapKit
 final class CalculatorViewController: UIViewController
 {
 
+	private var buttons: [[ButtonView?]] {
+		// swiftlint:disable multiline_literal_brackets
+		// swiftlint:disable trailing_comma
+		[
+			[ButtonView(type: .operator("AC"), tapHandler: actionClear),
+			 // \u{207A}\u{2215}\u{208B}
+			 ButtonView(type: .operator("⁺∕₋"), tapHandler: actionPerformOperation),
+			 ButtonView(type: .operator("%"), tapHandler: actionPerformOperation),
+			 // \u{00F7}
+			 ButtonView(type: .operator("÷"), tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(7), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(8), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(9), tapHandler: actionTouchDigit),
+			 // \u{00D7}
+			 ButtonView(type: .operator("×"), tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(4), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(5), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(6), tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("−"), tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(1), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(2), tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(3), tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("+"), tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(0), tapHandler: actionTouchDigit),
+			 nil,
+			 ButtonView(type: .other(","), tapHandler: actionTouchDigit),
+			 ButtonView(type: .other("="), tapHandler: actionPerformOperation)]
+		]
+		// swiftlint:enable multiline_literal_brackets
+		// swiftlint:enable trailing_comma
+	}
+
 	private let countOfRows = 5
 	private let countOfColumns = 4
 
@@ -19,9 +51,28 @@ final class CalculatorViewController: UIViewController
 		ResultView()
 	}()
 	private lazy var buttonsAreaView: ButtonsAreaView = {
-		let buttonsArea = ButtonsAreaView(buttons: self.createButtons(), rows: countOfRows, columns: countOfColumns)
+		let buttonsArea = ButtonsAreaView(buttons: buttons,
+										  rows: countOfRows,
+										  columns: countOfColumns)
 		return buttonsArea
 	}()
+
+	private var userInTheMiddleOfTyping = false
+
+	private var calculator = Calculator()
+
+	let decimalSeparator = AppSetting.formatter.decimalSeparator ?? ","
+
+	var displayValue: Double? {
+		get {
+			guard let text = resultView.text else { return nil }
+			return Double(text)
+		}
+		set {
+			guard let value = newValue else { return }
+			resultView.text = AppSetting.formatter.string(from: NSNumber(value: value))
+		}
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -41,7 +92,6 @@ final class CalculatorViewController: UIViewController
 		}
 		resultView.snp.makeConstraints { maker in
 			maker.leading.equalTo(selfView).offset(15)
-			//maker.top.equalTo(selfView).offset(99)
 			maker.trailing.equalTo(selfView).offset(-17)
 			maker.height.equalTo(113)
 		}
@@ -53,40 +103,49 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	private func createButtons() -> [[ButtonView?]] {
-		// swiftlint:disable multiline_literal_brackets
-		// swiftlint:disable trailing_comma
-		[
-			[ButtonView(type: .operators("AC")),
-			 ButtonView(type: .operators("+/-")),
-			 ButtonView(type: .operators("%")),
-			 ButtonView(type: .operators("÷"))],
-			[ButtonView(type: .operators("7")),
-			 ButtonView(type: .operators("8")),
-			 ButtonView(type: .operators("9")),
-			 ButtonView(type: .operators("x"))],
-			[ButtonView(type: .operators("4")),
-			 ButtonView(type: .operators("5")),
-			 ButtonView(type: .operators("6")),
-			 ButtonView(type: .operators("-"))],
-			[ButtonView(type: .operators("1")),
-			 ButtonView(type: .operators("2")),
-			 ButtonView(type: .operators("3")),
-			 ButtonView(type: .operators("+"))],
-			[ButtonView(type: .operators("0")),
-			 nil,
-			 ButtonView(type: .operators(",")),
-			 ButtonView(type: .operators("="))]
-		]
-		// swiftlint:enable multiline_literal_brackets
-		// swiftlint:enable trailing_comma
-//		var buttons =
-//			[[ButtonView?]](repeatElement([ButtonView?](repeatElement(nil, count: countOfColumns)), count: countOfRows))
-//		for row in 0..<countOfRows {
-//			for column in 0..<countOfColumns {
-//				buttons[row][column] = ButtonView(title: "\(row + column)")
-//			}
-//		}
-//		return buttons
+	private var currentOperateSymbol: String?
+}
+
+// MARK: - Actions
+@objc extension CalculatorViewController
+{
+
+	private func actionTouchDigit(_ digit: String) {
+		print(digit)
+		guard userInTheMiddleOfTyping else {
+			resultView.text = digit
+			userInTheMiddleOfTyping = true
+			return
+		}
+		let currentText = resultView.text ?? ""
+		guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
+		resultView.text = currentText + digit
+	}
+
+	private func actionPerformOperation(_ symbol: String) {
+		print(symbol)
+		if userInTheMiddleOfTyping {
+			if let value = displayValue {
+				calculator.pushOperand(value)
+			}
+			userInTheMiddleOfTyping = false
+		}
+		calculator.performOperation(symbol)
+		displayValue = calculator.result
+	}
+
+	private func actionClear(_ title: String) {
+		calculator.clear()
+		displayValue = 0
+		userInTheMiddleOfTyping = false
+		print("Calculator has been reset")
+	}
+
+	private func backspace() {
+		guard userInTheMiddleOfTyping, let text = resultView.text, text.isEmpty == false else { return }
+		resultView.text = String(resultView.text?.dropLast() ?? "")
+		if let text = resultView.text, text.isEmpty {
+			displayValue = 0
+		}
 	}
 }
