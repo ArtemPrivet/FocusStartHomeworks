@@ -10,8 +10,12 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view.
+	}
+
+	override func loadView() {
+		self.view = Screen()
 	}
 }
