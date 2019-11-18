@@ -24,8 +24,9 @@ final class ScreenLabel: UILabel
 		translatesAutoresizingMaskIntoConstraints = false
 		font = UIFont(name: "FiraSans-Light", size: 94)
 		minimumScaleFactor = 0.5
+		adjustsFontSizeToFitWidth = true
 		textColor = .white
 		textAlignment = .right
-		text = "0"
+		text = "0".maxLength(length: 10)
 	}
 }

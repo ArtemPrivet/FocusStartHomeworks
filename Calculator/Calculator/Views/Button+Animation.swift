@@ -20,4 +20,18 @@ extension Button
 					   completion: nil
 		)
 	}
+
+	func reverseColors() {
+		let originalBg = self.backgroundColor
+		let originalTitle = self.currentTitleColor
+		self.backgroundColor = originalTitle
+		self.setTitleColor(originalBg, for: .normal)
+
+		UIView.animate(withDuration: 0.5,
+					   delay: 0.0,
+					   options: [.curveLinear],
+					   animations: { self.backgroundColor = originalBg },
+					   completion: nil
+		)
+	}
 }
