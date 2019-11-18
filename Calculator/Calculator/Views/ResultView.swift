@@ -12,6 +12,7 @@ import SnapKit
 final class ResultView: UIView
 {
 
+	// MARK: Properties
 	var text: String? {
 		set {
 			resultLabel.text = newValue
@@ -21,10 +22,11 @@ final class ResultView: UIView
 		}
 	}
 
+	// MARK: Private properties
 	private let textColor: UIColor
 	private lazy var resultLabel: UILabel = {
 		let label = UILabel()
-		label.text = "0"//"000 000 000"
+		label.text = "0"
 		label.textAlignment = .right
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
 		label.adjustsFontSizeToFitWidth = true
@@ -33,6 +35,7 @@ final class ResultView: UIView
 		return label
 	}()
 
+	// MARK: Initialization
 	init(backgroundColor: UIColor, textColor: UIColor) {
 		self.textColor = textColor
 		super.init(frame: .zero)
@@ -44,6 +47,7 @@ final class ResultView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK: Private methods
 	private func setup(backgroundColor: UIColor) {
 		self.backgroundColor = backgroundColor
 		addSubview(resultLabel)

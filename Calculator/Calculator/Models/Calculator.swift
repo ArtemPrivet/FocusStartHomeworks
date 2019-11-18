@@ -7,13 +7,13 @@
 //
 import Foundation
 
-struct Calculator
+struct Calculator: CustomStringConvertible
 {
 
 	private var cache: (accumulator: Double?, descriptionAccumulator: String?) = (nil, nil)
 
-	var description: String? {
-		guard let pendingBinaryOperation = pendingBinaryOperation else { return cache.descriptionAccumulator }
+	var description: String {
+		guard let pendingBinaryOperation = pendingBinaryOperation else { return cache.descriptionAccumulator ?? "" }
 		return pendingBinaryOperation.descriptionFunction(pendingBinaryOperation.descriptionOperand,
 														  cache.descriptionAccumulator ?? "")
 	}
@@ -46,12 +46,12 @@ struct Calculator
 		"ln": .unaryOperation(log, nil),             //  { "ln(" + $0 + ")"}
 		"x⁻¹": .unaryOperation({ 1 / $0 }, { "(" + $0 + ")⁻¹" }),
 		"х²": .unaryOperation({ $0 * $0 }, { "(" + $0 + ")²" }),
+		"%": .unaryOperation({ $0 / 100 }, nil),
 		"×": .binaryOperation(*, nil),                // { $0 + " × " + $1 }
 		"÷": .binaryOperation(/, nil),                // { $0 + " ÷ " + $1 }
 		"+": .binaryOperation(+, nil),                // { $0 + " + " + $1 }
-		"−": .binaryOperation(-, nil),                // { $0 + " - " + $1 }
+		"−": .binaryOperation(-, { $0 + " - " + $1 }),                // { $0 + " - " + $1 }
 		"xʸ": .binaryOperation(pow, { $0 + " ^ " + $1 }),
-		"%": .binaryOperation({ $0 / 100 * $1 }, nil),
 		"=": .equals,
 	]
 

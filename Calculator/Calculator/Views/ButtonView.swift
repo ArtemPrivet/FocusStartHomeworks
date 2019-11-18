@@ -9,37 +9,39 @@
 import UIKit
 import SnapKit
 
-enum Type
-{
-	case digit(Int)
-	case `operator`(String)
-	case other(String)
-}
-
 final class ButtonView: UIView
 {
-	var title: String?
+	enum `Type`
+	{
+		case number(Int)
+		case string(String)
+	}
 
 	typealias Action = (String) -> Void
 
+	// MARK: Properties
+	var title: String?
+
+	// MARK: Private properties
 	private var color: UIColor?
 	private var textColor: UIColor?
 	private var tapHandler: Action
 	private lazy var button: UIButton = {
 		let button = UIButton()
 		button.setTitle(self.title, for: .normal)
-		button.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 36)
+		button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 		button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
 		button.setTitleColor(self.textColor, for: .normal)
-		button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+		button.titleEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
 		return button
 	}()
 
+	// MARK: Initialization
 	init(type: Type, backgroundColor: UIColor, textColor: UIColor, tapHandler: @escaping Action) {
 		var title = ""
 		switch type {
-		case .digit(let number): title = "\(number)"
-		case .`operator`(let  text), .other(let  text): title = text
+		case .number(let number): title = "\(number)"
+		case .string(let  text): title = text
 		}
 		self.title = title
 		self.tapHandler = tapHandler
@@ -54,6 +56,7 @@ final class ButtonView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK: Life cycle
 	override func layoutSubviews() {
 		layer.cornerRadius = min(bounds.width, bounds.height) / 2
 		button.layer.cornerRadius = min(bounds.width, bounds.height) / 2
@@ -61,10 +64,11 @@ final class ButtonView: UIView
 			button.contentHorizontalAlignment = .left
 			button.titleLabel?.sizeToFit()
 			let leftOffset = (frame.height / 2) - ((button.titleLabel?.frame.width ?? 0) / 2)
-			button.contentEdgeInsets = UIEdgeInsets(top: button.contentEdgeInsets.top, left: leftOffset, bottom: 0, right: 0)
+			button.titleEdgeInsets = UIEdgeInsets(top: button.contentEdgeInsets.top, left: leftOffset, bottom: 0, right: 0)
 		}
 	}
 
+	// MARK: Private methods
 	private func setup() {
 		backgroundColor = color
 		addSubview(button)
@@ -79,9 +83,9 @@ final class ButtonView: UIView
 }
 
 // MARK: - Actions
-@objc extension ButtonView
+@objc private extension ButtonView
 {
-	func action(_ sender: UIButton) {
+	private func action(_ sender: UIButton) {
 		guard let title = sender.titleLabel?.text else { return }
 		tapHandler(title)
 	}

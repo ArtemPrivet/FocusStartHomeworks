@@ -10,21 +10,25 @@ import UIKit
 
 final class ButtonsAreaView: UIView
 {
-
+	// MARK: Private properties
 	private let buttons: [[ButtonView?]]
-	private let countOfRows: Int
-	private let countOfColumns: Int
+	private let grid: (rows: Int, columns: Int)
+	private let offset: CGFloat
+
+	private var countOfCells: Int {
+		grid.rows * grid.columns
+	}
 
 	private var estimateHeight: CGFloat = 0
 
-	private var countOfCells: Int {
-		countOfRows * countOfColumns
-	}
-
-	init(buttons: [[ButtonView?]], rows: Int, columns: Int, backgroundColor: UIColor) {
+	// MARK: Initialization
+	init(buttons: [[ButtonView?]],
+		 grid: (rows: Int, columns: Int),
+		 offset: CGFloat,
+		 backgroundColor: UIColor) {
 		self.buttons = buttons
-		self.countOfRows = rows
-		self.countOfColumns = columns
+		self.grid = grid
+		self.offset = offset
 		super.init(frame: .zero)
 		setup(backgroundColor: backgroundColor)
 	}
@@ -34,30 +38,37 @@ final class ButtonsAreaView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK: Life cycle
 	override func layoutSubviews() {
 		setFrames()
 	}
 
+	// MARK: Private methods
 	private func setup(backgroundColor: UIColor) {
 		self.backgroundColor = backgroundColor
 		buttons.flatMap { $0.compactMap { $0 } }.forEach { addSubview($0) }
 	}
 
 	private func setFrames() {
-		let offset: CGFloat = 14
-		let width = bounds.width / CGFloat(countOfColumns)
-		let height = bounds.height / CGFloat(countOfRows)
+		let width = bounds.width / CGFloat(grid.columns)
+		let height = bounds.height / CGFloat(grid.rows)
 
-		for numberOfRows in 0..<countOfRows {
+		for numberOfRows in 0..<grid.rows {
 			var previousButton: ButtonView?
-			for numberOfColumns in 0..<countOfColumns {
+
+			for numberOfColumns in 0..<grid.columns {
+
 				guard let button = buttons[numberOfRows][numberOfColumns] else {
+
 					guard let previousButton = previousButton else { continue }
-					previousButton.frame =
-						calculateButtonFrame(origin: previousButton.frame.origin,
-											 size: CGSize(width: previousButton.frame.size.width * 2 + offset, height: previousButton.frame.size.height))
+
+					let size = CGSize(width: previousButton.frame.size.width * 2 + offset,
+									  height: previousButton.frame.size.height)
+					previousButton.frame = calculateButtonFrame(origin: previousButton.frame.origin, size: size)
+
 					continue
 				}
+
 				previousButton = button
 				button.frame = calculateButtonFrame(origin: bounds.origin,
 													offset: offset,
