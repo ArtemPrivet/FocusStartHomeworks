@@ -16,29 +16,86 @@ final class CalculatorViewController: UIViewController
 		// swiftlint:disable multiline_literal_brackets
 		// swiftlint:disable trailing_comma
 		[
-			[ButtonView(type: .operator("AC"), tapHandler: actionClear),
+			[ButtonView(type: .operator("AC"),
+						backgroundColor: AppSetting.Color.otherOperator,
+						textColor: AppSetting.Color.darkText,
+						tapHandler: actionClear),
 			 // \u{207A}\u{2215}\u{208B}
-			 ButtonView(type: .operator("⁺∕₋"), tapHandler: actionPerformOperation),
-			 ButtonView(type: .operator("%"), tapHandler: actionPerformOperation),
+			 ButtonView(type: .operator("⁺∕₋"),
+						backgroundColor: AppSetting.Color.otherOperator,
+						textColor: AppSetting.Color.darkText,
+						tapHandler: actionPerformOperation),
+			 ButtonView(type: .operator("%"),
+						backgroundColor: AppSetting.Color.otherOperator,
+						textColor: AppSetting.Color.darkText,
+						tapHandler: actionPerformOperation),
 			 // \u{00F7}
-			 ButtonView(type: .operator("÷"), tapHandler: actionPerformOperation)],
-			[ButtonView(type: .digit(7), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(8), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(9), tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("÷"),
+						backgroundColor: AppSetting.Color.mainOperator,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(7),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(8),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(9),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
 			 // \u{00D7}
-			 ButtonView(type: .operator("×"), tapHandler: actionPerformOperation)],
-			[ButtonView(type: .digit(4), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(5), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(6), tapHandler: actionTouchDigit),
-			 ButtonView(type: .operator("−"), tapHandler: actionPerformOperation)],
-			[ButtonView(type: .digit(1), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(2), tapHandler: actionTouchDigit),
-			 ButtonView(type: .digit(3), tapHandler: actionTouchDigit),
-			 ButtonView(type: .operator("+"), tapHandler: actionPerformOperation)],
-			[ButtonView(type: .digit(0), tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("×"),
+						backgroundColor: AppSetting.Color.mainOperator,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(4),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(5),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(6),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("−"),
+						backgroundColor: AppSetting.Color.mainOperator,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(1),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(2),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .digit(3),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .operator("+"),
+						backgroundColor: AppSetting.Color.mainOperator,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionPerformOperation)],
+			[ButtonView(type: .digit(0),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
 			 nil,
-			 ButtonView(type: .other(","), tapHandler: actionTouchDigit),
-			 ButtonView(type: .other("="), tapHandler: actionPerformOperation)]
+			 ButtonView(type: .other(","),
+						backgroundColor: AppSetting.Color.digit,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionTouchDigit),
+			 ButtonView(type: .other("="),
+						backgroundColor: AppSetting.Color.mainOperator,
+						textColor: AppSetting.Color.lightText,
+						tapHandler: actionPerformOperation)]
 		]
 		// swiftlint:enable multiline_literal_brackets
 		// swiftlint:enable trailing_comma
@@ -47,13 +104,13 @@ final class CalculatorViewController: UIViewController
 	private let countOfRows = 5
 	private let countOfColumns = 4
 
-	private var resultView: ResultView = {
-		ResultView()
-	}()
+	private var resultView = ResultView(backgroundColor: AppSetting.Color.background,
+										textColor: AppSetting.Color.lightText)
 	private lazy var buttonsAreaView: ButtonsAreaView = {
 		let buttonsArea = ButtonsAreaView(buttons: buttons,
 										  rows: countOfRows,
-										  columns: countOfColumns)
+										  columns: countOfColumns,
+										  backgroundColor: AppSetting.Color.background)
 		return buttonsArea
 	}()
 
@@ -76,7 +133,7 @@ final class CalculatorViewController: UIViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = .white
+		view.backgroundColor = AppSetting.Color.background
 		self.view.addSubview(resultView)
 		self.view.addSubview(buttonsAreaView)
 		setConstraints()

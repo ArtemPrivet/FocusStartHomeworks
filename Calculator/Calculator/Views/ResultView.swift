@@ -21,19 +21,22 @@ final class ResultView: UIView
 		}
 	}
 
-	private var resultLabel: UILabel = {
+	private let textColor: UIColor
+	private lazy var resultLabel: UILabel = {
 		let label = UILabel()
 		label.text = "0"//"000 000 000"
 		label.textAlignment = .right
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
 		label.adjustsFontSizeToFitWidth = true
 		label.minimumScaleFactor = 0.5
+		label.textColor = self.textColor
 		return label
 	}()
 
-	init() {
+	init(backgroundColor: UIColor, textColor: UIColor) {
+		self.textColor = textColor
 		super.init(frame: .zero)
-		setup()
+		setup(backgroundColor: backgroundColor)
 	}
 
 	@available(*, unavailable)
@@ -41,8 +44,8 @@ final class ResultView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup() {
-		backgroundColor = .yellow
+	private func setup(backgroundColor: UIColor) {
+		self.backgroundColor = backgroundColor
 		addSubview(resultLabel)
 		makeConstraints()
 	}

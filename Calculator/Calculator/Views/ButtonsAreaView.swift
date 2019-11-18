@@ -21,12 +21,12 @@ final class ButtonsAreaView: UIView
 		countOfRows * countOfColumns
 	}
 
-	init(buttons: [[ButtonView?]], rows: Int, columns: Int) {
+	init(buttons: [[ButtonView?]], rows: Int, columns: Int, backgroundColor: UIColor) {
 		self.buttons = buttons
 		self.countOfRows = rows
 		self.countOfColumns = columns
 		super.init(frame: .zero)
-		setup()
+		setup(backgroundColor: backgroundColor)
 	}
 
 	@available(*, unavailable)
@@ -38,8 +38,8 @@ final class ButtonsAreaView: UIView
 		setFrames()
 	}
 
-	private func setup() {
-		backgroundColor = .black
+	private func setup(backgroundColor: UIColor) {
+		self.backgroundColor = backgroundColor
 		buttons.flatMap { $0.compactMap { $0 } }.forEach { addSubview($0) }
 	}
 
@@ -64,8 +64,6 @@ final class ButtonsAreaView: UIView
 													horizontalMultiple: CGFloat(numberOfColumns),
 													verticalMultiple: CGFloat(numberOfRows),
 													size: CGSize(width: width, height: height))
-//				print(button.frame)
-//				print(width)
 			}
 		}
 	}

@@ -22,16 +22,20 @@ final class ButtonView: UIView
 
 	typealias Action = (String) -> Void
 
+	private var color: UIColor?
+	private var textColor: UIColor?
 	private var tapHandler: Action
 	private lazy var button: UIButton = {
 		let button = UIButton()
 		button.setTitle(self.title, for: .normal)
 		button.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 36)
 		button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
+		button.setTitleColor(self.textColor, for: .normal)
+		button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
 		return button
 	}()
 
-	init(type: Type, tapHandler: @escaping Action) {
+	init(type: Type, backgroundColor: UIColor, textColor: UIColor, tapHandler: @escaping Action) {
 		var title = ""
 		switch type {
 		case .digit(let number): title = "\(number)"
@@ -39,6 +43,8 @@ final class ButtonView: UIView
 		}
 		self.title = title
 		self.tapHandler = tapHandler
+		self.color = backgroundColor
+		self.textColor = textColor
 		super.init(frame: .zero)
 		setup()
 	}
@@ -51,10 +57,16 @@ final class ButtonView: UIView
 	override func layoutSubviews() {
 		layer.cornerRadius = min(bounds.width, bounds.height) / 2
 		button.layer.cornerRadius = min(bounds.width, bounds.height) / 2
+		if frame.width > frame.height + 1 {
+			button.contentHorizontalAlignment = .left
+			button.titleLabel?.sizeToFit()
+			let leftOffset = (frame.height / 2) - ((button.titleLabel?.frame.width ?? 0) / 2)
+			button.contentEdgeInsets = UIEdgeInsets(top: button.contentEdgeInsets.top, left: leftOffset, bottom: 0, right: 0)
+		}
 	}
 
 	private func setup() {
-		backgroundColor = .systemPink
+		backgroundColor = color
 		addSubview(button)
 		setConstraints()
 	}
