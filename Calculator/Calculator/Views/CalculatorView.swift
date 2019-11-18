@@ -1,5 +1,5 @@
 //
-//  BackgroundView.swift
+//  CalculatorView.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 16.11.2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class BackgroundView: UIView
+final class CalculatorView: UIView
 {
 	let screenLabel = ScreenLabel()
 	let buttonsStack = ButtonsStack(rowSize: 4, rowHeight: 75, cellsCount: 19)
@@ -62,11 +62,11 @@ final class BackgroundView: UIView
 			for: .vertical)
 
 			NSLayoutConstraint.activate([
-			screenLabel.topAnchor.constraint(lessThanOrEqualTo: self.layoutMarginsGuide.topAnchor, constant: 100),
+			screenLabel.topAnchor.constraint(greaterThanOrEqualTo: self.layoutMarginsGuide.topAnchor, constant: 20),
 			screenLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
 			screenLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
 
-			buttonsStack.topAnchor.constraint(equalTo: screenLabel.bottomAnchor, constant: 16),
+			buttonsStack.topAnchor.constraint(equalTo: screenLabel.bottomAnchor),
 			buttonsStack.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
 			buttonsStack.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
 			buttonsStack.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor, constant: -20),

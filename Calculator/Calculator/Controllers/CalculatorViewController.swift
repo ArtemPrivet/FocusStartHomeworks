@@ -11,12 +11,13 @@ import UIKit
 final class CalculatorViewController: UIViewController
 {
 	// MARK: - PROPERTIES
+	private let calculatorView = CalculatorView()
 	private let zero = "0"
 	private var calc = Calculator()
 
 	// MARK: - VC LIFE CYCLE METHODS
 	override func loadView() {
-		view = BackgroundView()
+		view = calculatorView
 	}
 
 	override func viewDidLoad() {
@@ -27,69 +28,83 @@ final class CalculatorViewController: UIViewController
 
 	// MARK: - BUTTONS HANDLING
 	private func configureButtons() {
-		guard let view = view as? BackgroundView else { return }
-		for button in view.buttonsStack.cells {
+		for button in calculatorView.buttonsStack.cells {
 			button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 		}
 	}
 
 	private func toggleClearButtonTitle() {
 		// AC <-> C
-		guard let view = view as? BackgroundView else { return }
-		view.buttonsStack.cells.first?.setTitle(
-			view.screenLabel.text != "0" ? "C" : "AC",
+		calculatorView.buttonsStack.cells.first?.setTitle(
+			calculatorView.screenLabel.text != zero ? Operation.clear.rawValue : Operation.allClear.rawValue,
 			for: .normal
 		)
 	}
 
 	@objc private func buttonTapped(_ sender: Button) {
 		//Добавить обработку нажатия кнопок
-		guard let view = view as? BackgroundView else { return }
 		sender.blink()
 		updateLabel(with: sender.currentTitle)
+//		sender.isSelected = true
+//		if sender.isSelected {
+//			sender.reverseColors()
+//		}
 		toggleClearButtonTitle()
 	}
+
 	// MARK: - LABEL HANDLING
 	private func updateLabel(with userInput: String?) {
 		guard let symbol = userInput else { return }
-		guard let view = view as? BackgroundView else { return }
+		//if it's number or comma
 		if Double(symbol) != nil || symbol == Operation.comma.rawValue  {
-			if view.screenLabel.text == zero {
-				view.screenLabel.text = (symbol == Operation.comma.rawValue) ? zero : ""
+			if calculatorView.screenLabel.text == zero {
+				calculatorView.screenLabel.text = (symbol == Operation.comma.rawValue) ? zero : ""
 			}
-			view.screenLabel.text? += symbol
+			calculatorView.screenLabel.text? += symbol
+		}
+		else {
+			// it's some operator
+			switch symbol {
+			case Operation.clear.rawValue: clear()
+			default:
+				break
+			}
 		}
 		cutLabelLength()
 	}
 
+	// Обрезать строку если в ней свыше 10 символов
 	private func cutLabelLength() {
-		guard let view = view as? BackgroundView else { return }
-		guard let count = view.screenLabel.text?.count else { return }
+		guard let count = calculatorView.screenLabel.text?.count else { return }
 
 		if count > 9 {
-			view.screenLabel.text = view.screenLabel.text?.maxLength(length: 10)
+			calculatorView.screenLabel.text = calculatorView.screenLabel.text?.maxLength(length: 10)
+		}
+	}
+
+	private func clear() {
+		if calculatorView.screenLabel.text != zero {
+			calculatorView.screenLabel.text = zero
 		}
 	}
 
 	private func addSwipeToLabel() {
-		guard let view = view as? BackgroundView else { return }
 		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
 		swipeRecognizer.direction = [.left, .right]
-		view.screenLabel.isUserInteractionEnabled = true
-		view.screenLabel.addGestureRecognizer(swipeRecognizer)
+		calculatorView.screenLabel.isUserInteractionEnabled = true
+		calculatorView.screenLabel.addGestureRecognizer(swipeRecognizer)
 	}
 
 	@objc private func swipeOnLabel() {
-		guard let view = view as? BackgroundView else { return }
-		if view.screenLabel.text?.isEmpty == false {
-			if view.screenLabel.text != zero {
-				view.screenLabel.text?.removeLast()
-				if view.screenLabel.text?.first == nil {
-					view.screenLabel.text = zero
+		if calculatorView.screenLabel.text?.isEmpty == false {
+			if calculatorView.screenLabel.text != zero {
+				calculatorView.screenLabel.text?.removeLast()
+				if calculatorView.screenLabel.text?.first == nil {
+					calculatorView.screenLabel.text = zero
 				}
 			}
 			else {
-				view.screenLabel.text = zero
+				calculatorView.screenLabel.text = zero
 			}
 		}
 	}
