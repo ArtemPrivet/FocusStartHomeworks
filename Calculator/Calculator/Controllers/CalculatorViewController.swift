@@ -10,9 +10,11 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
+	// MARK: - PROPERTIES
 	private let zero = "0"
 	private var calc = Calculator()
 
+	// MARK: - VC LIFE CYCLE METHODS
 	override func loadView() {
 		view = BackgroundView()
 	}
@@ -23,19 +25,12 @@ final class CalculatorViewController: UIViewController
 		addSwipeToLabel()
 	}
 
+	// MARK: - BUTTONS HANDLING
 	private func configureButtons() {
 		guard let view = view as? BackgroundView else { return }
 		for button in view.buttonsStack.cells {
 			button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
 		}
-	}
-
-	private func addSwipeToLabel() {
-		guard let view = view as? BackgroundView else { return }
-		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
-		swipeRecognizer.direction = [.left, .right]
-		view.screenLabel.isUserInteractionEnabled = true
-		view.screenLabel.addGestureRecognizer(swipeRecognizer)
 	}
 
 	private func toggleClearButtonTitle() {
@@ -47,8 +42,16 @@ final class CalculatorViewController: UIViewController
 		)
 	}
 
-	private func getUserInput(_ symbol: String?) {
-		guard let symbol = symbol else { return }
+	@objc private func buttonTapped(_ sender: Button) {
+		//Добавить обработку нажатия кнопок
+		guard let view = view as? BackgroundView else { return }
+		sender.blink()
+		updateLabel(with: sender.currentTitle)
+		toggleClearButtonTitle()
+	}
+	// MARK: - LABEL HANDLING
+	private func updateLabel(with userInput: String?) {
+		guard let symbol = userInput else { return }
 		guard let view = view as? BackgroundView else { return }
 		if Double(symbol) != nil || symbol == Operation.comma.rawValue  {
 			if view.screenLabel.text == zero {
@@ -56,19 +59,38 @@ final class CalculatorViewController: UIViewController
 			}
 			view.screenLabel.text? += symbol
 		}
+		cutLabelLength()
+	}
+
+	private func cutLabelLength() {
+		guard let view = view as? BackgroundView else { return }
+		guard let count = view.screenLabel.text?.count else { return }
+
+		if count > 9 {
+			view.screenLabel.text = view.screenLabel.text?.maxLength(length: 10)
+		}
+	}
+
+	private func addSwipeToLabel() {
+		guard let view = view as? BackgroundView else { return }
+		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
+		swipeRecognizer.direction = [.left, .right]
+		view.screenLabel.isUserInteractionEnabled = true
+		view.screenLabel.addGestureRecognizer(swipeRecognizer)
 	}
 
 	@objc private func swipeOnLabel() {
 		guard let view = view as? BackgroundView else { return }
-		//РЕАЛИЗОВАТЬ ОБРАБОТКУ ЖЕСТОВ
-		print("swipe")
-	}
-
-	@objc private func buttonTapped(_ sender: Button) {
-		//Добавить обработку нажатия кнопок
-		guard let view = view as? BackgroundView else { return }
-		sender.blink()
-		getUserInput(sender.currentTitle)
-		toggleClearButtonTitle()
+		if view.screenLabel.text?.isEmpty == false {
+			if view.screenLabel.text != zero {
+				view.screenLabel.text?.removeLast()
+				if view.screenLabel.text?.first == nil {
+					view.screenLabel.text = zero
+				}
+			}
+			else {
+				view.screenLabel.text = zero
+			}
+		}
 	}
 }
