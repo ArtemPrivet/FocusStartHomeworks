@@ -15,6 +15,8 @@ final class CalculatorViewController: UIViewController
 
 	private var isTyping = false
 
+	private var swipeGestureGecognizer = UISwipeGestureRecognizer()
+
 	private var displayValue: Double? {
 		get {
 			if let text = resultLabel.text {
@@ -39,6 +41,9 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 
 		self.view.backgroundColor = UIColor(hex: "#000000")
+		swipeGestureGecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeLeftOnLabel))
+		swipeGestureGecognizer.direction = .left
+
 		createControls()
 	}
 
@@ -155,7 +160,18 @@ final class CalculatorViewController: UIViewController
 			}
 		}
 	}
-
+	@objc private func swipeLeftOnLabel(_ sender: UISwipeGestureRecognizer) {
+		if isTyping, let text = resultLabel.text {
+			let newText = String(text.dropLast())
+			if newText.count > 0 {
+				resultLabel.text = newText
+			}
+			else {
+				resultLabel.text = "0"
+				isTyping = false
+			}
+		}
+	}
 // MARK: - Функции настройки кнопок
 //Создаем цифровую кнопку
 	private func createNumberButton(title: String) -> UIButton {
@@ -264,5 +280,7 @@ final class CalculatorViewController: UIViewController
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.adjustsFontSizeToFitWidth = true
 		label.minimumScaleFactor = 0.2
+		label.isUserInteractionEnabled = true
+		label.addGestureRecognizer(swipeGestureGecognizer)
 	}
 }
