@@ -10,7 +10,6 @@ import UIKit
 
 final class CalculatorButton: UIButton
 {
-	private let button = UIButton()
 	var identifier: Int = 0
 	var group: Group = .numbers
 	private static var indentifierFactory = 0
@@ -24,11 +23,9 @@ final class CalculatorButton: UIButton
 		super.init(frame: .zero)
 		self.identifier = CalculatorButton.getUniqueIdentifier()
 		getGroup()
-		button.backgroundColor = .purple
-		addSubview(button)
+		self.backgroundColor = .purple
 		translatesAutoresizingMaskIntoConstraints = false
 		print(identifier)
-		makeConstraints()
 	}
 	@available(*, unavailable)
 	required init?(coder aDecoder: NSCoder) {
@@ -37,12 +34,12 @@ final class CalculatorButton: UIButton
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-//		self.layer.cornerRadius = self.bounds.height / 2
+		self.layer.cornerRadius = self.bounds.height / 2
 	}
 
 	func setText(_ text: String) {
-		button.setTitle(text, for: .normal)
-		button.tintColor = .white
+		self.setTitle(text, for: .normal)
+		self.tintColor = .white
 	}
 
 	enum Group
@@ -56,25 +53,6 @@ final class CalculatorButton: UIButton
 		case 4, 8, 12, 16, 20: self.group = .operators
 		case 5...7, 9...11, 13...15, 16...19: self.group = .numbers
 		default: break
-		}
-	}
-
-	func makeConstraints() {
-		if #available(iOS 11.0, *) {
-			NSLayoutConstraint.activate([
-				button.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-				button.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 0),
-				button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1),
-				button.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1),
-				])
-		}
-		else {
-			NSLayoutConstraint.activate([
-				button.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-				button.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-				button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1),
-				button.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1),
-				])
 		}
 	}
 }
