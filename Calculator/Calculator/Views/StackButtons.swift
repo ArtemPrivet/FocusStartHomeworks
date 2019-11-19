@@ -16,7 +16,8 @@ final class StackButtons: UIView
 	private var colorArray: [UIColor] = [#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1)]
 	var stackOfStacks = UIStackView()
 	var stackArray = [UIStackView]()
-	var buttons = [UIButton]()
+	var buttons = [RoundButton]()
+	var buttonsInStack = [RoundButton]()
 
 	init() {
 		super.init(frame: .zero)
@@ -46,7 +47,7 @@ final class StackButtons: UIView
 	}
 	func addButtonsToArray() {
 		for element in 0..<digitAndSymbols.count {
-			let button = UIButton()
+			let button = RoundButton()
 			button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			switch digitAndSymbols[element] {
 			case "AC", "%", "⁺∕₋":
@@ -61,6 +62,7 @@ final class StackButtons: UIView
 				button.setTitle(digitAndSymbols[element], for: .normal)
 			}
 			if button.titleLabel?.text == "0" {
+				button.contentEdgeInsets.right = 80
 				button.snp.makeConstraints { maker in
 					maker.width.equalTo(button.snp.height).multipliedBy(2)
 				}
@@ -93,12 +95,6 @@ final class StackButtons: UIView
 			case 12...15: stackArray[3].addArrangedSubview(buttons[index])
 			default: stackArray[4].addArrangedSubview(buttons[index])
 			}
-		}
-	}
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		for button in buttons {
-			button.layer.cornerRadius = button.bounds.height / 2
 		}
 	}
 }

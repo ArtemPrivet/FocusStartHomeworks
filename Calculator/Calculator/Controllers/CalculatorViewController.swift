@@ -28,7 +28,6 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 		accessToElements()
 		for button in buttons {
-			button.layer.cornerRadius = button.bounds.height / 2
 			if let text = button.titleLabel?.text {
 				guard Int(text) != nil else { return }
 				button.addTarget(self, action: #selector(CalculatorViewController.touchDigit(_:)), for: .touchUpInside)
