@@ -14,9 +14,9 @@ final class StackButtons: UIView
 		"AC", "⁺∕₋", "%", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "0", ",", "=",
 	]
 	private var colorArray: [UIColor] = [#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1)]
-	private var stackOfStacks = UIStackView()
-	private var stackArray = [UIStackView]()
-	private var buttons = [UIButton]()
+	var stackOfStacks = UIStackView()
+	var stackArray = [UIStackView]()
+	var buttons = [UIButton]()
 
 	init() {
 		super.init(frame: .zero)
@@ -24,9 +24,12 @@ final class StackButtons: UIView
 		stackOfStacks.axis = .vertical
 		stackOfStacks.alignment = .fill
 		stackOfStacks.distribution = .fillEqually
-		stackOfStacks.spacing = 4
+		stackOfStacks.spacing = 8
 		formingStack()
 		addSubview(stackOfStacks)
+		stackOfStacks.snp.makeConstraints { maker in
+			maker.edges.equalToSuperview()
+		}
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 	@available(*, unavailable)
@@ -44,9 +47,6 @@ final class StackButtons: UIView
 	func addButtonsToArray() {
 		for element in 0..<digitAndSymbols.count {
 			let button = UIButton()
-			button.snp.makeConstraints{ maker in
-				maker.height.equalTo(button.snp.width).multipliedBy(1)
-			}
 			button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			switch digitAndSymbols[element] {
 			case "AC", "%", "⁺∕₋":
@@ -60,7 +60,17 @@ final class StackButtons: UIView
 				button.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)
 			}
-			buttons.append(button)
+			if button.titleLabel?.text == "0" {
+				button.snp.makeConstraints { maker in
+					maker.width.equalTo(button.snp.height).multipliedBy(2)
+				}
+			}
+			else {
+				button.snp.makeConstraints { maker in
+					maker.width.equalTo(button.snp.height).multipliedBy(1)
+				}
+			}
+				buttons.append(button)
 		}
 	}
 	func addButtonsToStack() {
@@ -71,8 +81,10 @@ final class StackButtons: UIView
 			stack.axis = .horizontal
 			stack.alignment = .fill
 			stack.distribution = .fillEqually
-			stack.spacing = 4
+			stack.spacing = 8
 		}
+		stackArray[4].distribution = .fill
+
 		for index in 0..<buttons.count {
 			switch index {
 			case 0...3: stackArray[0].addArrangedSubview(buttons[index])
@@ -81,6 +93,12 @@ final class StackButtons: UIView
 			case 12...15: stackArray[3].addArrangedSubview(buttons[index])
 			default: stackArray[4].addArrangedSubview(buttons[index])
 			}
+		}
+	}
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		for button in buttons {
+			button.layer.cornerRadius = button.bounds.height / 2
 		}
 	}
 }
