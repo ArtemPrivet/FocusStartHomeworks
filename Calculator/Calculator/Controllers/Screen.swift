@@ -80,7 +80,7 @@ final class Screen: UIView
 
 	var windowLabel: UILabel = {
 		let label = UILabel(frame: .zero)
-		label.backgroundColor = .yellow
+		label.backgroundColor = .black
 		label.textAlignment = .right
 		label.textColor = .white
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
@@ -109,7 +109,6 @@ final class Screen: UIView
 	func createArray() {
 		for _ in 1...19 {
 			let button = UIButton()
-			button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			buttonsArray.append(button)
 			addSubview(button)
 		}
@@ -128,12 +127,15 @@ final class Screen: UIView
 			case 0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13:
 				button.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
 				button.setTitleColor(.white, for: .normal)
+				button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			case 2, 6, 10, 14, 18:
 				button.backgroundColor = UIColor(red: 1, green: 0.584, blue: 0, alpha: 1)
 				button.setTitleColor(.white, for: .normal)
+				button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 50)
 			case 15, 16, 17:
 				button.backgroundColor = UIColor(red: 0.769, green: 0.769, blue: 0.769, alpha: 1)
 				button.setTitleColor(.black, for: .normal)
+				button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			default:
 				break
 			}

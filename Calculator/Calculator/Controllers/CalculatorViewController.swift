@@ -11,6 +11,8 @@ import UIKit
 final class CalculatorViewController: UIViewController
 {
 
+	let screen = Screen()
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 	}
