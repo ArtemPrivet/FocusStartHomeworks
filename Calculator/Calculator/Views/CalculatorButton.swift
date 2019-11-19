@@ -10,11 +10,12 @@ import UIKit
 
 final class CalculatorButton: UIView
 {
-	let roundButton = UIButton()
+	private let button = UIButton()
 
 	init() {
 		super.init(frame: .zero)
-		addSubview(roundButton)
+		button.backgroundColor = .purple
+		addSubview(button)
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 	@available(*, unavailable)
@@ -24,10 +25,11 @@ final class CalculatorButton: UIView
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
+//		self.layer.cornerRadius = self.bounds.height / 2
 	}
 
 	func setText(_ text: String) {
-		roundButton.setTitle(text, for: .normal)
-		roundButton.tintColor = .white
+		button.setTitle(text, for: .normal)
+		button.tintColor = .white
 	}
 }
