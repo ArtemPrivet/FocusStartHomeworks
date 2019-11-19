@@ -112,7 +112,7 @@ final class CalculatorViewController: UIViewController
 	}
 
 	// MARK: - Настройка взаимодействия
-	//Настроим нажатия кнопок
+	//Настройка нажатия кнопок
 	private func setUpButtonActions(_ button: UIButton) {
 		if let title = button.titleLabel?.text {
 			if "0123456789,".contains(title) {
@@ -127,7 +127,6 @@ final class CalculatorViewController: UIViewController
 	//Обработка нажатий по цифрам и запятой
 	@objc private func clickNumberButton(_ sender: UIButton) {
 		if let buttonTitle = sender.titleLabel?.text, let displayedText = resultLabel.text {
-			buttonCreator.animateButton(button: sender)
 			if isTyping {
 				if buttonTitle != "," || (buttonTitle == "," && displayedText.contains(",") == false) {
 					resultLabel.text = displayedText + buttonTitle
@@ -143,7 +142,6 @@ final class CalculatorViewController: UIViewController
 	//Обработка действий кнопок операторов
 	@objc private func clickOperatorButton(_ sender: UIButton) {
 		if let buttonTitle = sender.titleLabel?.text {
-			buttonCreator.animateButton(button: sender)
 			if isTyping, let value = displayValue {
 				calculations.setOperand(operand: value)
 				isTyping = false
