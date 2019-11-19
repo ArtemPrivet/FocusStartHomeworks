@@ -23,9 +23,9 @@ final class CalculatorButton: UIButton
 		super.init(frame: .zero)
 		self.identifier = CalculatorButton.getUniqueIdentifier()
 		getGroup()
-		self.backgroundColor = .purple
+		getColor()
+		getLabel()
 		translatesAutoresizingMaskIntoConstraints = false
-		print(identifier)
 	}
 	@available(*, unavailable)
 	required init?(coder aDecoder: NSCoder) {
@@ -39,7 +39,16 @@ final class CalculatorButton: UIButton
 
 	func setText(_ text: String) {
 		self.setTitle(text, for: .normal)
-		self.tintColor = .white
+		if self.group == .others {
+			self.setTitleColor(.black, for: [])
+			self.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 30)
+		}
+		else if self.group == .operators {
+			self.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 50)
+		}
+		else {
+			self.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 35)
+		}
 	}
 
 	enum Group
@@ -50,8 +59,41 @@ final class CalculatorButton: UIButton
 	private func getGroup() {
 		switch self.identifier {
 		case 1...3: self.group = .others
-		case 4, 8, 12, 16, 20: self.group = .operators
-		case 5...7, 9...11, 13...15, 16...19: self.group = .numbers
+		case 4, 8, 12, 16, 19: self.group = .operators
+		case 5...7, 9...11, 13...15, 16...18: self.group = .numbers
+		default: break
+		}
+	}
+
+	private func getColor() {
+		switch self.group {
+		case .numbers: self.backgroundColor = .darkGray
+		case .operators: self.backgroundColor = .orange
+		case .others: self.backgroundColor = .lightGray
+		}
+	}
+
+	private func getLabel() {
+		switch self.identifier {
+		case 1: self.setText("AC")
+		case 2: self.setText("⁺∕₋")
+		case 3: self.setText("%")
+		case 4: self.setText("÷")
+		case 5: self.setText("7")
+		case 6: self.setText("8")
+		case 7: self.setText("9")
+		case 8: self.setText("×")
+		case 9: self.setText("4")
+		case 10: self.setText("5")
+		case 11: self.setText("6")
+		case 12: self.setText("-")
+		case 13: self.setText("1")
+		case 14: self.setText("2")
+		case 15: self.setText("3")
+		case 16: self.setText("+")
+		case 17: self.setText("0")
+		case 18: self.setText(",")
+		case 19: self.setText("=")
 		default: break
 		}
 	}

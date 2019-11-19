@@ -31,12 +31,20 @@ final class ButtonRow: UIStackView
 	func setUpRowStack() {
 		for _ in 0..<countWidth {
 			let button = CalculatorButton()
-			button.backgroundColor = .green
+			if button.identifier == 20 {
+				break
+			}
 			self.addArrangedSubview(button)
-		}
+//			if button.identifier == 17 || button.identifier == 18 || button.identifier == 19 {
+//			self.subviews[1].widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1 / 2).isActive = true
+//			self.distribution = .fill
+//			}
+//			else {
+				self.distribution = .fillEqually
+//			}
+			}
 		self.axis = .horizontal
-		self.distribution = .fillEqually
 		self.alignment = .fill
-		self.spacing = 5
+		self.spacing = 15
 	}
 }

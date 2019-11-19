@@ -18,13 +18,12 @@ final class CalculatorScreen: UIView
 
 	let display = CalculatorDisplay()
 	let buttonsStack = ButtonsStack()
-//	let buttonRow = ButtonRow()
 
 	init() {
 		super.init(frame: .zero)
 		addSubview(display)
 		addSubview(buttonsStack)
-		display.backgroundColor = .white
+		display.backgroundColor = .black
 		makeConstraints()
 		translatesAutoresizingMaskIntoConstraints = false
 	}

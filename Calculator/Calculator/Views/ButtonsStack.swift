@@ -32,6 +32,6 @@ final class ButtonsStack: UIStackView
 		self.axis = .vertical
 		self.distribution = .fillEqually
 		self.alignment = .fill
-		self.spacing = 5
+		self.spacing = 15
 	}
 }

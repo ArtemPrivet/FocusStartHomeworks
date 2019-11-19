@@ -8,13 +8,11 @@
 
 import UIKit
 
-final class CalculatorDisplay: UIView
+final class CalculatorDisplay: UILabel
 {
-	let display = UILabel()
 
 	init() {
 		super.init(frame: .zero)
-		addSubview(display)
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 @available(*, unavailable)
@@ -27,7 +25,7 @@ final class CalculatorDisplay: UIView
 	}
 
 	func setText(_ text: String) {
-		display.text = text
-		display.textColor = .black
+		self.text = text
+		self.textColor = .white
 	}
 }
