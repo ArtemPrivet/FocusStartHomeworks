@@ -25,8 +25,7 @@ final class CalcalatorView: UIView
 	init() {
 		super.init(frame: .zero)
 		backgroundColor = .white
-		addSubview(buttonsStackView)
-		addSubview(resultLabel)
+			addSubview(resultLabel)
 		//Вынести настройку resultLabel в отдельную функцию
 //		resultLabel.backgroundColor = .white //DELETE
 		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
@@ -87,34 +86,14 @@ final class CalcalatorView: UIView
 
 	func createOtherButtons() {
 		for index in (10..<19).reversed() {
-			switch index {
-			case OperationButtons.floating.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.floating.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.equal.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.plus.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.minus.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.multiply.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.divide.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.percent.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.negativeSwitch.rawValue:
-				decomposeOperationButtons(index)
-			case OperationButtons.ac.rawValue:
-				decomposeOperationButtons(index)
-			default: break
-			}
+			decomposeOperationButtons(index)
 		}
 	}
 
 	private func setOperationButtonsTitle(_ button: ButtonView) {
 		switch button.tag {
+		case 10:
+			button.setTitle(",", for: .normal)
 		case 11:
 			button.setTitle("=", for: .normal)
 		case 12:
@@ -122,13 +101,13 @@ final class CalcalatorView: UIView
 		case 13:
 			button.setTitle("-", for: .normal)
 		case 14:
-			button.setTitle("x", for: .normal)
+			button.setTitle("×", for: .normal)
 		case 15:
 			button.setTitle("\u{00f7}", for: .normal)
 		case 16:
 			button.setTitle("%", for: .normal)
 		case 17:
-			button.setTitle("+/-", for: .normal)
+			button.setTitle("⁺∕₋", for: .normal)
 		case 18:
 			button.setTitle("AC", for: .normal)
 		default: break
@@ -141,7 +120,9 @@ final class CalcalatorView: UIView
 			case 0...10:
 				button.backgroundColor = Colors.colorDarkGray
 				button.setTitleColor(Colors.colorWhite, for: .normal)
-				button.tag == 10 ? button.setTitle(",", for: .normal) : nil
+				setOperationButtonsTitle(button)
+
+//				button.tag == 10 ? button.setTitle(",", for: .normal) : nil
 			case 11...15:
 				button.backgroundColor = Colors.colorOrange
 				button.setTitleColor(Colors.colorWhite, for: .normal)
@@ -195,16 +176,17 @@ final class CalcalatorView: UIView
 			make.width.equalTo(equalBut.snp.width).multipliedBy(2).offset(14)
 		}
 
-		buttonsStackView.snp.makeConstraints { make in
-			addSubview(buttonsStackView) //FIX
-			make.leading.equalToSuperview().offset(16)
-			make.trailing.equalToSuperview().offset(-17)
-			make.bottomMargin.equalToSuperview().offset(-16)
+		buttonsStackView.snp.makeConstraints { [weak self] make in
+			guard let self = self else { return }
+			addSubview(buttonsStackView)
+			make.leading.equalTo(self).offset(16)
+			make.trailing.equalTo(self).offset(-17)
+			make.bottomMargin.equalTo(self).offset(-16)
 		}
 
 		resultLabel.snp.makeConstraints { make in
-			make.leading.equalToSuperview().offset(15)
-			make.trailing.equalToSuperview().offset(-17)
+			make.leading.equalTo(self).offset(15)
+			make.trailing.equalTo(self).offset(-17)
 			make.bottom.equalTo(buttonsStackView.snp.top).offset(-8)
 			make.height.equalTo(113)
 		}

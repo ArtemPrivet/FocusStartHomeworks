@@ -16,3 +16,16 @@ enum Colors
 	static let colorWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
 	static let colorBlack = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
 }
+
+enum OperationButtons
+{
+	static let floating = 10
+	static let equal = 11
+	static let plus = 12
+	static let minus = 13
+	static let multiply = 14
+	static let divide = 15
+	static let percent = 16
+	static let negativeSwitch = 17
+	static let acAndC = 18
+}
