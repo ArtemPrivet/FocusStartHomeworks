@@ -16,6 +16,17 @@ final class ButtonsStack: UIStackView
 
 	init() {
 		super.init(frame: .zero)
+		setUpButtonStack()
+		addSubview(mainStack)
+//		makeConstraints()
+		translatesAutoresizingMaskIntoConstraints = false
+	}
+	@available(*, unavailable)
+	required init(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
+	func setUpButtonStack() {
 		for _ in 0..<countHeight {
 			let row = ButtonRow()
 			arrayOfRows.append(row)
@@ -24,12 +35,25 @@ final class ButtonsStack: UIStackView
 		mainStack.axis = .vertical
 		mainStack.distribution = .fill
 		mainStack.alignment = .fill
-		mainStack.spacing = 5
-		addSubview(mainStack)
-		translatesAutoresizingMaskIntoConstraints = false
+		//		mainStack.spacing = 5
 	}
-	@available(*, unavailable)
-	required init(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+
+	func makeConstraints() {
+		if #available(iOS 11.0, *) {
+			NSLayoutConstraint.activate([
+				mainStack.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 0),
+				mainStack.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 0),
+				mainStack.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1),
+				mainStack.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1),
+				])
+		}
+		else {
+			NSLayoutConstraint.activate([
+				mainStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
+				mainStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+				mainStack.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1),
+				mainStack.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1),
+				])
+		}
 	}
 }
