@@ -8,16 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		9438C96A238173C700188EEA /* CalculatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C969238173C700188EEA /* CalculatorScreen.swift */; };
-		9438C96E2381747C00188EEA /* OperationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C96D2381747C00188EEA /* OperationButton.swift */; };
 		9438C9702381750400188EEA /* ResultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C96F2381750400188EEA /* ResultLabel.swift */; };
 		9438C9732381967400188EEA /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		9438C9742381967700188EEA /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		9438C9752381967C00188EEA /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		9438C9762381967E00188EEA /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
-		9438C97E2381ABB300188EEA /* SpecialOperationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C97D2381ABB300188EEA /* SpecialOperationButton.swift */; };
-		9438C9842381BED200188EEA /* ButtonsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C9832381BED200188EEA /* ButtonsView.swift */; };
 		9438C9882381D78900188EEA /* LogicOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C9872381D78900188EEA /* LogicOperations.swift */; };
-		9438C9932382CD8D00188EEA /* DigitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C9922382CD8D00188EEA /* DigitButton.swift */; };
 		9438C995238342F300188EEA /* StackButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9438C994238342F300188EEA /* StackButtons.swift */; };
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
 		CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE39237ACA1500B5D09F /* AppDelegate.swift */; };
@@ -44,12 +40,8 @@
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		9438C969238173C700188EEA /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
-		9438C96D2381747C00188EEA /* OperationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationButton.swift; sourceTree = "<group>"; };
 		9438C96F2381750400188EEA /* ResultLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultLabel.swift; sourceTree = "<group>"; };
-		9438C97D2381ABB300188EEA /* SpecialOperationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialOperationButton.swift; sourceTree = "<group>"; };
-		9438C9832381BED200188EEA /* ButtonsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsView.swift; sourceTree = "<group>"; };
 		9438C9872381D78900188EEA /* LogicOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogicOperations.swift; sourceTree = "<group>"; };
-		9438C9922382CD8D00188EEA /* DigitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitButton.swift; sourceTree = "<group>"; };
 		9438C994238342F300188EEA /* StackButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackButtons.swift; sourceTree = "<group>"; };
 		A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.release.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.release.xcconfig"; sourceTree = "<group>"; };
 		BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.release.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -122,17 +114,6 @@
 			path = Brain;
 			sourceTree = "<group>";
 		};
-		9438C9962383D18600188EEA /* Garbage */ = {
-			isa = PBXGroup;
-			children = (
-				9438C97D2381ABB300188EEA /* SpecialOperationButton.swift */,
-				9438C96D2381747C00188EEA /* OperationButton.swift */,
-				9438C9922382CD8D00188EEA /* DigitButton.swift */,
-				9438C9832381BED200188EEA /* ButtonsView.swift */,
-			);
-			path = Garbage;
-			sourceTree = "<group>";
-		};
 		CA33EE2D237ACA1500B5D09F = {
 			isa = PBXGroup;
 			children = (
@@ -160,7 +141,6 @@
 				9438C9682381738F00188EEA /* Screen */,
 				9438C967238172FC00188EEA /* Views */,
 				CA33EE4F237ACD0E00B5D09F /* Controllers */,
-				9438C9962383D18600188EEA /* Garbage */,
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
 				CA33EE4E237ACCF700B5D09F /* SupportingFiles */,
@@ -419,16 +399,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9438C9932382CD8D00188EEA /* DigitButton.swift in Sources */,
 				9438C995238342F300188EEA /* StackButtons.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
 				9438C9702381750400188EEA /* ResultLabel.swift in Sources */,
-				9438C96E2381747C00188EEA /* OperationButton.swift in Sources */,
 				9438C96A238173C700188EEA /* CalculatorScreen.swift in Sources */,
-				9438C97E2381ABB300188EEA /* SpecialOperationButton.swift in Sources */,
 				9438C9882381D78900188EEA /* LogicOperations.swift in Sources */,
-				9438C9842381BED200188EEA /* ButtonsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
