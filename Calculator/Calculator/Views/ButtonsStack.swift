@@ -24,13 +24,18 @@ final class ButtonsStack: UIStackView
 	}
 
 	func setUpButtonStack() {
-		for _ in 0..<countHeight {
+		for rowIndex in 0..<countHeight {
 			let row = ButtonRow()
 			arrayOfRows.append(row)
 			self.addArrangedSubview(row)
+			if rowIndex == 4 {
+				self.distribution = .fillProportionally
+			}
+			else {
+				self.distribution = .fillEqually
+			}
 		}
 		self.axis = .vertical
-		self.distribution = .fillEqually
 		self.alignment = .fill
 		self.spacing = 15
 	}

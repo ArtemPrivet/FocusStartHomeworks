@@ -31,17 +31,14 @@ final class ButtonRow: UIStackView
 	func setUpRowStack() {
 		for _ in 0..<countWidth {
 			let button = CalculatorButton()
+			if button.identifier == 17 {
+				button.widthAnchor.constraint(equalTo: button.widthAnchor, multiplier: 2).isActive = true
+			}
 			if button.identifier == 20 {
 				break
 			}
 			self.addArrangedSubview(button)
-//			if button.identifier == 17 || button.identifier == 18 || button.identifier == 19 {
-//			self.subviews[1].widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1 / 2).isActive = true
-//			self.distribution = .fill
-//			}
-//			else {
 				self.distribution = .fillEqually
-//			}
 			}
 		self.axis = .horizontal
 		self.alignment = .fill
