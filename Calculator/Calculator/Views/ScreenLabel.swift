@@ -23,10 +23,10 @@ final class ScreenLabel: UILabel
 	private func setup() {
 		translatesAutoresizingMaskIntoConstraints = false
 		font = UIFont(name: "FiraSans-Light", size: 94)
-		minimumScaleFactor = 0.5
+		minimumScaleFactor = 0.2
 		adjustsFontSizeToFitWidth = true
 		textColor = .white
 		textAlignment = .right
-		text = "0".maxLength(length: 10)
+		text = "0"
 	}
 }

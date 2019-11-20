@@ -38,7 +38,7 @@ final class CalculatorView: UIView
 	private func resizeLastRow() {
 		if let lastRow = buttonsStack.rows.last {
 			if let zero = lastRow.arrangedSubviews.first as? Button {
-				zero.isTransform = false
+				zero.isRounded = false
 				zero.widthAnchor.constraint(
 					greaterThanOrEqualTo: buttonsStack.widthAnchor,
 					multiplier: 0.45,

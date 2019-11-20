@@ -10,7 +10,7 @@ import UIKit
 
 final class Button: UIButton
 {
-	var isTransform = true
+	var isRounded = true
 
 	init() {
 		super.init(frame: .zero)
@@ -30,12 +30,12 @@ final class Button: UIButton
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		if isTransform {
-		bounds.size.width = bounds.size.height
+		if isRounded {
+			bounds.size.width = bounds.size.height
 		}
 		else {
-			//offset to button title
-			bounds = bounds.offsetBy(dx: bounds.size.width / 4, dy: 0)
+			//offset zero button title to left side
+			titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: bounds.size.width / 2)
 		}
 		layer.cornerRadius = bounds.size.height / 2
 	}

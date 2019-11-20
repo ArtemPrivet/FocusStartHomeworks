@@ -13,7 +13,7 @@ extension Button
 	func blink() {
 		let originalBg = self.backgroundColor
 		self.backgroundColor = .white
-		UIView.animate(withDuration: 0.5,
+		UIView.animate(withDuration: 0.25,
 					   delay: 0.0,
 					   options: [.curveLinear],
 					   animations: { self.backgroundColor = originalBg },
