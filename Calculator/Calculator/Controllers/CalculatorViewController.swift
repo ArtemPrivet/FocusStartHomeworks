@@ -20,22 +20,28 @@ final class CalculatorViewController: UIViewController
 
 	private var displayValue: Double? {
 		get {
-			let displayText = calculatorView.screenLabel.text?
-				.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
-				.replacingOccurrences(of: ",", with: ".")
-			guard let filteredText = displayText else { return nil }
-			return formatter.number(from: filteredText)?.doubleValue
+			guard let displayText = calculatorView.screenLabel.text else { return nil }
+			return formatter.number(from: displayText)?.doubleValue
 		}
 		set {
-			updateDisplay(with: newValue)
+			if let value = newValue {
+				let maxNumber = 999_999_999.0
+				formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
+				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+			}
 		}
 	}
 
-	private func updateDisplay(with value: Double?) {
-		if let value = value {
-			let maxNumber = 999_999_999.0
-			formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
-			calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+	private func updateDisplay() {
+		let filtered = calculatorView.screenLabel.text?
+			.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
+			.replacingOccurrences(of: ",", with: ".")
+		if let filter = filtered {
+			if let double = Double(filter) {
+				let maxNumber = 999_999_999.0
+				formatter.numberStyle = (double > maxNumber || double < -maxNumber) ? .scientific : .decimal
+				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: double))
+			}
 		}
 	}
 
@@ -77,18 +83,23 @@ final class CalculatorViewController: UIViewController
 
 		guard let digit = sender.currentTitle else { return }
 		guard let currentTextInDisplay = calculatorView.screenLabel.text else { return }
+		let digitsCount = currentTextInDisplay.filter { $0.isNumber }.count
 
 		let isDigitNotSeparator = (digit != formatter.decimalSeparator)
 		let isOnlyZeroOnDisplay = (currentTextInDisplay == zero)
 		let displayHasNoSeparator = (currentTextInDisplay.contains(formatter.decimalSeparator) == false)
 		let notAllowsDoubleSeparator = (isDigitNotSeparator || displayHasNoSeparator)
-		let digitsCount = currentTextInDisplay.filter { $0.isNumber }.count
 
-		if isUserInTheMiddleOfInput && isOnlyZeroOnDisplay == false  {
+		if isUserInTheMiddleOfInput && isOnlyZeroOnDisplay == false {
 			// user already typing something
-			guard digitsCount < 9 else { return }
+			print(currentTextInDisplay)
 			if notAllowsDoubleSeparator {
-				calculatorView.screenLabel.text = currentTextInDisplay + digit
+				if digitsCount < 9 {
+					calculatorView.screenLabel.text = currentTextInDisplay + digit
+				}
+				if isDigitNotSeparator {
+					updateDisplay()
+				}
 			}
 		}
 		else {
@@ -96,7 +107,6 @@ final class CalculatorViewController: UIViewController
 			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : zero + digit
 			isUserInTheMiddleOfInput = true
 		}
-		updateDisplay(with: displayValue)
 	}
 
 	@objc private func operatorTapped(_ sender: Button) {
@@ -136,7 +146,7 @@ final class CalculatorViewController: UIViewController
 		if calculatorView.screenLabel.text?.isEmpty == false {
 			if calculatorView.screenLabel.text != zero {
 				calculatorView.screenLabel.text?.removeLast()
-				updateDisplay(with: displayValue)
+				updateDisplay()
 				if calculatorView.screenLabel.text?.first == nil {
 					calculatorView.screenLabel.text = zero
 				}

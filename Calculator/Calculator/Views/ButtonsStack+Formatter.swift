@@ -14,10 +14,9 @@ extension ButtonsStack
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.usesGroupingSeparator = true
-		//formatter.usesSignificantDigits = true
-		//formatter.maximumSignificantDigits = 9
-		formatter.maximumFractionDigits = 7
-		formatter.notANumberSymbol = "Error"
+		formatter.usesSignificantDigits = true
+//		formatter.maximumFractionDigits = 7
+		formatter.notANumberSymbol = "NaN"
 		formatter.groupingSeparator = " "
 		formatter.locale = Locale.current
 		return formatter
