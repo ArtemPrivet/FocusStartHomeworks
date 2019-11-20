@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum Group
+{
+	case numbers, operators, others
+}
+
 final class CalculatorViewController: UIViewController
 {
 	override func viewDidLoad() {
