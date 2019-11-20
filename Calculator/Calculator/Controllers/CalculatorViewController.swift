@@ -25,23 +25,9 @@ final class CalculatorViewController: UIViewController
 		}
 		set {
 			if let value = newValue {
-				let maxNumber = 999_999_999.9
-				formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
-				formatter.maximumFractionDigits = defineFormatterDigits(value: value)
+				switchFormatterNumberStyle(with: value)
+				formatter.maximumFractionDigits = defineMaxFractionDigits(value: value)
 					calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
-			}
-		}
-	}
-
-	private func updateDisplay() {
-		let filtered = calculatorView.screenLabel.text?
-			.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
-			.replacingOccurrences(of: ",", with: ".")
-		if let filter = filtered {
-			if let double = Double(filter) {
-				let maxNumber = 999_999_999.0
-				formatter.numberStyle = (double > maxNumber || double < -maxNumber) ? .scientific : .decimal
-				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: double))
 			}
 		}
 	}
@@ -130,13 +116,27 @@ final class CalculatorViewController: UIViewController
 
 		private func toggleClearButtonTitle() {
 			// AC <-> C
+			if isUserInTheMiddleOfInput {
 			calculatorView.buttonsStack.cells.first?.setTitle(
 				calculatorView.screenLabel.text != zero ? "C" : "AC",
 				for: .normal
 			)
+			}
 		}
 
 	// MARK: - LABEL HANDLING
+	private func updateDisplay() {
+		let filtered = calculatorView.screenLabel.text?
+			.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
+			.replacingOccurrences(of: ",", with: ".")
+		if let filter = filtered {
+			if let double = Double(filter) {
+				switchFormatterNumberStyle(with: double)
+				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: double))
+			}
+		}
+	}
+
 	private func addSwipeToLabel() {
 		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
 		swipeRecognizer.direction = [.left, .right]
@@ -159,10 +159,11 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 }
-// MARK: DEFINE MAX FRACTION DIGITS
+
+// MARK: - FORMATTER VARIATIONS
 extension CalculatorViewController
 {
-	 func defineFormatterDigits(value: Double) -> Int {
+	 private func defineMaxFractionDigits(value: Double) -> Int {
 		switch value {
 		case 0...10: return 8
 		case 10...100: return 7
@@ -173,5 +174,10 @@ extension CalculatorViewController
 		case 10_000_000...100_000_000: return 2
 		default : return 1
 		}
+	}
+
+	private func switchFormatterNumberStyle(with number: Double) {
+		let maxNumber = 999_999_999.0
+		formatter.numberStyle = ( number > maxNumber || number < -maxNumber) ? .scientific : .decimal
 	}
 }
