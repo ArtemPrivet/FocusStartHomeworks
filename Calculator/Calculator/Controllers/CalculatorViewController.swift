@@ -25,9 +25,10 @@ final class CalculatorViewController: UIViewController
 		}
 		set {
 			if let value = newValue {
-				let maxNumber = 999_999_999.0
+				let maxNumber = 999_999_999.9
 				formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
-				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+				formatter.maximumFractionDigits = defineFormatterDigits(value: value)
+					calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
 			}
 		}
 	}
@@ -92,7 +93,6 @@ final class CalculatorViewController: UIViewController
 
 		if isUserInTheMiddleOfInput && isOnlyZeroOnDisplay == false {
 			// user already typing something
-			print(currentTextInDisplay)
 			if notAllowsDoubleSeparator {
 				if digitsCount < 9 {
 					calculatorView.screenLabel.text = currentTextInDisplay + digit
@@ -107,6 +107,8 @@ final class CalculatorViewController: UIViewController
 			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : zero + digit
 			isUserInTheMiddleOfInput = true
 		}
+
+		toggleClearButtonTitle()
 	}
 
 	@objc private func operatorTapped(_ sender: Button) {
@@ -126,13 +128,13 @@ final class CalculatorViewController: UIViewController
 		displayValue = calculator.result
 	}
 
-	//	private func toggleClearButtonTitle() {
-	//		// AC <-> C
-	//		calculatorView.buttonsStack.cells.first?.setTitle(
-	//			calculatorView.screenLabel.text != zero ? Sign.clear.rawValue : Sign.allClear.rawValue,
-	//			for: .normal
-	//		)
-	//	}
+		private func toggleClearButtonTitle() {
+			// AC <-> C
+			calculatorView.buttonsStack.cells.first?.setTitle(
+				calculatorView.screenLabel.text != zero ? "C" : "AC",
+				for: .normal
+			)
+		}
 
 	// MARK: - LABEL HANDLING
 	private func addSwipeToLabel() {
@@ -154,6 +156,22 @@ final class CalculatorViewController: UIViewController
 			else {
 				displayValue = 0
 			}
+		}
+	}
+}
+// MARK: DEFINE MAX FRACTION DIGITS
+extension CalculatorViewController
+{
+	 func defineFormatterDigits(value: Double) -> Int {
+		switch value {
+		case 0...10: return 8
+		case 10...100: return 7
+		case 100...1000: return 6
+		case 1000...10_000: return 5
+		case 10_000...100_000: return 4
+		case 100_000...1_000_000: return 3
+		case 10_000_000...100_000_000: return 2
+		default : return 1
 		}
 	}
 }
