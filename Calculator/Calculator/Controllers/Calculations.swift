@@ -48,39 +48,38 @@ final class Calculations
 	}
 	//Выполняем пришедшую операцию, либо откладываем если операция с двумя операндами
 	func makeOperation(symbol: String) {
-		if let operation = operations[symbol] {
-			switch operation {
-			case .unaryOperation(let function):
-				accumulator = function(accumulator)
-				previousAccumulator = accumulator
-			case .binaryOperation(let function, let priority):
-				switch pending.count {
-				case 1:
-					if previousPriority >= priority {
-						executePendingOperations()
-					}
-				case 2:
+		guard let operation = operations[symbol] else { return }
+		switch operation {
+		case .unaryOperation(let function):
+			accumulator = function(accumulator)
+			previousAccumulator = accumulator
+		case .binaryOperation(let function, let priority):
+			switch pending.count {
+			case 1:
+				if previousPriority >= priority {
 					executePendingOperations()
-				default:
-					break
 				}
-				pending.append(PendingBinaryOperationInfo(function: function,
-														  firstOperand: accumulator))
-				previousPriority = priority
-				previousAccumulator = accumulator
-			case .percentOperation(let functionForUnary, let functionForBinary ):
-				if pending.count > 0 {
-					accumulator = functionForBinary(accumulator, previousAccumulator)
-				}
-				else {
-					accumulator = functionForUnary(accumulator)
-				}
-				previousAccumulator = accumulator
-			case .equals:
+			case 2:
 				executePendingOperations()
-			case .clear:
-				clear()
+			default:
+				break
 			}
+			pending.append(PendingBinaryOperationInfo(function: function,
+													  firstOperand: accumulator))
+			previousPriority = priority
+			previousAccumulator = accumulator
+		case .percentOperation(let functionForUnary, let functionForBinary ):
+			if pending.count > 0 {
+				accumulator = functionForBinary(accumulator, previousAccumulator)
+			}
+			else {
+				accumulator = functionForUnary(accumulator)
+			}
+			previousAccumulator = accumulator
+		case .equals:
+			executePendingOperations()
+		case .clear:
+			clear()
 		}
 	}
 	private func clear() {

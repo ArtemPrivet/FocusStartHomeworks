@@ -14,13 +14,11 @@ final class CalculatorViewController: UIViewController
 	private let stackCreator = StackCreator()
 	private let labelCreator = LabelCreator()
 	private let calculations = Calculations()
-	private let buttonTitles = [
-		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "＝", "＋", "－", "✕", "÷", "AC", "+/-", "%",
-	]
+	private let resultLabel = UILabel()
+	private let enteredNumbersLimit = 9
 
 	private var buttons: [UIButton] = []
 	private var horizontalStacks: [UIStackView] = []
-	private var resultLabel = UILabel()
 	private var swipeGestureGecognizer = UISwipeGestureRecognizer()
 	private var margins = UILayoutGuide()
 	private var isTyping = false
@@ -28,7 +26,7 @@ final class CalculatorViewController: UIViewController
 	private var displayValue: Double? {
 		get {
 			if let text = resultLabel.text {
-				return Double(text.replacingOccurrences(of: ",", with: "."))
+				return Double(text.replacingOccurrences(of: ",", with: ".").replacingOccurrences(of: " ", with: ""))
 			}
 			else {
 				return 0
@@ -72,7 +70,8 @@ final class CalculatorViewController: UIViewController
 	// MARK: - Создание контролов
 	private func createControls() {
 		//Создаем массив кнопок
-		buttonTitles.forEach{ buttons.append( buttonCreator.createButton(title: $0)) }
+		buttons = buttonCreator.createCalculatorButtons()
+
 		guard buttons.count == 19 else { fatalError("Wrong number of buttons") }
 		buttons.forEach{ setUpButtonActions($0) }
 		//Складываем кнопки в стэк
@@ -92,15 +91,13 @@ final class CalculatorViewController: UIViewController
 		self.view.addSubview(verticalStack)
 		//Устанавливаем констрейнты для вертикального стэка
 		stackCreator.setVerticalStackConstraints(stackView: verticalStack, safeAreaMargins: margins )
-		//Создаем лейбл для вывода результата
-		resultLabel = labelCreator.createLabelWithGestureRecognizer(swipeGestureGecognizer)
+		//Настраиваем лейбл для вывода результата
+		labelCreator.setUpLabelWithGestureRecognizer(label: resultLabel, recognizer: swipeGestureGecognizer)
 		self.view.addSubview(resultLabel)
 		//Настраиваем констрейнты для лейбла
 		labelCreator.setUpLabelConstraints(label: resultLabel, bottomView: verticalStack, safeAreaMargins: margins)
-		//Настраиваем констрейнты для нижней строки кнопок
-		NSLayoutConstraint.activate([
-			buttons[0].widthAnchor.constraint(equalTo: verticalStack.widthAnchor, multiplier: 0.5, constant: -7),
-		])
+		//Настраиваем констрейнты для кнопки 0
+		buttons[0].widthAnchor.constraint(equalTo: verticalStack.widthAnchor, multiplier: 0.5, constant: -7).isActive = true
 	}
 	//Закругление кнопок и настройка выравнивания 0 на кнопке
 	private func finalCustomize() {
@@ -114,58 +111,61 @@ final class CalculatorViewController: UIViewController
 	// MARK: - Настройка взаимодействия
 	//Настройка нажатия кнопок
 	private func setUpButtonActions(_ button: UIButton) {
-		if let title = button.titleLabel?.text {
-			if "0123456789,".contains(title) {
-				button.addTarget(self, action: #selector(clickNumberButton), for: .touchUpInside)
-			}
-			else {
-				button.addTarget(self, action: #selector(clickOperatorButton), for: .touchUpInside)
-			}
+		guard let title = button.titleLabel?.text else { return }
+		if "0123456789,".contains(title) {
+			button.addTarget(self, action: #selector(clickNumberButton), for: .touchUpInside)
+		}
+		else {
+			button.addTarget(self, action: #selector(clickOperatorButton), for: .touchUpInside)
 		}
 	}
 
 	//Обработка нажатий по цифрам и запятой
 	@objc private func clickNumberButton(_ sender: UIButton) {
-		if let buttonTitle = sender.titleLabel?.text, let displayedText = resultLabel.text {
-			if isTyping {
-				if buttonTitle != "," || (buttonTitle == "," && displayedText.contains(",") == false) {
+		guard let buttonTitle = sender.titleLabel?.text, let displayedText = resultLabel.text else { return }
+		guard displayedText.count + 1 <= enteredNumbersLimit || isTyping == false else { return }
+		if isTyping {
+			if buttonTitle != "," || (buttonTitle == "," && displayedText.contains(",") == false) {
+				if displayedText != "0" {
 					resultLabel.text = displayedText + buttonTitle
 				}
+				else {
+					resultLabel.text = (buttonTitle == "," ? "0," : buttonTitle)
+				}
 			}
-			else {
-				resultLabel.text = (buttonTitle == "," ? "0," : buttonTitle)
-			}
-			isTyping = true
-			refreshACButtonTitle()
 		}
+		else {
+			resultLabel.text = (buttonTitle == "," ? "0," : buttonTitle)
+		}
+		isTyping = true
+
+		refreshACButtonTitle()
 	}
 	//Обработка действий кнопок операторов
 	@objc private func clickOperatorButton(_ sender: UIButton) {
-		if let buttonTitle = sender.titleLabel?.text {
-			if isTyping, let value = displayValue {
-				calculations.setOperand(operand: value)
-				isTyping = false
-			}
-			calculations.makeOperation(symbol: buttonTitle)
-			displayValue = calculations.result
+		guard let buttonTitle = sender.titleLabel?.text else { return }
+		if isTyping, let value = displayValue {
+			calculations.setOperand(operand: value)
+			isTyping = false
 		}
+		calculations.makeOperation(symbol: buttonTitle)
+		displayValue = calculations.result
 	}
 	//Обработка свайпа
 	@objc private func swipeLeftOnLabel(_ sender: UISwipeGestureRecognizer) {
-		if isTyping, let text = resultLabel.text {
-			let newText = String(text.dropLast())
-			if newText.count > 0 {
-				resultLabel.text = newText
-			}
-			else {
-				resultLabel.text = "0"
-				isTyping = false
-			}
+		guard isTyping, let text = resultLabel.text else { return }
+		let newText = String(text.dropLast())
+		if newText.count > 0 {
+			resultLabel.text = newText
+		}
+		else {
+			resultLabel.text = "0"
+			isTyping = false
 		}
 	}
 	//Настраиваем заголовок для кнопки AC
 	private func refreshACButtonTitle() {
-		if let text = resultLabel.text, text != "0" {
+		if let text = resultLabel.text, text != "0" || isTyping {
 			buttons[16].setTitle("C", for: .normal)
 		}
 		else {

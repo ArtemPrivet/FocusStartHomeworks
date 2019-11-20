@@ -12,14 +12,23 @@ struct ButtonCreator
 {
 	private enum ButtonType
 	{
-		case digit
+		case number
 		case operation
 		case symbolic
 	}
+	//Создаем массив кнопок для калькулятора
+	func createCalculatorButtons() -> [UIButton] {
+		let buttonTitles = [
+			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "＝", "＋", "－", "✕", "÷", "AC", "+/-", "%",
+		]
+		var buttons: [UIButton] = []
+		buttonTitles.forEach{ buttons.append( createButton(title: $0)) }
+		return buttons
+	}
 	//Создаем кнопку
-	func createButton(title: String) -> UIButton {
+	private func createButton(title: String) -> UIButton {
 		switch typeOfButton(buttonTitle: title) {
-		case .digit:
+		case .number:
 			return createNumberButton(with: title)
 		case .operation:
 			return createOperatorButton(with: title)
@@ -29,7 +38,7 @@ struct ButtonCreator
 	}
 	//Создаем цифровую кнопку
 	private func createNumberButton(with title: String) -> UIButton {
-		let button = UIButton(frame: .zero)
+		let button = UIButton()
 		setButtonProperties(button: button,
 							title: title,
 							hexBackgroundColor: "#333333",
@@ -40,7 +49,7 @@ struct ButtonCreator
 
 	//Создаем кнопку с оператором
 	private func createOperatorButton(with title: String) -> UIButton {
-		let button = UIButton(frame: .zero)
+		let button = UIButton()
 		var customFont = UIFont()
 
 		if title == "÷" {
@@ -60,7 +69,7 @@ struct ButtonCreator
 	}
 	// Создаем символьную кнопку
 	private func createSymbolButton(title: String) -> UIButton {
-		let button = UIButton(frame: .zero)
+		let button = UIButton()
 		setButtonProperties(button: button,
 							title: title,
 							hexBackgroundColor: "#AFAFAF",
@@ -84,40 +93,17 @@ struct ButtonCreator
 
 	//Устанавливаем констрейнты для соотношения размеров для кнопок
 	func setUpButtonAspectRatioConstraints(_ button: UIButton) {
-		if let title = button.titleLabel?.text, title != "0" {
-			NSLayoutConstraint.activate([
-				button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 1),
-			])
-		}
+		guard let title = button.titleLabel?.text, title != "0" else { return }
+		button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 1).isActive = true
 	}
 	//Делаем кнопку круглой
 	func makeButtonRound(button: UIButton) {
 		button.layer.cornerRadius = button.bounds.height / 2
 	}
-//анимация нажатия кнопки
-	func animateButton(button: UIButton) {
-		if let title = button.titleLabel?.text, let previousColor = button.backgroundColor {
-			var targetColor = UIColor.white
-			switch typeOfButton(buttonTitle: title) {
-			case .digit:
-				targetColor = .gray
-			case .operation:
-				targetColor = UIColor(hex: "#f7cf7e")
-			case .symbolic:
-				targetColor = UIColor(hex: "#ebebeb")
-			}
-			UIView.animate(withDuration: 0.7) {
-				button.backgroundColor = targetColor
-				UIView.animate(withDuration: 0.7) {
-					button.backgroundColor = previousColor
-				}
-			}
-		}
-	}
-//Тип кнопки
+	//Тип кнопки
 	private func typeOfButton(buttonTitle: String) -> ButtonType {
 		if "0123456789,".contains(buttonTitle) {
-			return ButtonType.digit
+			return ButtonType.number
 		}
 		else if "＋－＝÷✕".contains(buttonTitle) {
 			return ButtonType.operation

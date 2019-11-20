@@ -10,8 +10,7 @@ import UIKit
 
 struct LabelCreator
 {
-	func createLabelWithGestureRecognizer(_ recognizer: UIGestureRecognizer) -> UILabel {
-		let label = UILabel()
+	func setUpLabelWithGestureRecognizer(label: UILabel, recognizer: UIGestureRecognizer) {
 		label.text = "0"
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
 		label.textColor = UIColor(hex: "#FFFFFF")
@@ -20,7 +19,7 @@ struct LabelCreator
 		label.adjustsFontSizeToFitWidth = true
 		label.minimumScaleFactor = 0.2
 		label.isUserInteractionEnabled = true
-		return label
+		label.addGestureRecognizer(recognizer)
 	}
 	func setUpLabelConstraints(label: UILabel, bottomView: UIStackView, safeAreaMargins: UILayoutGuide) {
 		NSLayoutConstraint.activate([
