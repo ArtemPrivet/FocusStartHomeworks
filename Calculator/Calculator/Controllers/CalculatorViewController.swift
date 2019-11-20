@@ -15,6 +15,7 @@ final class CalculatorViewController: UIViewController
 	private lazy var formatter = calculatorView.buttonsStack.formatter
 
 	private var calculator = Calculator()
+	private let zero = "0"
 	private var isUserInTheMiddleOfInput = false
 
 	private var displayValue: Double? {
@@ -32,9 +33,9 @@ final class CalculatorViewController: UIViewController
 
 	private func updateDisplay(with value: Double?) {
 		if let value = value {
-		let maxNumber = 999_999_999.0
-		formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
-		calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+			let maxNumber = 999_999_999.0
+			formatter.numberStyle = (value > maxNumber || value < -maxNumber) ? .scientific : .decimal
+			calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
 		}
 	}
 
@@ -76,7 +77,7 @@ final class CalculatorViewController: UIViewController
 
 		guard let digit = sender.currentTitle else { return }
 		guard let currentTextInDisplay = calculatorView.screenLabel.text else { return }
-		let zero = "0"
+
 		let isDigitNotSeparator = (digit != formatter.decimalSeparator)
 		let isOnlyZeroOnDisplay = (currentTextInDisplay == zero)
 		let displayHasNoSeparator = (currentTextInDisplay.contains(formatter.decimalSeparator) == false)
@@ -101,10 +102,9 @@ final class CalculatorViewController: UIViewController
 	@objc private func operatorTapped(_ sender: Button) {
 		//sender.reverseColors()
 		sender.blink()
-
-		if isUserInTheMiddleOfInput {
+		if isUserInTheMiddleOfInput || calculatorView.screenLabel.text == zero {
 			if let value = displayValue {
-			calculator.setOperand(value)
+				calculator.setOperand(value)
 			}
 			isUserInTheMiddleOfInput = false
 		}
@@ -125,7 +125,6 @@ final class CalculatorViewController: UIViewController
 	//	}
 
 	// MARK: - LABEL HANDLING
-
 	private func addSwipeToLabel() {
 		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
 		swipeRecognizer.direction = [.left, .right]
@@ -134,16 +133,17 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func swipeOnLabel() {
-//		if calculatorView.screenLabel.text?.isEmpty == false {
-//			if calculatorView.screenLabel.text != zero {
-//				calculatorView.screenLabel.text?.removeLast()
-//				if calculatorView.screenLabel.text?.first == nil {
-//					calculatorView.screenLabel.text = zero
-//				}
-//			}
-//			else {
-//				displayValue = 0
-//			}
-//		}
+		if calculatorView.screenLabel.text?.isEmpty == false {
+			if calculatorView.screenLabel.text != zero {
+				calculatorView.screenLabel.text?.removeLast()
+				updateDisplay(with: displayValue)
+				if calculatorView.screenLabel.text?.first == nil {
+					calculatorView.screenLabel.text = zero
+				}
+			}
+			else {
+				displayValue = 0
+			}
+		}
 	}
 }
