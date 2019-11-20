@@ -1,5 +1,7 @@
-[![Build Status](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks.svg?branch=test%2FsetupCI)](https://travis-ci.com/MisnikovRoman/FocusStartHomeworks)
 # Focus Start iOS (fall 2019)
+
+> 👨🏻‍🏫 Контрольная работа #3  
+> https://forms.gle/AA8jTUnuXKtMWfw77
 
 ##### Правила сдачи домашнего задания:
 
