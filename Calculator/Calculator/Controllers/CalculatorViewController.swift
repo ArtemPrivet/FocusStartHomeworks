@@ -12,7 +12,7 @@ import SnapKit
 final class CalculatorViewController: UIViewController
 {
 
-	var buttons = [ButtonView]()
+	var buttons = [CalculatorButtons]()
 	var resultLabel = UILabel()
 
 	var resultNumber = 0
@@ -20,7 +20,7 @@ final class CalculatorViewController: UIViewController
 	var secondOperand = 0.0
 	var operatorSign = ""
 	var isPressedAcButton = false
-	var stillTyping = false
+	var isTyping = false
 	var isFloatNumber = false
 
 	var currentInput: Double {
@@ -29,12 +29,12 @@ final class CalculatorViewController: UIViewController
 		}
 		set {
 			if String(newValue).hasSuffix(".0") {
-				resultLabel.text = String(Int(newValue))
+				resultLabel.text = String(String(newValue).dropLast(2))
 			}
 			else {
 				resultLabel.text = String(newValue)
 			}
-			stillTyping = false
+			isTyping = false
 		}
 	}
 
@@ -42,6 +42,7 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 		self.view.backgroundColor = .black
 		addButtonActions()
+		setGestureRecognizer()
 	}
 
 	override func loadView() {
@@ -72,6 +73,25 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
+	func setGestureRecognizer() {
+		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(deleteSymbolFromLabel))
+		swipeGestureRecognizer.direction = [.left, .right]
+		resultLabel.addGestureRecognizer(swipeGestureRecognizer)
+		resultLabel.isUserInteractionEnabled = true
+	}
+
+	@objc func deleteSymbolFromLabel() {
+		guard isTyping, let labelText = resultLabel.text else { return }
+		let newText = String(labelText.dropLast())
+		if newText.count > 0 {
+			resultLabel.text = newText
+		}
+		else {
+			resultLabel.text = "0"
+			isTyping = false
+		}
+	}
+
 	func addButtonActions() {
 		buttons.forEach { button in
 			switch button.tag {
@@ -95,51 +115,52 @@ final class CalculatorViewController: UIViewController
 	}
 
 	// MARK: - Button functions
-	@objc func floatButtonPressed(_ sender: ButtonView) {
-		if stillTyping && isFloatNumber == false {
-			resultLabel.text = (resultLabel.text ?? "") + ","
+	@objc func floatButtonPressed(_ sender: CalculatorButtons) {
+		if isTyping && isFloatNumber == false {
+			resultLabel.text = (resultLabel.text ?? "") + "."
 			isFloatNumber = true
 		}
-		else if stillTyping && isFloatNumber == false {
-			resultLabel.text = "0,"
+		else if isTyping && isFloatNumber == false {
+			resultLabel.text = "0."
 		}
 	}
 
-	@objc func percentButtonPressed(_ sender: ButtonView) {
+	@objc func percentButtonPressed(_ sender: CalculatorButtons) {
 		if firstOperand == 0 {
 			currentInput /= 100
 		}
 		else {
-			secondOperand = firstOperand * currentInput / 100
+			currentInput = firstOperand * currentInput / 100
+			secondOperand = currentInput
 		}
 	}
 
-	@objc func negativeSwitchButtonPressed(_ sender: ButtonView) {
+	@objc func negativeSwitchButtonPressed(_ sender: CalculatorButtons) {
 		currentInput *= -1
 	}
 
-	@objc func clearButtonPressed(_ sender: ButtonView) {
+	@objc func clearButtonPressed(_ sender: CalculatorButtons) {
 		firstOperand = 0
 		secondOperand = 0
 		currentInput = 0
 		resultLabel.text = "0"
-		stillTyping = false
+		isTyping = false
 		operatorSign = ""
 		isFloatNumber = false
 	}
 
-	@objc func numberButtonPressed(_ sender: ButtonView) {
-		if stillTyping {
+	@objc func numberButtonPressed(_ sender: CalculatorButtons) {
+		if isTyping {
 			resultLabel.text = (resultLabel.text ?? "") + String(sender.tag)
 		}
 		else {
 			resultLabel.text = String(sender.tag)
-			stillTyping = true
+			isTyping = true
 		}
 	}
 
-	@objc func equalButtonPressed(_ sender: ButtonView) {
-		if stillTyping {
+	@objc func equalButtonPressed(_ sender: CalculatorButtons) {
+		if isTyping { //если на экране, что то есть
 			secondOperand = currentInput
 		}
 
@@ -152,7 +173,7 @@ final class CalculatorViewController: UIViewController
 		}
 		isFloatNumber = false
 	}
-	@objc func operatorButtonPressed(_ sender: ButtonView) {
+	@objc func operatorButtonPressed(_ sender: CalculatorButtons) {
 		equalButtonPressed(sender) //check for bug
 		switch sender.tag {
 		case OperationButtons.plus: operatorSign = "+"
@@ -162,12 +183,12 @@ final class CalculatorViewController: UIViewController
 		default: break
 		}
 		firstOperand = currentInput
-		stillTyping = false
+		isTyping = false
 		isFloatNumber = false
 	}
 
 	func makeOperation(_ operation: (Double, Double) -> Double) {
 		currentInput = operation(firstOperand, secondOperand)
-		stillTyping = false
+		isTyping = false
 	}
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ButtonView: UIButton
+final class CalculatorButtons: UIButton
 {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -17,15 +17,11 @@ final class ButtonView: UIButton
 
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
-		setupButton()
 	}
 
 	func setupButton() {
-		setTitleColor(.white, for: .normal)
-
 		backgroundColor	= Colors.colorGray
 		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 30)
-//		setTitle(String(self.tag), for: .normal)
 		setTitleColor(.black, for: .normal)
 	}
 }

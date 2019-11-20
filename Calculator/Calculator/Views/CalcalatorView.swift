@@ -11,7 +11,7 @@ import UIKit
 final class CalcalatorView: UIView
 {
 	var resultLabel = UILabel(frame: .zero)
-	var buttons = [ButtonView]()
+	var buttons = [CalculatorButtons]()
 	var rows = [RowButtonsStackView]()
 
 	var firstRowButtons = RowButtonsStackView(frame: .zero)
@@ -26,14 +26,7 @@ final class CalcalatorView: UIView
 		super.init(frame: .zero)
 		backgroundColor = .white
 			addSubview(resultLabel)
-		//Вынести настройку resultLabel в отдельную функцию
-//		resultLabel.backgroundColor = .white //DELETE
-		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
-		resultLabel.textColor = Colors.colorWhite
-		resultLabel.textAlignment = .right
-		resultLabel.text = "0"
-		resultLabel.adjustsFontSizeToFitWidth = true
-
+		setupResultLabel()
 		createNumbersButtons()
 		createOtherButtons()
 		setRowsButtons()
@@ -46,10 +39,18 @@ final class CalcalatorView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	// MARK: - setButtons
+	func setupResultLabel() {
+		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
+		resultLabel.textColor = Colors.colorWhite
+		resultLabel.textAlignment = .right
+		resultLabel.text = "0"
+		resultLabel.adjustsFontSizeToFitWidth = true
+	}
+
+	//Создаем кнопки с цифрами
 	func createNumbersButtons() {
 		for index in (0...9).reversed() {
-			let button = ButtonView(frame: .zero)
+			let button = CalculatorButtons(frame: .zero)
 			button.tag = index
 			button.setTitle(String(button.tag), for: .normal)
 			switch index {
@@ -63,34 +64,33 @@ final class CalcalatorView: UIView
 				secondRowButtons.insertArrangedSubview(button, at: 0)
 			default: break
 			}
+			buttons.append(button)
 		}
 	}
 
-	private func decomposeOperationButtons(_ index: Int) {
-		let button = ButtonView(frame: .zero)
-		button.tag = index
-		button.setTitle(String(button.tag), for: .normal)
-		switch index {
-		case 10...11:
-			fifthRowButtons.insertArrangedSubview(button, at: 1)
-		case 12:
-			fourthRowButtons.addArrangedSubview(button)
-		case 13:
-			thirdRowButtons.addArrangedSubview(button)
-		case 14:
-			secondRowButtons.addArrangedSubview(button)
-		default:
-			firstRowButtons.addArrangedSubview(button)
-		}
-	}
-
+	//Создаем остальные кнопки
 	func createOtherButtons() {
-		for index in (10..<19).reversed() {
-			decomposeOperationButtons(index)
+		for index in (10...18).reversed() {
+			let button = CalculatorButtons(frame: .zero)
+			button.tag = index
+			buttons.append(button)
+			switch index {
+			case 10...11:
+				fifthRowButtons.insertArrangedSubview(button, at: 1)
+			case 12:
+				fourthRowButtons.addArrangedSubview(button)
+			case 13:
+				thirdRowButtons.addArrangedSubview(button)
+			case 14:
+				secondRowButtons.addArrangedSubview(button)
+			default:
+				firstRowButtons.addArrangedSubview(button)
+			}
 		}
 	}
 
-	private func setOperationButtonsTitle(_ button: ButtonView) {
+	//Создаем остальные кнопки
+	private func setOperationButtonsTitle(_ button: CalculatorButtons) {
 		switch button.tag {
 		case 10:
 			button.setTitle(",", for: .normal)
@@ -121,8 +121,6 @@ final class CalcalatorView: UIView
 				button.backgroundColor = Colors.colorDarkGray
 				button.setTitleColor(Colors.colorWhite, for: .normal)
 				setOperationButtonsTitle(button)
-
-//				button.tag == 10 ? button.setTitle(",", for: .normal) : nil
 			case 11...15:
 				button.backgroundColor = Colors.colorOrange
 				button.setTitleColor(Colors.colorWhite, for: .normal)
@@ -139,8 +137,6 @@ final class CalcalatorView: UIView
 	func setRowsButtons() {
 		fifthRowButtons.alignment = .fill
 		fifthRowButtons.distribution = .fill
-		print(firstRowButtons.arrangedSubviews.count)
-
 		buttonsStackView = ButtonsStackView(arrangedSubviews: [
 			firstRowButtons,
 			secondRowButtons,
@@ -148,16 +144,6 @@ final class CalcalatorView: UIView
 			fourthRowButtons,
 			fifthRowButtons,
 			])
-		print(buttonsStackView.arrangedSubviews.count)
-		for rowButtonsStack in buttonsStackView.arrangedSubviews {
-			guard let rowButtonsStack = rowButtonsStack as? RowButtonsStackView else { return }
-			print(rowButtonsStack.arrangedSubviews.count)
-			rows.append(rowButtonsStack)
-			for button in rowButtonsStack.arrangedSubviews {
-				guard let button = button as? ButtonView else { return }
-				buttons.append(button)
-			}
-		}
 	}
 
 	func makeConstraints() {
@@ -168,8 +154,7 @@ final class CalcalatorView: UIView
 		}
 
 		fifthRowButtons.snp.makeConstraints { make in
-			print(buttons.count)
-			var equalBut = ButtonView(frame: .zero)
+			var equalBut = CalculatorButtons(frame: .zero)
 			for view in buttons where view.tag == 0 {
 				equalBut = view
 			}

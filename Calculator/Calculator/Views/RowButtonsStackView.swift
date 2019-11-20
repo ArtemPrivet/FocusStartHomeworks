@@ -10,10 +10,9 @@ import UIKit
 
 final class RowButtonsStackView: UIStackView
 {
-
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		setupButton()
+		setupRowButtonsStack()
 	}
 
 	@available (*, unavailable)
@@ -21,8 +20,7 @@ final class RowButtonsStackView: UIStackView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setupButton() {
-
+	func setupRowButtonsStack() {
 		axis = .horizontal
 		distribution = .fillEqually
 		spacing = 14
