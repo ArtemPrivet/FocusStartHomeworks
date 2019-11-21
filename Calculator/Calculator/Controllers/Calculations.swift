@@ -54,15 +54,13 @@ final class Calculations
 			accumulator = function(accumulator)
 			previousAccumulator = accumulator
 		case .binaryOperation(let function, let priority):
-			switch pending.count {
-			case 1:
-				if previousPriority >= priority {
+			if pending.count > 0 {
+				if previousPriority > priority {
 					executePendingOperations()
 				}
-			case 2:
-				executePendingOperations()
-			default:
-				break
+				else if previousPriority == priority {
+					executeLastPendingOperation()
+				}
 			}
 			pending.append(PendingBinaryOperationInfo(function: function,
 													  firstOperand: accumulator))
@@ -89,9 +87,13 @@ final class Calculations
 	}
 	//Выполняем все отложенные операции из массива
 	private func executePendingOperations() {
-		for iterator in pending.indices.reversed() {
-			accumulator = pending[iterator].function(pending[iterator].firstOperand, accumulator)
-			pending.remove(at: iterator)
+		while pending.count > 0 {
+			executeLastPendingOperation()
 		}
+	}
+	//Выполним последнюю отложенную операцию
+	private func executeLastPendingOperation() {
+		let operation = pending.removeLast()
+		accumulator = operation.function(operation.firstOperand, accumulator)
 	}
 }

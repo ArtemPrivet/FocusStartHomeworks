@@ -51,6 +51,19 @@ final class CalculatorTests: XCTestCase
 		(4, "✕", 2, "－", 3, "＝", 4 * 2 - 3),
 		(4.5, "✕", 982, "÷", 0.5, "＝", 4.5 * 982 / 0.5),
 	]
+	let calculationsWithFourNumbers: [(firstOperand: Double,
+									firstOperation: String,
+									secondOperand: Double,
+									secondOperation: String,
+									thirdOperand: Double,
+									thirdOperation: String,
+									fourthOperand: Double,
+									resultOperation: String,
+									result: Double)] = [
+		(1, "＋", 2, "✕", 4, "÷", 3, "＝", 1 + 2 * 4 / 3),
+		(1, "✕", 2, "✕", 4, "＋", 3, "＝", 1 * 2 * 4 + 3),
+		(8, "＋", 2, "✕", 9, "＋", 1, "＝", 8 + 2 * 9 + 1),
+	]
 
 	func testOperationsWithOneNumber() {
 		calculationsWithOneNumber.forEach{
@@ -89,6 +102,20 @@ final class CalculatorTests: XCTestCase
 			calculations.setOperand(operand: $0.secondOperand)
 			calculations.makeOperation(symbol: $0.secondOperation)
 			calculations.setOperand(operand: $0.thirdOperand)
+			calculations.makeOperation(symbol: $0.resultOperation)
+			XCTAssertEqual(calculations.result, $0.result)
+		}
+	}
+	func testOperationsWithFourNumbers() {
+		calculationsWithFourNumbers.forEach{
+			let calculations = Calculations()
+			calculations.setOperand(operand: $0.firstOperand)
+			calculations.makeOperation(symbol: $0.firstOperation)
+			calculations.setOperand(operand: $0.secondOperand)
+			calculations.makeOperation(symbol: $0.secondOperation)
+			calculations.setOperand(operand: $0.thirdOperand)
+			calculations.makeOperation(symbol: $0.thirdOperation)
+			calculations.setOperand(operand: $0.fourthOperand)
 			calculations.makeOperation(symbol: $0.resultOperation)
 			XCTAssertEqual(calculations.result, $0.result)
 		}
