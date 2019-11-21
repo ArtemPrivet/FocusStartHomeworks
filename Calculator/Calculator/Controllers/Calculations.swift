@@ -14,6 +14,7 @@ final class Calculations
 	private var previousAccumulator = 0.0
 	private var previousPriority = Int.max
 	private var pending: [PendingBinaryOperationInfo] = []
+	private var previousOperation: PendingBinaryOperationInfo?
 	var result: Double {
 		return accumulator
 	}
@@ -75,7 +76,16 @@ final class Calculations
 			}
 			previousAccumulator = accumulator
 		case .equals:
-			executePendingOperations()
+			if pending.count > 0 {
+				if let function = pending.last?.function {
+					previousOperation = PendingBinaryOperationInfo(function: function, firstOperand: accumulator)
+				}
+				executePendingOperations()
+			}
+			else if let operation = previousOperation {
+				accumulator = operation.function(accumulator, operation.firstOperand)
+			}
+			previousAccumulator = accumulator
 		case .clear:
 			clear()
 		}
@@ -84,6 +94,7 @@ final class Calculations
 		accumulator = 0.0
 		previousAccumulator = 0.0
 		pending = []
+		previousOperation = nil
 	}
 	//Выполняем все отложенные операции из массива
 	private func executePendingOperations() {
