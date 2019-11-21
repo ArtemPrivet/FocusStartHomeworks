@@ -12,11 +12,9 @@ final class CalculatorViewController: UIViewController
 {
 	// MARK: - PROPERTIES
 	private let calculatorView = CalculatorView()
-	private lazy var formatter = calculatorView.buttonsStack.formatter
-
 	private var calculator = Calculator()
-	private let zero = "0"
 	private var isUserInTheMiddleOfInput = false
+	private var formatter = MyFormatter.shared.format
 
 	private var displayValue: Double? {
 		get {
@@ -25,9 +23,8 @@ final class CalculatorViewController: UIViewController
 		}
 		set {
 			if let value = newValue {
-				switchFormatterNumberStyle(with: value)
-				formatter.maximumFractionDigits = defineMaxFractionDigits(value: value)
-					calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+				MyFormatter.shared.switchFormatterNumberStyle(with: value)
+				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
 			}
 		}
 	}
@@ -66,14 +63,12 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func digitTapped(_ sender: Button) {
-		sender.blink()
-
 		guard let digit = sender.currentTitle else { return }
 		guard let currentTextInDisplay = calculatorView.screenLabel.text else { return }
 		let digitsCount = currentTextInDisplay.filter { $0.isNumber }.count
 
 		let isDigitNotSeparator = (digit != formatter.decimalSeparator)
-		let isOnlyZeroOnDisplay = (currentTextInDisplay == zero)
+		let isOnlyZeroOnDisplay = (currentTextInDisplay == Sign.zero)
 		let displayHasNoSeparator = (currentTextInDisplay.contains(formatter.decimalSeparator) == false)
 		let notAllowsDoubleSeparator = (isDigitNotSeparator || displayHasNoSeparator)
 
@@ -89,18 +84,17 @@ final class CalculatorViewController: UIViewController
 			}
 		}
 		else {
-			// new input
-			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : zero + digit
+			// begin of user input
+			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : Sign.zero + digit
 			isUserInTheMiddleOfInput = true
 		}
-
-		toggleClearButtonTitle()
+		toggleButtonState(of: sender)
 	}
 
 	@objc private func operatorTapped(_ sender: Button) {
-		//sender.reverseColors()
-		sender.blink()
-		if isUserInTheMiddleOfInput || calculatorView.screenLabel.text == zero {
+		allClear(ifNeeded: sender.currentTitle)
+
+		if isUserInTheMiddleOfInput || calculatorView.screenLabel.text == Sign.zero {
 			if let value = displayValue {
 				calculator.setOperand(value)
 			}
@@ -112,17 +106,50 @@ final class CalculatorViewController: UIViewController
 		}
 
 		displayValue = calculator.result
+		toggleButtonState(of: sender)
+		if let description = calculator.description {
+			let output = description + (calculator.resultIsWaiting ? "..." : "=")
+			print(output)
+		}
 	}
 
-		private func toggleClearButtonTitle() {
-			// AC <-> C
-			if isUserInTheMiddleOfInput {
+	private func toggleButtonState(of sender: Button) {
+		switch sender.currentTitle {
+		case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+			sender.isSelected = true
+			calculatorView.buttonsStack.cells.forEach {  button in
+				if sender != button {
+					button.isSelected = false
+				}
+			}
+		case Sign.percent, Sign.clear, Sign.changeSign: return
+		default:
+			calculatorView.buttonsStack.cells.forEach { $0.isSelected = false }
+		}
+		toggleClearButtonTitle()
+	}
+
+	private func allClear(ifNeeded sign: String?) {
+		if sign == "C" {
+			displayValue = 0
+			toggleClearButtonTitle()
+			return
+		}
+		if sign == "AC" {
+			calculator.allClear()
+			displayValue = 0
+		}
+		toggleClearButtonTitle()
+	}
+	private func toggleClearButtonTitle() {
+		// AC <-> C
+		if isUserInTheMiddleOfInput {
 			calculatorView.buttonsStack.cells.first?.setTitle(
-				calculatorView.screenLabel.text != zero ? "C" : "AC",
+				isUserInTheMiddleOfInput && calculatorView.screenLabel.text != Sign.zero ? "C" : "AC",
 				for: .normal
 			)
-			}
 		}
+	}
 
 	// MARK: - LABEL HANDLING
 	private func updateDisplay() {
@@ -131,7 +158,7 @@ final class CalculatorViewController: UIViewController
 			.replacingOccurrences(of: ",", with: ".")
 		if let filter = filtered {
 			if let double = Double(filter) {
-				switchFormatterNumberStyle(with: double)
+				MyFormatter.shared.switchFormatterNumberStyle(with: double)
 				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: double))
 			}
 		}
@@ -146,38 +173,16 @@ final class CalculatorViewController: UIViewController
 
 	@objc private func swipeOnLabel() {
 		if calculatorView.screenLabel.text?.isEmpty == false {
-			if calculatorView.screenLabel.text != zero {
+			if calculatorView.screenLabel.text != Sign.zero {
 				calculatorView.screenLabel.text?.removeLast()
 				updateDisplay()
 				if calculatorView.screenLabel.text?.first == nil {
-					calculatorView.screenLabel.text = zero
+					calculatorView.screenLabel.text = Sign.zero
 				}
 			}
 			else {
 				displayValue = 0
 			}
 		}
-	}
-}
-
-// MARK: - FORMATTER VARIATIONS
-extension CalculatorViewController
-{
-	 private func defineMaxFractionDigits(value: Double) -> Int {
-		switch value {
-		case 0...10: return 8
-		case 10...100: return 7
-		case 100...1000: return 6
-		case 1000...10_000: return 5
-		case 10_000...100_000: return 4
-		case 100_000...1_000_000: return 3
-		case 10_000_000...100_000_000: return 2
-		default : return 1
-		}
-	}
-
-	private func switchFormatterNumberStyle(with number: Double) {
-		let maxNumber = 999_999_999.0
-		formatter.numberStyle = ( number > maxNumber || number < -maxNumber) ? .scientific : .decimal
 	}
 }

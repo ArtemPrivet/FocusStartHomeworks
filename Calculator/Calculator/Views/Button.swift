@@ -12,9 +12,57 @@ final class Button: UIButton
 {
 	var isRounded = true
 
+	override var isSelected: Bool {
+		didSet {
+			switch currentTitle {
+			case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+				UIView.animate(withDuration: 0.5,
+							   delay: 0.0,
+							   options: [.curveLinear],
+							   animations: {
+								if self.isSelected {
+									self.setTitleColor(.orange, for: .selected)
+									self.backgroundColor = .white
+								}
+								else {
+									self.setTitleColor(.white, for: .normal)
+									self.backgroundColor = .orange
+								}
+				},
+							   completion: nil
+				)
+
+			default: break
+			}
+		}
+	}
+
+	override var isHighlighted: Bool {
+		didSet {
+			UIView.animate(withDuration: 0.3,
+						   delay: 0.0,
+						   options: [.curveLinear],
+						   animations: {
+							switch self.currentTitle {
+							case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+								break
+							case Sign.equals:
+								self.backgroundColor =
+									self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .orange
+							case Sign.clear, Sign.allClear, Sign.percent, Sign.changeSign:
+								self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.9) : .lightGray
+							default:
+								self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.8) : .darkGray
+							}
+			},
+						   completion: nil
+			)
+		}
+	}
+
 	init() {
 		super.init(frame: .zero)
-		setup()
+		initialSetup()
 	}
 
 	@available(*, unavailable)
@@ -22,7 +70,7 @@ final class Button: UIButton
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup() {
+	private func initialSetup() {
 		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 32)
 		titleLabel?.textAlignment = .center
 		backgroundColor = .darkGray
@@ -32,6 +80,7 @@ final class Button: UIButton
 		super.layoutSubviews()
 		if isRounded {
 			bounds.size.width = bounds.size.height
+			titleEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
 		}
 		else {
 			//offset zero button title to left side

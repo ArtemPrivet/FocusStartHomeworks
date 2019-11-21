@@ -108,11 +108,11 @@ final class ButtonsStack: UIStackView
 
 	private func setButtonTitles() {
 		let titles = [
-			"AC", "⁺∕₋", "%", "÷",
-			"7", "8", "9", "×",
-			"4", "5", "6", "−",
-			"1", "2", "3", "+",
-			"0", formatter.decimalSeparator, "=",
+			Sign.allClear, Sign.changeSign, Sign.percent, Sign.divide,
+			"7", "8", "9", Sign.multiply,
+			"4", "5", "6", Sign.minus,
+			"1", "2", "3", Sign.plus,
+			Sign.zero, Sign.decimalSeparator, Sign.equals,
 		]
 
 		for (index, button) in cells.enumerated() {
