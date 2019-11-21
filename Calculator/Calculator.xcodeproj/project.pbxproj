@@ -3,10 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
+		726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
+		726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F952383D77D000F54C4 /* CalculatorView.swift */; };
+		726A0F9B23844003000F54C4 /* CalculatorActionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */; };
+		726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9C23844E9C000F54C4 /* Stack.swift */; };
+		726A0F9F23844ECD000F54C4 /* PolandItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9E23844ECC000F54C4 /* PolandItem.swift */; };
+		726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */; };
+		726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA323858D5E000F54C4 /* String+Extensions.swift */; };
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
 		CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE39237ACA1500B5D09F /* AppDelegate.swift */; };
 		CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE3D237ACA1500B5D09F /* CalculatorViewController.swift */; };
@@ -30,6 +38,12 @@
 		28450808F086F21E93E1C3E6 /* Pods_Calculator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
+		726A0F952383D77D000F54C4 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
+		726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorActionsProtocol.swift; sourceTree = "<group>"; };
+		726A0F9C23844E9C000F54C4 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		726A0F9E23844ECC000F54C4 /* PolandItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolandItem.swift; sourceTree = "<group>"; };
+		726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
+		726A0FA323858D5E000F54C4 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.release.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.release.xcconfig"; sourceTree = "<group>"; };
 		BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.release.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -74,8 +88,34 @@
 				7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */,
 				BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		726A0F932383D758000F54C4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				726A0F952383D77D000F54C4 /* CalculatorView.swift */,
+				726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		726A0F942383D760000F54C4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				726A0F9C23844E9C000F54C4 /* Stack.swift */,
+				726A0F9E23844ECC000F54C4 /* PolandItem.swift */,
+				726A0FA323858D5E000F54C4 /* String+Extensions.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		726A0F9923843FE7000F54C4 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		CA33EE2D237ACA1500B5D09F = {
@@ -101,6 +141,9 @@
 		CA33EE38237ACA1500B5D09F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				726A0F9923843FE7000F54C4 /* Protocols */,
+				726A0F942383D760000F54C4 /* Models */,
+				726A0F932383D758000F54C4 /* Views */,
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
 				CA33EE4F237ACD0E00B5D09F /* Controllers */,
@@ -257,6 +300,8 @@
 			files = (
 				CA33EE46237ACA1A00B5D09F /* LaunchScreen.storyboard in Resources */,
 				CA33EE43237ACA1900B5D09F /* Assets.xcassets in Resources */,
+				726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */,
+				726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,7 +402,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
+				726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */,
+				726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */,
+				726A0F9F23844ECD000F54C4 /* PolandItem.swift in Sources */,
+				726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */,
+				726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
+				726A0F9B23844003000F54C4 /* CalculatorActionsProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,16 +561,18 @@
 			baseConfigurationReference = 51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8TTR7A9Y64;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = Calculator/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = artemorlov.Calculator;
+				PRODUCT_BUNDLE_IDENTIFIER = medvedev.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -530,16 +583,18 @@
 			baseConfigurationReference = A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8TTR7A9Y64;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = Calculator/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = artemorlov.Calculator;
+				PRODUCT_BUNDLE_IDENTIFIER = medvedev.Calculator;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -551,7 +606,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8TTR7A9Y64;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = CalculatorTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -572,7 +627,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8TTR7A9Y64;
+				DEVELOPMENT_TEAM = 72DN37DPYX;
 				INFOPLIST_FILE = CalculatorTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
