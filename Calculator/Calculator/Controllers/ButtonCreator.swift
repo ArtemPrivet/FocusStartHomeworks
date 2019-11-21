@@ -10,22 +10,25 @@ import UIKit
 
 struct ButtonCreator
 {
-	private enum ButtonType
+	private enum ButtonType: String
 	{
 		case number
 		case operation
 		case symbolic
 	}
 
-//	private let numberButtonScheme: [(hexBackgroundColor: String,
-//		hexTitleColor: String,
-//		fontName: String,
-//		fontSize: Int)] =
-//		[
-//			("#333333", "#FFFFFF", "FiraSans-Regular", 36),
-//			("#FF9500", "#FFFFFF", "FiraSans-Regular", 36),
-//			("#AFAFAF", "#000000", "FiraSans-Regular", 30),
-//	]
+	private let buttonSchemas: [String: (hexBackgroundColor: String,
+		hexTitleColor: String,
+		fontName: String,
+		fontSize: CGFloat,
+		hexAnimateBackgroundColor: String,
+		hexToggleBackgroundColor: String?,
+		hexToggleTitleColor: String?)] =
+		[
+			"number": ("#333333", "#FFFFFF", "FiraSans-Regular", 36, "#AAAAAA", nil, nil),
+			"operation": ("#FF9500", "#FFFFFF", "FiraSans-Regular", 30, "#f7cf7e", "#FFFFFF", "#FF9500"),
+			"symbolic": ("#AFAFAF", "#000000", "FiraSans-Regular", 30, "#ebebeb", nil, nil),
+	]
 	//Создаем массив кнопок для калькулятора
 	func createCalculatorButtons() -> [UIButton] {
 		let buttonTitles = [
@@ -37,54 +40,14 @@ struct ButtonCreator
 	}
 	//Создаем кнопку
 	private func createButton(title: String) -> UIButton {
-		switch typeOfButton(buttonTitle: title) {
-		case .number:
-			return createNumberButton(with: title)
-		case .operation:
-			return createOperatorButton(with: title)
-		case .symbolic:
-			return createSymbolButton(title: title)
-		}
-	}
-	//Создаем цифровую кнопку
-	private func createNumberButton(with title: String) -> UIButton {
 		let button = UIButton()
-		setButtonProperties(button: button,
-							title: title,
-							hexBackgroundColor: "#333333",
-							hexTitleColor: "#FFFFFF",
-							font: UIFont(name: "FiraSans-Regular", size: 36))
-		return button
-	}
-
-	//Создаем кнопку с оператором
-	private func createOperatorButton(with title: String) -> UIButton {
-		let button = UIButton()
-		var customFont = UIFont()
-
-		if title == "÷" {
-			if let font = UIFont(name: "FiraSans-Light", size: 40) {
-				customFont = font
-			}
+		if let schema = getButtonSchema(buttonTitle: title) {
+			setButtonProperties(button: button,
+								title: title,
+								hexBackgroundColor: schema.hexBackgroundColor,
+								hexTitleColor: schema.hexTitleColor,
+								font: UIFont(name: schema.fontName, size: schema.fontSize))
 		}
-		else {
-			customFont = UIFont.systemFont(ofSize: 27, weight: .bold)
-		}
-		setButtonProperties(button: button,
-							title: title,
-							hexBackgroundColor: "#FF9500",
-							hexTitleColor: "#FFFFFF",
-							font: customFont)
-		return button
-	}
-	// Создаем символьную кнопку
-	private func createSymbolButton(title: String) -> UIButton {
-		let button = UIButton()
-		setButtonProperties(button: button,
-							title: title,
-							hexBackgroundColor: "#AFAFAF",
-							hexTitleColor: "#000000",
-							font: UIFont(name: "FiraSans-Regular", size: 30))
 		return button
 	}
 	//Установка свойств для кнопки
@@ -96,10 +59,12 @@ struct ButtonCreator
 		button.setTitle(title, for: .normal)
 		setButtonColor(button: button, backgroundColor: UIColor(hex: backgroundColor), titleColor: UIColor(hex: titleColor))
 		button.titleLabel?.font = font
+		if title == "÷" {
+			button.titleLabel?.font = UIFont(name: "FiraSans-Light", size: 45)
+		}
 		button.translatesAutoresizingMaskIntoConstraints = false
 		setUpButtonAspectRatioConstraints(button)
 	}
-
 	//Устанавливаем констрейнты для соотношения размеров для кнопок
 	private func setUpButtonAspectRatioConstraints(_ button: UIButton) {
 		guard let title = button.titleLabel?.text, title != "0" else { return }
@@ -117,10 +82,12 @@ struct ButtonCreator
 				if "＋－÷✕".contains(buttonTitle) {
 					UIView.transition(with: button, duration: 0.5, options: [.allowUserInteraction, .curveEaseIn],
 									  animations: {
-										self.setButtonColor(button: button,
-															backgroundColor: UIColor(hex: "#FF9500"),
-															titleColor: UIColor(hex: "#FFFFFF"))
-									  },
+										if let schema = self.getButtonSchema(buttonTitle: buttonTitle) {
+											self.setButtonColor(button: button,
+																backgroundColor: UIColor(hex: schema.hexBackgroundColor),
+																titleColor: UIColor(hex: schema.hexTitleColor))
+										}
+					},
 									  completion: nil )
 				}
 			}
@@ -132,23 +99,23 @@ struct ButtonCreator
 		guard let previousBgColor = button.backgroundColor else { return }
 
 		var targetColor = UIColor.gray
-		switch typeOfButton(buttonTitle: buttonTitle) {
-		case .number:
-		  targetColor = .gray
-		case .operation:
-		  targetColor = UIColor(hex: "#f7cf7e")
-		case .symbolic:
-		  targetColor = UIColor(hex: "#ebebeb")
+		if let schema = getButtonSchema(buttonTitle: buttonTitle) {
+			targetColor = UIColor(hex: schema.hexAnimateBackgroundColor)
+			button.backgroundColor = targetColor
+			UIView.transition(with: button, duration: 0.5, options: [.allowUserInteraction, .curveEaseIn], animations: {
+				if "＋－÷✕".contains(buttonTitle) {
+					if let toggleBackgroundColor = schema.hexToggleBackgroundColor,
+						let toggleTitleColor = schema.hexToggleTitleColor {
+						self.setButtonColor(button: button,
+											backgroundColor: UIColor(hex: toggleBackgroundColor),
+											titleColor: UIColor(hex: toggleTitleColor))
+					}
+				}
+				else {
+					self.setButtonColor(button: button, backgroundColor: previousBgColor)
+				}
+			}, completion: nil )
 		}
-		button.backgroundColor = targetColor
-		UIView.transition(with: button, duration: 0.5, options: [.allowUserInteraction, .curveEaseIn], animations: {
-			if "＋－÷✕".contains(buttonTitle) {
-				self.setButtonColor(button: button, backgroundColor: UIColor(hex: "#FFFFFF"), titleColor: UIColor(hex: "#FF9500"))
-			}
-			else {
-				self.setButtonColor(button: button, backgroundColor: previousBgColor)
-			}
-		}, completion: nil )
 	}
 	//Тип кнопки
 	private func typeOfButton(buttonTitle: String) -> ButtonType {
@@ -168,5 +135,15 @@ struct ButtonCreator
 		if let titleColor = titleColor {
 			button.setTitleColor(titleColor, for: .normal)
 		}
+	}
+	//Получить схему текущей кнопки
+	private func getButtonSchema(buttonTitle: String) -> (hexBackgroundColor: String,
+															hexTitleColor: String,
+															fontName: String,
+															fontSize: CGFloat,
+															hexAnimateBackgroundColor: String,
+															hexToggleBackgroundColor: String?,
+															hexToggleTitleColor: String?)? {
+		return buttonSchemas[typeOfButton(buttonTitle: buttonTitle).rawValue]
 	}
 }
