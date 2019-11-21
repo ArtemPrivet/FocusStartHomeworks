@@ -122,6 +122,8 @@ final class CalculatorViewController: UIViewController
 
 	//Обработка нажатий по цифрам и запятой
 	@objc private func clickNumberButton(_ sender: UIButton) {
+		buttonCreator.resetColorSettingsForOperationButton(buttons: buttons)
+		buttonCreator.animateButtonTap(button: sender)
 		guard let buttonTitle = sender.titleLabel?.text, let displayedText = resultLabel.text else { return }
 		guard displayedText.count + 1 <= enteredNumbersLimit || isTyping == false else { return }
 		if isTyping {
@@ -143,6 +145,8 @@ final class CalculatorViewController: UIViewController
 	}
 	//Обработка действий кнопок операторов
 	@objc private func clickOperatorButton(_ sender: UIButton) {
+		buttonCreator.resetColorSettingsForOperationButton(buttons: buttons)
+		buttonCreator.animateButtonTap(button: sender)
 		guard let buttonTitle = sender.titleLabel?.text else { return }
 		if isTyping, let value = displayValue {
 			calculations.setOperand(operand: value)

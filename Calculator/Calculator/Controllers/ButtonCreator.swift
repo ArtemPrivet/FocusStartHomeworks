@@ -16,6 +16,16 @@ struct ButtonCreator
 		case operation
 		case symbolic
 	}
+
+//	private let numberButtonScheme: [(hexBackgroundColor: String,
+//		hexTitleColor: String,
+//		fontName: String,
+//		fontSize: Int)] =
+//		[
+//			("#333333", "#FFFFFF", "FiraSans-Regular", 36),
+//			("#FF9500", "#FFFFFF", "FiraSans-Regular", 36),
+//			("#AFAFAF", "#000000", "FiraSans-Regular", 30),
+//	]
 	//Создаем массив кнопок для калькулятора
 	func createCalculatorButtons() -> [UIButton] {
 		let buttonTitles = [
@@ -84,21 +94,61 @@ struct ButtonCreator
 									 hexTitleColor titleColor: String,
 									 font: UIFont?) {
 		button.setTitle(title, for: .normal)
-		button.backgroundColor = UIColor(hex: backgroundColor)
-		button.setTitleColor(UIColor(hex: titleColor), for: .normal)
+		setButtonColor(button: button, backgroundColor: UIColor(hex: backgroundColor), titleColor: UIColor(hex: titleColor))
 		button.titleLabel?.font = font
 		button.translatesAutoresizingMaskIntoConstraints = false
 		setUpButtonAspectRatioConstraints(button)
 	}
 
 	//Устанавливаем констрейнты для соотношения размеров для кнопок
-	func setUpButtonAspectRatioConstraints(_ button: UIButton) {
+	private func setUpButtonAspectRatioConstraints(_ button: UIButton) {
 		guard let title = button.titleLabel?.text, title != "0" else { return }
 		button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 1).isActive = true
 	}
 	//Делаем кнопку круглой
 	func makeButtonRound(button: UIButton) {
 		button.layer.cornerRadius = button.bounds.height / 2
+	}
+	//Сброс цвета кнопки и шрифта для кнопок операций
+	func resetColorSettingsForOperationButton(buttons: [UIButton]) {
+		buttons.forEach {
+			let button = $0
+			if let buttonTitle = button.titleLabel?.text {
+				if "＋－÷✕".contains(buttonTitle) {
+					UIView.transition(with: button, duration: 0.5, options: [.allowUserInteraction, .curveEaseIn],
+									  animations: {
+										self.setButtonColor(button: button,
+															backgroundColor: UIColor(hex: "#FF9500"),
+															titleColor: UIColor(hex: "#FFFFFF"))
+									  },
+									  completion: nil )
+				}
+			}
+		}
+	}
+	//Анимация нажатия
+	func animateButtonTap(button: UIButton) {
+		guard let buttonTitle = button.titleLabel?.text else { return }
+		guard let previousBgColor = button.backgroundColor else { return }
+
+		var targetColor = UIColor.gray
+		switch typeOfButton(buttonTitle: buttonTitle) {
+		case .number:
+		  targetColor = .gray
+		case .operation:
+		  targetColor = UIColor(hex: "#f7cf7e")
+		case .symbolic:
+		  targetColor = UIColor(hex: "#ebebeb")
+		}
+		button.backgroundColor = targetColor
+		UIView.transition(with: button, duration: 0.5, options: [.allowUserInteraction, .curveEaseIn], animations: {
+			if "＋－÷✕".contains(buttonTitle) {
+				self.setButtonColor(button: button, backgroundColor: UIColor(hex: "#FFFFFF"), titleColor: UIColor(hex: "#FF9500"))
+			}
+			else {
+				self.setButtonColor(button: button, backgroundColor: previousBgColor)
+			}
+		}, completion: nil )
 	}
 	//Тип кнопки
 	private func typeOfButton(buttonTitle: String) -> ButtonType {
@@ -110,6 +160,13 @@ struct ButtonCreator
 		}
 		else {
 			return ButtonType.symbolic
+		}
+	}
+	//Настраиваем цветовую схему для кнопки
+	private func setButtonColor(button: UIButton, backgroundColor: UIColor, titleColor: UIColor? = nil) {
+		button.backgroundColor = backgroundColor
+		if let titleColor = titleColor {
+			button.setTitleColor(titleColor, for: .normal)
 		}
 	}
 }
