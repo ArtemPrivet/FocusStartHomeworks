@@ -20,6 +20,7 @@
 		58793E6923809F0A003EFDEA /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		58793E6A23809F0D003EFDEA /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		58B3DD3D23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3DD3C23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift */; };
+		58B3DD3F2388966000C7900B /* CalculatorSomeOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B3DD3E2388966000C7900B /* CalculatorSomeOperationsTests.swift */; };
 		58DA4ACA238754A700BC10B1 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA4AC9238754A700BC10B1 /* Queue.swift */; };
 		58FA3E0523820D60005970BA /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FA3E0423820D60005970BA /* AppSetting.swift */; };
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
@@ -54,6 +55,7 @@
 		58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsAreaView.swift; sourceTree = "<group>"; };
 		58793E6723809950003EFDEA /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		58B3DD3C23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorSingleUnaryOperationsTests.swift; sourceTree = "<group>"; };
+		58B3DD3E2388966000C7900B /* CalculatorSomeOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorSomeOperationsTests.swift; sourceTree = "<group>"; };
 		58DA4AC9238754A700BC10B1 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
 		58FA3E0423820D60005970BA /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				CA33EE75237EF41600B5D09F /* CalculatorTests.swift */,
 				58B3DD3C23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift */,
+				58B3DD3E2388966000C7900B /* CalculatorSomeOperationsTests.swift */,
 				CA33EE77237EF41600B5D09F /* Info.plist */,
 			);
 			path = CalculatorTests;
@@ -434,6 +437,7 @@
 			files = (
 				CA33EE76237EF41600B5D09F /* CalculatorTests.swift in Sources */,
 				58B3DD3D23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift in Sources */,
+				58B3DD3F2388966000C7900B /* CalculatorSomeOperationsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
