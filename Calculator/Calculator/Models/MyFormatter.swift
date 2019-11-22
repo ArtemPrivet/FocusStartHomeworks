@@ -20,6 +20,7 @@ final class MyFormatter
 		formatter.maximumFractionDigits = 8
 		formatter.groupingSeparator = " "
 		formatter.locale = Locale.current
+		formatter.positiveInfinitySymbol = "Error"
 		return formatter
 	}
 

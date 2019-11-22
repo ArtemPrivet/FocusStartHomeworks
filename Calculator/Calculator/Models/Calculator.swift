@@ -10,131 +10,188 @@ import Foundation
 
 struct Calculator
 {
-	private enum OperationPriority
+	// MARK: - PRIVATE STRUCTS
+
+	private enum OperationPriority: Int
 	{
-		case high
-		case low
+		case high = 2
+		case low = 1
+		case max = 3
 	}
 
-	private enum Operation
+	private enum OperationType
 	{
-		case unary((Double) -> Double, ((String) -> String)?)
-		case binary((Double, Double) -> Double, ((String, String) -> String)?, OperationPriority)
+		case unary((Double) -> Double)
+		case binary((Double, Double) -> Double, OperationPriority, String)
 		case equals
+	}
+
+	private enum OperationBody
+	{
+		case operand(Double)    // число (операнд)
+		case operation(String) // математическая операция
+		case variable(String) // для переменной типа % от числа
 	}
 
 	private struct WaitingBinaryOperation
 	{
-		let function: (Double, Double) -> Double
+		var function: (Double, Double) -> Double
+		let funcSign: String
 		let firstOperand: Double
 
-		let descriptionFunction: (String, String) -> String
-		let descriptionOperand: String
+		let previousPriority: OperationPriority
+		let priority: OperationPriority
 
 		func perform(with secondOperand: Double) -> Double {
 			return function(firstOperand, secondOperand)
 		}
-
-		func performDescription(with secondOperand: String) -> String {
-			return descriptionFunction(descriptionOperand, secondOperand)
-		}
 	}
-
-	private var waitingBinaryOperation: WaitingBinaryOperation?
-
-	private let operations: [String: Operation] = [
-		"⁺∕₋": .unary ({ -$0 }, { "⁺∕₋(" + $0 + ")" }),
-		"%": .unary ({ $0 / 100 }, { "%" + $0 }),
-		"÷": .binary ({ $0 / $1 }, { $0 + "÷" + $1 }, .high),
-		"×": .binary ({ $0 * $1 }, { $0 + "×" + $1 }, .high),
-		"−": .binary ({ $0 - $1 }, { $0 + "−" + $1 }, .low),
-		"+": .binary ({ $0 + $1 }, { $0 + "+" + $1 }, .low),
-		"=": .equals,
+	// MARK: - PRIVATE PROPERTIES
+	private let operations: [String: OperationType] = [
+		Sign.changeSign: .unary ({ -$0 }),
+		Sign.percent: .unary ({ $0 / 100 }),
+		Sign.divide: .binary ({ $0 / $1 }, .high, Sign.divide),
+		Sign.multiply: .binary ({ $0 * $1 }, .high, Sign.multiply),
+		Sign.minus: .binary ({ $0 - $1 }, .low, Sign.minus),
+		Sign.plus: .binary ({ $0 + $1 }, .low, Sign.plus),
+		Sign.equals: .equals,
 	]
 
 	private var accumulatedValue: Double?
-	private var accumulatedDescription: String?
-
-	var result: Double? {
-		return accumulatedValue
-	}
-
-	var description: String? {
-		if waitingBinaryOperation == nil {
-			return accumulatedDescription
-		}
-		else {
-			guard let operation = waitingBinaryOperation else { return nil }
-			return operation.descriptionFunction(operation.descriptionOperand, accumulatedDescription ?? "")
-		}
-	}
-
-	 var resultIsWaiting: Bool {
-		waitingBinaryOperation != nil
-	}
-
-	mutating func performCalculation(_ symbol: String) {
-		guard let operation = operations[symbol] else { return }
-		switch operation {
-		case .unary(let perform, let descriptionFunction):
-			if let notEmptyValue = accumulatedValue {
-				accumulatedValue = perform(notEmptyValue)
-				if var descriptionFunction = descriptionFunction {
-					descriptionFunction = { symbol + "(" + $0 + ")" }
-					accumulatedDescription = descriptionFunction(accumulatedDescription ?? "")
+	private var currentOperationSign: String? {
+		didSet(newSign) {
+			if let sign = newSign {
+				if waitingBinaryOperation != nil {
+					guard let operation = operations[sign] else { return }
+					switch operation {
+					case .binary(let function, _, _):
+						waitingBinaryOperation?.function = function
+					default: break
+					}
 				}
 			}
-		case .binary(let perform, let descriptionFunction, let priority):
-			if let value = accumulatedValue,
-				let description = accumulatedDescription,
-				let descriptionFunction = descriptionFunction {
-				waitingBinaryOperation = WaitingBinaryOperation(
-					function: perform,
-					firstOperand: value,
-					descriptionFunction: descriptionFunction,
-					descriptionOperand: description
-				)
-				accumulatedValue = nil
-				accumulatedDescription = nil
-			}
-		case .equals:
-			performWaitingBinaryOperation()
+		}
+	}
+	private var previousWaitingOperationPriority = OperationPriority.max
+	private var waitingBinaryOperation: WaitingBinaryOperation?
+
+	private var result: Double? { return accumulatedValue }
+	private var resultStack = [Double]() {
+		didSet {
+			print(resultStack)
+		}
+	}
+	private var resultIsWaiting: Bool { waitingBinaryOperation != nil }
+
+	private var internalProgram = [OperationBody]() {
+		didSet {
+			print(internalProgram)
 		}
 	}
 
-	private mutating func performWaitingBinaryOperation() {
-		if let operation = waitingBinaryOperation,
-		let value = accumulatedValue,
-		let description = accumulatedDescription {
-		accumulatedValue = operation.perform(with: value)
-		accumulatedDescription = waitingBinaryOperation?.performDescription(with: description)
-		waitingBinaryOperation = nil
-		}
-	}
-
+	// MARK: INTERNAL METHODS
 	mutating func setOperand(_ operand: Double) {
-		accumulatedValue = operand
-		if let value = accumulatedValue {
-			accumulatedDescription = formatter.string(from: NSNumber(value: value)) ?? ""
+		internalProgram.append(OperationBody.operand(operand))
+	}
+
+	mutating func setOperand(variable named: String) {
+		internalProgram.append(OperationBody.variable(named))
+	}
+
+	mutating func setOperation(_ symbol: String) {
+		if symbol != Sign.allClear {
+			internalProgram.append(OperationBody.operation(symbol))
+			guard let lastItem = internalProgram.last else { return }
+			switch lastItem {
+			case .operand(let operand):
+				print(operand)
+			case .operation(let operation):
+//				if operation != symbol {
+//					internalProgram.removeLast()
+//				}
+				print(lastItem, resultIsWaiting)
+			default: break
+			}
 		}
 	}
 
-	mutating func allClear() {
-		accumulatedValue = nil
-		waitingBinaryOperation = nil
-		accumulatedDescription = ""
+	mutating func clear() {
+		internalProgram = []
+	}
+
+	mutating func undo() {
+		if internalProgram.isEmpty == false {
+			internalProgram = Array(internalProgram.dropLast())
+		}
 	}
 }
 
+// MARK: - CALC ENGINE
 extension Calculator
 {
-	var formatter: NumberFormatter {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .decimal
-		formatter.usesGroupingSeparator = true
-		formatter.notANumberSymbol = "NaN"
-		formatter.groupingSeparator = " "
-		formatter.locale = Locale.current
-		return formatter
+	mutating func evaluate(using variables: [String: Double]? = nil) -> (
+		result: Double?,
+		isWaiting: Bool
+		) {
+			// NESTED FUNCTIONS
+			func performWaitingBinaryOperation() {
+				if let operation = waitingBinaryOperation,
+					let value = accumulatedValue {
+					accumulatedValue = operation.perform(with: value)
+					previousWaitingOperationPriority = operation.priority
+					waitingBinaryOperation = nil
+				}
+			}
+
+			func setOperand(_ operand: Double) {
+				accumulatedValue = operand
+			}
+
+			func setOperand(variable named: String) {
+				accumulatedValue = variables?[named] ?? 0
+			}
+
+			func performOperation(_ symbol: String) {
+				guard let operation = operations[symbol] else { return }
+
+				switch operation {
+				case .unary(let operationFunction):
+					if let notEmptyValue = accumulatedValue {
+						accumulatedValue = operationFunction(notEmptyValue)
+					}
+				case .binary(let operationFunction, let priority, let signDescr):
+					if let value = accumulatedValue {
+						waitingBinaryOperation = WaitingBinaryOperation(
+							function: operationFunction, funcSign: signDescr,
+							firstOperand: value,
+							previousPriority: previousWaitingOperationPriority,
+							priority: priority
+						)
+						accumulatedValue = nil
+					}
+				case .equals:
+					performWaitingBinaryOperation()
+					resultStack = []
+					internalProgram = []
+				}
+			}
+
+			// EVALUATE FUNCTION
+			guard internalProgram.isEmpty == false else { return (nil, false) }
+
+			for existOperation in internalProgram {
+				switch existOperation {
+				case .operand(let operand):
+					setOperand(operand)
+				case .operation(let operation):
+					print("operation to perform:", operation)
+					currentOperationSign = operation
+					performOperation(operation)
+				case .variable(let symbol):
+					setOperand(variable: symbol)
+				}
+			}
+
+			return (result, resultIsWaiting)
 	}
 }
