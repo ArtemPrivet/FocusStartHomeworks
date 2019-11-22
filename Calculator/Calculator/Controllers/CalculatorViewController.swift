@@ -13,120 +13,90 @@ final class CalculatorViewController: UIViewController
 {
 
 	// MARK: Private properties
-	private var buttons: [[ButtonView?]] {
-		// swiftlint:disable multiline_literal_brackets
-		// swiftlint:disable trailing_comma
+	private var types: [[ButtonView.`Type`?]] {
 		[
-			[ButtonView(type: .string("AC"),
-						backgroundColor: AppSetting.Color.otherOperator,
-						textColor: AppSetting.Color.darkText,
-						tapHandler: actionClear),
-			 // \u{207A}\u{2215}\u{208B}
-			 ButtonView(type: .string("⁺∕₋"),
-						backgroundColor: AppSetting.Color.otherOperator,
-						textColor: AppSetting.Color.darkText,
-						tapHandler: actionPerformOperation),
-			 ButtonView(type: .string("%"),
-						backgroundColor: AppSetting.Color.otherOperator,
-						textColor: AppSetting.Color.darkText,
-						tapHandler: actionPerformOperation),
-			 // \u{00F7}
-			 ButtonView(type: .string("÷"),
-						backgroundColor: AppSetting.Color.mainOperator,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionPerformOperation)],
-			[ButtonView(type: .number(7),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(8),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(9),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 // \u{00D7}
-			 ButtonView(type: .string("×"),
-						backgroundColor: AppSetting.Color.mainOperator,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionPerformOperation)],
-			[ButtonView(type: .number(4),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(5),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(6),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .string("−"),
-						backgroundColor: AppSetting.Color.mainOperator,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionPerformOperation)],
-			[ButtonView(type: .number(1),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(2),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .number(3),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .string("+"),
-						backgroundColor: AppSetting.Color.mainOperator,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionPerformOperation)],
-			[ButtonView(type: .number(0),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 nil,
-			 ButtonView(type: .string(self.decimalSeparator),
-						backgroundColor: AppSetting.Color.digit,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionTouchDigit),
-			 ButtonView(type: .string("="),
-						backgroundColor: AppSetting.Color.mainOperator,
-						textColor: AppSetting.Color.lightText,
-						tapHandler: actionPerformOperation)]
+			[
+				.other("AC"),
+				.other("⁺∕₋", AppSetting.SymbolIcon.magnitude),
+				.other("%"),
+				.mainOperator("÷", AppSetting.SymbolIcon.divide),
+			],
+			[
+				.number(7),
+				.number(8),
+				.number(9),
+				.mainOperator("×"),
+			],
+			[
+				.number(4),
+				.number(5),
+				.number(6),
+				.mainOperator("−"),
+			],
+			[
+				.number(1),
+				.number(2),
+				.number(3),
+				.mainOperator("+"),
+			],
+			[
+				.number(0),
+				nil,
+				.decimal(self.decimalSeparator),
+				.mainOperator("="),
+			],
 		]
-		// swiftlint:enable multiline_literal_brackets
-		// swiftlint:enable trailing_comma
 	}
 
-	private let countOfRows = 5
-	private let countOfColumns = 4
+	private lazy var buttons: [[ButtonView?]] = {
+		self.types.reduce(into: [[ButtonView?]]()) { matrixResult, rowOfType in
+			let rowResult = rowOfType.reduce(into: [ButtonView?]()) { result, type in
+				if case .other(let symbol, _) = type, symbol == "AC" {
+					result.append(clearButtonView)
+					return
+				}
+				guard let type = type else {
+					result.append(nil)
+					return
+				}
+				var tapHandler: ButtonView.Action
+				switch type {
+				case .number, .decimal: tapHandler = actionTouchDigit
+				case .mainOperator, .other: tapHandler = actionPerformOperation
+				}
+				result.append(ButtonViewCreator.createButton(type: type, tapHandler: tapHandler))
+			}
+			matrixResult.append(rowResult)
+		}
+	}()
+
+	private var countOfRows: Int { buttons.count }
+	private var countOfColumns: Int { buttons[0].count }
 
 	private var resultView = ResultView(backgroundColor: AppSetting.Color.background,
 										textColor: AppSetting.Color.lightText)
 
-	private lazy var buttonsAreaView: ButtonsAreaView = {
-		let buttonsArea = ButtonsAreaView(buttons: buttons,
-										  grid: (countOfRows, countOfColumns),
-										  offset: 14,
-										  backgroundColor: AppSetting.Color.background)
-		return buttonsArea
-	}()
+	private lazy var buttonsAreaView =
+		ButtonsAreaView(buttons: buttons,
+						grid: (countOfRows, countOfColumns),
+						offset: 14,
+						backgroundColor: AppSetting.Color.background)
+
+	private lazy var clearButtonView =
+		ButtonViewCreator.createButton(type: .other("AC"),
+									   tapHandler: actionClean)
 
 	/// Is user typing number
 	private var userInTheMiddleOfTyping = false
 
-	private var calculator = Calculator()
+	private var calculatorEngine = CalculatorEngine()
 
 	private let decimalSeparator = AppSetting.formatter.decimalSeparator ?? ","
 
 	private var displayValue: Double? {
 		get {
-			guard let text = resultView.text else { return nil }
-			return Double(text)
+			guard let text = resultView.text, let value = AppSetting.formatter.number(from: text) else { return nil }
+			return value as? Double
 		}
 		set {
 			guard let value = newValue else { return }
@@ -134,17 +104,49 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
+	private var displayResult: Result<CalculatorEngine.CalculateResult, CalculatorEngine.CalculateError> =
+		.success(0) {
+
+		didSet {
+
+			switch displayResult {
+			case .failure: resultView.text = "Ошибка"
+			case .success(nil): displayValue = 0
+			case .success(let result): displayValue = result
+			}
+		}
+	}
+
+	private enum ClearType
+	{
+		case clean, allClean
+
+		mutating func toggle() {
+			switch self {
+			case .clean: self = .allClean
+			case .allClean: self = .clean
+			}
+		}
+	}
+
+	private var clearType: ClearType = .allClean {
+		didSet {
+			switch clearType {
+			case .clean: self.clearButtonView.setTitle("C")
+			case .allClean: self.clearButtonView.setTitle("AC")
+			}
+		}
+	}
+
 	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = AppSetting.Color.background
-		self.view.addSubview(resultView)
-		self.view.addSubview(buttonsAreaView)
+		setup()
 		setConstraints()
 		addSwipeGestureRecognizer()
 	}
 
-	// MARK: Private properties
+	// MARK: Private methods
 	private func setConstraints() {
 		var selfView: UILayoutGuide
 		if #available(iOS 11.0, *) {
@@ -154,22 +156,29 @@ final class CalculatorViewController: UIViewController
 			selfView = self.view.layoutMarginsGuide
 		}
 		resultView.snp.makeConstraints { maker in
-			maker.leading.equalTo(selfView).offset(15)
-			maker.trailing.equalTo(selfView).offset(-17)
+			maker.leading.equalTo(selfView).offset(16)
+			maker.trailing.equalTo(selfView).offset(-16)
 			maker.height.equalTo(113)
 		}
 		buttonsAreaView.snp.makeConstraints { maker in
-			maker.leading.equalToSuperview().offset(7)
-			maker.trailing.equalToSuperview().offset(-7)
-			maker.bottom.equalTo(selfView)
+			maker.leading.equalToSuperview().offset(8)
+			maker.trailing.equalToSuperview().offset(-8)
+			maker.bottom.equalTo(selfView).offset(-8)
 			maker.top.equalTo(resultView.snp.bottom).offset(8)
 			maker.height.equalTo(buttonsAreaView.snp.width).multipliedBy(CGFloat(countOfRows) / CGFloat(countOfColumns))
 		}
 	}
 
 	private func addSwipeGestureRecognizer() {
-		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(backspace))
+		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(actionBackspace))
+		swipeGestureRecognizer.direction = [.left, .right]
 		resultView.addGestureRecognizer(swipeGestureRecognizer)
+	}
+
+	private func setup() {
+		view.backgroundColor = AppSetting.Color.background
+		self.view.addSubview(resultView)
+		self.view.addSubview(buttonsAreaView)
 	}
 }
 
@@ -177,43 +186,60 @@ final class CalculatorViewController: UIViewController
 extension CalculatorViewController
 {
 
-	private func actionTouchDigit(_ digit: String) {
-		print(digit)
-		guard userInTheMiddleOfTyping else {
-			resultView.text = digit
-			userInTheMiddleOfTyping = true
-			return
-		}
+	private func actionTouchDigit(_ sender: ButtonView) {
+		print(sender.title)
+		clearType = .clean
+		let digit = sender.title
 		let currentText = resultView.text ?? ""
-		guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
-		resultView.text = currentText + digit
+		if userInTheMiddleOfTyping {
+			guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
+			resultView.text = currentText + digit
+		}
+		else {
+			if digit == decimalSeparator {
+				resultView.text = "0" + digit
+			}
+			else {
+				resultView.text = digit
+			}
+			userInTheMiddleOfTyping = true
+		}
+		if let value = displayValue {
+			calculatorEngine.setOperand(value)
+		}
 	}
 
-	private func actionPerformOperation(_ symbol: String) {
-		print(symbol)
+	private func actionPerformOperation(_ sender: ButtonView) {
+		print(sender.title)
+		clearType = .clean
 		if userInTheMiddleOfTyping {
-			if let value = displayValue {
-				calculator.pushOperand(value)
-			}
 			userInTheMiddleOfTyping = false
 		}
-		calculator.performOperation(symbol)
-		displayValue = calculator.result
-		print(calculator)
+		calculatorEngine.performOperation(with: sender.title) { result in
+			displayResult = result
+		}
 	}
 
-	private func actionClear(_ title: String) {
-		calculator.clear()
-		displayValue = 0
+	private func actionClean(_ sender: ButtonView) {
+		switch clearType {
+		case .clean:
+			calculatorEngine.clean()
+			clearType = .allClean
+		case .allClean:
+			calculatorEngine.allClean()
+		}
+		resultView.text = "0"
+		//sender.setTitle("AC")
 		userInTheMiddleOfTyping = false
-		print("Calculator has been reset")
 	}
 
-	@objc private func backspace() {
+	@objc private func actionBackspace() {
 		guard userInTheMiddleOfTyping, let text = resultView.text, text.isEmpty == false else { return }
-		resultView.text = String(resultView.text?.dropLast() ?? "")
-		if let text = resultView.text, text.isEmpty {
+		let newText = String(text.dropLast())
+		resultView.text = newText
+		if newText.isEmpty {
 			displayValue = 0
+			userInTheMiddleOfTyping = false
 		}
 	}
 }
