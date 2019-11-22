@@ -10,11 +10,18 @@
 		726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F952383D77D000F54C4 /* CalculatorView.swift */; };
-		726A0F9B23844003000F54C4 /* CalculatorActionsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */; };
+		726A0F9B23844003000F54C4 /* CalculatorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */; };
 		726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9C23844E9C000F54C4 /* Stack.swift */; };
-		726A0F9F23844ECD000F54C4 /* PolandItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9E23844ECC000F54C4 /* PolandItem.swift */; };
+		726A0F9F23844ECD000F54C4 /* PolishNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9E23844ECC000F54C4 /* PolishNotation.swift */; };
 		726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */; };
 		726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA323858D5E000F54C4 /* String+Extensions.swift */; };
+		726A0FA8238846CF000F54C4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA7238846CE000F54C4 /* Constants.swift */; };
+		726A0FAA23886BA2000F54C4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA923886BA2000F54C4 /* Item.swift */; };
+		726A0FAC23886BC0000F54C4 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FAB23886BC0000F54C4 /* Sign.swift */; };
+		726A0FAD23887B74000F54C4 /* PolishNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9E23844ECC000F54C4 /* PolishNotation.swift */; };
+		726A0FAE23887B7F000F54C4 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA923886BA2000F54C4 /* Item.swift */; };
+		726A0FAF23887B82000F54C4 /* Sign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FAB23886BC0000F54C4 /* Sign.swift */; };
+		726A0FB023887D22000F54C4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9C23844E9C000F54C4 /* Stack.swift */; };
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
 		CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE39237ACA1500B5D09F /* AppDelegate.swift */; };
 		CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE3D237ACA1500B5D09F /* CalculatorViewController.swift */; };
@@ -39,11 +46,14 @@
 		4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		726A0F952383D77D000F54C4 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
-		726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorActionsProtocol.swift; sourceTree = "<group>"; };
+		726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewDelegate.swift; sourceTree = "<group>"; };
 		726A0F9C23844E9C000F54C4 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
-		726A0F9E23844ECC000F54C4 /* PolandItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolandItem.swift; sourceTree = "<group>"; };
+		726A0F9E23844ECC000F54C4 /* PolishNotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishNotation.swift; sourceTree = "<group>"; };
 		726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
 		726A0FA323858D5E000F54C4 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		726A0FA7238846CE000F54C4 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		726A0FA923886BA2000F54C4 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		726A0FAB23886BC0000F54C4 /* Sign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sign.swift; sourceTree = "<group>"; };
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.release.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.release.xcconfig"; sourceTree = "<group>"; };
 		BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.release.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -104,8 +114,11 @@
 			isa = PBXGroup;
 			children = (
 				726A0F9C23844E9C000F54C4 /* Stack.swift */,
-				726A0F9E23844ECC000F54C4 /* PolandItem.swift */,
+				726A0F9E23844ECC000F54C4 /* PolishNotation.swift */,
 				726A0FA323858D5E000F54C4 /* String+Extensions.swift */,
+				726A0FA7238846CE000F54C4 /* Constants.swift */,
+				726A0FA923886BA2000F54C4 /* Item.swift */,
+				726A0FAB23886BC0000F54C4 /* Sign.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -113,7 +126,7 @@
 		726A0F9923843FE7000F54C4 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				726A0F9A23844003000F54C4 /* CalculatorActionsProtocol.swift */,
+				726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -401,14 +414,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				726A0FAA23886BA2000F54C4 /* Item.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */,
 				726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */,
-				726A0F9F23844ECD000F54C4 /* PolandItem.swift in Sources */,
+				726A0FAC23886BC0000F54C4 /* Sign.swift in Sources */,
+				726A0F9F23844ECD000F54C4 /* PolishNotation.swift in Sources */,
 				726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */,
 				726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
-				726A0F9B23844003000F54C4 /* CalculatorActionsProtocol.swift in Sources */,
+				726A0F9B23844003000F54C4 /* CalculatorViewDelegate.swift in Sources */,
+				726A0FA8238846CF000F54C4 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +432,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				726A0FAD23887B74000F54C4 /* PolishNotation.swift in Sources */,
+				726A0FB023887D22000F54C4 /* Stack.swift in Sources */,
+				726A0FAE23887B7F000F54C4 /* Item.swift in Sources */,
+				726A0FAF23887B82000F54C4 /* Sign.swift in Sources */,
 				CA33EE76237EF41600B5D09F /* CalculatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

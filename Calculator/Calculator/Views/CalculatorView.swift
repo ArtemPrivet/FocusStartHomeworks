@@ -20,7 +20,7 @@ final class CalculatorView: UIView
 	var buttonsLabels: [UILabel] = []
 	let resultLabel = UILabel()
 
-	weak var delegate: CalculatorActionsProtocol?
+	weak var delegate: CalculatorViewDelegate?
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -60,7 +60,6 @@ final class CalculatorView: UIView
 			stackView.alignment = .fill
 			stackView.distribution = .equalSpacing
 			stackView.translatesAutoresizingMaskIntoConstraints = false
-			stackView.spacing = 14
 		}
 
 		// Настройки для вертикального stackView
@@ -88,9 +87,12 @@ final class CalculatorView: UIView
 		NSLayoutConstraint.activate([
 
 			// Привязываем вертикальный stackView к низу и бокам экрана c отступом в 16 единиц
-			self.verticalStackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor, constant: -16),
-			self.verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
-			self.verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+			self.verticalStackView.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor,
+														   constant: Constants.verticalStackViewBottomConstraint),
+			self.verticalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor,
+															constant: Constants.verticalStackViewLeadingConstraint),
+			self.verticalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor,
+															 constant: Constants.verticalStackViewTrailingConstraint),
 
 			// Добавляем constraints (height) для горизонтальных stackViews
 			self.horizontalStackViewFirstRow.heightAnchor.constraint(equalTo: self.horizontalStackViewSecondRow.heightAnchor),
@@ -101,7 +103,7 @@ final class CalculatorView: UIView
 	}
 
 	func createButtonsWithSettings() {
-		for index in 0 ..< 19 {
+		for index in 0 ..< Constants.numberOfButtons {
 			let button = UIButton()
 			buttons.append(button)
 
@@ -118,7 +120,7 @@ final class CalculatorView: UIView
 			case 16 ..< 19:
 				self.horizontalStackViewFifthRow.addArrangedSubview(button)
 			default:
-				break
+				assertionFailure("Создано больше 19 кнопок. Лишняя трата ресурсов.")
 			}
 		}
 
@@ -140,9 +142,12 @@ final class CalculatorView: UIView
 		// Выставляем отступы в первой строке для того, чтобы рассчитать высоту и ширину кнопок
 		// Пытался делать через spacing у stackView. Почему-то не работало.
 		NSLayoutConstraint.activate([
-			buttons[0].trailingAnchor.constraint(equalTo: buttons[1].leadingAnchor, constant: -14),
-			buttons[1].trailingAnchor.constraint(equalTo: buttons[2].leadingAnchor, constant: -14),
-			buttons[2].trailingAnchor.constraint(equalTo: buttons[3].leadingAnchor, constant: -14),
+			buttons[0].trailingAnchor.constraint(equalTo: buttons[1].leadingAnchor,
+												 constant: Constants.spaceBetweenButtonsInRow),
+			buttons[1].trailingAnchor.constraint(equalTo: buttons[2].leadingAnchor,
+												 constant: Constants.spaceBetweenButtonsInRow),
+			buttons[2].trailingAnchor.constraint(equalTo: buttons[3].leadingAnchor,
+												 constant: Constants.spaceBetweenButtonsInRow),
 			])
 
 		for (index, button) in buttons.enumerated() {
@@ -152,7 +157,9 @@ final class CalculatorView: UIView
 			if index == 16, let firstButtonWidthAnchor = self.buttons.first?.widthAnchor {
 				NSLayoutConstraint.activate([
 					button.heightAnchor.constraint(equalTo: firstButtonWidthAnchor),
-					button.widthAnchor.constraint(equalTo: firstButtonWidthAnchor, multiplier: 2, constant: 14),
+					button.widthAnchor.constraint(equalTo: firstButtonWidthAnchor,
+												  multiplier: 2,
+												  constant: -Constants.spaceBetweenButtonsInRow),
 					])
 			}
 				// Настройки для всех остальных кнопок
@@ -172,7 +179,7 @@ final class CalculatorView: UIView
 	}
 
 	func paintButtons() {
-		for index in 0 ..< 19 {
+		for index in 0 ..< Constants.numberOfButtons {
 			switch index {
 			case 0 ..< 3:
 				buttons[index].backgroundColor = .lightGray
@@ -181,7 +188,7 @@ final class CalculatorView: UIView
 			case 3, 7, 11, 15, 18:
 				buttons[index].backgroundColor = .orange
 			default:
-				break
+				assertionFailure("Красим не существующую кнопку.")
 			}
 		}
 	}
@@ -213,7 +220,7 @@ final class CalculatorView: UIView
 			case 16: label.text = "0"; label.textColor = .white
 			case 17: label.text = ","; label.textColor = .white
 			case 18: label.text = "="; label.textColor = .white
-			default: break
+			default: assertionFailure("Создается лишний label, который нигде не используется.")
 			}
 			buttons[index].addSubview(label)
 
@@ -246,29 +253,13 @@ final class CalculatorView: UIView
 
 	func addActionsForButtons() {
 		for button in buttons {
-			button.addTarget(self, action: #selector(clickedButton), for: .touchUpInside)
+			button.addTarget(self, action: #selector(self.clickedButton), for: .touchUpInside)
 		}
 	}
 
 	@objc func clickedButton(sender: UIButton) {
 		guard let text = (sender.subviews.last as? UILabel)?.text else { return }
-		guard let delegate = self.delegate else { return }
-		print(text)
-		switch text {
-		case "AC": delegate.allClear()
-		case "C": delegate.clear()
-		case "⁺⁄₋": delegate.plusMinusSign()
-		case "%": delegate.percent()
-		case "÷": delegate.divideAction()
-		case "×": delegate.multiplyAction()
-		case "-": delegate.subtractAction()
-		case "+": delegate.addAction()
-		case "=": delegate.equal()
-		case ",": delegate.comma()
-		case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9": delegate.digit(inputText: text)
-		default:
-			break
-		}
+		delegate?.clickedButton(text)
 	}
 
 	func createResultLabel() {
@@ -290,11 +281,11 @@ final class CalculatorView: UIView
 
 		NSLayoutConstraint.activate([
 			self.resultLabel.bottomAnchor.constraint(equalTo: self.verticalStackView.topAnchor,
-													 constant: -8),
+													 constant: Constants.spaceBetweenLabelAndVerticalStackView),
 			self.resultLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
-													  constant: 16),
+													  constant: Constants.verticalStackViewLeadingConstraint),
 			self.resultLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-													   constant: -16),
+													   constant: Constants.verticalStackViewTrailingConstraint),
 			])
 	}
 

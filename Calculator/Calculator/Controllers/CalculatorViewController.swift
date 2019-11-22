@@ -8,46 +8,63 @@
 
 import UIKit
 
-final class CalculatorViewController: UIViewController, CalculatorActionsProtocol
+final class CalculatorViewController: UIViewController, CalculatorViewDelegate
 {
+	var calculatorView: CalculatorView? {
+		return self.view as? CalculatorView
+	}
 
-	let calculatorView = CalculatorView()
-	var polandItems: [PolandItem] = []
+	var polandItems: [Item] = []
+	let polishNotation = PolishNotation()
 	var clearLabel = false
 
 	override func loadView() {
-		self.view = calculatorView
+		self.view = CalculatorView()
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.getView()?.delegate = self
+		calculatorView?.delegate = self
 	}
 
-	func getView() -> CalculatorView? {
-		return self.view as? CalculatorView
+	func clickedButton(_ text: String) {
+		print(text)
+		switch text {
+		case "AC": self.allClear()
+		case "C": self.clear()
+		case "⁺⁄₋": self.plusMinusSign()
+		case "%": self.percent()
+		case "÷": self.divideAction()
+		case "×": self.multiplyAction()
+		case "-": self.subtractAction()
+		case "+": self.addAction()
+		case "=": self.equal()
+		case ",": self.comma()
+		case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9": self.digit(inputText: text)
+		default: assertionFailure("clickedButton() обрабатывает несуществующий кейс.")
+		}
 	}
 
 	func allClear() {
 		self.polandItems.removeAll()
-		self.getView()?.resultLabel.text = "0"
+		calculatorView?.resultLabel.text = "0"
 		self.clearLabel = false
 		print("allClear")
 	}
 
 	func clear() {
-		self.getView()?.resultLabel.text = "0"
-		self.getView()?.buttonsLabels[0].text = "AC"
+		calculatorView?.resultLabel.text = "0"
+		calculatorView?.buttonsLabels[0].text = "AC"
 		self.clearLabel = false
 	}
 
 	func plusMinusSign() {
 		print("plusMinusSign")
 		if clearLabel {
-			self.getView()?.resultLabel.text = "0"
+			calculatorView?.resultLabel.text = "0"
 			self.clearLabel = false
 		}
-		guard let resultLabel = self.getView()?.resultLabel,
+		guard let resultLabel = calculatorView?.resultLabel,
 			let resultLabelStartIndex = resultLabel.text?.startIndex else { return }
 		if resultLabel.text?.first != "-" {
 			resultLabel.text?.insert("-", at: resultLabelStartIndex)
@@ -58,14 +75,14 @@ final class CalculatorViewController: UIViewController, CalculatorActionsProtoco
 	}
 
 	func percent() {
-		guard let text = self.getView()?.resultLabel.text,
+		guard let text = calculatorView?.resultLabel.text,
 		let value = Double(text.replacingOccurrences(of: ",", with: "."))else { return }
-		if polandItems.count < 3, let firstItem = polandItems.first {
+		if polandItems.count == 2, let firstItem = polandItems.first {
 			switch firstItem {
 			case .number(let number):
 				let resultValue = number * value / 100
 				let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-				self.getView()?.resultLabel.text = result.format()
+				calculatorView?.resultLabel.text = result.format()
 			default:
 				return
 			}
@@ -74,114 +91,76 @@ final class CalculatorViewController: UIViewController, CalculatorActionsProtoco
 			let resultValue = value / 100
 			polandItems.append(.number(resultValue))
 			let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-			self.getView()?.resultLabel.text = result
+			calculatorView?.resultLabel.text = result
 		}
 	}
 
-	// Переделать условия выполнения во всех операторах (Высчитвание в момент встречи разных приоритетов)
-	func addAction() {
-		guard let resultLabelText = self.getView()?.resultLabel.text,
+	func calculateResultAndSetInLabel() {
+		guard let resultLabelText = calculatorView?.resultLabel.text,
 			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
 		polandItems.append(.number(value))
 		if polandItems.count >= 3 {
-			let polandScriptArray = polandScript(input: self.polandItems)
-			let polandScriptStringArray = polandScriptToStringArray(input: polandScriptArray)
-			guard let polandScriptResult = polandScriptGetResult(input: polandScriptStringArray) else { return }
+			guard let polishNotationResult = polishNotation.makeCalculation(self.polandItems) else { return }
 			polandItems.removeAll()
-			polandItems.append(.number(polandScriptResult))
-			self.getView()?.resultLabel.text = String(polandScriptResult).replacingOccurrences(of: ".", with: ",").format()
+			polandItems.append(.number(polishNotationResult))
+			let stringResult = String(polishNotationResult).replacingOccurrences(of: ".", with: ",").format()
+			if polishNotationResult.truncatingRemainder(dividingBy: 1) == 0 {
+				let intResult = Int(polishNotationResult)
+				calculatorView?.resultLabel.text = String(intResult).replacingOccurrences(of: ".", with: ",").format()
+			}
+			else {
+				calculatorView?.resultLabel.text = stringResult
+			}
 		}
-		polandItems.append(.sign(.plus))
 		self.clearLabel = true
+	}
+
+	// Переделать условия выполнения во всех операторах (Высчитывание в момент встречи разных приоритетов)
+	func addAction() {
+		calculateResultAndSetInLabel()
+		polandItems.append(.sign(.plus))
 	}
 
 	func subtractAction() {
-		guard let resultLabelText = self.getView()?.resultLabel.text,
-			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
-		polandItems.append(.number(value))
-		if polandItems.count >= 3 {
-			let polandScriptArray = polandScript(input: self.polandItems)
-			let polandScriptStringArray = polandScriptToStringArray(input: polandScriptArray)
-			guard let polandScriptResult = polandScriptGetResult(input: polandScriptStringArray) else { return }
-
-			polandItems.removeAll()
-			polandItems.append(.number(polandScriptResult))
-			self.getView()?.resultLabel.text = String(polandScriptResult).replacingOccurrences(of: ".", with: ",").format()
-		}
+		calculateResultAndSetInLabel()
 		polandItems.append(.sign(.minus))
-		self.clearLabel = true
 	}
 
 	func multiplyAction() {
-		guard let resultLabelText = self.getView()?.resultLabel.text,
-			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
-		polandItems.append(.number(value))
-		if polandItems.count >= 3 {
-			let polandScriptArray = polandScript(input: self.polandItems)
-			let polandScriptStringArray = polandScriptToStringArray(input: polandScriptArray)
-			guard let polandScriptResult = polandScriptGetResult(input: polandScriptStringArray) else { return }
-
-			polandItems.removeAll()
-			polandItems.append(.number(polandScriptResult))
-			self.getView()?.resultLabel.text = String(polandScriptResult).replacingOccurrences(of: ".", with: ",").format()
-		}
+		calculateResultAndSetInLabel()
 		polandItems.append(.sign(.multiply))
-		self.clearLabel = true
 	}
 
 	func divideAction() {
-		guard let resultLabelText = self.getView()?.resultLabel.text,
-			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
-		polandItems.append(.number(value))
-		if polandItems.count >= 3 {
-			let polandScriptArray = polandScript(input: self.polandItems)
-			let polandScriptStringArray = polandScriptToStringArray(input: polandScriptArray)
-			guard let polandScriptResult = polandScriptGetResult(input: polandScriptStringArray) else { return }
-
-			polandItems.removeAll()
-			polandItems.append(.number(polandScriptResult))
-			self.getView()?.resultLabel.text = String(polandScriptResult).replacingOccurrences(of: ".", with: ",").format()
-		}
+		calculateResultAndSetInLabel()
 		polandItems.append(.sign(.divide))
-		self.clearLabel = true
 	}
 
 	func equal() {
-		print("equal")
-		guard let resultLabelText = self.getView()?.resultLabel.text,
-			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
-
-		self.polandItems.append(.number(value))
-		let polandScriptArray = polandScript(input: self.polandItems)
-		let polandScriptStringArray = polandScriptToStringArray(input: polandScriptArray)
-		guard let polandScriptResult = polandScriptGetResult(input: polandScriptStringArray) else { return }
-		polandItems.removeAll()
-		polandItems.append(.number(polandScriptResult))
-		self.getView()?.resultLabel.text = String(polandScriptResult).replacingOccurrences(of: ".", with: ",").format()
-		self.clearLabel = true
+		calculateResultAndSetInLabel()
 	}
 
 	func comma() {
-		guard let text = self.getView()?.resultLabel.text else { return }
+		guard let text = calculatorView?.resultLabel.text else { return }
 		guard text.contains(",") == false else { return }
 		let containMinus = (text.first == "-")
 		if containMinus && text.count < 10 {
-			self.getView()?.resultLabel.text?.append(",")
+			calculatorView?.resultLabel.text?.append(",")
 		}
 		else if containMinus == false && text.count < 9 {
-			self.getView()?.resultLabel.text?.append(",")
+			calculatorView?.resultLabel.text?.append(",")
 		}
 	}
 
 	func digit(inputText: String) {
-		guard let resultLabel = self.getView()?.resultLabel else { return }
+		guard let resultLabel = calculatorView?.resultLabel else { return }
 		if resultLabel.text == "0" {
 			resultLabel.text = "\(inputText)"
-			self.getView()?.buttonsLabels[0].text = "C"
+			calculatorView?.buttonsLabels[0].text = "C"
 		}
 		else if resultLabel.text == "-0" {
 			resultLabel.text = "-\(inputText)"
-			self.getView()?.buttonsLabels[0].text = "C"
+			calculatorView?.buttonsLabels[0].text = "C"
 		}
 		else {
 			if clearLabel {
@@ -193,19 +172,18 @@ final class CalculatorViewController: UIViewController, CalculatorActionsProtoco
 			let containComma = text.contains(",")
 
 			if containMinus && containComma && text.count < 11 {
-				self.getView()?.resultLabel.text?.append(inputText)
+				calculatorView?.resultLabel.text?.append(inputText)
 			}
 			else if containMinus == false && containComma && text.count < 10 {
-				self.getView()?.resultLabel.text?.append(inputText)
+				calculatorView?.resultLabel.text?.append(inputText)
 			}
 			else if containMinus && containComma == false && text.count < 10 {
-				self.getView()?.resultLabel.text?.append(inputText)
+				calculatorView?.resultLabel.text?.append(inputText)
 			}
 			else if text.count < 9 {
-				self.getView()?.resultLabel.text?.append(inputText)
+				calculatorView?.resultLabel.text?.append(inputText)
 			}
 		}
-		print(self.polandItems)
 	}
 
 	override var preferredStatusBarStyle: UIStatusBarStyle {

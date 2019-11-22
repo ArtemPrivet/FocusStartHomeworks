@@ -8,8 +8,9 @@
 
 import UIKit
 
-protocol CalculatorActionsProtocol: AnyObject
+protocol CalculatorViewDelegate: AnyObject
 {
+	func clickedButton(_ text: String)
 	func allClear()
 	func clear()
 	func plusMinusSign()
