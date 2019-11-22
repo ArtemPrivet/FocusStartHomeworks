@@ -12,7 +12,7 @@ final class ScreenLabel: UILabel
 {
 	init() {
 		super.init(frame: .zero)
-		setup()
+		initialSetup()
 	}
 
 	@available(*, unavailable)
@@ -20,7 +20,7 @@ final class ScreenLabel: UILabel
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup() {
+	private func initialSetup() {
 		translatesAutoresizingMaskIntoConstraints = false
 		font = UIFont(name: "FiraSans-Light", size: 94)
 		minimumScaleFactor = 0.2

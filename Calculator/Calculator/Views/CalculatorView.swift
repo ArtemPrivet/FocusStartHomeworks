@@ -15,7 +15,7 @@ final class CalculatorView: UIView
 
 	init() {
 		super.init(frame: .zero)
-		setup()
+		initialSetup()
 		createSubviews()
 	}
 
@@ -24,7 +24,7 @@ final class CalculatorView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup() {
+	private func initialSetup() {
 		backgroundColor = .black
 	}
 

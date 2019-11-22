@@ -23,7 +23,7 @@ final class ButtonsStack: UIStackView
 		self.rowHeight = rowHeight
 		self.cellsCount = cellsCount
 		super.init(frame: .zero)
-		setup()
+		initialSetup()
 		fillGridWithCells()
 		configureOperatorsButtonsBackground()
 		setButtonTitles()
@@ -34,7 +34,7 @@ final class ButtonsStack: UIStackView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setup() {
+	private func initialSetup() {
 		translatesAutoresizingMaskIntoConstraints = false
 		spacing = 15
 		axis = .vertical
@@ -89,7 +89,7 @@ final class ButtonsStack: UIStackView
 		//configure side buttons view
 		for stack in rows {
 			if let lastInRow = stack.arrangedSubviews.last as? Button {
-				lastInRow.backgroundColor = .orange
+				lastInRow.backgroundColor = .systemOrange
 				lastInRow.setTitleColor(.white, for: .normal)
 			}
 		}
@@ -119,6 +119,10 @@ final class ButtonsStack: UIStackView
 			button.setTitle(titles[index], for: .normal)
 			button.titleLabel?.adjustsFontSizeToFitWidth = true
 			button.titleLabel?.minimumScaleFactor = 0.5
+			if button.currentTitle == Sign.divide {
+				button.titleLabel?.layer.opacity = 0.0
+				button.setBackgroundImage(UIImage(named: "divideS"), for: .normal)
+			}
 		}
 	}
 }

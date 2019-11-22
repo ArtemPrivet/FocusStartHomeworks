@@ -15,22 +15,28 @@ final class Button: UIButton
 	override var isSelected: Bool {
 		didSet {
 			switch currentTitle {
+			case Sign.divide:
+				UIView.animate(withDuration: 0.5,
+							   delay: 0.0,
+							   options: [.curveLinear],
+							   animations: {
+								self.setBackgroundImage(UIImage(named: self.isSelected ? "divideSReversed" : "divideS"), for: .selected) },
+							   completion: nil )
 			case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
 				UIView.animate(withDuration: 0.5,
 							   delay: 0.0,
 							   options: [.curveLinear],
 							   animations: {
 								if self.isSelected {
-									self.setTitleColor(.orange, for: .selected)
+									self.setTitleColor(.systemOrange, for: .selected)
 									self.backgroundColor = .white
 								}
 								else {
 									self.setTitleColor(.white, for: .normal)
-									self.backgroundColor = .orange
+									self.backgroundColor = .systemOrange
 								}
 				},
-							   completion: nil
-				)
+							   completion: nil)
 
 			default: break
 			}
@@ -44,11 +50,13 @@ final class Button: UIButton
 						   options: [.curveLinear],
 						   animations: {
 							switch self.currentTitle {
-							case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+							case Sign.divide:
+								self.setBackgroundImage(UIImage(named: self.isHighlighted ? "divideSReversed" : "divideS"), for: .normal)
+							case Sign.multiply, Sign.minus, Sign.plus:
 								break
 							case Sign.equals:
 								self.backgroundColor =
-									self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .orange
+									self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .systemOrange
 							case Sign.clear, Sign.allClear, Sign.percent, Sign.changeSign:
 								self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.9) : .lightGray
 							default:
