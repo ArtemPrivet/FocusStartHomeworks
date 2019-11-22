@@ -4,7 +4,7 @@
 //
 //  Created by Mikhail Medvedev on 18.11.2019.
 //  Copyright © 2019 Artem Orlov. All rights reserved.
-//
+//  swiftlint:disable function_body_length
 
 import Foundation
 
@@ -128,9 +128,7 @@ struct Calculator
 extension Calculator
 {
 	mutating func evaluate(using variables: [String: Double]? = nil) -> (
-		result: Double?,
-		isWaiting: Bool
-		) {
+		result: Double?, isWaiting: Bool) {
 			// NESTED FUNCTIONS
 			func performWaitingBinaryOperation() {
 				if let operation = waitingBinaryOperation,
@@ -168,10 +166,9 @@ extension Calculator
 								accumulatedValue = operationFunction(notEmptyValue)
 							}
 						}
-
-//						else {
-//							accumulatedValue = operationFunction(notEmptyValue)
-//						}
+						else {
+							accumulatedValue = operationFunction(notEmptyValue)
+						}
 					}
 				case .binary(let operationFunction, let signDescr):
 					if let value = accumulatedValue {
