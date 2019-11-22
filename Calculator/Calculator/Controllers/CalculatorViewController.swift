@@ -41,6 +41,7 @@ final class CalculatorViewController: UIViewController
 			else {
 				resultLabel.text = "0"
 			}
+			typingBegan = false
 			changeACButton()
 		}
 	}

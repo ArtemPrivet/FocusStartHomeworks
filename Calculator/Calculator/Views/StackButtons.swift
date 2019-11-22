@@ -13,11 +13,12 @@ final class StackButtons: UIView
 	private var digitAndSymbols = [
 		"AC", "⁺∕₋", "%", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "0", ",", "=",
 	]
+	private var image: [UIImage] = [
+	]
 	private var colorArray: [UIColor] = [#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1)]
 	var stackOfStacks = UIStackView()
 	var stackArray = [UIStackView]()
 	var buttons = [RoundButton]()
-	var buttonsInStack = [RoundButton]()
 
 	init() {
 		super.init(frame: .zero)
@@ -48,18 +49,26 @@ final class StackButtons: UIView
 	func addButtonsToArray() {
 		for element in 0..<digitAndSymbols.count {
 			let button = RoundButton()
+			button.imageView?.contentMode = .scaleAspectFit
+			button.clipsToBounds = true
 			button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 			switch digitAndSymbols[element] {
 			case "AC", "%", "⁺∕₋":
-				button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+				button.backgroundColor = #colorLiteral(red: 0.6861984134, green: 0.6863183975, blue: 0.6861909032, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)
+				button.setBackgroundImage(UIImage(named: "operat"), for: .highlighted)
 				button.setTitleColor(.black, for: .normal)
 			case "÷", "×", "-", "+", "=":
 				button.backgroundColor = #colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)
+				//button.titleLabel?.alpha = 0
+				button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 46)
+				button.setBackgroundImage(UIImage(named: "operat"), for: .highlighted)
+				button.setTitleColor(#colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1), for: .highlighted)
 			default:
-				button.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+				button.backgroundColor = #colorLiteral(red: 0.199973762, green: 0.2000150383, blue: 0.1999711692, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)
+				button.setBackgroundImage(UIImage(named: "digit"), for: .highlighted)
 			}
 			if button.titleLabel?.text == "0" {
 				button.contentEdgeInsets.right = 80
@@ -72,7 +81,7 @@ final class StackButtons: UIView
 					maker.width.equalTo(button.snp.height).multipliedBy(1)
 				}
 			}
-				buttons.append(button)
+			buttons.append(button)
 		}
 	}
 	func addButtonsToStack() {

@@ -49,12 +49,14 @@ struct LogicOperation
 				}
 				performPendingContainer()
 			case .percentOperation(let oneDigitPercent, let twoDigitPercent):
+				performPendingBinaryOperation()
 				if let result = currentContainer{
-					if result > 0 {
-						pendingBinaryOperation = PendingBinaryOperation(function: twoDigitPercent, firstOperand: pendingContainer)
+					if pendingContainer > 0 {
+						pendingBinaryOperation = PendingBinaryOperation(function: twoDigitPercent, firstOperand: result)
 					}
 					else {
 						currentContainer = oneDigitPercent(result)
+						pendingContainer = Double()
 					}
 				}
 				performPendingContainer()
