@@ -1,8 +1,8 @@
 //
-//  CalculatorScreen.swift
+//  CalculatorView.swift
 //  Calculator
 //
-//  Created by Максим Шалашников on 17.11.2019.
+//  Created by Максим Шалашников on 21.11.2019.
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
@@ -11,19 +11,19 @@ import SnapKit
 
 final class CalculatorView: UIView
 {
+	private let mainStackView = UIStackView()
+	private var horzontalStackViews = [UIStackView]()
+	let resultLabel = UILabel()
+	private let buttonTitles = [
+		"AC", "+-", "%", "/", "7", "8", "9", "*", "4", "5", "6", "-", "1", "2", "3", "+", "0", ",", "=",
+	]
 	var buttons: [CalculatorButton] = []
-	var label = UILabel()
-	private let buttonsCount = 19
-	private var buttonSide = 0
 
 	init() {
 		super.init(frame: .zero)
-		addSubview(label)
-		for _ in 0..<buttonsCount {
-			let button = CalculatorButton()
-			addSubview(button)
-			buttons.append(button)
-		}
+		setupStackViews()
+		setupButtons()
+		setupLabel()
 	}
 	@available(*, unavailable)
 	required init?(coder aDecoder: NSCoder) {
@@ -31,25 +31,53 @@ final class CalculatorView: UIView
 	}
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		buttonSide = Int((bounds.width - CGFloat(32) - CGFloat(42)) / 4)
-		configureButtons()
-		configureLabel()
-	}
-	// MARK: - Default configuration
-	private func configureLabel() {
-		label.text = "0"
-		label.textColor = .white
-		label.font = UIFont(name: "FiraSans-Light", size: 94)
-		label.textAlignment = .right
-		label.numberOfLines = 1
-		label.adjustsFontSizeToFitWidth = true
-		label.minimumScaleFactor = 0.5
-	}
-	private func configureButtons() {
-		makeConstraints()
 		roundButtons()
-		fillButtonsFrame()
-		addButtonContent()
+	}
+	// MARK: - Configuration methods
+	private func setupLabel() {
+		resultLabel.text = "0"
+		resultLabel.adjustsFontSizeToFitWidth = true
+		resultLabel.textAlignment = .right
+		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
+		resultLabel.textColor = .white
+		resultLabel.isUserInteractionEnabled = true
+		addSubview(resultLabel)
+		resultLabel.isUserInteractionEnabled = true
+		makeLabelConstraint()
+	}
+	private func makeLabelConstraint() {
+		resultLabel.snp.makeConstraints { maker in
+			maker.bottom.equalTo(mainStackView.snp.top).offset(-8)
+			maker.leading.equalTo(self).offset(15)
+			maker.trailing.equalTo(self).offset(-17)
+		}
+	}
+	private func setupStackViews() {
+		addSubview(mainStackView)
+		addAndConfigureChildStackViews()
+		configureMainStackView()
+		addSubview(mainStackView)
+		makeMainStackViewConstraints()
+	}
+	private func setupButtons() {
+		buttonTitles.forEach{ buttons.append(createButton(title: $0)) }
+		for index in 0..<buttons.count {
+			switch index {
+			case 0..<4:
+				horzontalStackViews[0].addArrangedSubview(buttons[index])
+			case 4..<8:
+				horzontalStackViews[1].addArrangedSubview(buttons[index])
+			case 8..<12:
+				horzontalStackViews[2].addArrangedSubview(buttons[index])
+			case 12..<16:
+				horzontalStackViews[3].addArrangedSubview(buttons[index])
+			case 16..<19:
+				horzontalStackViews[4].addArrangedSubview(buttons[index])
+			default:
+				break
+			}
+		}
+		makeButtonsConstraints()
 	}
 	private func roundButtons() {
 		buttons.forEach{ button in
@@ -57,74 +85,71 @@ final class CalculatorView: UIView
 			button.layer.cornerRadius = button.bounds.height / 2
 		}
 	}
-	private func fillButtonsFrame() {
-		for index in 0..<buttonsCount {
-			switch index {
-			case 2, 6, 10, 14, 18:
-				buttons[index].setBackgroundColor(hex: "#ff9500")
-			case 15...17:
-				buttons[index].setBackgroundColor(hex: "#C4C4C4")
-			default:
-				buttons[index].setBackgroundColor(hex: "#333333")
+	private func makeButtonsConstraints() {
+		buttons[0].snp.makeConstraints { maker in
+			maker.trailing.equalTo(buttons[1].snp.leading).offset(-14)
+		}
+		buttons[1].snp.makeConstraints { maker in
+			maker.trailing.equalTo(buttons[2].snp.leading).offset(-14)
+		}
+		buttons[2].snp.makeConstraints { maker in
+			maker.trailing.equalTo(buttons[3].snp.leading).offset(-14)
+		}
+
+		for (index, button) in buttons.enumerated() {
+			if index == 16, let firstButton = buttons.first {
+				button.snp.makeConstraints { maker in
+					maker.height.equalTo(firstButton.snp.width)
+					maker.width.equalTo(firstButton.snp.width).multipliedBy(2).offset(14)
+				}
+			}
+			else if let firstButton = buttons.first {
+				button.snp.makeConstraints { maker in
+					maker.width.equalTo(firstButton.snp.width)
+					maker.height.equalTo(firstButton.snp.height)
+				}
 			}
 		}
 	}
-	private func addButtonContent() {
-		buttons[0].setImage(imageName: "0")
-		buttons[1].setText(",")
-		buttons[2].setImage(imageName: "Equal")
-		buttons[3].setImage(imageName: "1")
-		buttons[4].setImage(imageName: "2")
-		buttons[5].setImage(imageName: "3")
-		buttons[6].setImage(imageName: "Plus")
-		buttons[7].setImage(imageName: "4")
-		buttons[8].setImage(imageName: "5")
-		buttons[9].setImage(imageName: "6")
-		buttons[10].setImage(imageName: "Minus")
-		buttons[11].setImage(imageName: "7")
-		buttons[12].setImage(imageName: "8")
-		buttons[13].setImage(imageName: "9")
-		buttons[14].setImage(imageName: "Multiply")
-		buttons[15].setText("AC")
-		buttons[15].setTextColor(UIColor: .black)
-		buttons[16].setImage(imageName: "+&-")
-		buttons[17].setImage(imageName: "Percent")
-		buttons[18].setImage(imageName: "Divide")
+	private func createButton(title: String) -> CalculatorButton {
+		return CalculatorButton(of: getButtonType(buttonTitle: title), with: title)
 	}
-	// MARK: - Constraints
-	private func makeConstraints() {
-		for index in 0..<buttonsCount{
-			switch index {
-			case 0:
-				buttons[index].snp.makeConstraints { maker in
-					maker.leading.equalTo(16)
-					if #available(iOS 11.0, *) {
-						maker.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(-16)
-					}
-					else {
-						maker.bottom.equalToSuperview().offset(-16)
-					}
-					maker.height.greaterThanOrEqualTo(buttonSide)
-					maker.width.greaterThanOrEqualTo(buttonSide * 2 + 14)
-				}
-			case 3, 7, 11, 15:
-				buttons[index].snp.makeConstraints { maker in
-					maker.leading.equalTo(16)
-					maker.bottom.equalTo(buttons[index - 1].snp.top).offset(-15)
-					maker.width.height.greaterThanOrEqualTo(buttonSide)
-				}
-			default:
-				buttons[index].snp.makeConstraints { maker in
-					maker.leading.equalTo(buttons[index - 1].snp.trailing).offset(14)
-					maker.bottom.equalTo(buttons[index - 1].snp.bottom)
-					maker.width.height.greaterThanOrEqualTo(buttonSide)
-				}
-			}
+	private func getButtonType(buttonTitle: String) -> TypeOfButton {
+		if "0123456789,".contains(buttonTitle) {
+			return TypeOfButton.digit
 		}
-		label.snp.makeConstraints { maker in
-			maker.trailing.equalToSuperview().offset(-17)
-			maker.leading.equalToSuperview().offset(15)
-			maker.bottom.equalTo(buttons[18].snp.top).offset(8)
+		else if "-+=/*".contains(buttonTitle) {
+			return TypeOfButton.operation
 		}
+		else {
+			return TypeOfButton.symbolic
+		}
+	}
+	private func makeMainStackViewConstraints() {
+		mainStackView.snp.makeConstraints { maker in
+			maker.bottom.equalTo(layoutMarginsGuide.snp.bottom).offset(-16)
+			maker.leading.equalTo(self.snp.leading).offset(16)
+			maker.trailing.equalTo(self.snp.trailing).offset(-16)
+		}
+	}
+	private func configureMainStackView() {
+		mainStackView.axis = .vertical
+		mainStackView.alignment = .fill
+		mainStackView.distribution = .equalSpacing
+		//mainStackView.translatesAutoresizingMaskIntoConstraints = false
+		mainStackView.spacing = 14
+	}
+	private func addAndConfigureChildStackViews() {
+		for _ in 0..<5 {
+			horzontalStackViews.append(UIStackView())
+		}
+		horzontalStackViews.forEach { stackView in
+			stackView.axis = .horizontal
+			stackView.alignment = .fill
+			stackView.distribution = .equalSpacing
+			//stackView.translatesAutoresizingMaskIntoConstraints = false
+			stackView.spacing = 14
+		}
+		horzontalStackViews.forEach{ mainStackView.addArrangedSubview($0) }
 	}
 }

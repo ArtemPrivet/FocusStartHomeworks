@@ -6,7 +6,6 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 import UIKit
-
 extension UIColor
 {
 	convenience init(hexString: String) {

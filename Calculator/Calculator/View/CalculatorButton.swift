@@ -8,41 +8,61 @@
 
 import UIKit
 
-final class CalculatorButton: UIView
+final class CalculatorButton: UIButton
 {
-	let button = UIButton()
+	var identifier: String?
 
-	init() {
+	//не забыть исправить
+	init(of type: TypeOfButton, with title: String) {
 		super.init(frame: .zero)
-		addSubview(button)
+		chooseTypeAndCreate(of: type, with: title)
 	}
 	@available(*, unavailable)
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		button.frame = bounds
+	private func chooseTypeAndCreate(of type: TypeOfButton, with title: String) {
+		switch type {
+		case .digit:
+			setTitleAndFont(title: title, color: .white)
+			if title == "0" {
+				contentHorizontalAlignment = .left
+				contentEdgeInsets = UIEdgeInsets(top: 0, left: 33, bottom: -5, right: 0)
+			}
+			else {
+				contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -5, right: 0)
+			}
+			backgroundColor = UIColor(hexString: "#333333")
+		case .operation:
+			identifier = title
+			backgroundColor = UIColor(hexString: "#FF9500")
+			//XCode вылетает если назвать файл "/"
+			if title == "/" {
+				guard let image = UIImage(named: "div") else { return }
+				setImage(image, for: .normal)
+			}
+			else {
+				guard let image = UIImage(named: title) else { return }
+				setImage(image, for: .normal)
+			}
+		case .symbolic:
+			contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -5, right: 0)
+			backgroundColor = UIColor(hexString: "#C4C4C4")
+			if title == "AC" {
+				identifier = title
+				setTitleAndFont(title: title, color: .black)
+			}
+			else {
+				identifier = title
+				guard let image = UIImage(named: title) else { return }
+				setImage(image, for: .normal)
+			}
+		}
 	}
-	func setBackgroundColor(hex color: String) {
-		backgroundColor = UIColor(hexString: color)
-	}
-	func setBackgroundColor(UIColor color: UIColor) {
-		backgroundColor = color
-	}
-	func setTextColor(hex color: String) {
-		button.setTitleColor(UIColor(hexString: color), for: .normal)
-	}
-	func setTextColor(UIColor color: UIColor) {
-		button.setTitleColor(color, for: .normal)
-	}
-	func setText(_ text: String) {
-		guard let font = UIFont(name: "FiraSans-Regular", size: 36) else { return }
-		button.titleLabel?.font = font
-		button.setTitle(text, for: .normal)
-	}
-	func setImage(imageName: String) {
-		guard let image = UIImage(named: imageName) else { return }
-		button.setImage(image, for: .normal)
+	private func setTitleAndFont(title: String, color: UIColor) {
+		guard let customFont = UIFont(name: "FiraSans-Regular", size: 36) else { return }
+		setTitle(title, for: .normal)
+		setTitleColor(color, for: .normal)
+		titleLabel?.font = customFont
 	}
 }

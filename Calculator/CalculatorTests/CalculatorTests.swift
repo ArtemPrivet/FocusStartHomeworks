@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import UIKit
 
 final class CalculatorTests: XCTestCase
 {
