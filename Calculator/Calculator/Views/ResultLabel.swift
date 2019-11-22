@@ -17,7 +17,8 @@ final class Resultlabel: UILabel
 		textColor = .white
 		adjustsFontSizeToFitWidth = true
 		textAlignment = .right
-		font = UIFont(name: "FiraSans-Regular", size: 100)
+		font = UIFont(name: "FiraSans-Light", size: 100)
+		adjustsFontSizeToFitWidth = true
 		text = "0"
 		translatesAutoresizingMaskIntoConstraints = false
 	}

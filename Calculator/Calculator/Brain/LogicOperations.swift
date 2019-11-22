@@ -10,13 +10,17 @@ import Foundation
 
 struct LogicOperation
 {
-	private var accumulator: Double?
+	private var currentContainer: Double?
+	private var pendingContainer = Double()
+	var result: Double? {
+		return currentContainer
+	}
 
 	private enum Operation
 	{
-		case constant(Double)
 		case unaryOperation((Double) -> Double)
 		case binaryOperation((Double, Double) -> Double)
+		case percentOperation((Double) -> Double, (Double, Double) -> Double)
 		case equals
 	}
 
@@ -24,36 +28,47 @@ struct LogicOperation
 		"⁺∕₋": Operation.unaryOperation{ -$0 },
 		"×": Operation.binaryOperation(*),
 		"+": Operation.binaryOperation(+),
-		"-": Operation.binaryOperation{ $0 - $1 },
-		"÷": Operation.binaryOperation{ $0 / $1 },
+		"-": Operation.binaryOperation(-),
+		"÷": Operation.binaryOperation(/),
 		"=": Operation.equals,
-		"AC": Operation.constant(0),
-		"%": Operation.binaryOperation{ ( $0 / 100 ) * $1 },
+		"%": Operation.percentOperation({ $0 / 100 }, { $0 / 100 * $1 }),
 	]
 
 	mutating func performOperation(_ symbol: String) {
 		if let operation = operations[symbol] {
 			switch operation {
-			case .constant(let value):
-				accumulator = value
 			case .unaryOperation(let function):
-				if let accum = accumulator {
-					accumulator = function(accum)
+				if let result = currentContainer {
+					currentContainer = function(result)
+					performPendingContainer()
 				}
 			case .binaryOperation(let function):
-				if let accum = accumulator {
-					pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accum)
-					accumulator = nil
+				performPendingBinaryOperation()
+				if let result = currentContainer {
+					pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: result)
 				}
+				performPendingContainer()
+			case .percentOperation(let oneDigitPercent, let twoDigitPercent):
+				if let result = currentContainer{
+					if result > 0 {
+						pendingBinaryOperation = PendingBinaryOperation(function: twoDigitPercent, firstOperand: pendingContainer)
+					}
+					else {
+						currentContainer = oneDigitPercent(result)
+					}
+				}
+				performPendingContainer()
 			case .equals:
 				performPendingBinaryOperation()
+				performPendingContainer()
 			}
 		}
 	}
 
 	private mutating func performPendingBinaryOperation() {
-		if let pendOper = pendingBinaryOperation, let accum = accumulator {
-			accumulator = pendOper.perform(with: accum)
+		if let pendOper = pendingBinaryOperation, let accum = currentContainer {
+			currentContainer = pendOper.perform(with: accum)
+			performPendingContainer()
 			pendingBinaryOperation = nil
 		}
 	}
@@ -69,11 +84,17 @@ struct LogicOperation
 			return function(firstOperand, seconOperand)
 		}
 	}
-	mutating func setOperand(_ operand: Double) {
-		accumulator = operand
+	mutating func setDigit(_ operand: Double) {
+		currentContainer = operand
 	}
-
-	var result: Double? {
-			return accumulator
+	mutating func performPendingContainer() {
+		if let result = currentContainer {
+			pendingContainer = result
+		}
+	}
+	mutating func null() {
+		currentContainer = nil
+		pendingBinaryOperation = nil
+		pendingContainer = Double()
 	}
 }
