@@ -26,6 +26,7 @@ final class CalculatorViewController: UIViewController
 			if let value = newValue {
 				MyFormatter.shared.switchFormatterNumberStyle(with: value)
 				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+				calculator.setOperand(value)
 			}
 		}
 	}
@@ -103,7 +104,8 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func operatorTapped(_ sender: Button) {
-		clear(ifNeeded: sender.currentTitle)
+		guard userTappedClear(sender) == false else { return }
+
 		if isUserInTheMiddleOfInput || calculatorView.screenLabel.text == Sign.zero {
 			if let value = displayValue {
 				calculator.setOperand(value)
@@ -117,6 +119,24 @@ final class CalculatorViewController: UIViewController
 
 		toggleButtonState(of: sender)
 		displayResult = calculator.evaluate(using: variableValues)
+	}
+
+	private func userTappedClear(_ button: Button) -> Bool {
+		if button.currentTitle == Sign.clear {
+			calculatorView.screenLabel.text = Sign.zero
+			isUserInTheMiddleOfInput = false
+			toggleClearButtonTitle()
+			return true
+		}
+		if button.currentTitle == Sign.allClear {
+			isUserInTheMiddleOfInput = false
+			calculator.clear()
+			variableValues = [:]
+			displayResult = calculator.evaluate(using: variableValues)
+			//displayValue = 0
+			return true
+		}
+		return false
 	}
 
 	private func toggleButtonState(of sender: Button) {
@@ -135,21 +155,6 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	private func clear(ifNeeded sign: String?) {
-		if sign == "C" {
-			toggleClearButtonTitle()
-			displayResult = calculator.evaluate(using: variableValues)
-			displayValue = 0
-			toggleClearButtonTitle()
-			return
-		}
-		if sign == "AC" {
-			isUserInTheMiddleOfInput = false
-			calculator.clear()
-			variableValues = [:]
-			displayResult = calculator.evaluate(using: variableValues)
-		}
-	}
 	private func toggleClearButtonTitle() {
 		// AC <-> C
 		calculatorView.buttonsStack.cells.first?.setTitle(

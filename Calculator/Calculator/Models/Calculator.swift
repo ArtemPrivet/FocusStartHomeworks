@@ -26,7 +26,7 @@ struct Calculator
 		case equals
 	}
 
-	private enum OperationBody
+	private enum OperationBody: Equatable
 	{
 		case operand(Double)    // число (операнд)
 		case operation(String) // математическая операция
@@ -58,6 +58,7 @@ struct Calculator
 	]
 
 	private var accumulatedValue: Double?
+
 	private var currentOperationSign: String? {
 		didSet(newSign) {
 			if let sign = newSign {
@@ -72,15 +73,18 @@ struct Calculator
 			}
 		}
 	}
+
 	private var previousWaitingOperationPriority = OperationPriority.max
 	private var waitingBinaryOperation: WaitingBinaryOperation?
 
 	private var result: Double? { return accumulatedValue }
-	private var resultStack = [Double]() {
-		didSet {
-			print(resultStack)
+
+	private var lastResult: Double? {
+		didSet(newValue) {
+			print(newValue)
 		}
 	}
+
 	private var resultIsWaiting: Bool { waitingBinaryOperation != nil }
 
 	private var internalProgram = [OperationBody]() {
@@ -91,7 +95,21 @@ struct Calculator
 
 	// MARK: INTERNAL METHODS
 	mutating func setOperand(_ operand: Double) {
-		internalProgram.append(OperationBody.operand(operand))
+		if internalProgram.isEmpty {
+			internalProgram.append(OperationBody.operand(operand))
+		}
+		else {
+			guard let lastItem = internalProgram.last else { return }
+			switch lastItem {
+			case .operand(let number):
+				print(number)
+			case .operation(let sign):
+				if sign != Sign.allClear || sign != Sign.clear {
+				internalProgram.append(OperationBody.operand(operand))
+				}
+			default: break
+			}
+		}
 	}
 
 	mutating func setOperand(variable named: String) {
@@ -100,23 +118,27 @@ struct Calculator
 
 	mutating func setOperation(_ symbol: String) {
 		if symbol != Sign.allClear {
-			internalProgram.append(OperationBody.operation(symbol))
 			guard let lastItem = internalProgram.last else { return }
 			switch lastItem {
-			case .operand(let operand):
-				print(operand)
-			case .operation(let operation):
-//				if operation != symbol {
-//					internalProgram.removeLast()
-//				}
-				print(lastItem, resultIsWaiting)
-			default: break
+			case .operation(let sign):
+				switch sign {
+				case Sign.divide, Sign.multiply, Sign.minus, Sign.plus, Sign.equals:
+					print("Меняю знак операции, ожидаю второй операнд")
+					currentOperationSign = symbol
+					let lastIndex = internalProgram.count - 1
+					internalProgram[lastIndex] = OperationBody.operation(symbol)
+				default: break
+				}
+			default:
+				internalProgram.append(OperationBody.operation(symbol))
 			}
 		}
 	}
 
 	mutating func clear() {
 		internalProgram = []
+		accumulatedValue = nil
+		lastResult = nil
 	}
 
 	mutating func undo() {
@@ -138,6 +160,7 @@ extension Calculator
 				if let operation = waitingBinaryOperation,
 					let value = accumulatedValue {
 					accumulatedValue = operation.perform(with: value)
+					lastResult = accumulatedValue
 					previousWaitingOperationPriority = operation.priority
 					waitingBinaryOperation = nil
 				}
@@ -171,12 +194,10 @@ extension Calculator
 					}
 				case .equals:
 					performWaitingBinaryOperation()
-					resultStack = []
-					internalProgram = []
 				}
 			}
 
-			// EVALUATE FUNCTION
+			// FUNCTION BODY
 			guard internalProgram.isEmpty == false else { return (nil, false) }
 
 			for existOperation in internalProgram {
@@ -184,8 +205,7 @@ extension Calculator
 				case .operand(let operand):
 					setOperand(operand)
 				case .operation(let operation):
-					print("operation to perform:", operation)
-					currentOperationSign = operation
+//					currentOperationSign = operation
 					performOperation(operation)
 				case .variable(let symbol):
 					setOperand(variable: symbol)
