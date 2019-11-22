@@ -215,7 +215,10 @@ extension CalculatorViewController
 		if userInTheMiddleOfTyping {
 			userInTheMiddleOfTyping = false
 		}
-		calculatorEngine.performOperation(with: sender.title) { result in
+		guard let symbol = CalculatorEngine.Operator(rawValue: sender.title) else {
+			return
+		}
+		calculatorEngine.performOperation(with: symbol) { result in
 			displayResult = result
 		}
 	}

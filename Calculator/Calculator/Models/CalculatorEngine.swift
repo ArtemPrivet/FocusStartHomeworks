@@ -116,7 +116,7 @@ struct CalculatorEngine
 	}
 
 	// swiftlint:disable:next function_body_length
-	mutating func performOperation(with symbol: String, completion: (Result<CalculateResult, CalculateError>) -> Void) {
+	mutating func performOperation(with symbol: Operator, completion: (Result<CalculateResult, CalculateError>) -> Void) {
 
 		var error: CalculateError?
 
@@ -143,8 +143,7 @@ struct CalculatorEngine
 			// В стэке послдний элемент - оператор
 			guard
 				let lastOperation = `operator`.operation(from: operations),
-				let newOperator = Operator(rawValue: symbol),
-				let newOperation = newOperator.operation(from: operations) else {
+				let newOperation = symbol.operation(from: operations) else {
 
 					completion(.failure(.error(message: "ERROR")))
 					return
@@ -193,8 +192,7 @@ struct CalculatorEngine
 			}
 		}
 		else {
-			guard let `operator` = Operator(rawValue: symbol),
-				let operation = `operator`.operation(from: operations) else {
+			guard let operation = symbol.operation(from: operations) else {
 
 					completion(.failure(.error(message: "ERROR")))
 					return
@@ -238,7 +236,7 @@ struct CalculatorEngine
 
 			case .binaryOperation:
 				evaluate(completion)
-				infixArray.append(.operator(`operator`))
+				infixArray.append(.operator(symbol))
 				return
 
 			case .equals:
