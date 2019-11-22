@@ -12,29 +12,31 @@ import SnapKit
 final class CalculatorViewController: UIViewController
 {
 
-	var buttons = [CalculatorButtons]()
-	var resultLabel = UILabel()
+	private var buttons = [CalculatorButton]()
+	private var displayLabel = UILabel()
 
-	var resultNumber = 0
-	var firstOperand = 0.0
-	var secondOperand = 0.0
-	var operatorSign = ""
-	var isPressedAcButton = false
-	var isTyping = false
-	var isFloatNumber = false
+	private var resultNumber = 0
+	private var firstOperand = 0.0
+	private var secondOperand = 0.0
+	private var operatorSign = ""
+	private var isPressedAcButton = false
+	private var isTyping = false
+	private var isFloatNumber = false
+	private var rpnExpression = [String]()
+	private var converterRpn = ConverterRPN()
 
 	var currentInput: Double {
 		get {
-			return Double(resultLabel.text ?? "") ?? 0
+			guard let text = displayLabel.text else { return 0 }
+			return Double(text) ?? 0
 		}
 		set {
 			if String(newValue).hasSuffix(".0") {
-				resultLabel.text = String(String(newValue).dropLast(2))
+				displayLabel.text = String(String(newValue).dropLast(2))
 			}
 			else {
-				resultLabel.text = String(newValue)
+				displayLabel.text = String(newValue)
 			}
-			isTyping = false
 		}
 	}
 
@@ -42,57 +44,52 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 		self.view.backgroundColor = .black
 		addButtonActions()
-		setGestureRecognizer()
+		addSwipeGestureToDispayLabel()
 	}
 
 	override func loadView() {
-		let calcView = CalcalatorView()
-		self.view = calcView
-		resultLabel = calcView.resultLabel
-		buttons = calcView.buttons.sorted(by: { button1, button2 -> Bool in
-			button1.tag < button2.tag
-		})
+		let calculatorView = CalcalatorView()
+		self.view = calculatorView
+		displayLabel = calculatorView.displayLabel
+		buttons = calculatorView.buttons.sorted(by: { $0.tag < $1.tag })
 	}
 
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		setupSubViews()
 	}
 
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
 
-	func setupSubViews() {
-		buttons.forEach { button in
-			if button.tag == 0 {
-				button.contentHorizontalAlignment = .left
-				button.contentEdgeInsets = UIEdgeInsets(top: 0, left: button.frame.height / 2 - 7, bottom: 0, right: 0)
-			}
-			button.layer.cornerRadius = button.bounds.height / 2
+	private func getPriority(str: String) -> Int {
+		switch str {
+		case "+", "-": return 1
+		case "*", "/": return 2
+		default: return 1
 		}
 	}
 
-	func setGestureRecognizer() {
+	private func addSwipeGestureToDispayLabel() {
 		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(deleteSymbolFromLabel))
 		swipeGestureRecognizer.direction = [.left, .right]
-		resultLabel.addGestureRecognizer(swipeGestureRecognizer)
-		resultLabel.isUserInteractionEnabled = true
+		displayLabel.addGestureRecognizer(swipeGestureRecognizer)
+		displayLabel.isUserInteractionEnabled = true
 	}
 
 	@objc func deleteSymbolFromLabel() {
-		guard isTyping, let labelText = resultLabel.text else { return }
+		guard isTyping, let labelText = displayLabel.text else { return }
 		let newText = String(labelText.dropLast())
 		if newText.count > 0 {
-			resultLabel.text = newText
+			displayLabel.text = newText
 		}
 		else {
-			resultLabel.text = "0"
+			displayLabel.text = "0"
 			isTyping = false
 		}
 	}
 
-	func addButtonActions() {
+	private func addButtonActions() {
 		buttons.forEach { button in
 			switch button.tag {
 			case 0...9:
@@ -114,18 +111,19 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	// MARK: - Button functions
-	@objc func floatButtonPressed(_ sender: CalculatorButtons) {
+	@objc private func floatButtonPressed(_ sender: CalculatorButton) {
 		if isTyping && isFloatNumber == false {
-			resultLabel.text = (resultLabel.text ?? "") + "."
+			displayLabel.text = (displayLabel.text ?? "") + "."
 			isFloatNumber = true
 		}
-		else if isTyping && isFloatNumber == false {
-			resultLabel.text = "0."
+		else if isTyping == false && isFloatNumber == false {
+			currentInput = Double(displayLabel.text ?? "") ?? 0.0
+			displayLabel.text = "0."
+			isTyping = true
 		}
 	}
 
-	@objc func percentButtonPressed(_ sender: CalculatorButtons) {
+	@objc private func percentButtonPressed(_ sender: CalculatorButton) {
 		if firstOperand == 0 {
 			currentInput /= 100
 		}
@@ -135,46 +133,46 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	@objc func negativeSwitchButtonPressed(_ sender: CalculatorButtons) {
+	@objc private func negativeSwitchButtonPressed(_ sender: CalculatorButton) {
 		currentInput *= -1
 	}
 
-	@objc func clearButtonPressed(_ sender: CalculatorButtons) {
+	@objc private func clearButtonPressed(_ sender: CalculatorButton) {
+		buttons[OperationButtons.acAndC].setTitle("AC", for: .normal)
+		rpnExpression.removeAll()
 		firstOperand = 0
 		secondOperand = 0
 		currentInput = 0
-		resultLabel.text = "0"
+		displayLabel.text = "0"
 		isTyping = false
 		operatorSign = ""
 		isFloatNumber = false
 	}
 
-	@objc func numberButtonPressed(_ sender: CalculatorButtons) {
+	@objc private func numberButtonPressed(_ sender: CalculatorButton) {
+		guard isTyping || sender.tag != 0 else { return }
+		buttons[OperationButtons.acAndC].setTitle("C", for: .normal)
+		guard let displayText = displayLabel.text else { return }
 		if isTyping {
-			resultLabel.text = (resultLabel.text ?? "") + String(sender.tag)
+			if displayText.count < 9 {
+				displayLabel.text = displayText + String(sender.tag)
+			}
 		}
 		else {
-			resultLabel.text = String(sender.tag)
+			displayLabel.text = String(sender.tag)
 			isTyping = true
 		}
 	}
 
-	@objc func equalButtonPressed(_ sender: CalculatorButtons) {
-		if isTyping { //если на экране, что то есть
-			secondOperand = currentInput
+	@objc private func operatorButtonPressed(_ sender: CalculatorButton) {
+		if isTyping {
+			rpnExpression.append(String(currentInput))
 		}
-
-		switch operatorSign {
-		case "+": makeOperation { $0 + $1 }
-		case "-": makeOperation { $0 - $1 }
-		case "*": makeOperation { $0 * $1 }
-		case "/": makeOperation { $0 / $1 }
-		default: break
+		if isTyping && rpnExpression.count > 2 {
+			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: operatorSign) {
+				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
+			}
 		}
-		isFloatNumber = false
-	}
-	@objc func operatorButtonPressed(_ sender: CalculatorButtons) {
-		equalButtonPressed(sender) //check for bug
 		switch sender.tag {
 		case OperationButtons.plus: operatorSign = "+"
 		case OperationButtons.minus: operatorSign = "-"
@@ -182,13 +180,41 @@ final class CalculatorViewController: UIViewController
 		case OperationButtons.divide: operatorSign = "/"
 		default: break
 		}
+		if isTyping {
+			rpnExpression.append(String(operatorSign))
+		}
 		firstOperand = currentInput
 		isTyping = false
 		isFloatNumber = false
 	}
 
-	func makeOperation(_ operation: (Double, Double) -> Double) {
-		currentInput = operation(firstOperand, secondOperand)
+	@objc private func equalButtonPressed(_ sender: CalculatorButton) {
+		if isTyping {
+			rpnExpression.append(String(currentInput))
+			secondOperand = currentInput
+		}
+		switch operatorSign {
+		case "+": makeOperation { $0 + $1 }
+		case "-": makeOperation { $0 - $1 }
+		case "*": makeOperation { $0 * $1 }
+		case "/": makeOperation { $0 / $1 }
+		default: break
+		}
+		rpnExpression.removeAll()
+		firstOperand = currentInput
+		isTyping = true
+		isFloatNumber = false
+	}
+
+	private func makeOperation(_ operation: (Double, Double) -> Double) {
+		if isTyping && rpnExpression.count > 2 {
+			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: operatorSign) {
+				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
+			}
+			else {
+				currentInput = operation(firstOperand, secondOperand)
+			}
+		}
 		isTyping = false
 	}
 }

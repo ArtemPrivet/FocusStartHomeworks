@@ -20,7 +20,7 @@ final class RowButtonsStackView: UIStackView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setupRowButtonsStack() {
+	private func setupRowButtonsStack() {
 		axis = .horizontal
 		distribution = .fillEqually
 		spacing = 14

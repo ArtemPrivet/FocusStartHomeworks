@@ -10,27 +10,29 @@ import UIKit
 
 final class CalcalatorView: UIView
 {
-	var resultLabel = UILabel(frame: .zero)
-	var buttons = [CalculatorButtons]()
-	var rows = [RowButtonsStackView]()
+	var displayLabel = Displaylabel()
+	var buttons = [CalculatorButton]()
+	private var rows = [RowButtonsStackView]()
 
-	var firstRowButtons = RowButtonsStackView(frame: .zero)
-	var secondRowButtons = RowButtonsStackView(frame: .zero)
-	var thirdRowButtons = RowButtonsStackView(frame: .zero)
-	var fourthRowButtons = RowButtonsStackView(frame: .zero)
-	var fifthRowButtons = RowButtonsStackView(frame: .zero)
+	private var buttonSymbols = [
+		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+		",", "=", "+", "-", "×", "÷", "%", "⁺∕₋", "AC",
+	]
 
-	var buttonsStackView = ButtonsStackView(frame: .zero)
+	private var firstRowButtons = RowButtonsStackView()
+	private var secondRowButtons = RowButtonsStackView()
+	private var thirdRowButtons = RowButtonsStackView()
+	private var fourthRowButtons = RowButtonsStackView()
+	private var fifthRowButtons = RowButtonsStackView()
+
+	private var buttonsStackView = ButtonsStackView()
 
 	init() {
 		super.init(frame: .zero)
 		backgroundColor = .white
-			addSubview(resultLabel)
-		setupResultLabel()
-		createNumbersButtons()
-		createOtherButtons()
+		addSubview(displayLabel)
+		crateButtons()
 		setRowsButtons()
-		setButtonsColor()
 		makeConstraints()
 	}
 
@@ -39,102 +41,29 @@ final class CalcalatorView: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setupResultLabel() {
-		resultLabel.font = UIFont(name: "FiraSans-Light", size: 94)
-		resultLabel.textColor = Colors.colorWhite
-		resultLabel.textAlignment = .right
-		resultLabel.text = "0"
-		resultLabel.adjustsFontSizeToFitWidth = true
-	}
-
-	//Создаем кнопки с цифрами
-	func createNumbersButtons() {
-		for index in (0...9).reversed() {
-			let button = CalculatorButtons(frame: .zero)
+	private func crateButtons() {
+		for index in 0...18 {
+			let button = CalculatorButton()
 			button.tag = index
-			button.setTitle(String(button.tag), for: .normal)
+			button.setTitle(buttonSymbols[index], for: .normal)
 			switch index {
-			case 0:
-				fifthRowButtons.insertArrangedSubview(button, at: 0)
-			case 1...3:
-				fourthRowButtons.insertArrangedSubview(button, at: 0)
-			case 4...6:
-				thirdRowButtons.insertArrangedSubview(button, at: 0)
-			case 7...9:
-				secondRowButtons.insertArrangedSubview(button, at: 0)
-			default: break
-			}
-			buttons.append(button)
-		}
-	}
-
-	//Создаем остальные кнопки
-	func createOtherButtons() {
-		for index in (10...18).reversed() {
-			let button = CalculatorButtons(frame: .zero)
-			button.tag = index
-			buttons.append(button)
-			switch index {
-			case 10...11:
-				fifthRowButtons.insertArrangedSubview(button, at: 1)
-			case 12:
+			case 0, 10, 11:
+				fifthRowButtons.addArrangedSubview(button)
+			case 1...3, 12:
 				fourthRowButtons.addArrangedSubview(button)
-			case 13:
+			case 4...6, 13:
 				thirdRowButtons.addArrangedSubview(button)
-			case 14:
+			case 7...9, 14:
 				secondRowButtons.addArrangedSubview(button)
-			default:
-				firstRowButtons.addArrangedSubview(button)
-			}
-		}
-	}
-
-	//Создаем остальные кнопки
-	private func setOperationButtonsTitle(_ button: CalculatorButtons) {
-		switch button.tag {
-		case 10:
-			button.setTitle(",", for: .normal)
-		case 11:
-			button.setTitle("=", for: .normal)
-		case 12:
-			button.setTitle("+", for: .normal)
-		case 13:
-			button.setTitle("-", for: .normal)
-		case 14:
-			button.setTitle("×", for: .normal)
-		case 15:
-			button.setTitle("\u{00f7}", for: .normal)
-		case 16:
-			button.setTitle("%", for: .normal)
-		case 17:
-			button.setTitle("⁺∕₋", for: .normal)
-		case 18:
-			button.setTitle("AC", for: .normal)
-		default: break
-		}
-	}
-
-	func setButtonsColor() {
-		for button in buttons {
-			switch button.tag {
-			case 0...10:
-				button.backgroundColor = Colors.colorDarkGray
-				button.setTitleColor(Colors.colorWhite, for: .normal)
-				setOperationButtonsTitle(button)
-			case 11...15:
-				button.backgroundColor = Colors.colorOrange
-				button.setTitleColor(Colors.colorWhite, for: .normal)
-				setOperationButtonsTitle(button)
-			case 16...18:
-				button.backgroundColor = Colors.colorGray
-				button.setTitleColor(Colors.colorBlack, for: .normal)
-				setOperationButtonsTitle(button)
+			case 15...18:
+				firstRowButtons.insertArrangedSubview(button, at: 0)
 			default: break
 			}
+			buttons.append(button)
 		}
 	}
 
-	func setRowsButtons() {
+	private func setRowsButtons() {
 		fifthRowButtons.alignment = .fill
 		fifthRowButtons.distribution = .fill
 		buttonsStackView = ButtonsStackView(arrangedSubviews: [
@@ -146,7 +75,7 @@ final class CalcalatorView: UIView
 			])
 	}
 
-	func makeConstraints() {
+	private func makeConstraints() {
 		for button in buttons where button.tag != 0 {
 			button.snp.makeConstraints { make in
 				make.width.equalTo(button.snp.height).multipliedBy(1)
@@ -154,7 +83,7 @@ final class CalcalatorView: UIView
 		}
 
 		fifthRowButtons.snp.makeConstraints { make in
-			var equalBut = CalculatorButtons(frame: .zero)
+			var equalBut = CalculatorButton()
 			for view in buttons where view.tag == 0 {
 				equalBut = view
 			}
@@ -169,7 +98,8 @@ final class CalcalatorView: UIView
 			make.bottomMargin.equalTo(self).offset(-16)
 		}
 
-		resultLabel.snp.makeConstraints { make in
+		displayLabel.snp.makeConstraints { [weak self] make in
+			guard let self = self else { return }
 			make.leading.equalTo(self).offset(15)
 			make.trailing.equalTo(self).offset(-17)
 			make.bottom.equalTo(buttonsStackView.snp.top).offset(-8)

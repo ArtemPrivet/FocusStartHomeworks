@@ -20,7 +20,7 @@ final class ButtonsStackView: UIStackView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func setupButton() {
+	private func setupButton() {
 		axis = .vertical
 		distribution = .fillEqually
 		spacing = 15
