@@ -46,7 +46,6 @@ struct RPNDecoder
 				guard stack.count > 1 else { break }
 				guard let rightOperand = stack.popLast() else { fallthrough }
 				stack.removeLast()
-				print(stack)
 				stack.append(String(Double(rightOperand)!))
 			case Sign.percent:
 				if stack.isEmpty == false {
@@ -71,9 +70,11 @@ struct RPNDecoder
 			}
 		}
 
+		if stack.isEmpty == false {
 		guard let result = Double(stack.removeLast()) else { return 0 }
-
 		return result
+		}
+		return 0
 	}
 
 	init(expressionInArrayFormat: [String]) {

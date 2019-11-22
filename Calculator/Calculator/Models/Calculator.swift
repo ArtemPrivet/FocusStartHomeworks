@@ -14,7 +14,7 @@ struct Calculator
 	private enum OperationType
 	{
 		// типы операций
-		case unary((Double) -> Double, String) 					 // унарная
+		case unary((Double) -> Double, String) 			 // унарная
 		case binary((Double, Double) -> Double, String) // бинарная
 		case equals 								   // равно
 	}
@@ -71,31 +71,9 @@ struct Calculator
 
 	private var result: Double? { return accumulatedValue } // результат вычислений операции
 
-	private var lastResult: Double? {
-		didSet(newValue) {
-			print(newValue)
-		}
-	}
-
 	private var resultIsWaiting: Bool { waitingBinaryOperation != nil }
 
-	private var operationStack = [ExpressionBody]() {
-		didSet {
-//			guard let lastElement = operationStack.last else { return }
-//
-//			switch lastElement {
-//			case .operand(let lastOperand):
-//				if let accumValue = accumulatedValue {
-//					if lastOperand == accumValue {
-//						operationStack.removeLast()
-//						accumulatedValue = nil
-//					}
-//				}
-//			default: break
-//			}
-			print(operationStack)
-		}
-	}
+	private var operationStack = [ExpressionBody]()
 
 	// MARK: INTERNAL METHODS
 	mutating func setOperand(_ operand: Double) {
@@ -105,8 +83,6 @@ struct Calculator
 		else {
 			guard let lastItem = operationStack.last else { return }
 			switch lastItem {
-			case .operand(let number):
-				print(number)
 			case .operation(let sign):
 				if sign != Sign.allClear || sign != Sign.clear {
 				operationStack.append(ExpressionBody.operand(operand))
@@ -142,12 +118,13 @@ struct Calculator
 
 	mutating func clear() {
 		operationStack = []
+		waitingBinaryOperation = nil
 		accumulatedValue = nil
-		lastResult = nil
+		currentOperationSign = nil
 	}
 }
 
-// MARK: - CALC ENGINE
+// MARK: - CALCULATIONS ENGINE
 extension Calculator
 {
 	mutating func evaluate(using variables: [String: Double]? = nil) -> (
@@ -182,13 +159,19 @@ extension Calculator
 					if let notEmptyValue = accumulatedValue {
 						if sign == Sign.percent {
 							if let previosOperand = waitingBinaryOperation?.firstOperand {
+								// найден предыдущий операнд, находим его %
 								let percentageFromPreviosOperand = (previosOperand * notEmptyValue) / 100
 								accumulatedValue = percentageFromPreviosOperand
 							}
+							else {
+								// если перед числом не было операций то выполняем деление на 100
+								accumulatedValue = operationFunction(notEmptyValue)
+							}
 						}
-						else {
-							accumulatedValue = operationFunction(notEmptyValue)
-						}
+
+//						else {
+//							accumulatedValue = operationFunction(notEmptyValue)
+//						}
 					}
 				case .binary(let operationFunction, let signDescr):
 					if let value = accumulatedValue {
@@ -216,7 +199,7 @@ extension Calculator
 					setOperand(variable: symbol)
 				}
 			}
-			print(result)
+
 			return (result, resultIsWaiting)
 	}
 
@@ -232,8 +215,10 @@ extension Calculator
 		}
 	}
 
+	///перебирает стек операций и творит польскую магию
 	private mutating func expressionValue() -> Double {
 		var testArray = [String]()
+
 		for item in operationStack {
 			switch item {
 			case .operand(let number):

@@ -26,6 +26,7 @@ final class MyFormatter
 
 	private init() {}
 
+	/// если число длинное то на экране будет отображаться число в экспоненте
 	 func switchFormatterNumberStyle(with number: Double) {
 		let maxNumber = 999_999_999.0
 		format.numberStyle = ( number > maxNumber || number < -maxNumber) ? .scientific : .decimal
