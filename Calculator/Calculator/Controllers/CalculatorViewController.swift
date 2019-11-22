@@ -17,33 +17,33 @@ final class CalculatorViewController: UIViewController
 		[
 			[
 				.other("AC"),
-				.other("⁺∕₋", AppSetting.SymbolIcon.magnitude),
-				.other("%"),
-				.mainOperator("÷", AppSetting.SymbolIcon.divide),
+				.other(CalculatorEngine.Operator.magnitude.rawValue, AppSetting.SymbolIcon.magnitude),
+				.other(CalculatorEngine.Operator.percent.rawValue),
+				.mainOperator(CalculatorEngine.Operator.divide.rawValue, AppSetting.SymbolIcon.divide),
 			],
 			[
 				.number(7),
 				.number(8),
 				.number(9),
-				.mainOperator("×"),
+				.mainOperator(CalculatorEngine.Operator.multiple.rawValue),
 			],
 			[
 				.number(4),
 				.number(5),
 				.number(6),
-				.mainOperator("−"),
+				.mainOperator(CalculatorEngine.Operator.minus.rawValue),
 			],
 			[
 				.number(1),
 				.number(2),
 				.number(3),
-				.mainOperator("+"),
+				.mainOperator(CalculatorEngine.Operator.plus.rawValue),
 			],
 			[
 				.number(0),
 				nil,
 				.decimal(self.decimalSeparator),
-				.mainOperator("="),
+				.mainOperator(CalculatorEngine.Operator.equals.rawValue),
 			],
 		]
 	}

@@ -40,7 +40,7 @@ struct CalculatorEngine
 		}
 	}
 
-	fileprivate enum Operator: String, CustomStringConvertible
+	enum Operator: String, CustomStringConvertible
 	{
 		case plus = "+"
 		case minus = "−"
@@ -54,7 +54,7 @@ struct CalculatorEngine
 
 		var description: String { rawValue }
 
-		func operation(from operations: [Self: Operation]) -> Operation? {
+		fileprivate func operation(from operations: [Self: Operation]) -> Operation? {
 			operations[self]
 		}
 	}
