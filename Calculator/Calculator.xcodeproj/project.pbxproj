@@ -7,6 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		580479A22380A3BF00A23A15 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
+		580479A32380A3C300A23A15 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
+		580479A52380A50000A23A15 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580479A42380A50000A23A15 /* ButtonView.swift */; };
+		58185C0F2384850400073CC6 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C0E2384850400073CC6 /* Stack.swift */; };
+		58185C112384985000073CC6 /* ConverterInfixToPostfixNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */; };
+		58185C132385704F00073CC6 /* UIButton+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C122385704F00073CC6 /* UIButton+Color.swift */; };
+		58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C142385722000073CC6 /* UIColor+Adjust.swift */; };
+		584EA37D23819C3700C0987B /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584EA37C23819C3700C0987B /* CalculatorEngine.swift */; };
+		58793E6623808DAD003EFDEA /* ButtonsAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */; };
+		58793E6823809950003EFDEA /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58793E6723809950003EFDEA /* ResultView.swift */; };
+		58793E6923809F0A003EFDEA /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
+		58793E6A23809F0D003EFDEA /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
+		58DA4ACA238754A700BC10B1 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA4AC9238754A700BC10B1 /* Queue.swift */; };
+		58FA3E0523820D60005970BA /* AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FA3E0423820D60005970BA /* AppSetting.swift */; };
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
 		CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE39237ACA1500B5D09F /* AppDelegate.swift */; };
 		CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA33EE3D237ACA1500B5D09F /* CalculatorViewController.swift */; };
@@ -30,6 +44,16 @@
 		28450808F086F21E93E1C3E6 /* Pods_Calculator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
+		580479A42380A50000A23A15 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		58185C0E2384850400073CC6 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterInfixToPostfixNotation.swift; sourceTree = "<group>"; };
+		58185C122385704F00073CC6 /* UIButton+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Color.swift"; sourceTree = "<group>"; };
+		58185C142385722000073CC6 /* UIColor+Adjust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Adjust.swift"; sourceTree = "<group>"; };
+		584EA37C23819C3700C0987B /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
+		58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsAreaView.swift; sourceTree = "<group>"; };
+		58793E6723809950003EFDEA /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		58DA4AC9238754A700BC10B1 /* Queue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Queue.swift; sourceTree = "<group>"; };
+		58FA3E0423820D60005970BA /* AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSetting.swift; sourceTree = "<group>"; };
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.release.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.release.xcconfig"; sourceTree = "<group>"; };
 		BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.release.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +102,27 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		584EA37B23819C1F00C0987B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				584EA37C23819C3700C0987B /* CalculatorEngine.swift */,
+				58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */,
+				58185C0E2384850400073CC6 /* Stack.swift */,
+				58DA4AC9238754A700BC10B1 /* Queue.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		58793E6423808D5B003EFDEA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				58793E6723809950003EFDEA /* ResultView.swift */,
+				58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */,
+				580479A42380A50000A23A15 /* ButtonView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		CA33EE2D237ACA1500B5D09F = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +146,8 @@
 		CA33EE38237ACA1500B5D09F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				584EA37B23819C1F00C0987B /* Models */,
+				58793E6423808D5B003EFDEA /* Views */,
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
 				CA33EE4F237ACD0E00B5D09F /* Controllers */,
@@ -115,6 +162,9 @@
 				CA33EE42237ACA1900B5D09F /* Assets.xcassets */,
 				CA33EE44237ACA1A00B5D09F /* LaunchScreen.storyboard */,
 				CA33EE47237ACA1A00B5D09F /* Info.plist */,
+				58FA3E0423820D60005970BA /* AppSetting.swift */,
+				58185C122385704F00073CC6 /* UIButton+Color.swift */,
+				58185C142385722000073CC6 /* UIColor+Adjust.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -257,6 +307,8 @@
 			files = (
 				CA33EE46237ACA1A00B5D09F /* LaunchScreen.storyboard in Resources */,
 				CA33EE43237ACA1900B5D09F /* Assets.xcassets in Resources */,
+				58793E6A23809F0D003EFDEA /* FiraSans-Light.ttf in Resources */,
+				58793E6923809F0A003EFDEA /* FiraSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,6 +316,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				580479A32380A3C300A23A15 /* FiraSans-Regular.ttf in Resources */,
+				580479A22380A3BF00A23A15 /* FiraSans-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,8 +410,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58793E6623808DAD003EFDEA /* ButtonsAreaView.swift in Sources */,
+				58FA3E0523820D60005970BA /* AppSetting.swift in Sources */,
+				58185C112384985000073CC6 /* ConverterInfixToPostfixNotation.swift in Sources */,
+				58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */,
+				58793E6823809950003EFDEA /* ResultView.swift in Sources */,
+				580479A52380A50000A23A15 /* ButtonView.swift in Sources */,
+				58185C132385704F00073CC6 /* UIButton+Color.swift in Sources */,
+				58DA4ACA238754A700BC10B1 /* Queue.swift in Sources */,
+				58185C0F2384850400073CC6 /* Stack.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
+				584EA37D23819C3700C0987B /* CalculatorEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
