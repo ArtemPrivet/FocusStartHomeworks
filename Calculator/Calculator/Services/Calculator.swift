@@ -18,7 +18,7 @@ final class Calculator
 		return result
 	}
 	//Получения польской нотации
-	private func toRPN(inputArray: [String]) -> [String] {
+	func toRPN(inputArray: [String]) -> [String] {
 		var stack = [String]()
 		var output = [String]()
 		var mayUnary = true
@@ -70,7 +70,7 @@ final class Calculator
 				}
 			}
 		}
-		if let finalResult = temp.peek() {
+		if let finalResult = temp.peek {
 			return finalResult
 		}
 		else {

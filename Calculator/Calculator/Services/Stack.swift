@@ -11,6 +11,9 @@ import Foundation
 struct Stack<T>
 {
 	private var array: [T] = []
+	var toArray: [T] { return array }
+	var peek: T? { return array.first }
+	var last: T? { return array.last }
 	var count: Int {
 		return array.count
 	}
@@ -24,16 +27,7 @@ struct Stack<T>
 	mutating func pop() -> T? {
 		return array.popLast()
 	}
-	func peek() -> T? {
-		return array.first
-	}
-	func last() -> T? {
-		return array.last
-	}
 	mutating func clear() {
 		array = []
-	}
-	func toArray() -> [T] {
-		return array
 	}
 }
