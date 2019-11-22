@@ -34,7 +34,6 @@ final class CalculatorViewController: UIViewController
 	var displayResult: (result: Double?, isWaiting: Bool) = (nil, false) {
 		didSet {
 			switch displayResult {
-//			case (nil, _) : displayValue = 0
 			case (let result, _): displayValue = result
 			}
 		}
@@ -63,11 +62,11 @@ final class CalculatorViewController: UIViewController
 			let isDigitOrSeparator = (Int(title) != nil) ||
 				(button.currentTitle == formatter.decimalSeparator)
 			if isDigitOrSeparator {
-				// it's a some number
+				// это число
 				button.addTarget(self, action: #selector(digitTapped(_:)), for: .touchUpInside)
 			}
 			else {
-				// it's an operator
+				// это оператор
 				button.addTarget(self, action: #selector(operatorTapped(_:)), for: .touchUpInside)
 			}
 		}
@@ -84,7 +83,7 @@ final class CalculatorViewController: UIViewController
 		let notAllowsDoubleSeparator = (isDigitNotSeparator || displayHasNoSeparator)
 
 		if isUserInTheMiddleOfInput && isOnlyZeroOnDisplay == false {
-			// user already typing something
+			// юзер уже что то ввел ранее
 			if notAllowsDoubleSeparator {
 				if digitsCount < 9 {
 					calculatorView.screenLabel.text = currentTextInDisplay + digit
@@ -95,7 +94,7 @@ final class CalculatorViewController: UIViewController
 			}
 		}
 		else {
-			// begin of user input
+			// начала ввода
 			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : Sign.zero + digit
 			isUserInTheMiddleOfInput = true
 		}
@@ -103,6 +102,7 @@ final class CalculatorViewController: UIViewController
 		toggleButtonState(of: sender)
 	}
 
+	/// юзер нажал на один из операторов
 	@objc private func operatorTapped(_ sender: Button) {
 		guard userTappedClear(sender) == false else { return }
 
@@ -121,10 +121,11 @@ final class CalculatorViewController: UIViewController
 		displayResult = calculator.evaluate(using: variableValues)
 	}
 
+	/// чистит экран / модель
 	private func userTappedClear(_ button: Button) -> Bool {
 		if button.currentTitle == Sign.clear {
 			calculatorView.screenLabel.text = Sign.zero
-			isUserInTheMiddleOfInput = false
+		//	isUserInTheMiddleOfInput = false
 			toggleClearButtonTitle()
 			return true
 		}
@@ -139,6 +140,7 @@ final class CalculatorViewController: UIViewController
 		return false
 	}
 
+	/// переключает состояние кнопок
 	private func toggleButtonState(of sender: Button) {
 		switch sender.currentTitle {
 		case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
@@ -153,6 +155,14 @@ final class CalculatorViewController: UIViewController
 		default:
 			calculatorView.buttonsStack.cells.forEach { $0.isSelected = false }
 		}
+	}
+
+	/// устанавливает переменную
+	private func setVariable(of button: Button) {
+		isUserInTheMiddleOfInput = false
+		guard let symbol = button.currentTitle else { return }
+		variableValues[symbol] = displayValue
+		displayResult = calculator.evaluate(using: variableValues)
 	}
 
 	private func toggleClearButtonTitle() {
@@ -196,22 +206,5 @@ final class CalculatorViewController: UIViewController
 				displayValue = 0
 			}
 		}
-	}
-}
-
-//variables
-extension CalculatorViewController
-{
-	func setVariable(of button: Button) {
-		isUserInTheMiddleOfInput = false
-		guard let symbol = button.currentTitle else { return }
-		variableValues[symbol] = displayValue
-		displayResult = calculator.evaluate(using: variableValues)
-	}
-
-	func pushVariable(of button: Button) {
-		guard let symbol = button.currentTitle else { return }
-		calculator.setOperand(variable: symbol)
-		displayResult = calculator.evaluate(using: variableValues)
 	}
 }
