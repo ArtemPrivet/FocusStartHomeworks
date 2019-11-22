@@ -17,25 +17,40 @@ struct ButtonCreator
 		case symbolic
 	}
 
-	private let buttonSchemas: [String: (hexBackgroundColor: String,
-		hexTitleColor: String,
-		fontName: String,
-		fontSize: CGFloat,
-		hexAnimateBackgroundColor: String,
-		hexToggleBackgroundColor: String?,
-		hexToggleTitleColor: String?)] =
-		[
-			"number": ("#333333", "#FFFFFF", "FiraSans-Regular", 36, "#AAAAAA", nil, nil),
-			"operation": ("#FF9500", "#FFFFFF", "FiraSans-Regular", 30, "#f7cf7e", "#FFFFFF", "#FF9500"),
-			"symbolic": ("#AFAFAF", "#000000", "FiraSans-Regular", 30, "#ebebeb", nil, nil),
-	]
+	private let numberButtonSchema = ButtonSchema(hexBackgroundgColor: "#333333",
+												  hexTitleColor: "#FFFFFF",
+												  fontName: "FiraSans-Regular",
+												  fontSize: 36,
+												  hexAnimateBackgroundColor: "#AAAAAA")
+	private let operationButtonSchema = ButtonSchema(hexBackgroundgColor: "#FF9500",
+													 hexTitleColor: "#FFFFFF",
+													 fontName: "FiraSans-Regular",
+													 fontSize: 30,
+													 hexAnimateBackgroundColor: "#f7cf7e",
+													 hexToggleBackgroundColor: "#FFFFFF",
+													 hexToggleTitleColor: "#FF9500")
+	private let symbolicButtonSchema = ButtonSchema(hexBackgroundgColor: "#AFAFAF",
+												  hexTitleColor: "#000000",
+												  fontName: "FiraSans-Regular",
+												  fontSize: 30,
+												  hexAnimateBackgroundColor: "#ebebeb")
+
+	private let buttonSchemas: [String: ButtonSchema]
+
+	init() {
+		buttonSchemas = [
+			"number": numberButtonSchema,
+			"operation": operationButtonSchema,
+			"symbolic": symbolicButtonSchema,
+		]
+	}
 	//Создаем массив кнопок для калькулятора
 	func createCalculatorButtons() -> [UIButton] {
+
 		let buttonTitles = [
 			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "＝", "＋", "－", "✕", "÷", "AC", "+/-", "%",
 		]
-		var buttons: [UIButton] = []
-		buttonTitles.forEach{ buttons.append( createButton(title: $0)) }
+		let buttons = buttonTitles.map{ createButton(title: $0) }
 		return buttons
 	}
 	//Создаем кнопку
@@ -137,13 +152,7 @@ struct ButtonCreator
 		}
 	}
 	//Получить схему текущей кнопки
-	private func getButtonSchema(buttonTitle: String) -> (hexBackgroundColor: String,
-															hexTitleColor: String,
-															fontName: String,
-															fontSize: CGFloat,
-															hexAnimateBackgroundColor: String,
-															hexToggleBackgroundColor: String?,
-															hexToggleTitleColor: String?)? {
+	private func getButtonSchema(buttonTitle: String) -> ButtonSchema? {
 		return buttonSchemas[typeOfButton(buttonTitle: buttonTitle).rawValue]
 	}
 }
