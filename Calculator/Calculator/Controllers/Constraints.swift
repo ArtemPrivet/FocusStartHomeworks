@@ -13,7 +13,7 @@ extension Screen
 
 	func makeConstraints() {
 
-		for (index, button) in buttonsArray.enumerated() {
+		for (index, button) in button.buttonsArray.enumerated() {
 			switch index {
 			case 0:
 				button.snp.makeConstraints { make in
