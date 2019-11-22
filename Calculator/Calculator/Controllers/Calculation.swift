@@ -6,8 +6,6 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
-//swiftlint:disable all
-
 import UIKit
 
 final class Calculation
@@ -19,111 +17,127 @@ final class Calculation
 	enum OperatorType
 	{
 		case plus
-		case subtract
+		case minus
 		case multiply
 		case divide
 	}
 
 	var lastOperator: OperatorType?
 
-	//func multiply(a, b)
-
-	func nullTapped(_ sender: UIButton) {
-		guard let title = sender.titleLabel?.text else { return }
+	func nullTapped() -> String? {
 		if firstValue {
-			labelText = title
+			labelText = "0"
 		}
 		else {
-			labelText += title
+			labelText += "0"
 		}
+		return labelText
 	}
 
-	@objc func setTarget(_ sender: UIButton) {
-			guard let title = sender.titleLabel?.text else { return }
+	func numberTapped(_ sender: UIButton) -> String? {
+		if firstValue {
+			labelText = sender.titleLabel?.text ?? ""
+			firstValue = false
+		}
+		else {
+			labelText += sender.titleLabel?.text ?? ""
+		}
+		return labelText
+	}
 
-			switch title {
-			case "0":
-				if firstValue {
-					labelText = title
-				}
-				else {
-					labelText += title
-				}
-			case "1", "2", "3", "4", "5", "6", "7", "8", "9":
-				if firstValue {
-					labelText = title
-					firstValue = false
-				}
-				else {
-					labelText += title
-				}
-			case ",":
-				if firstValue {
-					labelText = "."
-					firstValue = false
-				}
-				else {
-					labelText += "."
-				}
+	func aCTapped() -> String {
+		firstValue = true
+		labelText = "0"
+		return labelText
+	}
 
-			case "AC":
-				labelText = "0"
-				firstValue = true
-			case "=":
-				var result: Double?
-				if let finalOperator = lastOperator {
-					switch finalOperator {
-					case .plus : result = (subTotal ?? 0) + (Double(labelText) ?? 0)
-					case .subtract : result = (subTotal ?? 0) - (Double(labelText) ?? 0)
-					case .multiply : result = (subTotal ?? 0) * (Double(labelText) ?? 0)
-					case .divide : result = (subTotal ?? 0) / (Double(labelText) ?? 0)
-					}
-				}
-				labelText = "\(result ?? 0)"
-				subTotal = nil
-				firstValue = true
-			case "+":
-				if let currentSubTotal = subTotal {
-						subTotal = (Double(labelText) ?? 0) + currentSubTotal
-					} else {
-						subTotal = (Double(labelText) ?? 0)
-					}
-					lastOperator = OperatorType.plus
-					firstValue = true
-					labelText = "\(subTotal ?? 0)"
-			case "-":
-				if let currentSubTotal = subTotal {
-					subTotal = (Double(labelText) ?? 0) - currentSubTotal
-				} else {
-					subTotal = (Double(labelText) ?? 0)
-				}
-				lastOperator = OperatorType.subtract
-				firstValue = true
-				labelText = "\(subTotal ?? 0)"
-			case "×":
-			if let currentSubTotal = subTotal {
-				 subTotal = (Double(labelText) ?? 0) * currentSubTotal
-			 }
-			else {
-				 subTotal = (Double(labelText) ?? 0)
-			 }
-			 lastOperator = OperatorType.multiply
-			 firstValue = true
-			 labelText = "\(subTotal ?? 0)"
-			case "÷":
-				if let currentSubTotal = subTotal {
-					 subTotal = (Double(labelText) ?? 0) / currentSubTotal
-				}
-				else {
-					 subTotal = (Double(labelText) ?? 0)
-				 }
-				 lastOperator = OperatorType.divide
-				 firstValue = true
-				 labelText = "\(subTotal ?? 0)"
-			default:
-				return
+	func symbolTapped() -> String {
+		if firstValue {
+			labelText = "."
+			firstValue = false
+		}
+		else {
+			labelText += "."
+		}
+		return labelText
+	}
+
+	func equalTapped() -> String {
+		var result: Double?
+		if let finalOperator = lastOperator {
+			switch finalOperator {
+			case .plus: result = (subTotal ?? 0) + (Double(labelText) ?? 0)
+			case .minus: result = (subTotal ?? 0) - (Double(labelText) ?? 0)
+			case .multiply: result = (subTotal ?? 0) * (Double(labelText) ?? 0)
+			case .divide: result = (subTotal ?? 0) / (Double(labelText) ?? 0)
 			}
-			print(labelText)
 		}
+		labelText = convertToInt(result ?? 0)
+		subTotal = result
+		firstValue = true
+		return labelText
 	}
 
+	func plusTapped() -> String {
+		if let currentSubTotal = subTotal {
+			subTotal = (Double(labelText) ?? 0) + currentSubTotal
+		}
+		else {
+			subTotal = (Double(labelText) ?? 0)
+		}
+		labelText = convertToInt(subTotal ?? 0)
+		lastOperator = OperatorType.plus
+		firstValue = true
+		return labelText
+	}
+
+	func minusTapped() -> String {
+		if let currentSubTotal = subTotal {
+			subTotal = (Double(labelText) ?? 0) - currentSubTotal
+		}
+		else {
+			subTotal = (Double(labelText) ?? 0)
+		}
+		labelText = convertToInt(subTotal ?? 0)
+		lastOperator = OperatorType.minus
+		firstValue = true
+		return labelText
+	}
+
+	func multiply() -> String {
+		if let currentSubTotal = subTotal {
+			subTotal = (Double(labelText) ?? 0) * currentSubTotal
+		}
+		else {
+			subTotal = (Double(labelText) ?? 0)
+		}
+		labelText = convertToInt(subTotal ?? 0)
+		lastOperator = OperatorType.multiply
+		firstValue = true
+		return labelText
+	}
+
+	func divideTapped() -> String {
+		if let currentSubTotal = subTotal {
+			subTotal = (Double(labelText) ?? 0) / currentSubTotal
+		}
+		else {
+			subTotal = (Double(labelText) ?? 0)
+		}
+		labelText = convertToInt(subTotal ?? 0)
+		lastOperator = OperatorType.divide
+		firstValue = true
+		return labelText
+	}
+
+	func convertToInt(_ number: Double) -> String {
+		if number.rounded() == number {
+			labelText = "\(Int(number))"
+		}
+		else {
+			labelText = "\(number)"
+		}
+		labelText = String(labelText.map { $0 == "." ? "," : $0 })
+		return labelText
+	}
+}
