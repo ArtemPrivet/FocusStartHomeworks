@@ -25,7 +25,7 @@ final class StackButtons: UIView
 		stackOfStacks.axis = .vertical
 		stackOfStacks.alignment = .fill
 		stackOfStacks.distribution = .fillEqually
-		stackOfStacks.spacing = 8
+		stackOfStacks.spacing = 10
 		formingStack()
 		addSubview(stackOfStacks)
 		stackOfStacks.snp.makeConstraints { maker in
@@ -83,7 +83,7 @@ final class StackButtons: UIView
 			stack.axis = .horizontal
 			stack.alignment = .fill
 			stack.distribution = .fillEqually
-			stack.spacing = 8
+			stack.spacing = 10
 		}
 		stackArray[4].distribution = .fill
 
