@@ -146,6 +146,10 @@ final class CalculatorViewController: UIViewController
 		addSwipeGestureRecognizer()
 	}
 
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		.lightContent
+	}
+
 	// MARK: Private methods
 	private func setConstraints() {
 		var selfView: UILayoutGuide
