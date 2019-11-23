@@ -29,7 +29,7 @@ final class CalculatorScreen: UIView
 
 	func makeConstraint() {
 		buttonsView.snp.makeConstraints { maker in
-			maker.bottom.equalToSuperview().offset(-10)
+			maker.bottom.equalToSuperview().offset(-12)
 			maker.leading.equalToSuperview().offset(8)
 			maker.trailing.equalToSuperview().offset(-8)
 			maker.height.equalTo(buttonsView.snp.width).multipliedBy(1.25)
