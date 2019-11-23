@@ -71,6 +71,7 @@ struct CalculatorEngine
 	}
 
 	typealias CalculateResult = Double
+	typealias Response = Result<CalculateResult, CalculateError>
 
 	fileprivate typealias UnaryOperation = (Double) -> Double
 	fileprivate typealias BinaryOperation = (Double, Double) -> Double
@@ -114,11 +115,11 @@ struct CalculatorEngine
 	}
 
 	// swiftlint:disable:next function_body_length
-	mutating func performOperation(with symbol: Operator, completion: (Result<CalculateResult, CalculateError>) -> Void) {
+	mutating func performOperation(with symbol: Operator, completion: (Response) -> Void) {
 
 		var error: CalculateError?
 
-		func evaluate(_ completion: (Result<CalculateResult, CalculateError>) -> Void) {
+		func evaluate(_ completion: (Response) -> Void) {
 			do {
 				accumulator = try evaluateUsingPostfixNotation(infixArray)
 			}

@@ -96,14 +96,14 @@ final class CalculatorViewController: UIViewController
 	private var displayValue: Double? {
 		get {
 			guard let text = resultView.text else { return nil }
+			var value: Double?
 			if text.contains("e") {
-				guard let value = Formatter.scientific.number(from: text) else { return nil }
-				return value as? Double
+				value = Formatter.scientific.number(from: text) as? Double
 			}
 			else {
-				guard let value = Formatter.decimal.number(from: text) else { return nil }
-				return value as? Double
+				value = Formatter.decimal.number(from: text) as? Double
 			}
+			return value
 		}
 		set {
 			guard let value = newValue else { return }
@@ -116,8 +116,7 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	private var displayResult: Result<CalculatorEngine.CalculateResult, CalculatorEngine.CalculateError> =
-		.success(0) {
+	private var displayResult: CalculatorEngine.Response = .success(0) {
 
 		didSet {
 
