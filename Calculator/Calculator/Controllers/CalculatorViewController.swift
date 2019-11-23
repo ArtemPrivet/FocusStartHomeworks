@@ -14,10 +14,10 @@ final class CalculatorViewController: UIViewController
 	private let calculator = Calculator()
 	private var userInput = "0"
 	private var expression = [String]()
-	private var canDeleteOnlySeconInput = true
+	private var canDeleteOnlySecondInput = true
 	private var equalWasUsed = false
 	private var operatorWasUsed = false
-	private var isGetingResult = false
+	private let errorMessage = "Ошибка"
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,7 +30,7 @@ final class CalculatorViewController: UIViewController
 	}
 	private func addTargets() {
 		calculatorView.buttons.forEach { button in
-			if button.identifier == nil {
+			if button.type == .digit {
 				button.addTarget(self, action: #selector(numberButtonTapped(_:)), for: .touchUpInside)
 			}
 			else {
@@ -45,37 +45,36 @@ final class CalculatorViewController: UIViewController
 	}
 	@objc private func swipedOnLabel(_ sender: UILabel) {
 		//Если в лейбле не результат вычислений
-		if operatorWasUsed == false {
-			let oldUserInput = userInput
-			if userInput.count > 1 {
-				userInput.removeLast()
-			}
-			else {
-				userInput = "0"
-			}
-			if expression.isEmpty == false {
-				for index in 0..<expression.count - 1 where expression[index] == oldUserInput {
-					expression[index] = userInput
-				}
-			}
-			updateLabel(value: userInput)
+		guard operatorWasUsed == true else { return }
+		let oldUserInput = userInput
+		if userInput.count > 1 {
+			userInput.removeLast()
 		}
+		else {
+			userInput = "0"
+		}
+		if expression.isEmpty == false {
+			for index in 0..<expression.count - 1 where expression[index] == oldUserInput {
+				expression[index] = userInput
+			}
+		}
+		updateLabel(value: userInput)
 	}
 	@objc func numberButtonTapped(_ sender: CalculatorButton) {
 		//Для того чтобы при вводе вороге числа можно было стереть только его
 		if operatorWasUsed == true {
-			canDeleteOnlySeconInput = true
+			canDeleteOnlySecondInput = true
 		}
 		//Если есть символ в кнопке
 		guard let senderText = sender.titleLabel?.text else { return }
 		//если есть текст в строке
 		guard var resultLabelText = calculatorView.resultLabel.text else { return }
 		//Если количство цифр не превысело максимума для ввода
-		let clearResultLabelText = resultLabelText.filter("+0123456789.".contains)
+		let clearResultLabelText = resultLabelText.filter("0123456789.".contains)
 		guard clearResultLabelText.count < 9 || operatorWasUsed == true else  { return }
 		//Если получен результат и пользователь решил ввести новое выражение
 		if equalWasUsed == true {
-			canDeleteOnlySeconInput = false
+			canDeleteOnlySecondInput = false
 			ACButtonTapped()
 		}
 		//если нажали запятую а она уже есть
@@ -83,7 +82,7 @@ final class CalculatorViewController: UIViewController
 			return
 		}
 		//если прошлое нажатие было на оператор или нажали цифру когда лейбл был с дефолтным 0 или была ошибка
-		if (resultLabelText == "0" && senderText != ",") || operatorWasUsed == true || resultLabelText == "Ошибка" {
+		if (resultLabelText == "0" && senderText != ",") || operatorWasUsed == true || resultLabelText == errorMessage {
 			if senderText == "," {
 				resultLabelText = "0" + senderText
 			}
@@ -109,13 +108,13 @@ final class CalculatorViewController: UIViewController
 		formatter.groupingSeparator = formatter.locale.groupingSeparator
 	}
 	private func updateLabel(value: String) {
-		if value == "Ошибка" {
+		if value == errorMessage {
 			calculatorView.resultLabel.text = value
 		}
 		let fixedValue = value
 			.replacingOccurrences(of: ".", with: ",")
 			.filter("0123456789,.-".contains)
-		if fixedValue.contains(",") == false && fixedValue != "-0" && fixedValue != "Ошибка" {
+		if fixedValue.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage {
 			guard let nuberValue = formatter.number(from: fixedValue) else { return }
 			calculatorView.resultLabel.text = formatter.string(from: nuberValue)
 		}
@@ -151,8 +150,6 @@ final class CalculatorViewController: UIViewController
 				//заменяем его
 				expression.removeLast()
 				expression.append(userInput)
-				print("After adding \(userInput)")
-				print(expression)
 			}
 		}
 			//если в числе еще нет -
@@ -164,16 +161,14 @@ final class CalculatorViewController: UIViewController
 				expression.removeLast()
 				//заменяем
 				expression.append(userInput)
-				print("After adding \(userInput)")
-				print(expression)
 			}
 		}
 		updateLabel(value: userInput)
 	}
 	private func ACButtonTapped() {
 		//Если необходимо отчистить только ввод второго числа
-		if canDeleteOnlySeconInput == true {
-			canDeleteOnlySeconInput = false
+		if canDeleteOnlySecondInput == true {
+			canDeleteOnlySecondInput = false
 		}
 		//если необходимо отчистить еще и предыдущий результат
 		else {
@@ -189,14 +184,14 @@ final class CalculatorViewController: UIViewController
 		calculatorView.resultLabel.text != "0" ? button.setTitle("C", for: .normal) : button.setTitle("AC", for: .normal)
 	}
 	private func makeOperation(_ sender: CalculatorButton) {
-		guard let oper = sender.identifier else { return }
+		guard let operation = sender.identifier else { return }
 		//Если мы в выражении не использовали =
 		if equalWasUsed == false {
 			//Если можно заменить оператор - заменяем
 			if let last = expression.last, operatorWasUsed == true {
-				if calculator.isOperator(symbol: last) == true && oper != "="{
+				if calculator.isOperator(symbol: last) == true && operation != "="{
 					expression.removeLast()
-					expression.append(oper)
+					expression.append(operation)
 					return
 				}
 			}
@@ -204,7 +199,7 @@ final class CalculatorViewController: UIViewController
 			expression.append(userInput)
 		}
 		operatorWasUsed = true
-		switch oper{
+		switch operation{
 		case "+", "-", "=":
 			//пытаемся решить
 			solveAndShow()
@@ -221,58 +216,51 @@ final class CalculatorViewController: UIViewController
 			break
 		}
 		//Не добавляем оператор = к выражению
-		if oper != "=" {
-			expression.append(oper)
-			print("After adding \(oper)")
-			print(expression)
+		if operation != "=" {
+			expression.append(operation)
 		}
 		equalWasUsed = false
 	}
 	private func calculatePercent() {
 		expression.append("%")
-		print("After adding %")
-		print(expression)
 		guard let value = expression.first else { return }
-		if calculator.isOperator(symbol: value) == false {
-			let percent = expression.removeLast()
-			let percentValue = expression.removeLast()
-			var  subExpression = [String]()
-			//Если ввели a% то взять a% от 1
-			if value == percentValue {
-				subExpression = ["1", percentValue, percent]
-			}
-			else {
-				subExpression = [value, percentValue, percent]
-			}
-			let result = calculator.solve(input: subExpression)
-			let fixedresult = checkResult(result)
-			userInput = fixedresult
-			expression.append(userInput)
-			updateLabel(value: fixedresult)
-			//Чтоб 2 раза не добавлять одинаковое число
-			equalWasUsed = true
+		guard calculator.isOperator(symbol: value) == false else { return }
+		let percent = expression.removeLast()
+		let percentValue = expression.removeLast()
+		var  subExpression = [String]()
+		//Если ввели a% то взять a% от 1
+		if value == percentValue {
+			subExpression = ["1", percentValue, percent]
 		}
+		else {
+			subExpression = [value, percentValue, percent]
+		}
+		let result = calculator.solve(input: subExpression)
+		let fixedresult = checkResult(result)
+		userInput = fixedresult
+		expression.append(userInput)
+		updateLabel(value: fixedresult)
+		//Чтоб 2 раза не добавлять одинаковое число
+		equalWasUsed = true
 	}
 	private func solveAndShow() {
 		//Теперь при нажатии АС удалится все выражение
-		canDeleteOnlySeconInput = false
+		canDeleteOnlySecondInput = false
 		//считаем
 		let result = calculator.solve(input: expression)
 		//проверим что получилось инт или дабл
 		//По возможности округляем
 		let fixedResult = checkResult(result)
 		expression = []
-		if fixedResult != "Ошибка" {
+		if fixedResult != errorMessage {
 			expression.append(fixedResult)
-			print("After adding \(fixedResult)")
-			print(expression)
 		}
 		userInput = fixedResult
 		updateLabel(value: fixedResult)
 	}
 	func checkResult(_ value: Double) -> String {
 		if value.isInfinite {
-			return "Ошибка"
+			return errorMessage
 		}
 		let isInteger = floor(value)
 		if isInteger == value {

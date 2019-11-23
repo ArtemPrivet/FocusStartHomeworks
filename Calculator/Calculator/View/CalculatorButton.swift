@@ -11,9 +11,10 @@ import UIKit
 final class CalculatorButton: UIButton
 {
 	var identifier: String?
+	let type: TypeOfButton
 
-	//не забыть исправить
 	init(of type: TypeOfButton, with title: String) {
+		self.type = type
 		super.init(frame: .zero)
 		chooseTypeAndCreate(of: type, with: title)
 	}
