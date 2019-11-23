@@ -151,6 +151,8 @@ final class CalculatorViewController: UIViewController
 				//заменяем его
 				expression.removeLast()
 				expression.append(userInput)
+				print("After adding \(userInput)")
+				print(expression)
 			}
 		}
 			//если в числе еще нет -
@@ -162,6 +164,8 @@ final class CalculatorViewController: UIViewController
 				expression.removeLast()
 				//заменяем
 				expression.append(userInput)
+				print("After adding \(userInput)")
+				print(expression)
 			}
 		}
 		updateLabel(value: userInput)
@@ -212,17 +216,22 @@ final class CalculatorViewController: UIViewController
 		case "%":
 			//в выражении вида a + b% заменяем b% на значение b% от а
 			calculatePercent()
+			return
 		default:
 			break
 		}
 		//Не добавляем оператор = к выражению
 		if oper != "=" {
 			expression.append(oper)
+			print("After adding \(oper)")
+			print(expression)
 		}
 		equalWasUsed = false
 	}
 	private func calculatePercent() {
 		expression.append("%")
+		print("After adding %")
+		print(expression)
 		guard let value = expression.first else { return }
 		if calculator.isOperator(symbol: value) == false {
 			let percent = expression.removeLast()
@@ -242,7 +251,6 @@ final class CalculatorViewController: UIViewController
 			updateLabel(value: fixedresult)
 			//Чтоб 2 раза не добавлять одинаковое число
 			equalWasUsed = true
-			return
 		}
 	}
 	private func solveAndShow() {
@@ -256,6 +264,8 @@ final class CalculatorViewController: UIViewController
 		expression = []
 		if fixedResult != "Ошибка" {
 			expression.append(fixedResult)
+			print("After adding \(fixedResult)")
+			print(expression)
 		}
 		userInput = fixedResult
 		updateLabel(value: fixedResult)
