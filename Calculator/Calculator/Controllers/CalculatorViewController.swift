@@ -72,7 +72,7 @@ final class CalculatorViewController: UIViewController
 		guard var resultLabelText = calculatorView.resultLabel.text else { return }
 		//Если количство цифр не превысело максимума для ввода
 		let clearResultLabelText = resultLabelText.filter("+0123456789.".contains)
-		guard clearResultLabelText.count < 9 else { return }
+		guard clearResultLabelText.count < 9 || operatorWasUsed == true else  { return }
 		//Если получен результат и пользователь решил ввести новое выражение
 		if equalWasUsed == true {
 			canDeleteOnlySeconInput = false
