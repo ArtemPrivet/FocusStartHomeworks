@@ -91,16 +91,28 @@ final class CalculatorViewController: UIViewController
 
 	private var calculatorEngine = CalculatorEngine()
 
-	private let decimalSeparator = AppSetting.formatter.decimalSeparator ?? ","
+	private let decimalSeparator = Formatter.decimal.decimalSeparator ?? ","
 
 	private var displayValue: Double? {
 		get {
-			guard let text = resultView.text, let value = AppSetting.formatter.number(from: text) else { return nil }
-			return value as? Double
+			guard let text = resultView.text else { return nil }
+			if text.contains("e") {
+				guard let value = Formatter.scientific.number(from: text) else { return nil }
+				return value as? Double
+			}
+			else {
+				guard let value = Formatter.decimal.number(from: text) else { return nil }
+				return value as? Double
+			}
 		}
 		set {
 			guard let value = newValue else { return }
-			resultView.text = AppSetting.formatter.string(from: NSNumber(value: value))
+			if String(value).count < 12 {
+				resultView.text = value.decimalFormatted
+			}
+			else {
+				resultView.text = value.scientificFormatted
+			}
 		}
 	}
 
@@ -196,7 +208,17 @@ extension CalculatorViewController
 		let currentText = resultView.text ?? ""
 		if userInTheMiddleOfTyping {
 			guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
-			resultView.text = currentText + digit
+			guard digit != decimalSeparator else {
+				resultView.text = currentText + digit
+				return
+			}
+			let countOfDigits = currentText.filter {
+				String($0) != decimalSeparator && String($0) != " "
+			}.count
+			guard countOfDigits < 9 else { return }
+			let displayValue = (currentText + digit).filter { $0 != " " }
+			guard let resultNumber = Formatter.scientific.number(from: displayValue) as? Double else { return }
+			resultView.text = resultNumber.decimalFormatted
 		}
 		else {
 			if digit == decimalSeparator {
@@ -219,6 +241,9 @@ extension CalculatorViewController
 		}
 		guard let symbol = CalculatorEngine.Operator(rawValue: sender.title) else {
 			return
+		}
+		if case .magnitude = symbol {
+			userInTheMiddleOfTyping = true
 		}
 		calculatorEngine.performOperation(with: symbol) { result in
 			displayResult = result

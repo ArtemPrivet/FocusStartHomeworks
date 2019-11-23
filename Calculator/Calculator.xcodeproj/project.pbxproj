@@ -15,6 +15,8 @@
 		58185C132385704F00073CC6 /* UIButton+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C122385704F00073CC6 /* UIButton+Color.swift */; };
 		58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C142385722000073CC6 /* UIColor+Adjust.swift */; };
 		584EA37D23819C3700C0987B /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584EA37C23819C3700C0987B /* CalculatorEngine.swift */; };
+		58591B5B2389C04B007497F2 /* Formatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58591B5A2389C04B007497F2 /* Formatter+Extension.swift */; };
+		58591B5D2389C094007497F2 /* Numeric+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58591B5C2389C094007497F2 /* Numeric+Formatter.swift */; };
 		58793E6623808DAD003EFDEA /* ButtonsAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */; };
 		58793E6823809950003EFDEA /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58793E6723809950003EFDEA /* ResultView.swift */; };
 		58793E6923809F0A003EFDEA /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
@@ -52,6 +54,8 @@
 		58185C122385704F00073CC6 /* UIButton+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Color.swift"; sourceTree = "<group>"; };
 		58185C142385722000073CC6 /* UIColor+Adjust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Adjust.swift"; sourceTree = "<group>"; };
 		584EA37C23819C3700C0987B /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
+		58591B5A2389C04B007497F2 /* Formatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formatter+Extension.swift"; sourceTree = "<group>"; };
+		58591B5C2389C094007497F2 /* Numeric+Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Numeric+Formatter.swift"; sourceTree = "<group>"; };
 		58793E6523808DAD003EFDEA /* ButtonsAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsAreaView.swift; sourceTree = "<group>"; };
 		58793E6723809950003EFDEA /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		58B3DD3C23887D0900C7900B /* CalculatorSingleUnaryOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorSingleUnaryOperationsTests.swift; sourceTree = "<group>"; };
@@ -169,6 +173,8 @@
 				58FA3E0423820D60005970BA /* AppSetting.swift */,
 				58185C122385704F00073CC6 /* UIButton+Color.swift */,
 				58185C142385722000073CC6 /* UIColor+Adjust.swift */,
+				58591B5A2389C04B007497F2 /* Formatter+Extension.swift */,
+				58591B5C2389C094007497F2 /* Numeric+Formatter.swift */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -418,11 +424,13 @@
 			files = (
 				58793E6623808DAD003EFDEA /* ButtonsAreaView.swift in Sources */,
 				58FA3E0523820D60005970BA /* AppSetting.swift in Sources */,
+				58591B5D2389C094007497F2 /* Numeric+Formatter.swift in Sources */,
 				58185C112384985000073CC6 /* ConverterInfixToPostfixNotation.swift in Sources */,
 				58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */,
 				58793E6823809950003EFDEA /* ResultView.swift in Sources */,
 				580479A52380A50000A23A15 /* ButtonView.swift in Sources */,
 				58185C132385704F00073CC6 /* UIButton+Color.swift in Sources */,
+				58591B5B2389C04B007497F2 /* Formatter+Extension.swift in Sources */,
 				58DA4ACA238754A700BC10B1 /* Queue.swift in Sources */,
 				58185C0F2384850400073CC6 /* Stack.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,

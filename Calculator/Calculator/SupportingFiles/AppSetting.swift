@@ -10,16 +10,6 @@ import UIKit
 
 enum AppSetting
 {
-	static let formatter: NumberFormatter = {
-		let formatter = NumberFormatter()
-		formatter.numberStyle = .decimal
-		formatter.maximumFractionDigits = 6
-		formatter.notANumberSymbol = "Error"
-		formatter.groupingSeparator = " "
-		formatter.locale = Locale.current
-		formatter.groupingSize = 3
-		return formatter
-	}()
 
 	enum Color
 	{
