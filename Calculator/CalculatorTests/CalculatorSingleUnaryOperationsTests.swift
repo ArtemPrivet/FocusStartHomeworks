@@ -9,31 +9,32 @@
 import XCTest
 @testable import Calculator
 
-// swiftlint:disable xctfail_message
 final class CalculatorSingleUnaryOperationsTests: XCTestCase
 {
 	private var calculator = CalculatorEngine()
 	private let firstOperand: Double = 1
-	//private let secondOperand: Double = 2
 
 	func testSinglePlusOperation() {
-		var magnituded: Double = 0
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .magnitude) { result in
-			guard case .success(let accumulator) = result else {
-				XCTFail()
-				return
-			}
-
-			XCTAssertEqual(accumulator, -firstOperand)
-			magnituded = accumulator
+			let result = accumulator(from: result)
+			XCTAssertEqual(result, -firstOperand)
 		}
 		calculator.performOperation(with: .magnitude) { result in
-			guard case .success(let accumulator) = result else {
-				XCTFail()
-				return
-			}
-			XCTAssertEqual(accumulator, -magnituded)
+			let result = accumulator(from: result)
+			XCTAssertEqual(result, firstOperand)
 		}
+	}
+}
+
+extension CalculatorSingleUnaryOperationsTests
+{
+	func accumulator(from result: CalculatorEngine.Response) -> CalculatorEngine.CalculateResult {
+		guard case .success(let accumulator) = result else {
+			// swiftlint:disable:next xctfail_message
+			XCTFail()
+			return Double()
+		}
+		return accumulator
 	}
 }
