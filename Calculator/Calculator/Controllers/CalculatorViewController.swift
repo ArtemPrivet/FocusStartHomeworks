@@ -191,7 +191,6 @@ extension CalculatorViewController
 {
 
 	private func actionTouchDigit(_ sender: ButtonView) {
-		print(sender.title)
 		clearType = .clean
 		let digit = sender.title
 		let currentText = resultView.text ?? ""
@@ -214,7 +213,6 @@ extension CalculatorViewController
 	}
 
 	private func actionPerformOperation(_ sender: ButtonView) {
-		print(sender.title)
 		clearType = .clean
 		if userInTheMiddleOfTyping {
 			userInTheMiddleOfTyping = false

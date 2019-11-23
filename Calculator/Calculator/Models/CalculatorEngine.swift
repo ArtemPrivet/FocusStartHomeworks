@@ -106,13 +106,11 @@ struct CalculatorEngine
 
 	mutating func clean() {
 		accumulator = 0
-		print("Calculator has been clean")
 	}
 
 	mutating func allClean() {
 		clean()
 		reset()
-		print("Calculator has been all clean")
 	}
 
 	// swiftlint:disable:next function_body_length
