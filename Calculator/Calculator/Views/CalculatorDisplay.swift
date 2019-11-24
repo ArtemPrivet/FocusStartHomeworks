@@ -47,9 +47,6 @@ final class CalculatorDisplay: UILabel
 		self.text = text
 		self.textColor = .white
 		self.font = UIFont(name: "FiraSans-Light", size: 30)
-//		delegateToPR?.displayingNow(nowOnDisplay: self.text ?? text)
-//		pendingResult.infoFromDisplay = text
-//		delegate?.displayingNow(nowOnDisplay: text)
 	}
 
 //	private func addSwipeGestureToDispayLabel() {

@@ -103,6 +103,8 @@ extension PendingResult: IButton
 		if isTyping && rpnExpression.count > 2 {
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
 				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
+				//передаю данные в дисплей
+				delegateToScreen?.showResult(result: String(currentInput))
 			}
 		}
 		if isTyping {
@@ -114,24 +116,18 @@ extension PendingResult: IButton
 	}
 
 	func digit(inputText: String) {
-		isTyping = true //не факт для отладки
 		guard isTyping || buttonIdentifier != 0 else { return }
-//				buttons[OperationButtons.acAndC].setTitle("C", for: .normal)
-//		 let displayText = infoFromDisplay
-//		delegatePR?.showResult(result: inputText)
 		print("func digit displayText\(String(describing: infoFromDisplay))")
 		if isTyping {
 			if (infoFromDisplay?.count ?? 0) < 9 {
 				let unwrappedDisplayInfo: String = infoFromDisplay ?? " "
 				let newText: String = unwrappedDisplayInfo + inputText
 				delegateToScreen?.showResult(result: newText)
-				//				displayLabel.text = displayText + String(inputText)
 				print("Now on display less than 9")
 			}
 		}
 		else {
 			delegateToScreen?.showResult(result: inputText)
-//			displayLabel.text = String(sender.tag)
 			print("else after typing check false")
 			isTyping = true
 		}
@@ -139,7 +135,7 @@ extension PendingResult: IButton
 
 	func comma() {
 		if isTyping && isFloatNumber == false {
-//			nowOnDisplay = (nowOnDisplay ?? "") + "."
+			infoFromDisplay = (infoFromDisplay ?? "") + "."
 			isFloatNumber = true
 		}
 		else if isTyping == false && isFloatNumber == false {

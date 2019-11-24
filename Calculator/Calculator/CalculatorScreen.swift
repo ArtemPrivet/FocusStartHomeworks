@@ -131,12 +131,6 @@ extension CalculatorScreen: IPendingResult
 	func showResult(result: String) {
 		print("Screen: IPendingResult info: \(result)")
 		display.setText(result)
-		delegateToPR?.displayingNow(nowText: display.text)
-//		pendingResult.nowOnDisplay = display.text
+		pendingResult.displayingNow(nowText: display.text)
 	}
-
-//	func showPendingResult(typing: String) {
-//		<#code#>
-//	}
-//
 }
