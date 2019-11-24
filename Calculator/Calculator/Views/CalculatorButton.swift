@@ -11,10 +11,8 @@ import UIKit
 final class CalculatorButton: UIButton
 {
 	weak var delegate: IButton?
-//	private var pendingResult = PendingResult()
-
 	var identifier: Int = 0
-	var group: Group = .numbers
+	private var group: Group = .numbers
 
 	private static var indentifierFactory = 0
 
@@ -26,7 +24,6 @@ final class CalculatorButton: UIButton
 	init() {
 		super.init(frame: .zero)
 		self.identifier = CalculatorButton.getUniqueIdentifier()
-//		self.delegate = pendingResult
 		getGroup()
 		getColor()
 		getLabel()
@@ -79,11 +76,12 @@ final class CalculatorButton: UIButton
 		}
 	}
 
-	func addActionToButton() {
+	private func addActionToButton() {
 			self.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
 	}
 
 	@objc func buttonClicked(sender: UIButton) {
+		self.faded()
 		guard let text = (sender.subviews.last as? UILabel)?.text
 			else {
 				return
@@ -91,7 +89,6 @@ final class CalculatorButton: UIButton
 		guard let delegate = self.delegate else {
 			return
 		}
-		print(text)
 		delegate.getButtonDetails(identifier: self.identifier)
 		switch text {
 		case "AC": delegate.allClear()

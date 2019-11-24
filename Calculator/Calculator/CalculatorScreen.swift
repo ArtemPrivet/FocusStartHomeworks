@@ -33,7 +33,6 @@ final class CalculatorScreen: UIView
 		buttonsStack.delegate = self
 		self.delegate = pendingResult
 		pendingResult.delegateToScreen = self
-//		pendingResult.delegate = display
 	}
 	@available(*, unavailable)
 	required init?(coder aDecoder: NSCoder) {

@@ -36,7 +36,6 @@ final class PendingResult
 				// MARK: display upd, setter of currentInput
 				infoFromDisplay = String(newValue)
 				delegateToScreen?.showResult(result: newValue)
-//			}
 		}
 	}
 
@@ -103,6 +102,7 @@ extension PendingResult: IButton
 		currentOperator = oper
 		if isTyping {
 			rpnExpression.append(String(currentInput))
+			print("oper pressed \((String(currentInput)))")
 		}
 		if isTyping && rpnExpression.count > 2 {
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
@@ -146,8 +146,7 @@ extension PendingResult: IButton
 		}
 		else if isTyping == false && isFloatNumber == false {
 			currentInput = Double(infoFromDisplay ?? "") ?? 0.0
-			// MARK: func comma - передаю данные в дисплей
-//			delegateToScreen?.showResult(result: "0.")
+			// MARK: func comma - display UPD
 			isTyping = true
 		}
 	}
@@ -174,7 +173,10 @@ extension PendingResult: IButton
 extension PendingResult: IDisplayInfo
 {
 	func displayingNow(nowText: String?) {
-		infoFromDisplay = String(nowText?.filter { !" ".contains($0) } ?? "0")
+		infoFromDisplay = String(nowText?.filter { !" ".contains($0) } ?? "")
 		print("PendingResult: IDisplayInfo: func displayingNow(): \(String(describing: nowText))")
+	}
+	func updDisplayInfo(text: String?) {
+		infoFromDisplay = String(text?.filter { !" ".contains($0) } ?? "")
 	}
 }

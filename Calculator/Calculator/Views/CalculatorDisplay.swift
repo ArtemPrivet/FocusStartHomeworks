@@ -13,25 +13,10 @@ final class CalculatorDisplay: UILabel
 	weak var delegateToPR: IDisplayInfo?
 	private var pendingResult = PendingResult()
 
-//	var currentInput: Double {
-//		get {
-//			guard let text = self.text else { return 0 }
-//			return Double(text) ?? 0
-//		}
-//		set {
-//			if String(newValue).hasSuffix(".0") {
-//				self.setText(String(String(newValue).dropLast(2)))
-//			}
-//			else {
-//				self.setText(String(newValue))
-//			}
-//		}
-//	}
-
 	init() {
 		super.init(frame: .zero)
-//		self.delegate = pendingResult
 		self.backgroundColor = .black
+		addSwipeToDispay()
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 @available(*, unavailable)
@@ -58,22 +43,17 @@ final class CalculatorDisplay: UILabel
 		self.minimumScaleFactor = 0.5
 	}
 
-//	private func addSwipeGestureToDispayLabel() {
-//		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(deleteSymbolFromLabel))
-//		swipeGestureRecognizer.direction = [.left, .right]
-//		self.addGestureRecognizer(swipeGestureRecognizer)
-//		self.isUserInteractionEnabled = true
-//	}
-//
-//	@objc func deleteSymbolFromLabel() {
-//		guard isTyping, let labelText = displayLabel.text else { return }
-//		let newText = String(labelText.dropLast())
-//		if newText.count > 0 {
-//			displayLabel.text = newText
-//		}
-//		else {
-//			displayLabel.text = "0"
-//			isTyping = false
-//		}
-//	}
+	private func addSwipeToDispay() {
+		let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(deleteRightSymbol))
+		swipeGestureRecognizer.direction = [.left, .right]
+		self.addGestureRecognizer(swipeGestureRecognizer)
+		self.isUserInteractionEnabled = true
+	}
+
+	@objc func deleteRightSymbol() {
+		let newText = String(self.text?.dropLast() ?? "")
+		let swippedText = String(newText.filter { !" ".contains($0) })
+		self.setText(Double(swippedText) ?? 0)
+		pendingResult.displayingNow(nowText: self.text)
+	}
 }
