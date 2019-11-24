@@ -12,7 +12,7 @@ final class RPN
 	private func operatorPriority(_ oper: String) -> Int {
 		switch oper {
 		case "+", "-": return 1
-		case "*", "/": return 2
+		case "×", "÷": return 2
 		default: return -1
 		}
 	}
@@ -65,12 +65,12 @@ final class RPN
 					let rightOperand = Double(container.removeLast()),
 					let leftOperand = Double(container.removeLast()) else { break }
 				container.append(String(leftOperand - rightOperand))
-			case "*":
+			case "×":
 				guard
 					let rightOperand = Double(container.removeLast()),
 					let leftOperand = Double(container.removeLast()) else { break }
 				container.append(String(leftOperand * rightOperand))
-			case "/":
+			case "÷":
 				guard
 					let rightOperand = Double(container.removeLast()),
 					let leftOperand = Double(container.removeLast()) else { break }

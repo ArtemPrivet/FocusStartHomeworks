@@ -55,7 +55,7 @@ extension ButtonsStack: IButton
 	}
 
 	func percent() {
-		print("Stack +/-")
+		print("Stack %")
 		delegate?.percent()
 	}
 

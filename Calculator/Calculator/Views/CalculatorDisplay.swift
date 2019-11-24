@@ -44,9 +44,18 @@ final class CalculatorDisplay: UILabel
 	}
 
 	func setText(_ text: String) {
+//		if String(text).hasSuffix(".0") {
+//			self.text = String(text.dropLast(2))
+//		}
+//		else {
 		self.text = text
+//		}
+		self.text = NumberFormatter().string(from: NSNumber(pointer: text))
 		self.textColor = .white
-		self.font = UIFont(name: "FiraSans-Light", size: 30)
+		self.textAlignment = .right
+		self.font = UIFont(name: "FiraSans-Light", size: 94)
+		self.adjustsFontSizeToFitWidth = true
+		self.minimumScaleFactor = 0.5
 	}
 
 //	private func addSwipeGestureToDispayLabel() {
@@ -68,15 +77,3 @@ final class CalculatorDisplay: UILabel
 //		}
 //	}
 }
-
-//extension CalculatorDisplay: IPendingResult
-//{
-//	func showPendingResult(typing: String) {
-//		self.setText(typing)
-//		print("showPendingResult \(typing)")
-//	}
-//
-//	func showResult(result: Double) {
-////		currentInput = result
-//	}
-//}

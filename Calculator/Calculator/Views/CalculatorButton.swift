@@ -110,7 +110,7 @@ final class CalculatorButton: UIButton
 	private func getLabel() {
 		switch self.identifier {
 		case 1: self.setText("AC")
-		case 2: self.setText("⁺∕₋")
+		case 2: self.setText("⁺⁄₋")
 		case 3: self.setText("%")
 		case 4: self.setText("÷")
 		case 5: self.setText("7")

@@ -76,7 +76,7 @@ extension ButtonRow: IButton
 	}
 
 	func percent() {
-		print("Row +/-")
+		print("Row %")
 		delegate?.percent()
 	}
 

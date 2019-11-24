@@ -14,6 +14,8 @@ final class PendingResult
 	weak var delegateFromScreen: IDisplayInfo?
 
 	private var buttonIdentifier = 0
+	private var currentOperator = ""
+	private var resultDisplayed: Double = 0
 	private var resultNumber = 0
 	private var firstOperand = 0.0
 	private var secondOperand = 0.0
@@ -22,8 +24,6 @@ final class PendingResult
 	private var rpnExpression = [String]()
 	private var converterRpn = RPN()
 	private var isTyping = false
-	private var currentOperator = ""
-	private var resultDisplayed: Double = 0
 
 	var infoFromDisplay: String?
 
@@ -33,19 +33,21 @@ final class PendingResult
 			return Double(text) ?? 0
 		}
 		set {
-			if String(newValue).hasSuffix(".0") {
-				infoFromDisplay = String(String(newValue).dropLast(2))
-			}
-			else {
+//			if String(newValue).hasSuffix(".0") {
+				// MARK: display upd, setter of currentInput
+				delegateToScreen?.showResult(result: String(String(newValue).dropLast(2)))
+//			}
+//			else {
 				infoFromDisplay = String(newValue)
-			}
+				delegateToScreen?.showResult(result: String(String(newValue)))
+//			}
 		}
 	}
 
 	private func getPriority(str: String) -> Int {
 		switch str {
 		case "+", "-": return 1
-		case "*", "/": return 2
+		case "×", "÷": return 2
 		default: return 1
 		}
 	}
@@ -83,15 +85,21 @@ extension PendingResult: IButton
 
 	func plusMinus() {
 		currentInput *= -1
+		// MARK: func plusMinus - display UPD
+		delegateToScreen?.showResult(result: String(currentInput))
+		print("+/- pressed: \(currentInput)")
 	}
 
 	func percent() {
 		if firstOperand == 0 {
 			currentInput /= 100
+			// MARK: func percent - display UPD
+			delegateToScreen?.showResult(result: String(currentInput))
 		}
 		else {
 			currentInput = firstOperand * currentInput / 100
 			secondOperand = currentInput
+			delegateToScreen?.showResult(result: String(currentInput))
 		}
 	}
 
@@ -103,7 +111,7 @@ extension PendingResult: IButton
 		if isTyping && rpnExpression.count > 2 {
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
 				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
-				//передаю данные в дисплей
+				// MARK: func operatorPressed - display UPD
 				delegateToScreen?.showResult(result: String(currentInput))
 			}
 		}
@@ -122,6 +130,7 @@ extension PendingResult: IButton
 			if (infoFromDisplay?.count ?? 0) < 9 {
 				let unwrappedDisplayInfo: String = infoFromDisplay ?? " "
 				let newText: String = unwrappedDisplayInfo + inputText
+				// MARK: func digit  - display UPD
 				delegateToScreen?.showResult(result: newText)
 				print("Now on display less than 9")
 			}
@@ -139,7 +148,9 @@ extension PendingResult: IButton
 			isFloatNumber = true
 		}
 		else if isTyping == false && isFloatNumber == false {
-//			currentInput = "0."
+			currentInput = Double(infoFromDisplay ?? "") ?? 0.0
+			// MARK: func comma - передаю данные в дисплей
+			delegateToScreen?.showResult(result: "0.")
 			isTyping = true
 		}
 	}
@@ -152,8 +163,8 @@ extension PendingResult: IButton
 		switch currentOperator {
 		case "+": makeOperation { $0 + $1 }
 		case "-": makeOperation { $0 - $1 }
-		case "*": makeOperation { $0 * $1 }
-		case "/": makeOperation { $0 / $1 }
+		case "×": makeOperation { $0 * $1 }
+		case "÷": makeOperation { $0 / $1 }
 		default: break
 		}
 		rpnExpression.removeAll()
@@ -166,6 +177,7 @@ extension PendingResult: IButton
 extension PendingResult: IDisplayInfo
 {
 	func displayingNow(nowText: String?) {
+
 		infoFromDisplay = nowText
 		print("PendingResult: IDisplayInfo: func displayingNow(): \(String(describing: nowText))")
 	}

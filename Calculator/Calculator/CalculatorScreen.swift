@@ -96,7 +96,7 @@ extension CalculatorScreen: IButton
 	}
 
 	func percent() {
-		print("Screen +/-")
+		print("Screen %")
 		delegate?.percent()
 	}
 
@@ -111,7 +111,7 @@ extension CalculatorScreen: IButton
 	}
 
 	func comma() {
-		print("Screen +/-")
+		print("Screen ,")
 		delegate?.comma()
 	}
 
