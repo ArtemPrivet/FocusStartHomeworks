@@ -11,6 +11,8 @@
 		5C3DDCDF2381625300634918 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		5C3DDCE12381665500634918 /* ButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3DDCE02381665500634918 /* ButtonsStackView.swift */; };
 		5C3DDCE323817DE000634918 /* CalcalatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3DDCE223817DE000634918 /* CalcalatorView.swift */; };
+		5C5FD808238AB87200979765 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD807238AB87200979765 /* UIColor+Extension.swift */; };
+		5C5FD80C238AE03000979765 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FD80B238AE03000979765 /* String+Extension.swift */; };
 		5C854BA7238124BB00D8C08C /* CalculatorButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BA6238124BB00D8C08C /* CalculatorButtons.swift */; };
 		5C854BC82381343500D8C08C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BC72381343500D8C08C /* Constants.swift */; };
 		5C854BCC2381391A00D8C08C /* RowButtonsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C854BCB2381391A00D8C08C /* RowButtonsStackView.swift */; };
@@ -42,6 +44,8 @@
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		5C3DDCE02381665500634918 /* ButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsStackView.swift; sourceTree = "<group>"; };
 		5C3DDCE223817DE000634918 /* CalcalatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalcalatorView.swift; sourceTree = "<group>"; };
+		5C5FD807238AB87200979765 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		5C5FD80B238AE03000979765 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		5C854BA6238124BB00D8C08C /* CalculatorButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalculatorButtons.swift; path = ../CalculatorButtons.swift; sourceTree = "<group>"; };
 		5C854BC72381343500D8C08C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../Constants.swift; sourceTree = "<group>"; };
 		5C854BCB2381391A00D8C08C /* RowButtonsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RowButtonsStackView.swift; sourceTree = "<group>"; };
@@ -92,6 +96,15 @@
 				BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		5C5FD806238AB7F700979765 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5C5FD807238AB87200979765 /* UIColor+Extension.swift */,
+				5C5FD80B238AE03000979765 /* String+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		5C854BA8238124C400D8C08C /* Views */ = {
@@ -152,6 +165,7 @@
 				5C854BA8238124C400D8C08C /* Views */,
 				5C8D125323888BC000501F22 /* Enums */,
 				5CE9976B23888BF8007C7881 /* ConverterRPN */,
+				5C5FD806238AB7F700979765 /* Extensions */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -406,6 +420,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
+				5C5FD80C238AE03000979765 /* String+Extension.swift in Sources */,
 				5C8D124D2387274D00501F22 /* ConverterRPN.swift in Sources */,
 				5C854BCC2381391A00D8C08C /* RowButtonsStackView.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
@@ -414,6 +429,7 @@
 				5C3DDCE12381665500634918 /* ButtonsStackView.swift in Sources */,
 				5C854BA7238124BB00D8C08C /* CalculatorButtons.swift in Sources */,
 				5C854BC82381343500D8C08C /* Constants.swift in Sources */,
+				5C5FD808238AB87200979765 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

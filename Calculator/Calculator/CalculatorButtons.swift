@@ -19,6 +19,29 @@ final class CalculatorButton: UIButton
 		super.init(coder: aDecoder)
 	}
 
+	override var isHighlighted: Bool {
+		didSet {
+			switch self.tag {
+			case 0...10:
+				UIView.animate(withDuration: 0.2) { [weak self] in
+					guard let self = self else { return }
+					self.backgroundColor = self.isHighlighted ? Colors.colorDarkGray.lighter(by: 30) : Colors.colorDarkGray
+				}
+			case 11...15:
+				UIView.animate(withDuration: 0.2) { [weak self] in
+					guard let self = self else { return }
+					self.backgroundColor = self.isHighlighted ? UIColor.white : Colors.colorOrange
+				}
+			case 16...18:
+				UIView.animate(withDuration: 0.2) { [weak self] in
+					guard let self = self else { return }
+					self.backgroundColor = self.isHighlighted ? Colors.colorGray.lighter(by: 30) : Colors.colorGray
+				}
+			default: break
+			}
+		}
+	}
+
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		self.layer.cornerRadius = self.bounds.height / 2
@@ -26,27 +49,9 @@ final class CalculatorButton: UIButton
 			self.contentHorizontalAlignment = .left
 			self.contentEdgeInsets = UIEdgeInsets(top: 0, left: self.frame.height / 2 - 7, bottom: 0, right: 0)
 		}
-		setButtonsColor()
 	}
 
 	private func setupButton() {
-		backgroundColor	= Colors.colorGray
 		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 30)
-		setTitleColor(.black, for: .normal)
-	}
-
-	private func setButtonsColor() {
-		switch self.tag {
-		case 0...10:
-			self.backgroundColor = Colors.colorDarkGray
-			self.setTitleColor(Colors.colorWhite, for: .normal)
-		case 11...15:
-			self.backgroundColor = Colors.colorOrange
-			self.setTitleColor(Colors.colorWhite, for: .normal)
-		case 16...18:
-			self.backgroundColor = Colors.colorGray
-			self.setTitleColor(Colors.colorBlack, for: .normal)
-		default: break
-		}
 	}
 }

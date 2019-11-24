@@ -32,6 +32,7 @@ final class CalcalatorView: UIView
 		backgroundColor = .white
 		addSubview(displayLabel)
 		crateButtons()
+		setButtonsColor(buttons: buttons)
 		setRowsButtons()
 		makeConstraints()
 	}
@@ -60,6 +61,24 @@ final class CalcalatorView: UIView
 			default: break
 			}
 			buttons.append(button)
+		}
+	}
+
+	private func setButtonsColor(buttons: [CalculatorButton]) {
+		buttons.forEach { button in
+			switch button.tag {
+			case 0...10:
+				button.backgroundColor = Colors.colorDarkGray
+				button.setTitleColor(Colors.colorWhite, for: .normal)
+			case 11...15:
+				button.backgroundColor = Colors.colorOrange
+				button.setTitleColor(Colors.colorWhite, for: .normal)
+				button.setTitleColor(Colors.colorOrange, for: .highlighted)
+			case 16...18:
+				button.backgroundColor = Colors.colorGray
+				button.setTitleColor(Colors.colorBlack, for: .normal)
+			default: break
+			}
 		}
 	}
 

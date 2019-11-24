@@ -31,11 +31,16 @@ final class CalculatorViewController: UIViewController
 			return Double(text) ?? 0
 		}
 		set {
+			let newValue = Double(round(100_000_000 * newValue) / 100_000_000)
+			guard newValue.isInfinite == false else {
+				displayLabel.text = "Error"
+				return
+			}
 			if String(newValue).hasSuffix(".0") {
-				displayLabel.text = String(String(newValue).dropLast(2))
+				displayLabel.text = String(String(newValue).dropLast(2)).replacedDot()
 			}
 			else {
-				displayLabel.text = String(newValue)
+				displayLabel.text = String(newValue).replacedDot()
 			}
 		}
 	}
@@ -113,12 +118,13 @@ final class CalculatorViewController: UIViewController
 
 	@objc private func floatButtonPressed(_ sender: CalculatorButton) {
 		if isTyping && isFloatNumber == false {
-			displayLabel.text = (displayLabel.text ?? "") + "."
+			displayLabel.text = (displayLabel.text ?? "") + ","
 			isFloatNumber = true
 		}
 		else if isTyping == false && isFloatNumber == false {
 			currentInput = Double(displayLabel.text ?? "") ?? 0.0
-			displayLabel.text = "0."
+			displayLabel.text = "0,"
+			isFloatNumber = true
 			isTyping = true
 		}
 	}
@@ -150,11 +156,13 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func numberButtonPressed(_ sender: CalculatorButton) {
-		guard isTyping || sender.tag != 0 else { return }
 		buttons[OperationButtons.acAndC].setTitle("C", for: .normal)
-		guard let displayText = displayLabel.text else { return }
+		guard var displayText = displayLabel.text else { return }
 		if isTyping {
 			if displayText.count < 9 {
+				if displayText.hasSuffix("0") {
+					displayText = String(displayText.dropFirst())
+				}
 				displayLabel.text = displayText + String(sender.tag)
 			}
 		}
