@@ -104,8 +104,7 @@ final class CalculatorViewController: UIViewController
 	}
 	private func configureFormatter() {
 		formatter.numberStyle = .decimal
-		formatter.locale = Locale(identifier: "FR_fr")
-		formatter.groupingSeparator = formatter.locale.groupingSeparator
+		formatter.groupingSeparator = " "
 	}
 	private func updateLabel(value: String) {
 		if value == errorMessage {
@@ -114,12 +113,12 @@ final class CalculatorViewController: UIViewController
 		let fixedValue = value
 			.replacingOccurrences(of: ".", with: ",")
 			.filter("0123456789,.-".contains)
-		if fixedValue.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage {
-			guard let nuberValue = formatter.number(from: fixedValue) else { return }
-			calculatorView.resultLabel.text = formatter.string(from: nuberValue)
+		if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage {
+			guard let numberValue = formatter.number(from: fixedValue) else { return }
+			calculatorView.resultLabel.text = formatter.string(from: numberValue)
 		}
 		else{
-			calculatorView.resultLabel.text = fixedValue
+			calculatorView.resultLabel.text = value
 		}
 	}
 	private func setUserInput(value: String) {
@@ -146,7 +145,7 @@ final class CalculatorViewController: UIViewController
 			//удаляем его
 			userInput.removeFirst()
 			//если в выражении уже есть число
-			if equalWasUsed == true {
+			if expression.isEmpty == false {
 				//заменяем его
 				expression.removeLast()
 				expression.append(userInput)
@@ -157,7 +156,7 @@ final class CalculatorViewController: UIViewController
 			//вставляем его
 			userInput.insert("-", at: userInput.startIndex)
 			//если в выражении уже есть число
-			if equalWasUsed == true {
+			if expression.isEmpty == false {
 				expression.removeLast()
 				//заменяем
 				expression.append(userInput)
@@ -254,8 +253,11 @@ final class CalculatorViewController: UIViewController
 		expression = []
 		if fixedResult != errorMessage {
 			expression.append(fixedResult)
+			userInput = fixedResult
 		}
-		userInput = fixedResult
+		else {
+			userInput = "0"
+		}
 		updateLabel(value: fixedResult)
 	}
 	func checkResult(_ value: Double) -> String {
@@ -263,7 +265,7 @@ final class CalculatorViewController: UIViewController
 			return errorMessage
 		}
 		let isInteger = floor(value)
-		if isInteger == value {
+		if isInteger == value && isInteger < Double(Int.max){
 			return String(Int(value))
 		}
 		return  String(value)
