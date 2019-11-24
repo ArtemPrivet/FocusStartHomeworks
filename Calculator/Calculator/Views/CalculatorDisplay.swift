@@ -43,14 +43,14 @@ final class CalculatorDisplay: UILabel
 		super.layoutSubviews()
 	}
 
-	func setText(_ text: String) {
-//		if String(text).hasSuffix(".0") {
-//			self.text = String(text.dropLast(2))
+	func setText(_ text: Double) {
+		if String(text).hasSuffix("inf") {
+			self.text = "Ошибка"
+		}
+		else {
+			self.text = text.formattedWithSeparator
+		}
 //		}
-//		else {
-		self.text = text
-//		}
-		self.text = NumberFormatter().string(from: NSNumber(pointer: text))
 		self.textColor = .white
 		self.textAlignment = .right
 		self.font = UIFont(name: "FiraSans-Light", size: 94)

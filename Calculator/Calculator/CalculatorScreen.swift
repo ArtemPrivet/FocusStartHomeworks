@@ -128,7 +128,7 @@ extension CalculatorScreen: IButton
 
 extension CalculatorScreen: IPendingResult
 {
-	func showResult(result: String) {
+	func showResult(result: Double) {
 		print("Screen: IPendingResult info: \(result)")
 		display.setText(result)
 		pendingResult.displayingNow(nowText: display.text)

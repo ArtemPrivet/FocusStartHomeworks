@@ -10,6 +10,5 @@ import Foundation
 
 protocol IPendingResult: AnyObject
 {
-	func showResult(result: String)
-//	func showPendingResult(typing: String)
+	func showResult(result: Double)
 }

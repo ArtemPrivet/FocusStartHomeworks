@@ -33,13 +33,9 @@ final class PendingResult
 			return Double(text) ?? 0
 		}
 		set {
-//			if String(newValue).hasSuffix(".0") {
 				// MARK: display upd, setter of currentInput
-				delegateToScreen?.showResult(result: String(String(newValue).dropLast(2)))
-//			}
-//			else {
 				infoFromDisplay = String(newValue)
-				delegateToScreen?.showResult(result: String(String(newValue)))
+				delegateToScreen?.showResult(result: newValue)
 //			}
 		}
 	}
@@ -86,7 +82,7 @@ extension PendingResult: IButton
 	func plusMinus() {
 		currentInput *= -1
 		// MARK: func plusMinus - display UPD
-		delegateToScreen?.showResult(result: String(currentInput))
+		delegateToScreen?.showResult(result: currentInput)
 		print("+/- pressed: \(currentInput)")
 	}
 
@@ -94,12 +90,12 @@ extension PendingResult: IButton
 		if firstOperand == 0 {
 			currentInput /= 100
 			// MARK: func percent - display UPD
-			delegateToScreen?.showResult(result: String(currentInput))
+			delegateToScreen?.showResult(result: currentInput)
 		}
 		else {
 			currentInput = firstOperand * currentInput / 100
 			secondOperand = currentInput
-			delegateToScreen?.showResult(result: String(currentInput))
+			delegateToScreen?.showResult(result: currentInput)
 		}
 	}
 
@@ -112,7 +108,7 @@ extension PendingResult: IButton
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
 				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
 				// MARK: func operatorPressed - display UPD
-				delegateToScreen?.showResult(result: String(currentInput))
+				delegateToScreen?.showResult(result: currentInput)
 			}
 		}
 		if isTyping {
@@ -129,15 +125,16 @@ extension PendingResult: IButton
 		if isTyping {
 			if (infoFromDisplay?.count ?? 0) < 9 {
 				let unwrappedDisplayInfo: String = infoFromDisplay ?? " "
-				let newText: String = unwrappedDisplayInfo + inputText
+				if let newText = Double(unwrappedDisplayInfo + inputText) {
 				// MARK: func digit  - display UPD
 				delegateToScreen?.showResult(result: newText)
-				print("Now on display less than 9")
+				}
 			}
 		}
 		else {
-			delegateToScreen?.showResult(result: inputText)
-			print("else after typing check false")
+			if let newText = Double(inputText) {
+			delegateToScreen?.showResult(result: newText)
+			}
 			isTyping = true
 		}
 	}
@@ -150,7 +147,7 @@ extension PendingResult: IButton
 		else if isTyping == false && isFloatNumber == false {
 			currentInput = Double(infoFromDisplay ?? "") ?? 0.0
 			// MARK: func comma - передаю данные в дисплей
-			delegateToScreen?.showResult(result: "0.")
+//			delegateToScreen?.showResult(result: "0.")
 			isTyping = true
 		}
 	}
@@ -177,8 +174,7 @@ extension PendingResult: IButton
 extension PendingResult: IDisplayInfo
 {
 	func displayingNow(nowText: String?) {
-
-		infoFromDisplay = nowText
+		infoFromDisplay = String(nowText?.filter { !" ".contains($0) } ?? "0")
 		print("PendingResult: IDisplayInfo: func displayingNow(): \(String(describing: nowText))")
 	}
 }
