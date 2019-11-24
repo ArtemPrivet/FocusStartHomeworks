@@ -83,6 +83,8 @@ struct CalculatorEngine
 
 	private var accumulator: Double = 0
 	private var infixArray = [OperationStack]()
+	private var lastOperand: Double = 0
+	private var countOfEquals = 0
 
 	private var operations: [Operator: Operation] = [
 		.magnitude: .unaryOperation({ -$0 }, nil),
@@ -103,6 +105,7 @@ struct CalculatorEngine
 		}
 		infixArray.append(.operand(operand))
 		accumulator = operand
+		lastOperand = accumulator
 	}
 
 	mutating func clean() {
@@ -114,6 +117,7 @@ struct CalculatorEngine
 		reset()
 	}
 
+	// swiftlint:disable cyclomatic_complexity
 	// swiftlint:disable:next function_body_length
 	mutating func performOperation(with symbol: Operator, completion: (Response) -> Void) {
 
@@ -135,11 +139,24 @@ struct CalculatorEngine
 		}
 
 		if infixArray.isEmpty {
-			infixArray.append(.operand(accumulator))
+			setOperand(accumulator)
 		}
 
 		if case .operator(let `operator`) = infixArray.last {
 			// В стэке послдний элемент - оператор
+			switch symbol {
+			case .equals:
+				break
+			default:
+				if countOfEquals > 0 {
+					reset()
+					infixArray.append(.operand(accumulator))
+					countOfEquals = 0
+					performOperation(with: symbol, completion: completion) // РЕКУРСИЯ
+					return
+				}
+			}
+
 			guard
 				let lastOperation = `operator`.operation(from: operations),
 				let newOperation = symbol.operation(from: operations) else {
@@ -153,15 +170,22 @@ struct CalculatorEngine
 			case (_, let .unaryOperation(function, validator)):
 				error = validator?(0)
 				accumulator = function(0)
-				infixArray.append(.operand(accumulator))
+				setOperand(accumulator)
 
 			case (_, .binaryOperation):
 				infixArray.removeLast()
 				performOperation(with: symbol, completion: completion) // РЕКУРСИЯ
+				return
 
 			case (_, .equals):
+				countOfEquals += 1
+				infixArray.append(.operand(lastOperand))
 				evaluate(completion)
 				reset()
+				if countOfEquals > 0 {
+					infixArray.append(.operand(accumulator))
+					infixArray.append(.operator(`operator`))
+				}
 				return
 
 			case (_, let .percentOperation(_, binaryFunction)):
@@ -191,6 +215,7 @@ struct CalculatorEngine
 			}
 		}
 		else {
+			// В стэке послдний элемент - операнд
 			guard let operation = symbol.operation(from: operations) else {
 
 					completion(.failure(.error(message: "ERROR")))
@@ -239,14 +264,22 @@ struct CalculatorEngine
 				return
 
 			case .equals:
+				print(infixArray)
+				countOfEquals += 1
+				let lastOperator = infixArray[infixArray.endIndex - 2]
 				evaluate(completion)
 				reset()
+				if countOfEquals > 0 {
+					infixArray.append(.operand(accumulator))
+					infixArray.append(lastOperator)
+				}
 				return
 			}
 		}
 
 		completion(.success(accumulator))
 	}
+	// swiftlint:enable function_body_length
 
 	// MARK: ... Private metods
 	private func evaluateUsingPostfixNotation(_ infixArray: [OperationStack]) throws -> Double {
