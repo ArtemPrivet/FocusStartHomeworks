@@ -14,71 +14,13 @@ final class Button: UIButton
 
 	override var isSelected: Bool {
 		didSet {
-			switch currentTitle {
-			case Sign.divide:
-				UIView.animate(withDuration: 0.5,
-							   delay: 0.0,
-							   options: [.curveLinear],
-							   animations: {
-								if self.isSelected {
-									self.setTitleColor(.systemOrange, for: .selected)
-									self.backgroundColor = .white
-									self.setBackgroundImage(UIImage(named: "divideSReversed"), for: .selected)
-								}
-								else {
-									self.setTitleColor(.white, for: .normal)
-									self.backgroundColor = .systemOrange
-									self.setBackgroundImage(UIImage(named: "divideS"), for: .selected)
-								}
-								 },
-							   completion: nil )
-			case Sign.multiply, Sign.minus, Sign.plus:
-				UIView.animate(withDuration: 0.5,
-							   delay: 0.0,
-							   options: [.curveLinear],
-							   animations: {
-								if self.isSelected {
-									self.setTitleColor(.systemOrange, for: .selected)
-									self.backgroundColor = .white
-								}
-								else {
-									self.setTitleColor(.white, for: .normal)
-									self.backgroundColor = .systemOrange
-								}
-				},
-							   completion: nil)
-
-			default: break
-			}
+			animateWhenSelected()
 		}
 	}
 
 	override var isHighlighted: Bool {
 		didSet {
-			UIView.animate(withDuration: 0.3,
-						   delay: 0.0,
-						   options: [.curveLinear],
-						   animations: {
-							switch self.currentTitle {
-							case Sign.divide:
-								self.setBackgroundImage(
-									UIImage(
-									named: self.isHighlighted ? "divideSReversed" : "divideSReversed"
-									),
-									for: .highlighted)
-							case Sign.multiply, Sign.minus, Sign.plus:
-								break
-							case Sign.equals:
-								self.backgroundColor =
-									self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .systemOrange
-							case Sign.clear, Sign.allClear, Sign.percent, Sign.changeSign:
-								self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.9) : .lightGray
-							default:
-								self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.8) : .darkGray
-							}
-			},
-						   completion: nil
-			)
+			animateWhenHighlighted()
 		}
 	}
 
@@ -109,5 +51,71 @@ final class Button: UIButton
 			titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: bounds.size.width / 2)
 		}
 		layer.cornerRadius = bounds.size.height / 2
+	}
+
+	private func animateWhenHighlighted() {
+		UIView.animate(withDuration: 0.3,
+					   delay: 0.0,
+					   options: [.curveLinear],
+					   animations: {
+						switch self.currentTitle {
+						case Sign.divide:
+							self.setBackgroundImage(
+								UIImage(
+								named: self.isHighlighted ? "divideSReversed" : "divideSReversed"
+								),
+								for: .highlighted)
+						case Sign.multiply, Sign.minus, Sign.plus:
+							break
+						case Sign.equals:
+							self.backgroundColor =
+								self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .systemOrange
+						case Sign.clear, Sign.allClear, Sign.percent, Sign.changeSign:
+							self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.9) : .lightGray
+						default:
+							self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.8) : .darkGray
+						}
+		},
+					   completion: nil
+		)
+	}
+
+	private func animateWhenSelected() {
+		switch currentTitle {
+		case Sign.divide:
+			UIView.animate(withDuration: 0.5,
+						   delay: 0.0,
+						   options: [.curveLinear],
+						   animations: {
+							if self.isSelected {
+								self.setTitleColor(.systemOrange, for: .selected)
+								self.backgroundColor = .white
+								self.setBackgroundImage(UIImage(named: "divideSReversed"), for: .selected)
+							}
+							else {
+								self.setTitleColor(.white, for: .normal)
+								self.backgroundColor = .systemOrange
+								self.setBackgroundImage(UIImage(named: "divideS"), for: .selected)
+							}
+			},
+						   completion: nil )
+		case Sign.multiply, Sign.minus, Sign.plus:
+			UIView.animate(withDuration: 0.5,
+						   delay: 0.0,
+						   options: [.curveLinear],
+						   animations: {
+							if self.isSelected {
+								self.setTitleColor(.systemOrange, for: .selected)
+								self.backgroundColor = .white
+							}
+							else {
+								self.setTitleColor(.white, for: .normal)
+								self.backgroundColor = .systemOrange
+							}
+			},
+						   completion: nil)
+
+		default: break
+		}
 	}
 }
