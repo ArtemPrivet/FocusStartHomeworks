@@ -9,7 +9,7 @@
 import Foundation
 extension String
 {
-	func count(character: Character) -> Int {
+	func count(of character: Character) -> Int {
 		return self.reduce(0){ counter, symbol  in
 			if symbol == character {
 				return counter + 1
