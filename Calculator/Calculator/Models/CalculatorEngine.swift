@@ -110,6 +110,7 @@ struct CalculatorEngine
 
 	mutating func clean() {
 		accumulator = 0
+		countOfEquals = 0
 	}
 
 	mutating func allClean() {
@@ -119,23 +120,23 @@ struct CalculatorEngine
 
 	// swiftlint:disable cyclomatic_complexity
 	// swiftlint:disable:next function_body_length
-	mutating func performOperation(with symbol: Operator, completion: (Response) -> Void) {
+	mutating func performOperation(with symbol: Operator, completion: ((Response) -> Void)? = nil) {
 
 		var error: CalculateError?
 
-		func evaluate(_ completion: (Response) -> Void) {
+		func evaluate(_ completion: ((Response) -> Void)?) {
 			do {
 				accumulator = try evaluateUsingPostfixNotation(infixArray)
 			}
 			catch CalculateError.error(message: let message) {
-				completion(.failure(.error(message: message)))
+				completion?(.failure(.error(message: message)))
 				return
 			}
 			catch {
-				completion(.failure(.error(message: "ERROR")))
+				completion?(.failure(.error(message: "ERROR")))
 				return
 			}
-			completion(.success(accumulator))
+			completion?(.success(accumulator))
 		}
 
 		if infixArray.isEmpty {
@@ -161,7 +162,7 @@ struct CalculatorEngine
 				let lastOperation = `operator`.operation(from: operations),
 				let newOperation = symbol.operation(from: operations) else {
 
-					completion(.failure(.error(message: "ERROR")))
+					completion?(.failure(.error(message: "ERROR")))
 					return
 			}
 
@@ -193,7 +194,7 @@ struct CalculatorEngine
 				let previousOperationStack = infixArray[infixArray.endIndex - 2]
 
 				guard case .operand(let operand) = previousOperationStack else {
-					completion(.failure(.error(message: "ERROR")))
+					completion?(.failure(.error(message: "ERROR")))
 					return
 				}
 
@@ -205,11 +206,11 @@ struct CalculatorEngine
 					infixArray.append(.operand(accumulator))
 				}
 				catch CalculateError.error(message: let message) {
-					completion(.failure(.error(message: message)))
+					completion?(.failure(.error(message: message)))
 					return
 				}
 				catch {
-					completion(.failure(.error(message: "ERROR")))
+					completion?(.failure(.error(message: "ERROR")))
 					return
 				}
 			}
@@ -218,7 +219,7 @@ struct CalculatorEngine
 			// В стэке послдний элемент - операнд
 			guard let operation = symbol.operation(from: operations) else {
 
-					completion(.failure(.error(message: "ERROR")))
+					completion?(.failure(.error(message: "ERROR")))
 					return
 			}
 
@@ -234,7 +235,7 @@ struct CalculatorEngine
 				guard let operationStack = infixArray.last,
 					case .operand(let operand) = operationStack else {
 
-						completion(.failure(.error(message: "ERROR")))
+						completion?(.failure(.error(message: "ERROR")))
 						return
 				}
 
@@ -244,7 +245,7 @@ struct CalculatorEngine
 
 					guard case .operand(let previousOperand) = previousOperationStack else {
 
-						completion(.failure(.error(message: "ERROR")))
+						completion?(.failure(.error(message: "ERROR")))
 						return
 					}
 
@@ -277,7 +278,7 @@ struct CalculatorEngine
 			}
 		}
 
-		completion(.success(accumulator))
+		completion?(.success(accumulator))
 	}
 	// swiftlint:enable function_body_length
 

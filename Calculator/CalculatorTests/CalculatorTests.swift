@@ -18,13 +18,13 @@ final class CalculatorSingleBinaryOperationsTests: XCTestCase
 	func testSinglePlusOperation() {
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand + secondOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand)
 		}
 		calculator.allClean()
 	}
@@ -32,13 +32,13 @@ final class CalculatorSingleBinaryOperationsTests: XCTestCase
 	func testSingleMinusOperation() {
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .minus) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand - secondOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand - self.secondOperand)
 		}
 		calculator.allClean()
 	}
@@ -46,13 +46,13 @@ final class CalculatorSingleBinaryOperationsTests: XCTestCase
 	func testSingleMultipleOperation() {
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .multiple) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand * secondOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand * self.secondOperand)
 		}
 		calculator.allClean()
 	}
@@ -60,13 +60,13 @@ final class CalculatorSingleBinaryOperationsTests: XCTestCase
 	func testSingleDivideOperation() {
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .divide) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand / secondOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand / self.secondOperand)
 		}
 		calculator.allClean()
 	}

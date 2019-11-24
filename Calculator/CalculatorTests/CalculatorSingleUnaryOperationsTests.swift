@@ -17,12 +17,12 @@ final class CalculatorSingleUnaryOperationsTests: XCTestCase
 	func testSinglePlusOperation() {
 		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .magnitude) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, -firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, -self.firstOperand)
 		}
 		calculator.performOperation(with: .magnitude) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 	}
 }

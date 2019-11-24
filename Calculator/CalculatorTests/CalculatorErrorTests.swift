@@ -27,14 +27,14 @@ final class CalculatorErrorTests: XCTestCase
 		calculator.setOperand(firstOperand)
 		// 1 / -> 1
 		calculator.performOperation(with: .divide) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.self.firstOperand)
 		}
 		// 1 / 0
 		calculator.setOperand(zeroOperand)
 		// 1 / 0 = -> Ошибка
 		calculator.performOperation(with: .multiple) { result in
-			XCTAssertEqual(.infinity, firstOperand / zeroOperand)
+			XCTAssertEqual(.infinity, self.self.firstOperand / self.self.zeroOperand)
 			if case .failure(let error) = result {
 				switch error {
 				case .error(message: let message):

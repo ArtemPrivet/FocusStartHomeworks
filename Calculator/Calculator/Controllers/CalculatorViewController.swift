@@ -262,7 +262,7 @@ extension CalculatorViewController
 		}
 
 		calculatorEngine.performOperation(with: symbol) { result in
-			displayResult = result
+			self.displayResult = result
 		}
 	}
 

@@ -25,8 +25,8 @@ final class CalculatorClearTests: XCTestCase
 		calculator.setOperand(firstOperand)
 		// 1 + -> 1
 		calculator.performOperation(with: .plus) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		// 1 + 2
 		calculator.setOperand(secondOperand)
@@ -36,15 +36,15 @@ final class CalculatorClearTests: XCTestCase
 		calculator.setOperand(thirdOperand)
 		// 1 + 2 C 3 * -> 4
 		calculator.performOperation(with: .multiple) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand + thirdOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand + self.thirdOperand)
 		}
 		// 1 + 2 C 3 * 4
 		calculator.setOperand(forthOperand)
 		// 1 + 2 C 3 * 4 = -> 13
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand + thirdOperand * forthOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand + self.thirdOperand * self.forthOperand)
 		}
 	}
 
@@ -53,15 +53,15 @@ final class CalculatorClearTests: XCTestCase
 		calculator.setOperand(firstOperand)
 		// 1 + -> 1
 		calculator.performOperation(with: .plus) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand)
 		}
 		// 1 + 2
 		calculator.setOperand(secondOperand)
 		// 1 + 2 * -> 3
 		calculator.performOperation(with: .multiple) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand + secondOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand)
 		}
 		// 1 + 2 * C
 		calculator.clean()
@@ -69,8 +69,8 @@ final class CalculatorClearTests: XCTestCase
 		calculator.setOperand(thirdOperand)
 		// 1 + 2 * C 3 = -> 7
 		calculator.performOperation(with: .equals) { result in
-			let result = accumulator(from: result)
-			XCTAssertEqual(result, firstOperand + secondOperand * thirdOperand)
+			let result = self.accumulator(from: result)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand * self.thirdOperand)
 		}
 	}
 }
