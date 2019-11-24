@@ -55,6 +55,7 @@ final class ButtonView: UIView
 
 		button.setBackgroundColor(textColor, for: .selected)
 		button.setTitleColor(color, for: .selected)
+		button.setImageTintColor(color, for: .selected)
 
 		return button
 	}()
