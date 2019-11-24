@@ -53,6 +53,9 @@ final class ButtonView: UIView
 			button.setBackgroundColor(lighterColor, for: .highlighted)
 		}
 
+		button.setBackgroundColor(textColor, for: .selected)
+		button.setTitleColor(color, for: .selected)
+
 		return button
 	}()
 
@@ -124,6 +127,14 @@ final class ButtonView: UIView
 	func setTitle(_ text: String) {
 		guard image == nil else { return }
 		button.setTitle(text, for: .normal)
+	}
+
+	func select() {
+		button.isSelected = true
+	}
+
+	func deselect() {
+		button.isSelected = false
 	}
 }
 

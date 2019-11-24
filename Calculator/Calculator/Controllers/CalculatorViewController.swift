@@ -149,6 +149,8 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
+	private var lastOperatorButtonView: ButtonView?
+
 	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -202,6 +204,7 @@ extension CalculatorViewController
 {
 
 	private func actionTouchDigit(_ sender: ButtonView) {
+		lastOperatorButtonView?.deselect()
 		clearType = .clean
 		let digit = sender.title
 		let currentText = resultView.text ?? ""
@@ -234,16 +237,30 @@ extension CalculatorViewController
 	}
 
 	private func actionPerformOperation(_ sender: ButtonView) {
-		clearType = .clean
-		if userInTheMiddleOfTyping {
-			userInTheMiddleOfTyping = false
-		}
 		guard let symbol = CalculatorEngine.Operator(rawValue: sender.title) else {
 			return
 		}
-		if case .magnitude = symbol {
-			userInTheMiddleOfTyping = true
+		//selectedButtonView
+
+		clearType = .clean
+
+		if userInTheMiddleOfTyping {
+			userInTheMiddleOfTyping = false
 		}
+
+		switch symbol {
+		case .divide, .multiple, .minus, .plus:
+			lastOperatorButtonView?.deselect()
+			sender.select()
+			lastOperatorButtonView = sender
+		case .magnitude:
+			userInTheMiddleOfTyping = true
+		case .equals:
+			lastOperatorButtonView?.deselect()
+			lastOperatorButtonView = nil
+		default: break
+		}
+
 		calculatorEngine.performOperation(with: symbol) { result in
 			displayResult = result
 		}
@@ -254,11 +271,13 @@ extension CalculatorViewController
 		case .clean:
 			calculatorEngine.clean()
 			clearType = .allClean
+			lastOperatorButtonView?.select()
 		case .allClean:
 			calculatorEngine.allClean()
+			lastOperatorButtonView?.deselect()
+			lastOperatorButtonView = nil
 		}
 		resultView.text = "0"
-		//sender.setTitle("AC")
 		userInTheMiddleOfTyping = false
 	}
 
