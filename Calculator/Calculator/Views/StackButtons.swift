@@ -23,10 +23,7 @@ final class StackButtons: UIView
 	init() {
 		super.init(frame: .zero)
 		backgroundColor = .black
-		stackOfStacks.axis = .vertical
-		stackOfStacks.alignment = .fill
-		stackOfStacks.distribution = .fillEqually
-		stackOfStacks.spacing = 10
+		formingStackFrame()
 		formingStack()
 		addSubview(stackOfStacks)
 		stackOfStacks.snp.makeConstraints { maker in
@@ -46,6 +43,12 @@ final class StackButtons: UIView
 			stackOfStacks.addArrangedSubview(stack)
 		}
 	}
+	func formingStackFrame() {
+		stackOfStacks.axis = .vertical
+		stackOfStacks.alignment = .fill
+		stackOfStacks.distribution = .fillEqually
+		stackOfStacks.spacing = 10
+	}
 	func addButtonsToArray() {
 		for element in 0..<digitAndSymbols.count {
 			let button = RoundButton()
@@ -56,6 +59,7 @@ final class StackButtons: UIView
 			case "AC", "%", "⁺∕₋":
 				button.backgroundColor = #colorLiteral(red: 0.6861984134, green: 0.6863183975, blue: 0.6861909032, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)
+				//button.setImage(UIImage(named: digitAndSymbols[element]), for: .normal)
 				button.setBackgroundImage(UIImage(named: "operat"), for: .highlighted)
 				button.setTitleColor(.black, for: .normal)
 			case "÷", "×", "-", "+", "=":
@@ -64,7 +68,9 @@ final class StackButtons: UIView
 				//button.titleLabel?.alpha = 0
 				button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 46)
 				button.setBackgroundImage(UIImage(named: "operat"), for: .highlighted)
+				//button.setImage(UIImage(named: digitAndSymbols[element]), for: .normal)
 				button.setTitleColor(#colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 1), for: .highlighted)
+				//button.setTitleColor(#colorLiteral(red: 1, green: 0.5825584531, blue: 0, alpha: 0), for: .normal)
 			default:
 				button.backgroundColor = #colorLiteral(red: 0.199973762, green: 0.2000150383, blue: 0.1999711692, alpha: 1)
 				button.setTitle(digitAndSymbols[element], for: .normal)

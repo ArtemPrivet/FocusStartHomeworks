@@ -10,37 +10,29 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
-	private var brain = LogicOperation()
-	var calculatorScreen = CalculatorScreen()
-	var buttons = [UIButton]()
-	var resultLabel = UILabel()
-	var typingBegan = false
+	private var logicOperation = LogicOperation()
+	private var calculatorScreen = CalculatorScreen()
+	private var buttons = [UIButton]()
+	private var resultLabel = UILabel()
+	private var typingBegan = false
 	let formatter: NumberFormatter = {
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
+		formatter.groupingSize = 3
+		formatter.maximumIntegerDigits = 9
 		formatter.maximumFractionDigits = 9
 		formatter.notANumberSymbol = "Ошибка"
+		formatter.usesGroupingSeparator = true
 		formatter.groupingSeparator = " "
 		formatter.locale = Locale.current
 		return formatter
 	}()
 	var displayValue: Double? {
 		get {
-			if let text = resultLabel.text, let value = Double(text.replacingOccurrences(of: ",", with: ".")){
-				return value
-			}
-			else {
-				return nil
-			}
+			getValue(resultLabel.text)
 		}
 		set {
-			if let value = newValue {
-				guard value.isInfinite == false else { return resultLabel.text = "Ошибка" }
-				resultLabel.text = formatter.string(from: NSNumber(value: value))?.replacingOccurrences(of: ".", with: ",")
-			}
-			else {
-				resultLabel.text = "0"
-			}
+			resultLabel.text = setValue(newValue)
 			typingBegan = false
 			changeACButton()
 		}
@@ -54,12 +46,7 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 		accessToElements()
 		addTarget()
-		let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipToDeleteNumber(_:)))
-		let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipToDeleteNumber(_:)))
-		leftSwipe.direction = .left
-		rightSwipe.direction = .right
-		self.view.addGestureRecognizer(leftSwipe)
-		self.view.addGestureRecognizer(rightSwipe)
+		swipe()
 	}
 
 	override func loadView() {
@@ -88,21 +75,21 @@ final class CalculatorViewController: UIViewController
 	@objc func pressOperator(_ sender: UIButton) {
 		if typingBegan {
 			if let value = displayValue {
-				brain.setDigit(value)
+				logicOperation.setDigit(value)
 			}
 			typingBegan = false
 		}
 		if let mathematicsSymbol = sender.currentTitle {
-			brain.performOperation(mathematicsSymbol)
+			logicOperation.performOperation(mathematicsSymbol)
 		}
-		if let result = brain.result {
+		if let result = logicOperation.result {
 			displayValue = result
 		}
 		changeACButton()
 	}
 	@objc func pressAC(_ sender: UIButton) {
 		if sender.currentTitle == "C" {
-			brain.null()
+			logicOperation.null()
 			displayValue = 0
 			typingBegan = false
 			changeACButton()
@@ -120,6 +107,14 @@ final class CalculatorViewController: UIViewController
 				typingBegan = false
 			}
 		}
+	}
+	func swipe() {
+		let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipToDeleteNumber(_:)))
+		let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipToDeleteNumber(_:)))
+		leftSwipe.direction = .left
+		rightSwipe.direction = .right
+		self.view.addGestureRecognizer(leftSwipe)
+		self.view.addGestureRecognizer(rightSwipe)
 	}
 	func addTarget() {
 		for button in buttons {
@@ -145,6 +140,33 @@ final class CalculatorViewController: UIViewController
 			else if button.currentTitle == "C", text == "0" {
 				button.setTitle("AC", for: .normal)
 			}
+		}
+	}
+	func setValue(_ newValue: Double?) -> String {
+		var text = ""
+		if let value = newValue {
+			guard value.isInfinite == false else { return "Ошибка" }
+			if String(value).count > 12 {
+				formatter.numberStyle = .scientific
+				formatter.exponentSymbol = "e"
+			}
+			else {
+				formatter.numberStyle = .decimal
+			}
+			let textValue = formatter.string(from: NSNumber(value: value)) ?? "0"
+			text = textValue.replacingOccurrences(of: ".", with: ",")
+		}
+		else {
+			text = "0"
+		}
+		return text
+	}
+	func getValue(_ textValue: String?) -> Double {
+		if let text = textValue?.replacingOccurrences(of: ",", with: ".") {
+			return formatter.number(from: text)?.doubleValue ?? 0
+		}
+		else {
+			return 0
 		}
 	}
 }

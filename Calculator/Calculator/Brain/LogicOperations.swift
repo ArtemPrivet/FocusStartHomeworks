@@ -11,7 +11,7 @@ import Foundation
 struct LogicOperation
 {
 	private var currentContainer: Double?
-	private var pendingContainer = Double()
+	private var pendingContainer = 0.0
 	var result: Double? {
 		return currentContainer
 	}
@@ -52,7 +52,7 @@ struct LogicOperation
 				performPendingBinaryOperation()
 				if let result = currentContainer{
 					if pendingContainer > 0 {
-						pendingBinaryOperation = PendingBinaryOperation(function: twoDigitPercent, firstOperand: result)
+						pendingBinaryOperation = PendingBinaryOperation(function: twoDigitPercent, firstOperand: pendingContainer)
 					}
 					else {
 						currentContainer = oneDigitPercent(result)
@@ -97,6 +97,6 @@ struct LogicOperation
 	mutating func null() {
 		currentContainer = nil
 		pendingBinaryOperation = nil
-		pendingContainer = Double()
+		pendingContainer = 0.0
 	}
 }

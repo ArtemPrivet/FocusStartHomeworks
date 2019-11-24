@@ -27,7 +27,7 @@ final class CalculatorScreen: UIView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func makeConstraint() {
+	private func makeConstraint() {
 		buttonsView.snp.makeConstraints { maker in
 			maker.bottom.equalToSuperview().offset(-12)
 			maker.leading.equalToSuperview().offset(8)
