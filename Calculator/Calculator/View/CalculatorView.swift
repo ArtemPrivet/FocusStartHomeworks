@@ -115,10 +115,10 @@ final class CalculatorView: UIView
 		return CalculatorButton(of: getButtonType(buttonTitle: title), with: title)
 	}
 	private func getButtonType(buttonTitle: String) -> ButtonOperationType {
-		if "0123456789,".contains(buttonTitle) {
+		if ButtonOperationType.digit.rawValue.contains(buttonTitle) {
 			return ButtonOperationType.digit
 		}
-		else if "-+=/*".contains(buttonTitle) {
+		else if ButtonOperationType.operation.rawValue.contains(buttonTitle) {
 			return ButtonOperationType.operation
 		}
 		else {

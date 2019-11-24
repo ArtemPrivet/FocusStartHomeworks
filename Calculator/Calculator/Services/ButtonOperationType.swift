@@ -8,9 +8,9 @@
 
 import Foundation
 
-enum ButtonOperationType
+enum ButtonOperationType: String
 {
-	case digit
-	case operation
-	case symbolic
+	case digit = "0123456789,"
+	case operation = "-+=/*"
+	case symbolic = "AC%+-"
 }
