@@ -111,7 +111,7 @@ final class CalculatorView: UIView
 			}
 		}
 	}
-	private func createButton(title: String) -> CalculatorButton {
+	private func createButton(with title: String) -> CalculatorButton {
 		return CalculatorButton(of: getButtonType(buttonTitle: title), with: title)
 	}
 	private func getButtonType(buttonTitle: String) -> TypeOfButton {
