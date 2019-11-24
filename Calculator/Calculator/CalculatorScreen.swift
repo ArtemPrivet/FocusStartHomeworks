@@ -10,6 +10,11 @@ import UIKit
 
 final class CalculatorScreen: UIView
 {
+	weak var delegate: IButton?
+	weak var delegateToPR: IDisplayInfo?
+
+	var pendingResult = PendingResult()
+
 	private let countWidth = 4
 	private let countHeight = 5
 	private var count: Int {
@@ -23,9 +28,12 @@ final class CalculatorScreen: UIView
 		super.init(frame: .zero)
 		addSubview(display)
 		addSubview(buttonsStack)
-		display.backgroundColor = .black
 		makeConstraints()
 		translatesAutoresizingMaskIntoConstraints = false
+		buttonsStack.delegate = self
+		self.delegate = pendingResult
+		pendingResult.delegateToScreen = self
+//		pendingResult.delegate = display
 	}
 	@available(*, unavailable)
 	required init?(coder aDecoder: NSCoder) {
@@ -48,9 +56,9 @@ final class CalculatorScreen: UIView
 				])
 			NSLayoutConstraint.activate([
 				buttonsStack.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-				buttonsStack.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 200),
+				buttonsStack.topAnchor.constraint(equalTo: display.safeAreaLayoutGuide.bottomAnchor, constant: 15),
 				buttonsStack.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -17),
-				buttonsStack.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+				buttonsStack.heightAnchor.constraint(equalTo: buttonsStack.safeAreaLayoutGuide.widthAnchor, multiplier: 5 / 4),
 				])
 		}
 		else {
@@ -62,10 +70,73 @@ final class CalculatorScreen: UIView
 				])
 			NSLayoutConstraint.activate([
 				buttonsStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-				buttonsStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 200),
+				buttonsStack.topAnchor.constraint(equalTo: display.bottomAnchor, constant: 15),
 				buttonsStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -17),
-				buttonsStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+				buttonsStack.heightAnchor.constraint(equalTo: buttonsStack.widthAnchor, multiplier: 5 / 4),
 				])
 		}
 	}
+}
+
+extension CalculatorScreen: IButton
+{
+	func allClear() {
+		print("Screen AC")
+		delegate?.allClear()
+	}
+
+	func clear() {
+		print("Screen C")
+		delegate?.clear()
+	}
+
+	func plusMinus() {
+		print("Screen +/-")
+		delegate?.plusMinus()
+	}
+
+	func percent() {
+		print("Screen +/-")
+		delegate?.percent()
+	}
+
+	func operatorPressed(is oper: String) {
+		print("Screen operator")
+		delegate?.operatorPressed(is: oper)
+	}
+
+	func digit(inputText: String) {
+		print("Screen inputText: \(inputText)")
+		delegate?.digit(inputText: inputText)
+	}
+
+	func comma() {
+		print("Screen +/-")
+		delegate?.comma()
+	}
+
+	func equalTo() {
+		print("Screen =")
+		delegate?.equalTo()
+	}
+
+	func getButtonDetails(identifier: Int) {
+		print("Screen got info from: \(identifier)")
+		delegate?.getButtonDetails(identifier: identifier)
+	}
+}
+
+extension CalculatorScreen: IPendingResult
+{
+	func showResult(result: String) {
+		print("Screen: IPendingResult info: \(result)")
+		display.setText(result)
+		delegateToPR?.displayingNow(nowText: display.text)
+//		pendingResult.nowOnDisplay = display.text
+	}
+
+//	func showPendingResult(typing: String) {
+//		<#code#>
+//	}
+//
 }

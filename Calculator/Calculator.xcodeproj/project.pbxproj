@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		C3A44273F9462A95212CA75E /* Pods_CalculatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */; };
+		C6017FAB2389AACF00DB7A7A /* PendingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FAA2389AACF00DB7A7A /* PendingResult.swift */; };
+		C6017FB52389B94E00DB7A7A /* IPendingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB42389B94E00DB7A7A /* IPendingResult.swift */; };
+		C6017FB72389B99200DB7A7A /* IDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */; };
+		C6017FB92389B9DA00DB7A7A /* IButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB82389B9DA00DB7A7A /* IButton.swift */; };
+		C6017FBD2389D72B00DB7A7A /* IRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FBC2389D72B00DB7A7A /* IRow.swift */; };
+		C6017FBF2389D7CB00DB7A7A /* IStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FBE2389D7CB00DB7A7A /* IStack.swift */; };
+		C66B37FC2388319A009BAA09 /* RPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66B37FB2388319A009BAA09 /* RPN.swift */; };
 		C6AB4F8C238196AF00DD4C9C /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		C6AB4F8D238196B000DD4C9C /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		C6AB4F8E238196B300DD4C9C /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
@@ -42,7 +49,14 @@
 		7F503E6E185ECBFF99BBD31C /* Pods-CalculatorTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.debug.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.debug.xcconfig"; sourceTree = "<group>"; };
 		A6B995DC6F11599123CDACE6 /* Pods-Calculator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.release.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.release.xcconfig"; sourceTree = "<group>"; };
 		BA70F5370090042EEFEDA8C6 /* Pods-CalculatorTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalculatorTests.release.xcconfig"; path = "Target Support Files/Pods-CalculatorTests/Pods-CalculatorTests.release.xcconfig"; sourceTree = "<group>"; };
-		C6AB4F9123819DD900DD4C9C /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorScreen.swift; sourceTree = "<group>"; };
+		C6017FAA2389AACF00DB7A7A /* PendingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PendingResult.swift; path = ../PendingResult.swift; sourceTree = "<group>"; };
+		C6017FB42389B94E00DB7A7A /* IPendingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPendingResult.swift; sourceTree = "<group>"; };
+		C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDisplayInfo.swift; sourceTree = "<group>"; };
+		C6017FB82389B9DA00DB7A7A /* IButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IButton.swift; sourceTree = "<group>"; };
+		C6017FBC2389D72B00DB7A7A /* IRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRow.swift; sourceTree = "<group>"; };
+		C6017FBE2389D7CB00DB7A7A /* IStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IStack.swift; sourceTree = "<group>"; };
+		C66B37FB2388319A009BAA09 /* RPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RPN.swift; path = ../RPN.swift; sourceTree = "<group>"; };
+		C6AB4F9123819DD900DD4C9C /* CalculatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CalculatorScreen.swift; path = ../CalculatorScreen.swift; sourceTree = "<group>"; };
 		C6AB4F932381A17E00DD4C9C /* CalculatorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButton.swift; sourceTree = "<group>"; };
 		C6AB4F952381A29400DD4C9C /* CalculatorDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorDisplay.swift; sourceTree = "<group>"; };
 		C6FBE42323831F05009CDB31 /* ButtonRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonRow.swift; sourceTree = "<group>"; };
@@ -91,13 +105,35 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C6017FAD2389AF1C00DB7A7A /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				C66B37FB2388319A009BAA09 /* RPN.swift */,
+				C6017FAA2389AACF00DB7A7A /* PendingResult.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		C66B3801238871C7009BAA09 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				C6017FB82389B9DA00DB7A7A /* IButton.swift */,
+				C6017FB42389B94E00DB7A7A /* IPendingResult.swift */,
+				C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */,
+				C6017FBC2389D72B00DB7A7A /* IRow.swift */,
+				C6017FBE2389D7CB00DB7A7A /* IStack.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		C6AB4F9023819D3A00DD4C9C /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				C6AB4F932381A17E00DD4C9C /* CalculatorButton.swift */,
-				C6AB4F952381A29400DD4C9C /* CalculatorDisplay.swift */,
 				C6FBE42323831F05009CDB31 /* ButtonRow.swift */,
 				C6FBE42523831F9B009CDB31 /* ButtonsStack.swift */,
+				C6AB4F952381A29400DD4C9C /* CalculatorDisplay.swift */,
+				C6AB4F9123819DD900DD4C9C /* CalculatorScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -125,7 +161,8 @@
 		CA33EE38237ACA1500B5D09F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				C6AB4F9123819DD900DD4C9C /* CalculatorScreen.swift */,
+				C66B3801238871C7009BAA09 /* Protocols */,
+				C6017FAD2389AF1C00DB7A7A /* New Group */,
 				C6AB4F9023819D3A00DD4C9C /* Views */,
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
@@ -388,9 +425,16 @@
 			files = (
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				C6AB4F9223819DD900DD4C9C /* CalculatorScreen.swift in Sources */,
+				C6017FB52389B94E00DB7A7A /* IPendingResult.swift in Sources */,
+				C6017FAB2389AACF00DB7A7A /* PendingResult.swift in Sources */,
+				C6017FBF2389D7CB00DB7A7A /* IStack.swift in Sources */,
 				C6FBE42623831F9B009CDB31 /* ButtonsStack.swift in Sources */,
+				C6017FB72389B99200DB7A7A /* IDisplayInfo.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
+				C6017FBD2389D72B00DB7A7A /* IRow.swift in Sources */,
+				C66B37FC2388319A009BAA09 /* RPN.swift in Sources */,
 				C6AB4F942381A17E00DD4C9C /* CalculatorButton.swift in Sources */,
+				C6017FB92389B9DA00DB7A7A /* IButton.swift in Sources */,
 				C6FBE42423831F05009CDB31 /* ButtonRow.swift in Sources */,
 				C6AB4F962381A29400DD4C9C /* CalculatorDisplay.swift in Sources */,
 			);

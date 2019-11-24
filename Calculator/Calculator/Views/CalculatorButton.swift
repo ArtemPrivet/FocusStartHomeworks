@@ -10,8 +10,12 @@ import UIKit
 
 final class CalculatorButton: UIButton
 {
+	weak var delegate: IButton?
+//	private var pendingResult = PendingResult()
+
 	var identifier: Int = 0
 	var group: Group = .numbers
+
 	private static var indentifierFactory = 0
 
 	private static func getUniqueIdentifier() -> Int {
@@ -22,9 +26,11 @@ final class CalculatorButton: UIButton
 	init() {
 		super.init(frame: .zero)
 		self.identifier = CalculatorButton.getUniqueIdentifier()
+//		self.delegate = pendingResult
 		getGroup()
 		getColor()
 		getLabel()
+		addActionToButton()
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 	@available(*, unavailable)
@@ -70,6 +76,34 @@ final class CalculatorButton: UIButton
 		case .numbers: self.backgroundColor = .darkGray
 		case .operators: self.backgroundColor = .orange
 		case .others: self.backgroundColor = .lightGray
+		}
+	}
+
+	func addActionToButton() {
+			self.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+	}
+
+	@objc func buttonClicked(sender: UIButton) {
+		guard let text = (sender.subviews.last as? UILabel)?.text
+			else {
+				return
+		}
+		guard let delegate = self.delegate else {
+			return
+		}
+		print(text)
+		delegate.getButtonDetails(identifier: self.identifier)
+		switch text {
+		case "AC": delegate.allClear()
+		case "C": delegate.clear()
+		case "⁺⁄₋": delegate.plusMinus()
+		case "%": delegate.percent()
+		case "÷", "×", "+", "-": delegate.operatorPressed(is: text)
+		case "=": delegate.equalTo()
+		case ",": delegate.comma()
+		case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9": delegate.digit(inputText: text)
+		default:
+			break
 		}
 	}
 

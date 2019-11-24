@@ -10,6 +10,7 @@ import UIKit
 
 final class ButtonsStack: UIStackView
 {
+	weak var delegate: IButton?
 	private let countHeight = 5
 	private var arrayOfRows = [ButtonRow]()
 
@@ -24,19 +25,62 @@ final class ButtonsStack: UIStackView
 	}
 
 	func setUpButtonStack() {
-		for rowIndex in 0..<countHeight {
+		for _ in 0..<countHeight {
 			let row = ButtonRow()
-			arrayOfRows.append(row)
+			row.delegate = self
 			self.addArrangedSubview(row)
-			if rowIndex == 4 {
-				self.distribution = .fillProportionally
-			}
-			else {
-				self.distribution = .fillEqually
-			}
 		}
 		self.axis = .vertical
 		self.alignment = .fill
+		self.distribution = .fillEqually
 		self.spacing = 15
+	}
+}
+
+extension ButtonsStack: IButton
+{
+	func allClear() {
+		print("Stack AC")
+		delegate?.allClear()
+	}
+
+	func clear() {
+		print("Stack C")
+		delegate?.clear()
+	}
+
+	func plusMinus() {
+		print("Stack +/-")
+		delegate?.plusMinus()
+	}
+
+	func percent() {
+		print("Stack +/-")
+		delegate?.percent()
+	}
+
+	func operatorPressed(is oper: String) {
+		print("Stack operator")
+		delegate?.operatorPressed(is: oper)
+	}
+
+	func digit(inputText: String) {
+		print("Stack inputText: \(inputText)")
+		delegate?.digit(inputText: inputText)
+	}
+
+	func comma() {
+		print("Stack +/-")
+		delegate?.comma()
+	}
+
+	func equalTo() {
+		print("Stack =")
+		delegate?.equalTo()
+	}
+
+	func getButtonDetails(identifier: Int) {
+		print("Stack got info from: \(identifier)")
+		delegate?.getButtonDetails(identifier: identifier)
 	}
 }
