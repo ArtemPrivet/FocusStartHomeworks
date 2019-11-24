@@ -29,3 +29,17 @@ extension Queue: CustomStringConvertible
 {
 	var description: String { "\(queue)" }
 }
+
+extension Queue
+{
+	init(_ elements: [Element]) {
+		queue = elements
+	}
+}
+
+extension Queue: Equatable where Element: Equatable
+{
+	static func == (lhs: Queue<Element>, rhs: Queue<Element>) -> Bool {
+		lhs.queue == rhs.queue
+	}
+}

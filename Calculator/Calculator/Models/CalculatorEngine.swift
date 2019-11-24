@@ -7,7 +7,6 @@
 //
 
 // swiftlint:disable strict_fileprivate
-// swiftlint:disable file_length
 
 import Foundation
 
@@ -26,9 +25,8 @@ struct CalculatorEngine
 		case equals
 	}
 
-	fileprivate enum OperationStack: CustomStringConvertible
+	enum OperationStack: CustomStringConvertible
 	{
-
 		case operand(Double)
 		case `operator`(Operator)
 
@@ -53,10 +51,6 @@ struct CalculatorEngine
 		case equals = "="
 
 		var description: String { rawValue }
-
-		fileprivate func operation(from operations: [Self: Operation]) -> Operation? {
-			operations[self]
-		}
 	}
 
 	enum CalculateError: Error
@@ -280,7 +274,7 @@ struct CalculatorEngine
 
 		completion?(.success(accumulator))
 	}
-	// swiftlint:enable function_body_length
+	// swiftlint:enable cyclomatic_complexity
 
 	// MARK: ... Private metods
 	private func evaluateUsingPostfixNotation(_ infixArray: [OperationStack]) throws -> Double {
@@ -340,149 +334,10 @@ struct CalculatorEngine
 	}
 }
 
-// MARK: - Infix to postfix alhorithm
-fileprivate extension CalculatorEngine
+// MARK: - Extension Operator
+extension CalculatorEngine.Operator
 {
-	enum ScriptError: Error
-	{
-		case openBracket
-		case closeBracket
-	}
-
-	// swiftlint:disable:next function_body_length
-	static func convertInfixToPostfixNotation(input array: [OperationStack]) throws -> Queue<OperationStack> {
-		var array = array
-		var stack = Stack<OperationStack>()
-		var postfixNotationArray = Queue<OperationStack>()
-
-		func popImfixToPostfixNotation() {
-			postfixNotationArray.push(array.removeFirst())
-		}
-
-		func popImfixNotationToStack() {
-			stack.push(array.removeFirst())
-		}
-
-		func popStackToPostfixNotation() {
-			guard let item = stack.pop() else {
-				assertionFailure("Stack is Empty")
-				return
-			}
-			postfixNotationArray.push(item)
-		}
-
-		func removeFromStack() {
-			stack.pop()
-		}
-
-		func removeFromInfixNotation() {
-			array.removeFirst()
-		}
-
-		func removeFromStackAndInfixNotation() {
-			removeFromStack()
-			removeFromInfixNotation()
-		}
-
-		func choosingAction(incomingOperator operator: Operator?) throws -> (() -> Void)? {
-
-			guard let `operator` = `operator` else {
-
-				guard let top = stack.top else { return nil }
-
-				switch top {
-
-				case .operator(let symbol) where symbol == .openBracket: throw ScriptError.openBracket
-
-				case .operator: return popStackToPostfixNotation
-
-				case .operand: break
-				}
-
-				return nil
-			}
-
-			switch `operator` {
-
-			case .plus, .minus:
-				guard let top = stack.top else { return popImfixNotationToStack }
-
-				switch top {
-
-				case .operator(let symbol) where symbol == .openBracket: return popImfixNotationToStack
-
-				case .operator: return popStackToPostfixNotation
-
-				case .operand: break
-				}
-
-			case .multiple, .divide:
-				if case .operator(let symbol) = stack.top, (symbol == .multiple || symbol == .divide) {
-					return popStackToPostfixNotation
-				}
-				else {
-					return popImfixNotationToStack
-				}
-
-			case .openBracket:
-				return popImfixNotationToStack
-
-			case .closeBracket:
-				guard let top = stack.top else {
-					throw ScriptError.closeBracket
-				}
-
-				switch top {
-
-				case .operator(let symbol) where symbol == .openBracket: return removeFromStackAndInfixNotation
-
-				case .operator: return popStackToPostfixNotation
-
-				case .operand: break
-				}
-
-			case .equals, .magnitude, .percent:
-				break
-			}
-			return nil
-		}
-
-		while let item = array.first {
-			switch item {
-			case .operand:
-				popImfixToPostfixNotation()
-			case .operator(let symbol):
-				do {
-					let action = try choosingAction(incomingOperator: symbol)
-					action?()
-				}
-				catch {
-					throw error
-				}
-			}
-		}
-
-		while stack.isEmpty == false {
-			let action = try choosingAction(incomingOperator: nil)
-			action?()
-		}
-
-		return postfixNotationArray
-	}
-}
-
-// MARK: - [OperationStack]
-private extension Array where Element == CalculatorEngine.OperationStack
-{
-	func convertToPostfix() throws -> Queue<Element> {
-		try CalculatorEngine.convertInfixToPostfixNotation(input: self)
-	}
-}
-
-// MARK: - Extension ArraySlice<OperationStack>
-private extension ArraySlice where Element == CalculatorEngine.OperationStack
-{
-	func convertToPostfix() throws -> Queue<Element> {
-		try CalculatorEngine.convertInfixToPostfixNotation(input: Array(self))
+	fileprivate func operation(from operations: [Self: CalculatorEngine.Operation]) -> CalculatorEngine.Operation? {
+		operations[self]
 	}
 }
