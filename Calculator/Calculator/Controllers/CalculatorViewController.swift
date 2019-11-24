@@ -94,33 +94,15 @@ final class CalculatorViewController: UIViewController
 	private let decimalSeparator = Formatter.decimal.decimalSeparator ?? ","
 
 	private var displayValue: Double? {
-		get {
-			guard let text = resultView.text else { return nil }
-			var value: Double?
-			if text.contains("e") {
-				value = Formatter.scientific.number(from: text) as? Double
-			}
-			else {
-				value = Formatter.decimal.number(from: text) as? Double
-			}
-			return value
-		}
-		set {
-			guard let value = newValue else { return }
-			if String(value).count < 12 {
-				resultView.text = value.decimalFormatted
-			}
-			else {
-				resultView.text = value.scientificFormatted
-			}
-		}
+		get { getResult() }
+		set { displayResult(newValue) }
 	}
 
-	private var displayResult: CalculatorEngine.Response = .success(0) {
+	private var calculatorResult: CalculatorEngine.Response = .success(0) {
 
 		didSet {
 
-			switch displayResult {
+			switch calculatorResult {
 			case .failure: resultView.text = "Ошибка"
 			case .success(nil): displayValue = 0
 			case .success(let result): displayValue = result
@@ -197,6 +179,28 @@ final class CalculatorViewController: UIViewController
 		self.view.addSubview(resultView)
 		self.view.addSubview(buttonsAreaView)
 	}
+
+	private func getResult() -> Double? {
+		guard let text = resultView.text else { return nil }
+		var value: Double?
+		if text.contains("e") {
+			value = Formatter.scientific.number(from: text) as? Double
+		}
+		else {
+			value = Formatter.decimal.number(from: text) as? Double
+		}
+		return value
+	}
+
+	private func displayResult(_ value: Double?) {
+		guard let value = value else { return }
+		if String(value).count < 12 {
+			resultView.text = value.decimalFormatted
+		}
+		else {
+			resultView.text = value.scientificFormatted
+		}
+	}
 }
 
 // MARK: - Actions
@@ -262,7 +266,7 @@ extension CalculatorViewController
 		}
 
 		calculatorEngine.performOperation(with: symbol) { result in
-			self.displayResult = result
+			self.calculatorResult = result
 		}
 	}
 
