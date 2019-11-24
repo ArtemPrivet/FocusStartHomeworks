@@ -17,9 +17,10 @@ final class CalculatorScreen: UIView
 	init() {
 		super.init(frame: .zero)
 		backgroundColor = .black
-		addSubview(resultLabel)
 		addSubview(buttonsView)
+		addSubview(resultLabel)
 		makeConstraint()
+		translatesAutoresizingMaskIntoConstraints = false
 	}
 
 	@available(*, unavailable)

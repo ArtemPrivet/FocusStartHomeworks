@@ -82,9 +82,9 @@ final class StackButtons: UIView
 					maker.width.equalTo(button.snp.height).multipliedBy(2)
 				}
 			}
-			else {
+			if button.titleLabel?.text == "," || button.titleLabel?.text == "=" {
 				button.snp.makeConstraints { maker in
-					maker.width.equalTo(button.snp.height).multipliedBy(1)
+					maker.width.equalTo(button.snp.height)
 				}
 			}
 			buttons.append(button)
