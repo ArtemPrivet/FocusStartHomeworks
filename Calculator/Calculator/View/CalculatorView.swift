@@ -60,7 +60,7 @@ final class CalculatorView: UIView
 		makeMainStackViewConstraints()
 	}
 	private func setupButtons() {
-		buttonTitles.forEach{ buttons.append(createButton(title: $0)) }
+		buttonTitles.forEach{ buttons.append(createButton(with: $0)) }
 		for index in 0..<buttons.count {
 			switch index {
 			case 0..<4:

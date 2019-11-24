@@ -104,7 +104,9 @@ final class CalculatorViewController: UIViewController
 	}
 	private func configureFormatter() {
 		formatter.numberStyle = .decimal
+		formatter.locale = Locale(identifier: "FR_fr")
 		formatter.groupingSeparator = " "
+		formatter.maximumFractionDigits = 8
 	}
 	private func updateLabel(value: String) {
 		if value == errorMessage {
@@ -113,8 +115,10 @@ final class CalculatorViewController: UIViewController
 		let fixedValue = value
 			.replacingOccurrences(of: ".", with: ",")
 			.filter("0123456789,.-".contains)
-		if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage {
+		if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage && value.contains("e") == false {
+			//ему нужна ток запятая
 			guard let numberValue = formatter.number(from: fixedValue) else { return }
+			print(formatter.string(from: numberValue))
 			calculatorView.resultLabel.text = formatter.string(from: numberValue)
 		}
 		else{
@@ -264,10 +268,10 @@ final class CalculatorViewController: UIViewController
 		if value.isInfinite {
 			return errorMessage
 		}
-		let isInteger = floor(value)
+		/*let isInteger = floor(value)
 		if isInteger == value && isInteger < Double(Int.max){
 			return String(Int(value))
-		}
-		return  String(value)
+		}*/
+		return  String(format: "%.8f", value)
 	}
 }

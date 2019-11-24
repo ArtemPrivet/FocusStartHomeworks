@@ -28,7 +28,7 @@ final class CalculatorTests: XCTestCase
 	func testToRPN() {
 		let expression = ["5", "+", "3", "*", "2", "-", "8", "/", "6"]
 		let expectedResult = ["5", "3", "2", "*", "+", "8", "6", "/", "-"]
-		let result = calculator.toRPN(inputArray: expression)
+		let result = calculator.toReversePolishNotation(inputArray: expression)
 		XCTAssertEqual(result, expectedResult)
 	}
 	func testStackPush() {

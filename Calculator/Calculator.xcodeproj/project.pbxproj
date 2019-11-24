@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B391D27238AA4DC008F9F4D /* OperationPrioity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B391D26238AA4DC008F9F4D /* OperationPrioity.swift */; };
 		4B40C7082386B3B700DB956B /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40C7072386B3B700DB956B /* CalculatorView.swift */; };
 		4B40C70A2386C28C00DB956B /* TypeOfButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40C7092386C28C00DB956B /* TypeOfButton.swift */; };
 		4B58829C2381672C00844617 /* CalculatorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B58829B2381672C00844617 /* CalculatorButton.swift */; };
@@ -39,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		28450808F086F21E93E1C3E6 /* Pods_Calculator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B391D26238AA4DC008F9F4D /* OperationPrioity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationPrioity.swift; sourceTree = "<group>"; };
 		4B40C7072386B3B700DB956B /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		4B40C7092386C28C00DB956B /* TypeOfButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfButton.swift; sourceTree = "<group>"; };
 		4B58829B2381672C00844617 /* CalculatorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorButton.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				4B5882E0238456DC00844617 /* Calculator.swift */,
+				4B391D26238AA4DC008F9F4D /* OperationPrioity.swift */,
 				4B40C7092386C28C00DB956B /* TypeOfButton.swift */,
 				4BF2243A23882D9A0074E3EE /* Stack.swift */,
 			);
@@ -408,6 +411,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B391D27238AA4DC008F9F4D /* OperationPrioity.swift in Sources */,
 				4B58829C2381672C00844617 /* CalculatorButton.swift in Sources */,
 				4B40C70A2386C28C00DB956B /* TypeOfButton.swift in Sources */,
 				4B5882A223816F9A00844617 /* UIColorExtension.swift in Sources */,

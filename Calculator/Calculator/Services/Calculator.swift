@@ -12,19 +12,19 @@ final class Calculator
 	private var RPNInterpretation: [String] = []
 
 	func solve(input: [String]) -> Double {
-		RPNInterpretation = toRPN(inputArray: input)
+		RPNInterpretation = toReversePolishNotation(inputArray: input)
 		//print(RPNInterpretation)
 		let result = calculate(rpn: RPNInterpretation)
 		return result
 	}
-	//Получения польской нотации
-	func toRPN(inputArray: [String]) -> [String] {
+	//Получениe польской нотации
+	func toReversePolishNotation(inputArray: [String]) -> [String] {
 		var stack = [String]()
 		var output = [String]()
 		var mayUnary = true
 		for item in inputArray {
 			switch getOperatorPriority(calcOperator: item) {
-			case -1:
+			case .lowPriority:
 				output.append(item)
 				mayUnary = false
 			default:
@@ -33,7 +33,7 @@ final class Calculator
 					oper.insert("u", at: oper.startIndex)
 				}
 				while let last = stack.last {
-					if getOperatorPriority(calcOperator: last) >= getOperatorPriority(calcOperator: oper) {
+					if getOperatorPriority(calcOperator: last).rawValue >= getOperatorPriority(calcOperator: oper).rawValue {
 						output.append(stack.removeLast())
 					}
 					else {
@@ -97,16 +97,16 @@ final class Calculator
 		}
 		return result
 	}
-	private func getOperatorPriority(calcOperator: String) -> Int {
+	private func getOperatorPriority(calcOperator: String) -> OperationPriority {
 		switch calcOperator {
 		case "u-", "u+":
-			return 3
+			return .highestPriority
 		case "+", "-":
-			return 1
+			return .mediumPriority
 		case "*", "/", "%":
-			return 2
+			return .highPriority
 		default: // numbers
-			return -1
+			return .lowPriority
 		}
 	}
 	private func isDelimeter(character: Character) -> Bool {
