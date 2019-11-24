@@ -12,8 +12,6 @@
 		C6017FB52389B94E00DB7A7A /* IPendingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB42389B94E00DB7A7A /* IPendingResult.swift */; };
 		C6017FB72389B99200DB7A7A /* IDisplayInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */; };
 		C6017FB92389B9DA00DB7A7A /* IButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FB82389B9DA00DB7A7A /* IButton.swift */; };
-		C6017FBD2389D72B00DB7A7A /* IRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FBC2389D72B00DB7A7A /* IRow.swift */; };
-		C6017FBF2389D7CB00DB7A7A /* IStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FBE2389D7CB00DB7A7A /* IStack.swift */; };
 		C6017FC1238AC4EC00DB7A7A /* FormatterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FC0238AC4EC00DB7A7A /* FormatterExtensions.swift */; };
 		C6017FC3238AE1E800DB7A7A /* ButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6017FC2238AE1E800DB7A7A /* ButtonExtension.swift */; };
 		C66B37FC2388319A009BAA09 /* RPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66B37FB2388319A009BAA09 /* RPN.swift */; };
@@ -55,8 +53,6 @@
 		C6017FB42389B94E00DB7A7A /* IPendingResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPendingResult.swift; sourceTree = "<group>"; };
 		C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDisplayInfo.swift; sourceTree = "<group>"; };
 		C6017FB82389B9DA00DB7A7A /* IButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IButton.swift; sourceTree = "<group>"; };
-		C6017FBC2389D72B00DB7A7A /* IRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IRow.swift; sourceTree = "<group>"; };
-		C6017FBE2389D7CB00DB7A7A /* IStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IStack.swift; sourceTree = "<group>"; };
 		C6017FC0238AC4EC00DB7A7A /* FormatterExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatterExtensions.swift; sourceTree = "<group>"; };
 		C6017FC2238AE1E800DB7A7A /* ButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtension.swift; sourceTree = "<group>"; };
 		C66B37FB2388319A009BAA09 /* RPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RPN.swift; path = ../RPN.swift; sourceTree = "<group>"; };
@@ -126,8 +122,6 @@
 				C6017FB82389B9DA00DB7A7A /* IButton.swift */,
 				C6017FB42389B94E00DB7A7A /* IPendingResult.swift */,
 				C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */,
-				C6017FBC2389D72B00DB7A7A /* IRow.swift */,
-				C6017FBE2389D7CB00DB7A7A /* IStack.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -433,13 +427,11 @@
 				C6AB4F9223819DD900DD4C9C /* CalculatorScreen.swift in Sources */,
 				C6017FB52389B94E00DB7A7A /* IPendingResult.swift in Sources */,
 				C6017FAB2389AACF00DB7A7A /* PendingResult.swift in Sources */,
-				C6017FBF2389D7CB00DB7A7A /* IStack.swift in Sources */,
 				C6017FC1238AC4EC00DB7A7A /* FormatterExtensions.swift in Sources */,
 				C6FBE42623831F9B009CDB31 /* ButtonsStack.swift in Sources */,
 				C6017FB72389B99200DB7A7A /* IDisplayInfo.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
 				C6017FC3238AE1E800DB7A7A /* ButtonExtension.swift in Sources */,
-				C6017FBD2389D72B00DB7A7A /* IRow.swift in Sources */,
 				C66B37FC2388319A009BAA09 /* RPN.swift in Sources */,
 				C6AB4F942381A17E00DD4C9C /* CalculatorButton.swift in Sources */,
 				C6017FB92389B9DA00DB7A7A /* IButton.swift in Sources */,
