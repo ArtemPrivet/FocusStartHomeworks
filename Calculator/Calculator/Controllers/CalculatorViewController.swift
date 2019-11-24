@@ -108,20 +108,22 @@ final class CalculatorViewController: UIViewController
 		formatter.groupingSeparator = " "
 		formatter.maximumFractionDigits = 8
 	}
-	private func updateLabel(value: String) {
-		if value == errorMessage {
-			calculatorView.resultLabel.text = value
+	private func updateLabel(value: String?) {
+		if let value = value {
+			let fixedValue = value
+				.replacingOccurrences(of: ".", with: ",")
+				.filter("0123456789,.-".contains)
+			if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage && value.contains("e") == false {
+				//ему нужна ток запятая
+				guard let numberValue = formatter.number(from: fixedValue) else { return }
+				calculatorView.resultLabel.text = formatter.string(from: numberValue)
+			}
+			else{
+				calculatorView.resultLabel.text = value
+			}
 		}
-		let fixedValue = value
-			.replacingOccurrences(of: ".", with: ",")
-			.filter("0123456789,.-".contains)
-		if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage && value.contains("e") == false {
-			//ему нужна ток запятая
-			guard let numberValue = formatter.number(from: fixedValue) else { return }
-			calculatorView.resultLabel.text = formatter.string(from: numberValue)
-		}
-		else{
-			calculatorView.resultLabel.text = value
+		else {
+			calculatorView.resultLabel.text = errorMessage
 		}
 	}
 	private func setUserInput(value: String) {
@@ -143,28 +145,16 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 	private func negativeButtonTapped() {
-		//если в числе уже есть -
 		if userInput.contains("-") == true {
-			//удаляем его
 			userInput.removeFirst()
-			//если в выражении уже есть число
-			if expression.isEmpty == false {
-				//заменяем его
-				expression.removeLast()
-				expression.append(userInput)
-			}
 		}
-			//если в числе еще нет -
 		else {
-			//вставляем его
 			userInput.insert("-", at: userInput.startIndex)
-			//если в выражении уже есть число
-			if expression.isEmpty == false {
-				expression.removeLast()
-				//заменяем
-				expression.append(userInput)
-			}
 		}
+		if expression.isEmpty == false {
+			expression.removeLast()
+		}
+		expression.append(userInput)
 		updateLabel(value: userInput)
 	}
 	private func ACButtonTapped() {
@@ -239,7 +229,7 @@ final class CalculatorViewController: UIViewController
 		}
 		let result = calculator.solve(input: subExpression)
 		let fixedresult = checkResult(result)
-		userInput = fixedresult
+		userInput = fixedresult ?? "0"
 		expression.append(userInput)
 		updateLabel(value: fixedresult)
 		//Чтоб 2 раза не добавлять одинаковое число
@@ -254,7 +244,7 @@ final class CalculatorViewController: UIViewController
 		//По возможности округляем
 		let fixedResult = checkResult(result)
 		expression = []
-		if fixedResult != errorMessage {
+		if let fixedResult = checkResult(result) {
 			expression.append(fixedResult)
 			userInput = fixedResult
 		}
@@ -263,8 +253,8 @@ final class CalculatorViewController: UIViewController
 		}
 		updateLabel(value: fixedResult)
 	}
-	func checkResult(_ value: Double) -> String {
-		guard value.isInfinite != true else { return errorMessage }
+	func checkResult(_ value: Double) -> String? {
+		guard value.isInfinite != true else { return nil }
 		return String(format: "%.8f", value)
 	}
 }
