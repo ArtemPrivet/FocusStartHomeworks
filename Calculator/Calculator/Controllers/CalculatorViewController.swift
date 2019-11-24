@@ -10,25 +10,21 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
-	let calculation = Calculation()
-	let screen = Screen()
-	var firstValue = true
+	private let calculation = Calculation()
+	private let screen = Screen()
 
 	override func loadView() {
 		self.view = screen
-		//self.someLabel = screen.windowLabel
-		//someLabel?.text = "333"
-		//screen.windowLabel.text = "333"
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		//screen.windowLabel.text = textInLabel
 		addTargets()
+		addGestureRecognizer()
 	}
 
 	func addTargets() {
-		for button in screen.button.buttonsArray {
+		for button in screen.button.buttonArray {
 			button.addTarget(self, action: #selector(setTarget), for: .touchUpInside)
 		}
 	}
@@ -40,12 +36,12 @@ final class CalculatorViewController: UIViewController
 				screen.windowLabel.text = calculation.nullTapped()
 			case "1", "2", "3", "4", "5", "6", "7", "8", "9":
 				screen.windowLabel.text = calculation.numberTapped(sender)
-				screen.button.buttonsArray[15].titleLabel?.text = " C"
+				screen.button.buttonArray[15].titleLabel?.text = " C"
 			case ",":
 				screen.windowLabel.text = calculation.symbolTapped()
 			case "AC":
 				screen.windowLabel.text = calculation.aCTapped()
-				screen.button.buttonsArray[15].titleLabel?.text = "AC"
+				screen.button.buttonArray[15].titleLabel?.text = "AC"
 			case "=":
 				screen.windowLabel.text = calculation.equalTapped()
 			case "+":
@@ -53,18 +49,28 @@ final class CalculatorViewController: UIViewController
 			case "-":
 				screen.windowLabel.text = calculation.minusTapped()
 			case "×":
-				screen.windowLabel.text = calculation.multiply()
+				screen.windowLabel.text = calculation.multiplyTapped()
 			case "÷":
 				screen.windowLabel.text = calculation.divideTapped()
+			case "⁺∕₋":
+				screen.windowLabel.text = calculation.opposideTapped()
+			case "%":
+				screen.windowLabel.text = calculation.procentTapped()
 			default:
-				print("Fuck")
+				break
 		}
 	}
 
-//	@objc func setTarget(button: UIButton) {
-//		print("yyyhhh")
-////		switch par {
-////		case *: self.logic()
-////		}
-//	}
+	func addGestureRecognizer() {
+		let swipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeLabel))
+		swipe.direction = [.left, .right]
+		screen.windowLabel.isUserInteractionEnabled = true
+		screen.windowLabel.addGestureRecognizer(swipe)
+	}
+
+	@objc func swipeLabel() {
+		if screen.windowLabel.text != "0" {
+			screen.windowLabel.text?.removeLast()
+		}
+	}
 }

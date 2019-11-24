@@ -13,16 +13,16 @@ extension Screen
 
 	func makeConstraints() {
 
-		for (index, button) in button.buttonsArray.enumerated() {
+		for (index, button) in button.buttonArray.enumerated() {
 			switch index {
 			case 0:
 				button.snp.makeConstraints { make in
-				make.width.greaterThanOrEqualTo(164)
+				make.width.greaterThanOrEqualTo(164).priority(999)
 				make.height.greaterThanOrEqualTo(75)
 				}
 			default:
 				button.snp.makeConstraints { make in
-				make.width.greaterThanOrEqualTo(75)
+				make.width.greaterThanOrEqualTo(75).priority(999)
 				make.height.equalTo(button.snp.width)
 				}
 			}

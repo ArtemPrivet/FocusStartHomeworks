@@ -10,10 +10,11 @@
 
 import UIKit
 
-final class RoundedButton: UIButton
+final class Button: UIButton
 {
-	var buttonsArray = [UIButton]()
-	let symbolArray = ["0", ",", "=", "1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "×", "AC", "⁺∕₋", "%", "÷"]
+	var buttonArray = [UIButton]()
+	private let symbolArray = ["0", ",", "=", "1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "×", "AC", "⁺∕₋", "%", "÷"]
+	private let count = 19
 
 	init() {
 		super.init(frame: .zero)
@@ -28,17 +29,16 @@ final class RoundedButton: UIButton
 	}
 
 	func createArray() {
-		for item in 1...19 {
+		for _ in 1...count {
 			let button = UIButton()
-			button.tag = item
 			button.showsTouchWhenHighlighted = true
-			buttonsArray.append(button)
+			buttonArray.append(button)
 			addSubview(button)
 		}
 	}
 
 	func colorButton() {
-		for (index, button) in buttonsArray.enumerated() {
+		for (index, button) in buttonArray.enumerated() {
 			switch index {
 			case 0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13:
 				button.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)
@@ -59,7 +59,7 @@ final class RoundedButton: UIButton
 	}
 
 	func setTitle() {
-		for (button, symbol) in zip(buttonsArray, symbolArray) {
+		for (button, symbol) in zip(buttonArray, symbolArray) {
 			button.setTitle(symbol, for: .normal)
 		}
 	}

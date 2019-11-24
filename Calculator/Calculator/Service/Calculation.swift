@@ -25,22 +25,28 @@ final class Calculation
 	var lastOperator: OperatorType?
 
 	func nullTapped() -> String? {
+		guard labelText.count <= 8 else { return labelText }
 		if firstValue {
 			labelText = "0"
+			firstValue = false
 		}
-		else {
+		else if labelText.first != "0" {
 			labelText += "0"
 		}
 		return labelText
 	}
 
 	func numberTapped(_ sender: UIButton) -> String? {
+		guard labelText.count <= 8 else { return labelText }
 		if firstValue {
 			labelText = sender.titleLabel?.text ?? ""
 			firstValue = false
 		}
-		else {
+		else if labelText != "0" {
 			labelText += sender.titleLabel?.text ?? ""
+		}
+		else {
+			labelText = sender.titleLabel?.text ?? ""
 		}
 		return labelText
 	}
@@ -52,18 +58,21 @@ final class Calculation
 	}
 
 	func symbolTapped() -> String {
+		guard labelText.count <= 8 else { return labelText }
+		guard labelText.filter(",".contains).isEmpty else { return labelText }
 		if firstValue {
-			labelText = "."
+			labelText = "0,"
 			firstValue = false
 		}
 		else {
-			labelText += "."
+			labelText += ","
 		}
 		return labelText
 	}
 
 	func equalTapped() -> String {
 		var result: Double?
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
 		if let finalOperator = lastOperator {
 			switch finalOperator {
 			case .plus: result = (subTotal ?? 0) + (Double(labelText) ?? 0)
@@ -73,12 +82,13 @@ final class Calculation
 			}
 		}
 		labelText = convertToInt(result ?? 0)
-		subTotal = result
+		subTotal = nil
 		firstValue = true
 		return labelText
 	}
 
 	func plusTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
 		if let currentSubTotal = subTotal {
 			subTotal = (Double(labelText) ?? 0) + currentSubTotal
 		}
@@ -86,12 +96,13 @@ final class Calculation
 			subTotal = (Double(labelText) ?? 0)
 		}
 		labelText = convertToInt(subTotal ?? 0)
-		lastOperator = OperatorType.plus
+		lastOperator = .plus
 		firstValue = true
 		return labelText
 	}
 
 	func minusTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
 		if let currentSubTotal = subTotal {
 			subTotal = (Double(labelText) ?? 0) - currentSubTotal
 		}
@@ -99,12 +110,13 @@ final class Calculation
 			subTotal = (Double(labelText) ?? 0)
 		}
 		labelText = convertToInt(subTotal ?? 0)
-		lastOperator = OperatorType.minus
+		lastOperator = .minus
 		firstValue = true
 		return labelText
 	}
 
-	func multiply() -> String {
+	func multiplyTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
 		if let currentSubTotal = subTotal {
 			subTotal = (Double(labelText) ?? 0) * currentSubTotal
 		}
@@ -112,12 +124,13 @@ final class Calculation
 			subTotal = (Double(labelText) ?? 0)
 		}
 		labelText = convertToInt(subTotal ?? 0)
-		lastOperator = OperatorType.multiply
+		lastOperator = .multiply
 		firstValue = true
 		return labelText
 	}
 
 	func divideTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
 		if let currentSubTotal = subTotal {
 			subTotal = (Double(labelText) ?? 0) / currentSubTotal
 		}
@@ -125,17 +138,40 @@ final class Calculation
 			subTotal = (Double(labelText) ?? 0)
 		}
 		labelText = convertToInt(subTotal ?? 0)
-		lastOperator = OperatorType.divide
+		lastOperator = .divide
 		firstValue = true
 		return labelText
 	}
 
+	func opposideTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
+		if labelText.first != "-" {
+			labelText = "-" + labelText
+		}
+		else {
+			labelText.removeFirst()
+		}
+		labelText = String(labelText.map { $0 == "." ? "," : $0 })
+		return labelText
+	}
+
+	func procentTapped() -> String {
+		labelText = String(labelText.map { $0 == "," ? "." : $0 })
+		labelText = String((Double(labelText) ?? 0) / 100.0)
+		labelText = String(labelText.map { $0 == "." ? "," : $0 })
+		return labelText
+	}
+
 	func convertToInt(_ number: Double) -> String {
+		guard number.isInfinite == false else {
+			labelText = "Ошибка"
+			return labelText
+		}
 		if number.rounded() == number {
 			labelText = "\(Int(number))"
 		}
 		else {
-			labelText = "\(number)"
+			labelText = String(round(10000000 * number) / 10000000)
 		}
 		labelText = String(labelText.map { $0 == "." ? "," : $0 })
 		return labelText

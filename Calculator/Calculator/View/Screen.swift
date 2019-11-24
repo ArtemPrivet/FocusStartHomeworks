@@ -11,11 +11,11 @@ import SnapKit
 
 final class Screen: UIView
 {
-	let button = RoundedButton()
+	let button = Button()
 
 	lazy var bottomStackView: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews:
-			[button.buttonsArray[0], button.buttonsArray[1], button.buttonsArray[2]])
+			[button.buttonArray[0], button.buttonArray[1], button.buttonArray[2]])
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
 		stackView.spacing = 14
@@ -26,7 +26,7 @@ final class Screen: UIView
 
 	lazy var secondStackView: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews:
-			[button.buttonsArray[3], button.buttonsArray[4], button.buttonsArray[5], button.buttonsArray[6]])
+			[button.buttonArray[3], button.buttonArray[4], button.buttonArray[5], button.buttonArray[6]])
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
 		stackView.spacing = 14
@@ -37,7 +37,7 @@ final class Screen: UIView
 
 	lazy var thirdStackView: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews:
-			[button.buttonsArray[7], button.buttonsArray[8], button.buttonsArray[9], button.buttonsArray[10]])
+			[button.buttonArray[7], button.buttonArray[8], button.buttonArray[9], button.buttonArray[10]])
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
 		stackView.spacing = 14
@@ -48,7 +48,7 @@ final class Screen: UIView
 
 	lazy var fourthStackView: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews:
-			[button.buttonsArray[11], button.buttonsArray[12], button.buttonsArray[13], button.buttonsArray[14]])
+			[button.buttonArray[11], button.buttonArray[12], button.buttonArray[13], button.buttonArray[14]])
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
 		stackView.spacing = 14
@@ -59,7 +59,7 @@ final class Screen: UIView
 
 	lazy var fifthStackView: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews:
-			[button.buttonsArray[15], button.buttonsArray[16], button.buttonsArray[17], button.buttonsArray[18]])
+			[button.buttonArray[15], button.buttonArray[16], button.buttonArray[17], button.buttonArray[18]])
 		stackView.axis = .horizontal
 		stackView.alignment = .fill
 		stackView.spacing = 14
@@ -87,6 +87,7 @@ final class Screen: UIView
 		label.font = UIFont(name: "FiraSans-Light", size: 94)
 		label.text = "0"
 		label.numberOfLines = 1
+		label.adjustsFontSizeToFitWidth = true
 		return label
 	}()
 
@@ -105,7 +106,7 @@ final class Screen: UIView
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		for button in button.buttonsArray {
+		for button in button.buttonArray {
 			button.layer.cornerRadius = button.bounds.height / 2
 		}
 	}
