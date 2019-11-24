@@ -15,7 +15,6 @@ final class CalculatorViewController: UIViewController
 	private var calculator = Calculator()
 	private var isUserInTheMiddleOfInput = false
 	private var formatter = MyFormatter.shared.format
-	private var variableValues = [String: Double]()
 
 	private var displayValue: Double? {
 		get {
@@ -118,23 +117,20 @@ final class CalculatorViewController: UIViewController
 		}
 
 		toggleButtonState(of: sender)
-		displayResult = calculator.evaluate(using: variableValues)
+		displayResult = calculator.evaluate()
 	}
 
 	/// чистит экран / модель
 	private func userTappedClear(_ button: Button) -> Bool {
 		if button.currentTitle == Sign.clear {
 			calculatorView.screenLabel.text = Sign.zero
-		//	isUserInTheMiddleOfInput = false
 			toggleClearButtonTitle()
 			return true
 		}
 		if button.currentTitle == Sign.allClear {
 			isUserInTheMiddleOfInput = false
 			calculator.clear()
-			variableValues = [:]
-			displayResult = calculator.evaluate(using: variableValues)
-			//displayValue = 0
+			displayResult = calculator.evaluate()
 			return true
 		}
 		return false
@@ -150,19 +146,9 @@ final class CalculatorViewController: UIViewController
 					button.isSelected = false
 				}
 			}
-		case Sign.percent, Sign.clear, Sign.changeSign:
-			 setVariable(of: sender)
 		default:
 			calculatorView.buttonsStack.cells.forEach { $0.isSelected = false }
 		}
-	}
-
-	/// устанавливает переменную
-	private func setVariable(of button: Button) {
-		isUserInTheMiddleOfInput = false
-		guard let symbol = button.currentTitle else { return }
-		variableValues[symbol] = displayValue
-		displayResult = calculator.evaluate(using: variableValues)
 	}
 
 	private func toggleClearButtonTitle() {
