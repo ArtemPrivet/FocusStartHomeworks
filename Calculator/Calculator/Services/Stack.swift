@@ -12,8 +12,7 @@ struct Stack<T>
 {
 	private var array: [T] = []
 	var toArray: [T] { return array }
-	var peek: T? { return array.first }
-	var last: T? { return array.last }
+	var peek: T? { return array.last }
 	var count: Int {
 		return array.count
 	}

@@ -118,7 +118,6 @@ final class CalculatorViewController: UIViewController
 		if value.contains(",") == false && fixedValue != "-0" && fixedValue != errorMessage && value.contains("e") == false {
 			//ему нужна ток запятая
 			guard let numberValue = formatter.number(from: fixedValue) else { return }
-			print(formatter.string(from: numberValue))
 			calculatorView.resultLabel.text = formatter.string(from: numberValue)
 		}
 		else{

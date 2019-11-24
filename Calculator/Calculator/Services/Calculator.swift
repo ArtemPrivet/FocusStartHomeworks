@@ -49,7 +49,6 @@ final class Calculator
 		}
 		return output
 	}
-	//Расчет выражения
 	private func calculate(rpn: [String]) -> Double {
 		var result = 0.0
 		var temp = Stack<Double>() //стек для решения
@@ -65,7 +64,7 @@ final class Calculator
 				else {
 					let secondNumber = temp.pop() ?? 0.0
 					let firstNumber = temp.pop() ?? secondNumber
-					result = solveExpression(oper: symbol, leftOperand: firstNumber, rightOperand: secondNumber)
+					result = solveExpression(operation: symbol, leftOperand: firstNumber, rightOperand: secondNumber)
 					temp.push(result) //Результат вычисления записываем обратно в стек
 				}
 			}
@@ -78,9 +77,9 @@ final class Calculator
 		}
 	}
 	// MARK: - Методы - помошники
-	private func solveExpression(oper: String, leftOperand: Double, rightOperand: Double) -> Double {
+	private func solveExpression(operation: String, leftOperand: Double, rightOperand: Double) -> Double {
 		var result = 0.0
-		switch oper {//И производим над ними действие, согласно оператору
+		switch operation {
 		case "+":
 			result = leftOperand + rightOperand
 		case "-":
@@ -90,7 +89,6 @@ final class Calculator
 		case "/":
 			result = leftOperand / rightOperand
 		case "%":
-			//result = leftOperand - (leftOperand * rightOperand) / 100
 			result = rightOperand * leftOperand / 100
 		default:
 			break

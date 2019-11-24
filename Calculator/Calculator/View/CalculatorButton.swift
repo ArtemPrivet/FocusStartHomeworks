@@ -11,18 +11,18 @@ import UIKit
 final class CalculatorButton: UIButton
 {
 	var identifier: String?
-	let type: TypeOfButton
+	let type: ButtonOperationType
 
-	init(of type: TypeOfButton, with title: String) {
+	init(of type: ButtonOperationType, with title: String) {
 		self.type = type
 		super.init(frame: .zero)
-		chooseTypeAndCreate(of: type, with: title)
+		chooseTypeAndConfigure(of: type, with: title)
 	}
 	@available(*, unavailable)
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	private func chooseTypeAndCreate(of type: TypeOfButton, with title: String) {
+	private func chooseTypeAndConfigure(of type: ButtonOperationType, with title: String) {
 		switch type {
 		case .digit:
 			setTitleAndFont(title: title, color: .white)

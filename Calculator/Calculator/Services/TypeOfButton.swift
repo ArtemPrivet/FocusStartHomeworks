@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum TypeOfButton
+enum ButtonOperationType
 {
 	case digit
 	case operation

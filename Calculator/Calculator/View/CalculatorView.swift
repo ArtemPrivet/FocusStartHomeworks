@@ -60,7 +60,7 @@ final class CalculatorView: UIView
 		makeMainStackViewConstraints()
 	}
 	private func setupButtons() {
-		buttonTitles.forEach{ buttons.append(createButton(with: $0)) }
+		buttonTitles.forEach{ buttons.append(createButton(withTitle: $0)) }
 		for index in 0..<buttons.count {
 			switch index {
 			case 0..<4:
@@ -81,7 +81,7 @@ final class CalculatorView: UIView
 	}
 	private func roundButtons() {
 		buttons.forEach{ button in
-			button.layoutIfNeeded()
+			//button.layoutIfNeeded()
 			button.layer.cornerRadius = button.bounds.height / 2
 		}
 	}
@@ -111,18 +111,18 @@ final class CalculatorView: UIView
 			}
 		}
 	}
-	private func createButton(with title: String) -> CalculatorButton {
+	private func createButton(withTitle title: String) -> CalculatorButton {
 		return CalculatorButton(of: getButtonType(buttonTitle: title), with: title)
 	}
-	private func getButtonType(buttonTitle: String) -> TypeOfButton {
+	private func getButtonType(buttonTitle: String) -> ButtonOperationType {
 		if "0123456789,".contains(buttonTitle) {
-			return TypeOfButton.digit
+			return ButtonOperationType.digit
 		}
 		else if "-+=/*".contains(buttonTitle) {
-			return TypeOfButton.operation
+			return ButtonOperationType.operation
 		}
 		else {
-			return TypeOfButton.symbolic
+			return ButtonOperationType.symbolic
 		}
 	}
 	private func makeMainStackViewConstraints() {
@@ -136,7 +136,6 @@ final class CalculatorView: UIView
 		mainStackView.axis = .vertical
 		mainStackView.alignment = .fill
 		mainStackView.distribution = .equalSpacing
-		//mainStackView.translatesAutoresizingMaskIntoConstraints = false
 		mainStackView.spacing = 14
 	}
 	private func addAndConfigureChildStackViews() {
@@ -147,7 +146,6 @@ final class CalculatorView: UIView
 			stackView.axis = .horizontal
 			stackView.alignment = .fill
 			stackView.distribution = .equalSpacing
-			//stackView.translatesAutoresizingMaskIntoConstraints = false
 			stackView.spacing = 14
 		}
 		horzontalStackViews.forEach{ mainStackView.addArrangedSubview($0) }
