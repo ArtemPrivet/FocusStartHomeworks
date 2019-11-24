@@ -23,13 +23,13 @@ final class CalculatorViewController: UIViewController
 		addGestureRecognizer()
 	}
 
-	func addTargets() {
+	private func addTargets() {
 		for button in screen.button.buttonArray {
 			button.addTarget(self, action: #selector(setTarget), for: .touchUpInside)
 		}
 	}
 
-	@objc func setTarget(_ sender: UIButton) {
+	@objc private func setTarget(_ sender: UIButton) {
 		guard let title = sender.titleLabel?.text else { return }
 			switch title {
 			case "0":
@@ -61,14 +61,14 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	func addGestureRecognizer() {
+	private func addGestureRecognizer() {
 		let swipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeLabel))
 		swipe.direction = [.left, .right]
 		screen.windowLabel.isUserInteractionEnabled = true
 		screen.windowLabel.addGestureRecognizer(swipe)
 	}
 
-	@objc func swipeLabel() {
+	@objc private func swipeLabel() {
 		if screen.windowLabel.text != "0" {
 			screen.windowLabel.text?.removeLast()
 		}

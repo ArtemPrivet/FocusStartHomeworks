@@ -10,9 +10,9 @@ import UIKit
 
 final class Calculation
 {
-	var firstValue = true
-	var labelText = "0"
-	var subTotal: Double?
+	private var firstValue = true
+	private var labelText = "0"
+	private var subTotal: Double?
 
 	enum OperatorType
 	{
@@ -22,7 +22,7 @@ final class Calculation
 		case divide
 	}
 
-	var lastOperator: OperatorType?
+	private var lastOperator: OperatorType?
 
 	func nullTapped() -> String? {
 		guard labelText.count <= 8 else { return labelText }
@@ -162,7 +162,7 @@ final class Calculation
 		return labelText
 	}
 
-	func convertToInt(_ number: Double) -> String {
+	private func convertToInt(_ number: Double) -> String {
 		guard number.isInfinite == false else {
 			labelText = "Ошибка"
 			return labelText

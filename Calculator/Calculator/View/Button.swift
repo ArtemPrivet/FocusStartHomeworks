@@ -28,7 +28,7 @@ final class Button: UIButton
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	func createArray() {
+	private func createArray() {
 		for _ in 1...count {
 			let button = UIButton()
 			button.showsTouchWhenHighlighted = true
@@ -37,7 +37,7 @@ final class Button: UIButton
 		}
 	}
 
-	func colorButton() {
+	private func colorButton() {
 		for (index, button) in buttonArray.enumerated() {
 			switch index {
 			case 0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13:
@@ -58,7 +58,7 @@ final class Button: UIButton
 		}
 	}
 
-	func setTitle() {
+	private func setTitle() {
 		for (button, symbol) in zip(buttonArray, symbolArray) {
 			button.setTitle(symbol, for: .normal)
 		}
