@@ -16,13 +16,23 @@ final class Button: UIButton
 		didSet {
 			switch currentTitle {
 			case Sign.divide:
-				UIView.animate(withDuration: 0.5,
+				UIView.animate(withDuration: 0.3,
 							   delay: 0.0,
 							   options: [.curveLinear],
 							   animations: {
-								self.setBackgroundImage(UIImage(named: self.isSelected ? "divideSReversed" : "divideS"), for: .selected) },
+								if self.isSelected {
+									self.setTitleColor(.systemOrange, for: .selected)
+									self.backgroundColor = .white
+									self.setBackgroundImage(UIImage(named: "divideSReversed"), for: .selected)
+								}
+								else {
+									self.setTitleColor(.white, for: .normal)
+									self.backgroundColor = .systemOrange
+									self.setBackgroundImage(UIImage(named: "divideS"), for: .selected)
+								}
+								 },
 							   completion: nil )
-			case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+			case Sign.multiply, Sign.minus, Sign.plus:
 				UIView.animate(withDuration: 0.5,
 							   delay: 0.0,
 							   options: [.curveLinear],
@@ -51,7 +61,7 @@ final class Button: UIButton
 						   animations: {
 							switch self.currentTitle {
 							case Sign.divide:
-								self.setBackgroundImage(UIImage(named: self.isHighlighted ? "divideSReversed" : "divideS"), for: .normal)
+								self.setBackgroundImage(UIImage(named: self.isHighlighted ? "divideSReversed" : "divideS"), for: .highlighted)
 							case Sign.multiply, Sign.minus, Sign.plus:
 								break
 							case Sign.equals:
@@ -79,7 +89,7 @@ final class Button: UIButton
 	}
 
 	private func initialSetup() {
-		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 32)
+		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
 		titleLabel?.textAlignment = .center
 		backgroundColor = .darkGray
 	}

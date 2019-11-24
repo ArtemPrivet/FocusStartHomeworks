@@ -16,7 +16,7 @@ final class MyFormatter
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.usesGroupingSeparator = true
-		formatter.notANumberSymbol = "NaN"
+		formatter.notANumberSymbol = "0"
 		formatter.maximumFractionDigits = 8
 		formatter.groupingSeparator = " "
 		formatter.locale = Locale.current
