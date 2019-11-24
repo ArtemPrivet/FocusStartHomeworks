@@ -264,13 +264,7 @@ final class CalculatorViewController: UIViewController
 		updateLabel(value: fixedResult)
 	}
 	func checkResult(_ value: Double) -> String {
-		if value.isInfinite {
-			return errorMessage
-		}
-		/*let isInteger = floor(value)
-		if isInteger == value && isInteger < Double(Int.max){
-			return String(Int(value))
-		}*/
-		return  String(format: "%.8f", value)
+		guard value.isInfinite != true else { return errorMessage }
+		return String(format: "%.8f", value)
 	}
 }
