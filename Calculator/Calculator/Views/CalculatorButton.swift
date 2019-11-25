@@ -11,9 +11,12 @@ import UIKit
 final class CalculatorButton: UIButton
 {
 	weak var delegate: IButton?
+
+	var pr = PendingResult()
+
 	var identifier: Int = 0
 	private var group: Group = .numbers
-
+	var buttonArray = [CalculatorButton]()
 	private static var indentifierFactory = 0
 
 	private static func getUniqueIdentifier() -> Int {
@@ -28,6 +31,8 @@ final class CalculatorButton: UIButton
 		getColor()
 		getLabel()
 		addActionToButton()
+		buttonArray.append(self)
+		pr.buttonDelegate = self
 		translatesAutoresizingMaskIntoConstraints = false
 	}
 	@available(*, unavailable)
@@ -127,5 +132,12 @@ final class CalculatorButton: UIButton
 		case 19: self.setText("=")
 		default: break
 		}
+	}
+}
+
+extension CalculatorButton: IChangeAC
+{
+	func changeAC(state: String) {
+		buttonArray[0].setText(state)
 	}
 }

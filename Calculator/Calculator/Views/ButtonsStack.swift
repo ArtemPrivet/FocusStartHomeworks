@@ -40,47 +40,38 @@ final class ButtonsStack: UIStackView
 extension ButtonsStack: IButton
 {
 	func allClear() {
-		print("Stack AC")
 		delegate?.allClear()
 	}
 
 	func clear() {
-		print("Stack C")
 		delegate?.clear()
 	}
 
 	func plusMinus() {
-		print("Stack +/-")
 		delegate?.plusMinus()
 	}
 
 	func percent() {
-		print("Stack %")
 		delegate?.percent()
 	}
 
 	func operatorPressed(is oper: String) {
-		print("Stack operator")
 		delegate?.operatorPressed(is: oper)
 	}
 
 	func digit(inputText: String) {
-		print("Stack inputText: \(inputText)")
 		delegate?.digit(inputText: inputText)
 	}
 
 	func comma() {
-		print("Stack +/-")
 		delegate?.comma()
 	}
 
 	func equalTo() {
-		print("Stack =")
 		delegate?.equalTo()
 	}
 
 	func getButtonDetails(identifier: Int) {
-		print("Stack got info from: \(identifier)")
 		delegate?.getButtonDetails(identifier: identifier)
 	}
 }

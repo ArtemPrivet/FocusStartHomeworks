@@ -61,47 +61,38 @@ final class ButtonRow: UIStackView
 extension ButtonRow: IButton
 {
 	func allClear() {
-		print("Row AC")
 		delegate?.allClear()
 	}
 
 	func clear() {
-		print("Row C")
 		delegate?.clear()
 	}
 
 	func plusMinus() {
-		print("Row +/-")
 		delegate?.plusMinus()
 	}
 
 	func percent() {
-		print("Row %")
 		delegate?.percent()
 	}
 
 	func operatorPressed(is oper: String) {
-		print("Row operator")
 		delegate?.operatorPressed(is: oper)
 	}
 
 	func digit(inputText: String) {
-		print("Row inputText: \(inputText)")
 		delegate?.digit(inputText: inputText)
 	}
 
 	func comma() {
-		print("Row comma")
 		delegate?.comma()
 	}
 
 	func equalTo() {
-		print("Row =")
 		delegate?.equalTo()
 	}
 
 	func getButtonDetails(identifier: Int) {
-		print("Row got info from: \(identifier)")
 		delegate?.getButtonDetails(identifier: identifier)
 	}
 }

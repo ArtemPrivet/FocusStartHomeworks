@@ -80,47 +80,38 @@ final class CalculatorScreen: UIView
 extension CalculatorScreen: IButton
 {
 	func allClear() {
-		print("Screen AC")
 		delegate?.allClear()
 	}
 
 	func clear() {
-		print("Screen C")
 		delegate?.clear()
 	}
 
 	func plusMinus() {
-		print("Screen +/-")
 		delegate?.plusMinus()
 	}
 
 	func percent() {
-		print("Screen %")
 		delegate?.percent()
 	}
 
 	func operatorPressed(is oper: String) {
-		print("Screen operator")
 		delegate?.operatorPressed(is: oper)
 	}
 
 	func digit(inputText: String) {
-		print("Screen inputText: \(inputText)")
 		delegate?.digit(inputText: inputText)
 	}
 
 	func comma() {
-		print("Screen ,")
 		delegate?.comma()
 	}
 
 	func equalTo() {
-		print("Screen =")
 		delegate?.equalTo()
 	}
 
 	func getButtonDetails(identifier: Int) {
-		print("Screen got info from: \(identifier)")
 		delegate?.getButtonDetails(identifier: identifier)
 	}
 }
@@ -128,7 +119,6 @@ extension CalculatorScreen: IButton
 extension CalculatorScreen: IPendingResult
 {
 	func showResult(result: Double) {
-		print("Screen: IPendingResult info: \(result)")
 		display.setText(result)
 		pendingResult.displayingNow(nowText: display.text)
 	}

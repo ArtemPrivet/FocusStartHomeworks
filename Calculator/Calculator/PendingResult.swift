@@ -9,9 +9,9 @@
 import Foundation
 final class PendingResult
 {
-
 	weak var delegateToScreen: IPendingResult?
 	weak var delegateFromScreen: IDisplayInfo?
+	weak var buttonDelegate: IChangeAC?
 
 	private var buttonIdentifier = 0
 	private var currentOperator = ""
@@ -23,7 +23,7 @@ final class PendingResult
 	private var isFloatNumber = false
 	private var rpnExpression = [String]()
 	private var converterRpn = RPN()
-	private var isTyping = false
+	private var stillTyping = false
 
 	var infoFromDisplay: String?
 
@@ -48,7 +48,7 @@ final class PendingResult
 	}
 
 	private func makeOperation(_ operation: (Double, Double) -> Double) {
-		if isTyping && rpnExpression.count > 2 {
+		if stillTyping && rpnExpression.count > 2 {
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
 				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
 			}
@@ -56,7 +56,7 @@ final class PendingResult
 				currentInput = operation(firstOperand, secondOperand)
 			}
 		}
-		isTyping = false
+		stillTyping = false
 	}
 }
 
@@ -71,7 +71,7 @@ extension PendingResult: IButton
 		firstOperand = 0
 		secondOperand = 0
 		currentInput = 0
-		isTyping = false
+		stillTyping = false
 		currentOperator = ""
 		isFloatNumber = false
 	}
@@ -82,7 +82,6 @@ extension PendingResult: IButton
 		currentInput *= -1
 		// MARK: func plusMinus - display UPD
 		delegateToScreen?.showResult(result: currentInput)
-		print("+/- pressed: \(currentInput)")
 	}
 
 	func percent() {
@@ -100,29 +99,28 @@ extension PendingResult: IButton
 
 	func operatorPressed(is oper: String) {
 		currentOperator = oper
-		if isTyping {
+		if stillTyping {
 			rpnExpression.append(String(currentInput))
-			print("oper pressed \((String(currentInput)))")
 		}
-		if isTyping && rpnExpression.count > 2 {
+		if stillTyping && rpnExpression.count > 2 {
 			if getPriority(str: rpnExpression[rpnExpression.count - 2]) >= getPriority(str: currentOperator) {
 				currentInput = converterRpn.evaluateRpn(elements: rpnExpression)
 				// MARK: func operatorPressed - display UPD
 				delegateToScreen?.showResult(result: currentInput)
 			}
 		}
-		if isTyping {
+		if stillTyping {
 			rpnExpression.append(oper)
 		}
 		firstOperand = currentInput
-		isTyping = false
+		stillTyping = false
 		isFloatNumber = false
 	}
 
 	func digit(inputText: String) {
-		guard isTyping || buttonIdentifier != 0 else { return }
-		print("func digit displayText\(String(describing: infoFromDisplay))")
-		if isTyping {
+		buttonDelegate?.changeAC(state: "C")
+		guard stillTyping || buttonIdentifier != 0 else { return }
+		if stillTyping {
 			if (infoFromDisplay?.count ?? 0) < 9 {
 				let unwrappedDisplayInfo: String = infoFromDisplay ?? " "
 				if let newText = Double(unwrappedDisplayInfo + inputText) {
@@ -135,24 +133,24 @@ extension PendingResult: IButton
 			if let newText = Double(inputText) {
 			delegateToScreen?.showResult(result: newText)
 			}
-			isTyping = true
+			stillTyping = true
 		}
 	}
 
 	func comma() {
-		if isTyping && isFloatNumber == false {
+		if stillTyping && isFloatNumber == false {
 			infoFromDisplay = (infoFromDisplay ?? "") + "."
 			isFloatNumber = true
 		}
-		else if isTyping == false && isFloatNumber == false {
+		else if stillTyping == false && isFloatNumber == false {
 			currentInput = Double(infoFromDisplay ?? "") ?? 0.0
 			// MARK: func comma - display UPD
-			isTyping = true
+			stillTyping = true
 		}
 	}
 
 	func equalTo() {
-		if isTyping {
+		if stillTyping {
 			rpnExpression.append(String(currentInput))
 			secondOperand = currentInput
 		}
@@ -165,7 +163,7 @@ extension PendingResult: IButton
 		}
 		rpnExpression.removeAll()
 		firstOperand = currentInput
-		isTyping = true
+		stillTyping = true
 		isFloatNumber = false
 	}
 }
@@ -174,7 +172,6 @@ extension PendingResult: IDisplayInfo
 {
 	func displayingNow(nowText: String?) {
 		infoFromDisplay = String(nowText?.filter { !" ".contains($0) } ?? "")
-		print("PendingResult: IDisplayInfo: func displayingNow(): \(String(describing: nowText))")
 	}
 	func updDisplayInfo(text: String?) {
 		infoFromDisplay = String(text?.filter { !" ".contains($0) } ?? "")
