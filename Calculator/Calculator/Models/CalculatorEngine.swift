@@ -180,19 +180,20 @@ struct CalculatorEngine
 
 			case (_, let .percentOperation(_, binaryFunction)):
 
-				let previousOperationStack = infixArray[infixArray.endIndex - 2]
+				let previousOperatorStackIndex = infixArray.endIndex - 2
+				let previousOperationStack = infixArray[previousOperatorStackIndex]
 
 				guard case .operand(let operand) = previousOperationStack else {
 					completion?(.failure(.error(message: "ERROR")))
 					return
 				}
 
-				let newInfixArray = infixArray[...(infixArray.endIndex - 2)]
+				let newInfixArray = infixArray[...previousOperatorStackIndex]
 
 				do {
 					let resultBeforePercentOperator = try evaluateUsingPostfixNotation(Array(newInfixArray))
 					accumulator = binaryFunction(resultBeforePercentOperator, operand)
-					infixArray.append(.operand(accumulator))
+					setOperand(accumulator)
 				}
 				catch CalculateError.error(message: let message) {
 					completion?(.failure(.error(message: message)))
@@ -218,7 +219,7 @@ struct CalculatorEngine
 				error = validator?(accumulator)
 				accumulator = function(accumulator)
 				infixArray.removeLast()
-				infixArray.append(.operand(accumulator))
+				setOperand(accumulator)
 
 			case let .percentOperation(unaryFunction, binaryFunction):
 				guard let operationStack = infixArray.last,
@@ -239,14 +240,13 @@ struct CalculatorEngine
 					}
 
 					accumulator = binaryFunction(previousOperand, operand)
-					infixArray.removeLast()
-					infixArray.append(.operand(accumulator))
 				}
 				else {
 					accumulator = unaryFunction(accumulator)
-					infixArray.removeLast()
-					infixArray.append(.operand(accumulator))
 				}
+
+				infixArray.removeLast()
+				setOperand(accumulator)
 
 			case .binaryOperation:
 				evaluate(completion)
@@ -254,6 +254,7 @@ struct CalculatorEngine
 				return
 
 			case .equals:
+				guard infixArray.count > 1 else { return }
 				equalsIsTapped = true
 				let lastOperator = infixArray[infixArray.endIndex - 2]
 				evaluate(completion)
