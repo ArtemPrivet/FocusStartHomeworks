@@ -15,13 +15,13 @@ struct CalculatorEngine
 	/// Операции
 	/// - case percentOperation - (унарная операцияб бинарная операция)
 	/// - case unaryOperation - (операция, валидация)
-	/// - case binaryOperation - (операция, валидация, приоритет)
+	/// - case binaryOperation - (операция, валидация)
 	/// - case equals - операция "равно"
 	fileprivate enum Operation
 	{
 		case percentOperation(UnaryOperation, BinaryOperation)
 		case unaryOperation(UnaryOperation, ValidatorUnaryOperation?)
-		case binaryOperation(BinaryOperation, ValidatorBinaryOperation?, Int)
+		case binaryOperation(BinaryOperation, ValidatorBinaryOperation?)
 		case equals
 	}
 
@@ -82,10 +82,10 @@ struct CalculatorEngine
 
 	private var operations: [Operator: Operation] = [
 		.magnitude: .unaryOperation({ -$0 }, nil),
-		.multiple: .binaryOperation(*, nil, 1),
-		.divide: .binaryOperation(/, { $1 == 0.0 ? .error(message: "деление на ноль") : nil }, 1),
-		.plus: .binaryOperation(+, nil, 0),
-		.minus: .binaryOperation(-, nil, 0),
+		.multiple: .binaryOperation(*, nil),
+		.divide: .binaryOperation(/, { $1 == 0.0 ? .error(message: "деление на ноль") : nil }),
+		.plus: .binaryOperation(+, nil),
+		.minus: .binaryOperation(-, nil),
 		.percent: .percentOperation({ $0 / 100 }, { $1 / 100 * $0 }),
 		.equals: .equals,
 	]
@@ -160,8 +160,7 @@ struct CalculatorEngine
 
 			switch (lastOperation, newOperation) {
 
-			case (_, let .unaryOperation(function, validator)):
-				error = validator?(0)
+			case (_, let .unaryOperation(function, _)):
 				accumulator = function(0)
 				setOperand(accumulator)
 
@@ -292,7 +291,7 @@ struct CalculatorEngine
 
 					switch operation {
 
-					case let .binaryOperation(function, validator, _):
+					case let .binaryOperation(function, validator):
 						guard let secondOperand = queue.pop(),
 							let firstOperand = queue.pop() else {
 								throw CalculateError.error(message: "Not finde operation operands")

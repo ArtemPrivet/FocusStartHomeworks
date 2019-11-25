@@ -9,7 +9,9 @@
 enum InfixToPostfixConverter
 {
 	typealias OperationStack = CalculatorEngine.OperationStack
-	typealias Operator = CalculatorEngine.Operator
+
+	private typealias Operator = CalculatorEngine.Operator
+	private typealias Action = () -> Void
 
 	enum ScriptError: Error
 	{
@@ -53,7 +55,7 @@ enum InfixToPostfixConverter
 			removeFromInfixNotation()
 		}
 
-		func choosingAction(incomingOperator operator: Operator?) throws -> (() -> Void)? {
+		func choosingAction(incomingOperator operator: Operator?) throws -> Action? {
 
 			guard let `operator` = `operator` else {
 

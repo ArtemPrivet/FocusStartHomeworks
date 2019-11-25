@@ -12,6 +12,8 @@ protocol IStack
 	mutating func removeAll()
 	mutating func push(_ element: Element)
 	mutating func pop() -> Element?
+
+	var top: Element? { get }
 }
 
 struct Stack<Element>: IStack
