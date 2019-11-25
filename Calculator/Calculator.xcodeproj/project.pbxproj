@@ -107,15 +107,13 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		C6017FAD2389AF1C00DB7A7A /* New Group */ = {
+		C6017FAD2389AF1C00DB7A7A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C6017FC0238AC4EC00DB7A7A /* FormatterExtensions.swift */,
 				C66B37FB2388319A009BAA09 /* RPN.swift */,
-				C6017FC2238AE1E800DB7A7A /* ButtonExtension.swift */,
 				C6017FAA2389AACF00DB7A7A /* PendingResult.swift */,
 			);
-			path = "New Group";
+			path = Model;
 			sourceTree = "<group>";
 		};
 		C66B3801238871C7009BAA09 /* Protocols */ = {
@@ -127,6 +125,15 @@
 				C6017FB62389B99200DB7A7A /* IDisplayInfo.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		C6717B01238C379800FE6EA0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C6017FC0238AC4EC00DB7A7A /* FormatterExtensions.swift */,
+				C6017FC2238AE1E800DB7A7A /* ButtonExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C6AB4F9023819D3A00DD4C9C /* Views */ = {
@@ -164,8 +171,9 @@
 		CA33EE38237ACA1500B5D09F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
+				C6717B01238C379800FE6EA0 /* Extensions */,
 				C66B3801238871C7009BAA09 /* Protocols */,
-				C6017FAD2389AF1C00DB7A7A /* New Group */,
+				C6017FAD2389AF1C00DB7A7A /* Model */,
 				C6AB4F9023819D3A00DD4C9C /* Views */,
 				CA33EE56237AD43200B5D09F /* Resources */,
 				CA33EE50237ACD3800B5D09F /* Application */,
