@@ -12,6 +12,7 @@ final class CalcalatorView: UIView
 {
 	var displayLabel = Displaylabel()
 	var buttons = [CalculatorButton]()
+	var buttonsCount = 18
 	private var rows = [RowButtonsStackView]()
 
 	private var buttonSymbols = [
@@ -43,7 +44,7 @@ final class CalcalatorView: UIView
 	}
 
 	private func crateButtons() {
-		for index in 0...18 {
+		for index in 0...buttonsCount {
 			let button = CalculatorButton()
 			button.tag = index
 			button.setTitle(buttonSymbols[index], for: .normal)
@@ -70,13 +71,16 @@ final class CalcalatorView: UIView
 			case 0...10:
 				button.backgroundColor = Colors.colorDarkGray
 				button.setTitleColor(Colors.colorWhite, for: .normal)
+				button.buttonColorType = .darkGray
 			case 11...15:
 				button.backgroundColor = Colors.colorOrange
 				button.setTitleColor(Colors.colorWhite, for: .normal)
 				button.setTitleColor(Colors.colorOrange, for: .highlighted)
+				button.buttonColorType = .orange
 			case 16...18:
 				button.backgroundColor = Colors.colorGray
 				button.setTitleColor(Colors.colorBlack, for: .normal)
+				button.buttonColorType = .lightGray
 			default: break
 			}
 		}

@@ -118,12 +118,12 @@ final class CalculatorViewController: UIViewController
 
 	@objc private func floatButtonPressed(_ sender: CalculatorButton) {
 		if isTyping && isFloatNumber == false {
-			displayLabel.text = (displayLabel.text ?? "") + ","
+			displayLabel.text = (displayLabel.text ?? "") + "."
 			isFloatNumber = true
 		}
 		else if isTyping == false && isFloatNumber == false {
 			currentInput = Double(displayLabel.text ?? "") ?? 0.0
-			displayLabel.text = "0,"
+			displayLabel.text = "0."
 			isFloatNumber = true
 			isTyping = true
 		}
@@ -160,7 +160,7 @@ final class CalculatorViewController: UIViewController
 		guard var displayText = displayLabel.text else { return }
 		if isTyping {
 			if displayText.count < 9 {
-				if displayText.hasSuffix("0") {
+				if displayText.hasPrefix("0") && displayText.hasPrefix("0.") == false {
 					displayText = String(displayText.dropFirst())
 				}
 				displayLabel.text = displayText + String(sender.tag)

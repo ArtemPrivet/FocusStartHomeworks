@@ -10,6 +10,9 @@ import UIKit
 
 final class CalculatorButton: UIButton
 {
+
+	var buttonColorType: CalculatorButtonsColorType?
+
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupButton()
@@ -21,23 +24,20 @@ final class CalculatorButton: UIButton
 
 	override var isHighlighted: Bool {
 		didSet {
-			switch self.tag {
-			case 0...10:
-				UIView.animate(withDuration: 0.2) { [weak self] in
-					guard let self = self else { return }
+			guard let buttonColorType = self.buttonColorType else { return }
+			switch buttonColorType {
+			case CalculatorButtonsColorType.darkGray:
+				UIView.animate(withDuration: 0.2) {
 					self.backgroundColor = self.isHighlighted ? Colors.colorDarkGray.lighter(by: 30) : Colors.colorDarkGray
 				}
-			case 11...15:
-				UIView.animate(withDuration: 0.2) { [weak self] in
-					guard let self = self else { return }
+			case CalculatorButtonsColorType.orange:
+				UIView.animate(withDuration: 0.2) {
 					self.backgroundColor = self.isHighlighted ? UIColor.white : Colors.colorOrange
 				}
-			case 16...18:
-				UIView.animate(withDuration: 0.2) { [weak self] in
-					guard let self = self else { return }
+			case CalculatorButtonsColorType.lightGray:
+				UIView.animate(withDuration: 0.2) {
 					self.backgroundColor = self.isHighlighted ? Colors.colorGray.lighter(by: 30) : Colors.colorGray
 				}
-			default: break
 			}
 		}
 	}

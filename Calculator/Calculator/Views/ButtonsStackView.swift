@@ -12,7 +12,7 @@ final class ButtonsStackView: UIStackView
 {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		setupButton()
+		setupButtonStack()
 	}
 
 	@available (*, unavailable)
@@ -20,7 +20,7 @@ final class ButtonsStackView: UIStackView
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	private func setupButton() {
+	private func setupButtonStack() {
 		axis = .vertical
 		distribution = .fillEqually
 		spacing = 15

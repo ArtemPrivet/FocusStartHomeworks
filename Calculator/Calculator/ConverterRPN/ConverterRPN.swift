@@ -10,47 +10,6 @@ import Foundation
 
 final class ConverterRPN
 {
-	private func operatorPriority(_ oper: String) -> Int {
-		switch oper {
-		case "+", "-": return 1
-		case "*", "/": return 2
-		default: return -1
-		}
-	}
-
-	private func convertToRpn(_ input: [String]) -> [String] {
-		var container = [String]()
-		var output = [String]()
-		for element in input {
-			switch operatorPriority(element) {
-			case -1: output.append(element)
-			case 0: container.append(element)
-			case 4:
-				while let lastElement = container.last {
-					if operatorPriority(lastElement) != 0 {
-						output.append(container.removeLast())
-					}
-					else {
-						container.removeLast()
-					}
-				}
-			default:
-				while let lastElement = container.last {
-					if operatorPriority(lastElement) >= operatorPriority(element) {
-						output.append(container.removeLast())
-					}
-					else {
-						break
-					}
-				}
-				container.append(element)
-			}
-		}
-		while container.last != nil {
-			output.append(container.removeLast())
-		}
-		return output
-	}
 
 	func evaluateRpn(elements: [String]) -> Double {
 		var container = [String]()
@@ -82,5 +41,37 @@ final class ConverterRPN
 		}
 		guard container.isEmpty == false else { return 0.0 }
 		return Double(container.removeLast()) ?? 0.0
+	}
+
+	private func operatorPriority(_ oper: String) -> Int {
+		switch oper {
+		case "+", "-": return 1
+		case "*", "/": return 2
+		default: return -1
+		}
+	}
+
+	private func convertToRpn(_ input: [String]) -> [String] {
+		var container = [String]()
+		var output = [String]()
+		for element in input {
+			switch operatorPriority(element) {
+			case -1: output.append(element)
+			default:
+				while let lastElement = container.last {
+					if operatorPriority(lastElement) >= operatorPriority(element) {
+						output.append(container.removeLast())
+					}
+					else {
+						break
+					}
+				}
+				container.append(element)
+			}
+		}
+		while container.last != nil {
+			output.append(container.removeLast())
+		}
+		return output
 	}
 }
