@@ -59,4 +59,21 @@ final class ResultView: UIView
 			maker.edges.equalToSuperview()
 		}
 	}
+
+	// MARK: Methods
+	func setText(_ text: String, animated: Bool) {
+		if animated {
+			UIView.animate(withDuration: 0.05, animations: {
+				self.alpha = 0
+			}, completion: { _ in
+				self.text = text
+				UIView.animate(withDuration: 0.05) {
+					self.alpha = 1
+				}
+			})
+		}
+		else {
+			self.text = text
+		}
+	}
 }

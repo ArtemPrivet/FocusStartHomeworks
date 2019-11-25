@@ -130,6 +130,8 @@ final class CalculatorViewController: UIViewController
 
 	private var lastOperatorButtonView: ButtonView?
 
+	private var countOfTappedEqual = 0
+
 	// MARK: Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -192,14 +194,21 @@ final class CalculatorViewController: UIViewController
 	}
 
 	private func displayResult(_ value: Double?) {
+
 		guard let value = value else { return }
 		let maxLenghtOfValue = 12
+		var resultValue = ""
+
 		if String(value).count < maxLenghtOfValue {
-			resultView.text = value.decimalFormatted
+			resultValue = value.decimalFormatted
 		}
 		else {
-			resultView.text = value.scientificFormatted
+			resultValue = value.scientificFormatted
 		}
+
+		let animated = (countOfTappedEqual == 1 && resultView.text == resultValue)
+
+		resultView.setText(resultValue, animated: animated)
 	}
 }
 
@@ -221,6 +230,7 @@ extension CalculatorViewController
 		var stringValue: String {
 			(currentText + digit).filter { $0 != " " }
 		}
+
 		if userInTheMiddleOfTyping {
 			guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
 			guard digit != decimalSeparator else {
@@ -232,6 +242,9 @@ extension CalculatorViewController
 			displayValue = Double(stringValue)
 		}
 		else {
+			countOfTappedEqual = 0
+			guard digit != "0" || clearType != .allClean else { return }
+
 			if digit == decimalSeparator {
 				resultView.text = currentText + digit
 			}
@@ -259,12 +272,15 @@ extension CalculatorViewController
 
 		switch symbol {
 		case .divide, .multiple, .minus, .plus:
+			countOfTappedEqual = 0
 			lastOperatorButtonView?.deselect()
 			sender.select()
 			lastOperatorButtonView = sender
 		case .magnitude:
+			countOfTappedEqual = 0
 			userInTheMiddleOfTyping = true
 		case .equals:
+			countOfTappedEqual += 1
 			lastOperatorButtonView?.deselect()
 			lastOperatorButtonView = nil
 		default: break
