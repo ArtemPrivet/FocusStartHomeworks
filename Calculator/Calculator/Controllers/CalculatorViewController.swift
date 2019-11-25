@@ -210,7 +210,7 @@ extension CalculatorViewController
 	private func actionTouchDigit(_ sender: ButtonView) {
 
 		lastOperatorButtonView?.deselect()
-		clearType = .clean
+
 		let digit = sender.title
 		let currentText = resultView.text ?? ""
 		var countOfDigits: Int {
@@ -243,15 +243,15 @@ extension CalculatorViewController
 		if let value = displayValue {
 			calculatorEngine.setOperand(value)
 		}
+
+		clearType = .clean
 	}
 
 	private func actionPerformOperation(_ sender: ButtonView) {
+
 		guard let symbol = CalculatorEngine.Operator(rawValue: sender.title) else {
 			return
 		}
-		//selectedButtonView
-
-		clearType = .clean
 
 		if userInTheMiddleOfTyping {
 			userInTheMiddleOfTyping = false
