@@ -78,7 +78,7 @@ struct CalculatorEngine
 	private var accumulator: Double = 0
 	private var infixArray = [OperationStack]()
 	private var lastOperand: Double = 0
-	private var countOfEquals = 0
+	private var equalsIsTapped = false
 
 	private var operations: [Operator: Operation] = [
 		.magnitude: .unaryOperation({ -$0 }, nil),
@@ -104,7 +104,7 @@ struct CalculatorEngine
 
 	mutating func clean() {
 		accumulator = 0
-		countOfEquals = 0
+		equalsIsTapped = false
 	}
 
 	mutating func allClean() {
@@ -112,7 +112,6 @@ struct CalculatorEngine
 		reset()
 	}
 
-	// swiftlint:disable cyclomatic_complexity
 	// swiftlint:disable:next function_body_length
 	mutating func performOperation(with symbol: Operator, completion: ((Response) -> Void)? = nil) {
 
@@ -143,13 +142,12 @@ struct CalculatorEngine
 			case .equals:
 				break
 			default:
-				if countOfEquals > 0 {
-					reset()
-					infixArray.append(.operand(accumulator))
-					countOfEquals = 0
-					performOperation(with: symbol, completion: completion) // РЕКУРСИЯ
-					return
-				}
+				guard equalsIsTapped else { break }
+				reset()
+				infixArray.append(.operand(accumulator))
+				equalsIsTapped = false
+				performOperation(with: symbol, completion: completion) // РЕКУРСИЯ
+				return
 			}
 
 			guard
@@ -173,14 +171,12 @@ struct CalculatorEngine
 				return
 
 			case (_, .equals):
-				countOfEquals += 1
+				equalsIsTapped = true
 				infixArray.append(.operand(lastOperand))
 				evaluate(completion)
 				reset()
-				if countOfEquals > 0 {
-					infixArray.append(.operand(accumulator))
-					infixArray.append(.operator(`operator`))
-				}
+				infixArray.append(.operand(accumulator))
+				infixArray.append(.operator(`operator`))
 				return
 
 			case (_, let .percentOperation(_, binaryFunction)):
@@ -259,15 +255,12 @@ struct CalculatorEngine
 				return
 
 			case .equals:
-				print(infixArray)
-				countOfEquals += 1
+				equalsIsTapped = true
 				let lastOperator = infixArray[infixArray.endIndex - 2]
 				evaluate(completion)
 				reset()
-				if countOfEquals > 0 {
-					infixArray.append(.operand(accumulator))
-					infixArray.append(lastOperator)
-				}
+				infixArray.append(.operand(accumulator))
+				infixArray.append(lastOperator)
 				return
 			}
 		}

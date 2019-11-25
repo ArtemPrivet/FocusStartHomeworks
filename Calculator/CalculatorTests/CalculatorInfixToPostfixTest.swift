@@ -68,7 +68,6 @@ final class CalculatorInfixToPostfixTest: XCTestCase
 	}()
 
 	func testConvertable() {
-		print(infixArrays)
 		infixArrays.enumerated().forEach { offset, operationStack in
 			do {
 				let convertedArray = try operationStack.convertToPostfix()

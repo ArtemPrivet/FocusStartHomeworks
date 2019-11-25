@@ -6,7 +6,7 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
-extension CalculatorEngine.OperationStack
+extension CalculatorEngine.OperationStack: ExpressibleByFloatLiteral
 {
 
 	typealias FloatLiteralType = Double
