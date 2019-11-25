@@ -16,7 +16,7 @@ final class CalculatorViewController: UIViewController
 	private var types: [[ButtonView.`Type`?]] {
 		[
 			[
-				.other("AC"),
+				.other(clearType.rawValue),
 				.other(CalculatorEngine.Operator.magnitude.rawValue, AppSetting.SymbolIcon.magnitude),
 				.other(CalculatorEngine.Operator.percent.rawValue),
 				.mainOperator(CalculatorEngine.Operator.divide.rawValue, AppSetting.SymbolIcon.divide),
@@ -51,7 +51,7 @@ final class CalculatorViewController: UIViewController
 	private lazy var buttons: [[ButtonView?]] = {
 		self.types.reduce(into: [[ButtonView?]]()) { matrixResult, rowOfType in
 			let rowResult = rowOfType.reduce(into: [ButtonView?]()) { result, type in
-				if case .other(let symbol, _) = type, symbol == "AC" {
+				if case .other(let symbol, _) = type, symbol == clearType.rawValue {
 					result.append(clearButtonView)
 					return
 				}
@@ -83,7 +83,7 @@ final class CalculatorViewController: UIViewController
 						backgroundColor: AppSetting.Color.background)
 
 	private lazy var clearButtonView =
-		ButtonViewCreator.createButton(type: .other("AC"),
+		ButtonViewCreator.createButton(type: .other(clearType.rawValue),
 									   tapHandler: actionClean)
 
 	/// Is user typing number
@@ -110,9 +110,9 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	private enum ClearType
+	private enum ClearType: String
 	{
-		case clean, allClean
+		case clean = "C", allClean = "AC"
 
 		mutating func toggle() {
 			switch self {
@@ -124,10 +124,7 @@ final class CalculatorViewController: UIViewController
 
 	private var clearType: ClearType = .allClean {
 		didSet {
-			switch clearType {
-			case .clean: self.clearButtonView.setTitle("C")
-			case .allClean: self.clearButtonView.setTitle("AC")
-			}
+			self.clearButtonView.setTitle(clearType.rawValue)
 		}
 	}
 
@@ -155,15 +152,17 @@ final class CalculatorViewController: UIViewController
 			selfView = self.view.layoutMarginsGuide
 		}
 		resultView.snp.makeConstraints { maker in
-			maker.leading.equalTo(selfView).offset(16)
-			maker.trailing.equalTo(selfView).offset(-16)
+			let offset = 16
+			maker.leading.equalTo(selfView).offset(offset)
+			maker.trailing.equalTo(selfView).offset(-offset)
 			maker.height.equalTo(113)
 		}
 		buttonsAreaView.snp.makeConstraints { maker in
-			maker.leading.equalToSuperview().offset(8)
-			maker.trailing.equalToSuperview().offset(-8)
-			maker.bottom.equalTo(selfView).offset(-8)
-			maker.top.equalTo(resultView.snp.bottom).offset(8)
+			let offset = 8
+			maker.leading.equalToSuperview().offset(offset)
+			maker.trailing.equalToSuperview().offset(-offset)
+			maker.bottom.equalTo(selfView).offset(-offset)
+			maker.top.equalTo(resultView.snp.bottom).offset(offset)
 			maker.height.equalTo(buttonsAreaView.snp.width).multipliedBy(CGFloat(countOfRows) / CGFloat(countOfColumns))
 		}
 	}
@@ -194,7 +193,8 @@ final class CalculatorViewController: UIViewController
 
 	private func displayResult(_ value: Double?) {
 		guard let value = value else { return }
-		if String(value).count < 12 {
+		let maxLenghtOfValue = 12
+		if String(value).count < maxLenghtOfValue {
 			resultView.text = value.decimalFormatted
 		}
 		else {
@@ -208,27 +208,32 @@ extension CalculatorViewController
 {
 
 	private func actionTouchDigit(_ sender: ButtonView) {
+
 		lastOperatorButtonView?.deselect()
 		clearType = .clean
 		let digit = sender.title
 		let currentText = resultView.text ?? ""
+		var countOfDigits: Int {
+			currentText.filter {
+				String($0) != decimalSeparator && String($0) != " "
+			}.count
+		}
+		var stringValue: String {
+			(currentText + digit).filter { $0 != " " }
+		}
 		if userInTheMiddleOfTyping {
 			guard digit != decimalSeparator || currentText.contains(decimalSeparator) == false else { return }
 			guard digit != decimalSeparator else {
 				resultView.text = currentText + digit
 				return
 			}
-			let countOfDigits = currentText.filter {
-				String($0) != decimalSeparator && String($0) != " "
-			}.count
-			guard countOfDigits < 9 else { return }
-			let displayValue = (currentText + digit).filter { $0 != " " }
-			guard let resultNumber = Formatter.scientific.number(from: displayValue) as? Double else { return }
-			resultView.text = resultNumber.decimalFormatted
+			let maxCountOfDigits = 9
+			guard countOfDigits < maxCountOfDigits else { return }
+			displayValue = Double(stringValue)
 		}
 		else {
 			if digit == decimalSeparator {
-				resultView.text = "0" + digit
+				resultView.text = currentText + digit
 			}
 			else {
 				resultView.text = digit
@@ -281,17 +286,21 @@ extension CalculatorViewController
 			lastOperatorButtonView?.deselect()
 			lastOperatorButtonView = nil
 		}
-		resultView.text = "0"
+		displayValue = 0
 		userInTheMiddleOfTyping = false
 	}
 
 	@objc private func actionBackspace() {
 		guard userInTheMiddleOfTyping, let text = resultView.text, text.isEmpty == false else { return }
 		let newText = String(text.dropLast())
-		resultView.text = newText
+		let stringValue = newText.filter { $0 != " " }
+		displayValue = Double(stringValue)
 		if newText.isEmpty {
 			displayValue = 0
 			userInTheMiddleOfTyping = false
+		}
+		if let value = displayValue {
+			calculatorEngine.setOperand(value)
 		}
 	}
 }
