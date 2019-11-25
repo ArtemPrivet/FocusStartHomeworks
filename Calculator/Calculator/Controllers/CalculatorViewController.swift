@@ -25,30 +25,10 @@ final class CalculatorViewController: UIViewController
 
 	private var displayValue: Double? {
 		get {
-			if let text = resultLabel.text {
-				return Double(text.replacingOccurrences(of: ",", with: ".").replacingOccurrences(of: " ", with: ""))
-			}
-			else {
-				return 0
-			}
+			return getDisplayValue()
 		}
 		set {
-			if let value: Double = newValue {
-				if value.isInfinite {
-					resultLabel.text = "Ошибка"
-				}
-				else {
-					let formatter = NumberFormatter()
-					formatter.minimumFractionDigits = 0
-					formatter.maximumFractionDigits = 8
-					let stringValue = formatter.string(from: NSNumber(value: value)) ?? "0"
-					resultLabel.text = stringValue.replacingOccurrences(of: ".", with: ",")
-				}
-			}
-			else {
-				resultLabel.text = "0"
-			}
-			refreshACButtonTitle()
+			setDisplayValue(newValue: newValue)
 		}
 	}
 
@@ -76,15 +56,39 @@ final class CalculatorViewController: UIViewController
 		buttons.forEach{ setUpButtonActions($0) }
 		//Складываем кнопки в стэк
 		horizontalStacks.append(stackCreator
-			.createStackFromButtons(buttons: [buttons[16], buttons[17], buttons[18], buttons[15]]))
+			.createStackFromButtons(buttons: [
+				getButtonByTitle(title: "AC"),
+				getButtonByTitle(title: "+/-"),
+				getButtonByTitle(title: "%"),
+				getButtonByTitle(title: "÷"),
+			]))
 		horizontalStacks.append(stackCreator
-			.createStackFromButtons(buttons: [buttons[7], buttons[8], buttons[9], buttons[14]]))
+			.createStackFromButtons(buttons: [
+				getButtonByTitle(title: "7"),
+				getButtonByTitle(title: "8"),
+				getButtonByTitle(title: "9"),
+				getButtonByTitle(title: "✕"),
+			]))
 		horizontalStacks.append(stackCreator
-			.createStackFromButtons(buttons: [buttons[4], buttons[5], buttons[6], buttons[13]]))
+			.createStackFromButtons(buttons: [
+				getButtonByTitle(title: "4"),
+				getButtonByTitle(title: "5"),
+				getButtonByTitle(title: "6"),
+				getButtonByTitle(title: "－"),
+			]))
 		horizontalStacks.append(stackCreator
-			.createStackFromButtons(buttons: [buttons[1], buttons[2], buttons[3], buttons[12]]))
+			.createStackFromButtons(buttons: [
+				getButtonByTitle(title: "1"),
+				getButtonByTitle(title: "2"),
+				getButtonByTitle(title: "3"),
+				getButtonByTitle(title: "＋"),
+			]))
 		horizontalStacks.append(stackCreator
-			.createStackFromButtons(buttons: [buttons[0], buttons[10], buttons[11]]))
+			.createStackFromButtons(buttons: [
+				getButtonByTitle(title: "0"),
+				getButtonByTitle(title: ","),
+				getButtonByTitle(title: "＝"),
+			]))
 
 		let verticalStack = stackCreator.createVerticalStack(from: horizontalStacks)
 
@@ -96,16 +100,15 @@ final class CalculatorViewController: UIViewController
 		self.view.addSubview(resultLabel)
 		//Настраиваем констрейнты для лейбла
 		labelCreator.setUpLabelConstraints(label: resultLabel, bottomView: verticalStack, safeAreaMargins: margins)
-		//Настраиваем констрейнты для кнопки 0
-		buttons[0].widthAnchor.constraint(equalTo: verticalStack.widthAnchor, multiplier: 0.5, constant: -7).isActive = true
 	}
 	//Закругление кнопок и настройка выравнивания 0 на кнопке
 	private func finalCustomize() {
 		//Закругляем все кнопки
 		buttons.forEach{ buttonCreator.makeButtonRound(button: $0) }
 		//Выравниваем текст на кнопке "0" по левому краю
-		buttons[0].contentHorizontalAlignment = .center
-		buttons[0].titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: buttons[10].bounds.width + 14)
+		if let zeroButton = getButtonByTitle(title: "0") {
+			buttonCreator.setUpTextAlignmentOnZeroButton(button: zeroButton)
+		}
 	}
 
 	// MARK: - Настройка взаимодействия
@@ -169,11 +172,45 @@ final class CalculatorViewController: UIViewController
 	}
 	//Настраиваем заголовок для кнопки AC
 	private func refreshACButtonTitle() {
+		guard let clearButton = getButtonByTitle(title: "AC", secondTitle: "C") else { return }
 		if let text = resultLabel.text, text != "0" || isTyping {
-			buttons[16].setTitle("C", for: .normal)
+			clearButton.setTitle("C", for: .normal)
 		}
 		else {
-			buttons[16].setTitle("AC", for: .normal)
+			clearButton.setTitle("AC", for: .normal)
 		}
+	}
+	//Вернуть кнопку с заданным заголовком
+	private func getButtonByTitle(title: String, secondTitle: String = "") -> UIButton? {
+		let filteredArray = buttons.filter{ $0.titleLabel?.text == title || $0.titleLabel?.text == secondTitle }
+		return filteredArray.count == 1 ? filteredArray[0] : nil
+	}
+	//Вернуть текущее значение с дисплея
+	private func getDisplayValue() -> Double? {
+		if let text = resultLabel.text {
+			return Double(text.replacingOccurrences(of: ",", with: ".").replacingOccurrences(of: " ", with: ""))
+		}
+		else {
+			return 0
+		}
+	}
+	//Установить значение на дисплее
+	private func setDisplayValue(newValue: Double?) {
+		if let value: Double = newValue {
+			if value.isInfinite {
+				resultLabel.text = "Ошибка"
+			}
+			else {
+				let formatter = NumberFormatter()
+				formatter.minimumFractionDigits = 0
+				formatter.maximumFractionDigits = 8
+				let stringValue = formatter.string(from: NSNumber(value: value)) ?? "0"
+				resultLabel.text = stringValue.replacingOccurrences(of: ".", with: ",")
+			}
+		}
+		else {
+			resultLabel.text = "0"
+		}
+		refreshACButtonTitle()
 	}
 }

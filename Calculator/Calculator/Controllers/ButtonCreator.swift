@@ -36,6 +36,7 @@ struct ButtonCreator
 												  hexAnimateBackgroundColor: "#ebebeb")
 
 	private let buttonSchemas: [String: ButtonSchema]
+	private let spaceBetweenButtons: CGFloat = 14
 
 	init() {
 		buttonSchemas = [
@@ -82,8 +83,24 @@ struct ButtonCreator
 	}
 	//Устанавливаем констрейнты для соотношения размеров для кнопок
 	private func setUpButtonAspectRatioConstraints(_ button: UIButton) {
-		guard let title = button.titleLabel?.text, title != "0" else { return }
-		button.heightAnchor.constraint(equalTo: button.widthAnchor, multiplier: 1).isActive = true
+		guard let title = button.titleLabel?.text else { return }
+		if title == "0" {
+			button.widthAnchor.constraint(equalTo: button.heightAnchor,
+										  multiplier: 2,
+										  constant: spaceBetweenButtons).isActive = true
+		}
+		else {
+			button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1).isActive = true
+		}
+	}
+	//Устанавливаем выравнивание текста на кнопке 0
+	func setUpTextAlignmentOnZeroButton(button: UIButton) {
+		guard let title = button.titleLabel?.text, title == "0" else { return }
+		button.contentHorizontalAlignment = .center
+		button.titleEdgeInsets = UIEdgeInsets(top: 0,
+											  left: 0,
+											  bottom: 0,
+											  right: button.bounds.height + spaceBetweenButtons)
 	}
 	//Делаем кнопку круглой
 	func makeButtonRound(button: UIButton) {

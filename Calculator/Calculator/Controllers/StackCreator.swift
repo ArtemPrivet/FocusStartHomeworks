@@ -10,9 +10,11 @@ import UIKit
 
 struct StackCreator
 {
+	private let spaceBetweenButtons: CGFloat = 14
+
 	//Создаем стэк из входящего массива кнопок
-	func createStackFromButtons(buttons: [UIButton]) -> UIStackView {
-		let stackView = UIStackView(arrangedSubviews: buttons)
+	func createStackFromButtons(buttons: [UIButton?]) -> UIStackView {
+		let stackView = UIStackView(arrangedSubviews: buttons.compactMap{ $0 })
 		setUpHorizontalStackView(stackView: stackView)
 		return stackView
 	}
@@ -27,7 +29,7 @@ struct StackCreator
 		stackView.axis = .horizontal
 		stackView.distribution = .fillProportionally
 		stackView.alignment = .fill
-		stackView.spacing = 14
+		stackView.spacing = spaceBetweenButtons
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 	}
 	//Устанавливаем свойства для главного StackView
@@ -35,7 +37,7 @@ struct StackCreator
 		stackView.axis = .vertical
 		stackView.distribution = .fillEqually
 		stackView.alignment = .fill
-		stackView.spacing = 14
+		stackView.spacing = spaceBetweenButtons
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 	}
 	//Устанавливаем topAnchor и TrailingAnchor для стека по размеру родительского
