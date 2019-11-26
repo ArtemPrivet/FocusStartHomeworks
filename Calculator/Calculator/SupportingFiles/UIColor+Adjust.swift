@@ -10,7 +10,6 @@ import UIKit
 
 extension UIColor
 {
-
 	func lighter(by percentage: CGFloat = 20.0) -> UIColor? {
 		self.adjust(by: abs(percentage) )
 	}

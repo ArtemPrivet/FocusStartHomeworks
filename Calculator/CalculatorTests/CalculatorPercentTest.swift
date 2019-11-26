@@ -12,74 +12,74 @@ import XCTest
 final class CalculatorPercentTest: XCTestCase
 {
 	private var calculator = CalculatorEngine()
-	private let one: Double = 1
-	private let two: Double = 2
-	private let three: Double = 3
+	private let firstOperand: Double = 1
+	private let secondOperand: Double = 2
+	private let thirdOperand: Double = 3
 
 	func test1() {
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .plus) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two)
+			XCTAssertEqual(result, self.secondOperand)
 		}
-		calculator.setOperand(three)
+		calculator.setOperand(thirdOperand)
 		calculator.performOperation(with: .percent) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.three / 100 * self.two)
+			XCTAssertEqual(result, self.thirdOperand / 100 * self.secondOperand)
 		}
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + (self.three / 100 * self.two))
+			XCTAssertEqual(result, self.secondOperand + (self.thirdOperand / 100 * self.secondOperand))
 		}
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + ((self.three / 100 * self.two) * 2))
+			XCTAssertEqual(result, self.secondOperand + ((self.thirdOperand / 100 * self.secondOperand) * 2))
 		}
 	}
 
 	func test2() {
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .plus) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two)
+			XCTAssertEqual(result, self.secondOperand)
 		}
 		calculator.performOperation(with: .percent) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two / 100 * self.two)
+			XCTAssertEqual(result, self.secondOperand / 100 * self.secondOperand)
 		}
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + (self.two / 100 * self.two))
+			XCTAssertEqual(result, self.secondOperand + (self.secondOperand / 100 * self.secondOperand))
 		}
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + ((self.two / 100 * self.two) * 2))
+			XCTAssertEqual(result, self.secondOperand + ((self.secondOperand / 100 * self.secondOperand) * 2))
 		}
 	}
 
 	func test3() {
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .plus) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two)
+			XCTAssertEqual(result, self.secondOperand)
 		}
-		calculator.setOperand(three)
+		calculator.setOperand(thirdOperand)
 		calculator.performOperation(with: .percent) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.three / 100 * self.two)
+			XCTAssertEqual(result, self.thirdOperand / 100 * self.secondOperand)
 		}
 		calculator.performOperation(with: .magnitude) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, -(self.three / 100 * self.two))
+			XCTAssertEqual(result, -(self.thirdOperand / 100 * self.secondOperand))
 		}
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + self.one)
+			XCTAssertEqual(result, self.secondOperand + self.firstOperand)
 		}
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.two + self.one * 2)
+			XCTAssertEqual(result, self.secondOperand + self.firstOperand * 2)
 		}
 	}
 }

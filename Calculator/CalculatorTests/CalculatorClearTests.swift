@@ -16,9 +16,6 @@ final class CalculatorClearTests: XCTestCase
 	private let secondOperand: Double = 2
 	private let thirdOperand: Double = 3
 	private let forthOperand: Double = 4
-	private let fifthOperand: Double = 5
-	private let sixthOperand: Double = 6
-	private let thirtySecond: Double = 32
 
 	func testClearOperand() {
 		// 1

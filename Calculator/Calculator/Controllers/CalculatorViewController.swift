@@ -49,8 +49,8 @@ final class CalculatorViewController: UIViewController
 	}
 
 	private lazy var buttons: [[ButtonView?]] = {
-		self.types.reduce(into: [[ButtonView?]]()) { matrixResult, rowOfType in
-			let rowResult = rowOfType.reduce(into: [ButtonView?]()) { result, type in
+		self.types.map { rowOfType in
+			rowOfType.reduce(into: [ButtonView?]()) { result, type in
 				if case .other(let symbol, _) = type, symbol == clearType.rawValue {
 					result.append(clearButtonView)
 					return
@@ -66,12 +66,11 @@ final class CalculatorViewController: UIViewController
 				}
 				result.append(ButtonViewCreator.createButton(type: type, tapHandler: tapHandler))
 			}
-			matrixResult.append(rowResult)
 		}
 	}()
 
 	private var countOfRows: Int { buttons.count }
-	private var countOfColumns: Int { buttons[0].count }
+	private var countOfColumns: Int { buttons.first?.count ?? 0 }
 
 	private var resultView = ResultView(backgroundColor: AppSetting.Color.background,
 										textColor: AppSetting.Color.lightText)
@@ -99,9 +98,7 @@ final class CalculatorViewController: UIViewController
 	}
 
 	private var calculatorResult: CalculatorEngine.Response = .success(0) {
-
 		didSet {
-
 			switch calculatorResult {
 			case .failure: resultView.text = "Ошибка"
 			case .success(nil): displayValue = 0
@@ -154,13 +151,13 @@ final class CalculatorViewController: UIViewController
 			selfView = self.view.layoutMarginsGuide
 		}
 		resultView.snp.makeConstraints { maker in
-			let offset = 16
+			let offset = ConstantOfConstraints.longOffset.rawValue
 			maker.leading.equalTo(selfView).offset(offset)
 			maker.trailing.equalTo(selfView).offset(-offset)
-			maker.height.equalTo(113)
+			maker.height.equalTo(ConstantOfConstraints.heightResult.rawValue)
 		}
 		buttonsAreaView.snp.makeConstraints { maker in
-			let offset = 8
+			let offset = ConstantOfConstraints.shortOffset.rawValue
 			maker.leading.equalToSuperview().offset(offset)
 			maker.trailing.equalToSuperview().offset(-offset)
 			maker.bottom.equalTo(selfView).offset(-offset)
@@ -318,5 +315,15 @@ extension CalculatorViewController
 		if let value = displayValue {
 			calculatorEngine.setOperand(value)
 		}
+	}
+}
+
+extension CalculatorViewController
+{
+	private enum ConstantOfConstraints: Int
+	{
+		case shortOffset = 8
+		case longOffset = 16
+		case heightResult = 113
 	}
 }

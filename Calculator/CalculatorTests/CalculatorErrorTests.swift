@@ -15,12 +15,6 @@ final class CalculatorErrorTests: XCTestCase
 	private var calculator = CalculatorEngine()
 	private let zeroOperand: Double = 0
 	private let firstOperand: Double = 1
-	private let secondOperand: Double = 2
-	private let thirdOperand: Double = 3
-	private let forthOperand: Double = 4
-	private let fifthOperand: Double = 5
-	private let sixthOperand: Double = 6
-	private let thirtySecond: Double = 32
 
 	func testDivideByZero() {
 		// 1

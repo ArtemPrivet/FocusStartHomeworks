@@ -44,18 +44,18 @@ final class ButtonView: UIView
 			button.setTitle(title, for: .normal)
 		}
 
-		button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: textSize)
-		button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
-		button.setTitleColor(self.textColor, for: .normal)
-		button.titleEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-
 		if let lighterColor = backgroundColor?.lighter(by: 25) {
 			button.setBackgroundColor(lighterColor, for: .highlighted)
 		}
 
+		button.titleLabel?.font = UIFont(name: "FiraSans-Regular", size: textSize)
+		button.setTitleColor(self.textColor, for: .normal)
+		button.titleEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
 		button.setBackgroundColor(textColor, for: .selected)
 		button.setTitleColor(color, for: .selected)
 		button.setImageTintColor(color, for: .selected)
+
+		button.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
 
 		return button
 	}()
@@ -94,20 +94,10 @@ final class ButtonView: UIView
 		layer.cornerRadius = min(bounds.width, bounds.height) / 2
 		button.layer.cornerRadius = min(bounds.width, bounds.height) / 2
 		if frame.width > frame.height + 1 {
-			button.contentHorizontalAlignment = .left
-			button.titleLabel?.sizeToFit()
-			let leftOffset = (frame.height / 2) - ((button.titleLabel?.frame.width ?? 0) / 2)
-			button.titleEdgeInsets = UIEdgeInsets(top: button.contentEdgeInsets.top,
-												  left: leftOffset,
-												  bottom: 0,
-												  right: 0)
+			setLongButton()
 		}
 		if image != nil {
-			let imageOffset = frame.width / 2.9
-			button.imageEdgeInsets = UIEdgeInsets(top: imageOffset,
-												  left: imageOffset,
-												  bottom: imageOffset,
-												  right: imageOffset)
+			setImageOffset()
 		}
 	}
 
@@ -122,6 +112,24 @@ final class ButtonView: UIView
 		button.snp.makeConstraints { maker in
 			maker.edges.equalToSuperview()
 		}
+	}
+
+	private func setImageOffset() {
+		let imageOffset = frame.width / 2.9
+		button.imageEdgeInsets = UIEdgeInsets(top: imageOffset,
+											  left: imageOffset,
+											  bottom: imageOffset,
+											  right: imageOffset)
+	}
+
+	private func setLongButton() {
+		button.contentHorizontalAlignment = .left
+		button.titleLabel?.sizeToFit()
+		let leftOffset = (frame.height / 2) - ((button.titleLabel?.frame.width ?? 0) / 2)
+		button.titleEdgeInsets = UIEdgeInsets(top: button.contentEdgeInsets.top,
+											  left: leftOffset,
+											  bottom: 0,
+											  right: 0)
 	}
 
 	// MARK: Methods

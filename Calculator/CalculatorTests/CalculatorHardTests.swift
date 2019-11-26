@@ -13,87 +13,85 @@ final class CalculatorHardTests: XCTestCase
 {
 	private var calculator = CalculatorEngine()
 	private let zero: Double = 0
-	private let one: Double = 1
-	private let two: Double = 2
-	private let three: Double = 3
-	private let four: Double = 4
-	private let five: Double = 5
-	private let six: Double = 6
-	private let thirtyTwo: Double = 32
+	private let firstOperand: Double = 1
+	private let secondOperand: Double = 2
+	private let thirdOperand: Double = 3
+	private let sixthOperand: Double = 6
 
 	// 1, +, 2, *, +/-, -3, =   --->   7
 	func test1() {
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus)
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .multiple)
 		calculator.performOperation(with: .magnitude)
-		calculator.setOperand(-three)
+		calculator.setOperand(-thirdOperand)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.one + self.two * -self.three)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand * -self.thirdOperand)
 		}
 	}
 
 	// 1, +, 2, *, +/-, -3, +/-, =   --->   6
 	func test2() {
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus)
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .multiple)
 		calculator.performOperation(with: .magnitude)
-		calculator.setOperand(-three)
+		calculator.setOperand(-thirdOperand)
 		calculator.performOperation(with: .magnitude)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.one + self.two * self.three)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand * self.thirdOperand)
 		}
 	}
 
 	// 1, +, 2, *, +/-, *, =   --->   1
 	func test3() {
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus)
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .multiple)
 		calculator.performOperation(with: .magnitude)
 		calculator.performOperation(with: .multiple)
-		calculator.setOperand(three)
+		calculator.setOperand(thirdOperand)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.one + self.two * self.zero)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand * self.zero)
 		}
 	}
 
 	// 1, +, 2, *, +/-, C, 6, =   --->   13
 	func test4() {
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus)
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .multiple)
 		calculator.performOperation(with: .magnitude)
 		calculator.clean()
-		calculator.setOperand(six)
+		calculator.setOperand(sixthOperand)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, self.one + self.two * self.six)
+			XCTAssertEqual(result, self.firstOperand + self.secondOperand * self.sixthOperand)
 		}
 	}
 
 	// 1, +, 2, *, +/-, C, 6, =, =, =   --->   468
 	func test5() {
-		calculator.setOperand(one)
+		calculator.setOperand(firstOperand)
 		calculator.performOperation(with: .plus)
-		calculator.setOperand(two)
+		calculator.setOperand(secondOperand)
 		calculator.performOperation(with: .multiple)
 		calculator.performOperation(with: .magnitude)
 		calculator.clean()
-		calculator.setOperand(six)
+		calculator.setOperand(sixthOperand)
 		calculator.performOperation(with: .equals)
 		calculator.performOperation(with: .equals)
 		calculator.performOperation(with: .equals) { result in
 			let result = self.accumulator(from: result)
-			XCTAssertEqual(result, (self.one + self.two * self.six) * self.six * self.six)
+			XCTAssertEqual(result, (self.firstOperand + self.secondOperand *
+				self.sixthOperand) * self.sixthOperand * self.sixthOperand)
 		}
 	}
 }

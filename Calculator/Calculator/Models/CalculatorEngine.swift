@@ -334,3 +334,49 @@ extension CalculatorEngine.Operator
 		operations[self]
 	}
 }
+
+// MARK: - Extension OperationStack Equatable
+extension CalculatorEngine.OperationStack: Equatable
+{
+	static func == (lhs: CalculatorEngine.OperationStack, rhs: CalculatorEngine.OperationStack) -> Bool {
+		switch (lhs, rhs) {
+		case (.operand(let lhsOperand), .operand(let rhsOperand)):
+			return lhsOperand == rhsOperand
+		case (.operator(let lhsOperator), .operator(let rhsOperator)):
+			return lhsOperator == rhsOperator
+		default:
+			return false
+		}
+	}
+}
+
+// MARK: - Extension OperationStack Initialization
+extension CalculatorEngine.OperationStack: ExpressibleByFloatLiteral
+{
+
+	typealias FloatLiteralType = Double
+
+	init(operand: Double) {
+		self = .operand(operand)
+	}
+
+	init(`operator`: CalculatorEngine.Operator) {
+		self = .operator(`operator`)
+	}
+
+	init?(string: String) {
+		if let value = Double(string) {
+			self.init(operand: value)
+		}
+		else if let `operator` = CalculatorEngine.Operator(rawValue: string) {
+			self.init(operator: `operator`)
+		}
+		else {
+			return nil
+		}
+	}
+
+	init(floatLiteral value: FloatLiteralType) {
+		self.init(operand: value)
+	}
+}
