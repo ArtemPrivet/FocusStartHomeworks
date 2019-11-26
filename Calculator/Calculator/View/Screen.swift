@@ -109,5 +109,8 @@ final class Screen: UIView
 		for button in button.buttonArray {
 			button.layer.cornerRadius = button.bounds.height / 2
 		}
+		button.buttonArray[0].contentHorizontalAlignment = .left
+		button.buttonArray[0].contentEdgeInsets = UIEdgeInsets(
+			top: 0, left: button.buttonArray[0].bounds.size.height / 2 - 7, bottom: 0, right: 0)
 	}
 }

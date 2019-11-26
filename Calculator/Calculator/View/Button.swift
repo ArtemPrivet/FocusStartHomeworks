@@ -21,6 +21,7 @@ final class Button: UIButton
 		createArray()
 		colorButton()
 		setTitle()
+		setTitleForACButton("AC")
 	}
 
 	@available(*, unavailable)
@@ -62,6 +63,10 @@ final class Button: UIButton
 		for (button, symbol) in zip(buttonArray, symbolArray) {
 			button.setTitle(symbol, for: .normal)
 		}
+	}
+	
+	func setTitleForACButton(_ title: String) {
+		buttonArray[15].setTitle(title, for: .normal)
 	}
 }
 

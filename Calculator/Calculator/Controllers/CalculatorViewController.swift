@@ -25,23 +25,24 @@ final class CalculatorViewController: UIViewController
 
 	private func addTargets() {
 		for button in screen.button.buttonArray {
-			button.addTarget(self, action: #selector(setTarget), for: .touchUpInside)
+			button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 		}
 	}
 
-	@objc private func setTarget(_ sender: UIButton) {
+	@objc private func buttonTapped(_ sender: UIButton) {
 		guard let title = sender.titleLabel?.text else { return }
 			switch title {
 			case "0":
 				screen.windowLabel.text = calculation.nullTapped()
 			case "1", "2", "3", "4", "5", "6", "7", "8", "9":
 				screen.windowLabel.text = calculation.numberTapped(sender)
-				screen.button.buttonArray[15].titleLabel?.text = " C"
+				screen.button.setTitleForACButton("C")
 			case ",":
 				screen.windowLabel.text = calculation.symbolTapped()
-			case "AC":
+				screen.button.setTitleForACButton("C")
+			case "C":
 				screen.windowLabel.text = calculation.aCTapped()
-				screen.button.buttonArray[15].titleLabel?.text = "AC"
+				screen.button.setTitleForACButton("AC")
 			case "=":
 				screen.windowLabel.text = calculation.equalTapped()
 			case "+":

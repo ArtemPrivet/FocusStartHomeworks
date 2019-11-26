@@ -13,6 +13,7 @@ final class Calculation
 	private var firstValue = true
 	private var labelText = "0"
 	private var subTotal: Double?
+	private let maximumNumberOfSymbolsToEnter = 9
 
 	enum OperatorType
 	{
@@ -25,7 +26,7 @@ final class Calculation
 	private var lastOperator: OperatorType?
 
 	func nullTapped() -> String? {
-		guard labelText.count <= 8 else { return labelText }
+		guard labelText.count < maximumNumberOfSymbolsToEnter else { return labelText }
 		if firstValue {
 			labelText = "0"
 			firstValue = false
@@ -37,7 +38,7 @@ final class Calculation
 	}
 
 	func numberTapped(_ sender: UIButton) -> String? {
-		guard labelText.count <= 8 else { return labelText }
+		guard labelText.count < maximumNumberOfSymbolsToEnter else { return labelText }
 		if firstValue {
 			labelText = sender.titleLabel?.text ?? ""
 			firstValue = false
@@ -58,7 +59,7 @@ final class Calculation
 	}
 
 	func symbolTapped() -> String {
-		guard labelText.count <= 8 else { return labelText }
+		guard labelText.count < maximumNumberOfSymbolsToEnter else { return labelText }
 		guard labelText.filter(",".contains).isEmpty else { return labelText }
 		if firstValue {
 			labelText = "0,"
@@ -156,9 +157,10 @@ final class Calculation
 	}
 
 	func procentTapped() -> String {
-		labelText = String(labelText.map { $0 == "," ? "." : $0 })
-		labelText = String((Double(labelText) ?? 0) / 100.0)
-		labelText = String(labelText.map { $0 == "." ? "," : $0 })
+		var procentValue = String(labelText.map { $0 == "," ? "." : $0 })
+		procentValue = String((Double(procentValue) ?? 0) / 100.0)
+		procentValue = String(procentValue.map { $0 == "." ? "," : $0 })
+		labelText = procentValue
 		return labelText
 	}
 
