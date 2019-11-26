@@ -22,6 +22,7 @@ final class CalculatorViewController: UIViewController
 	private var swipeGestureGecognizer = UISwipeGestureRecognizer()
 	private var margins = UILayoutGuide()
 	private var isTyping = false
+//	private var isTypingOpe = false
 
 	private var displayValue: Double? {
 		get {
@@ -151,11 +152,12 @@ final class CalculatorViewController: UIViewController
 		buttonCreator.resetColorSettingsForOperationButton(buttons: buttons)
 		buttonCreator.animateButtonTap(button: sender)
 		guard let buttonTitle = sender.titleLabel?.text else { return }
+		let needCalculation = isTyping
 		if isTyping, let value = displayValue {
 			calculations.setOperand(operand: value)
 			isTyping = false
 		}
-		calculations.makeOperation(symbol: buttonTitle)
+		calculations.makeOperation(symbol: buttonTitle, getBothOperandsForBinaryOperation: needCalculation)
 		displayValue = calculations.result
 	}
 	//Обработка свайпа
@@ -170,6 +172,7 @@ final class CalculatorViewController: UIViewController
 			isTyping = false
 		}
 	}
+	// MARK: - Служебные функции
 	//Настраиваем заголовок для кнопки AC
 	private func refreshACButtonTitle() {
 		guard let clearButton = getButtonByTitle(title: "AC", secondTitle: "C") else { return }

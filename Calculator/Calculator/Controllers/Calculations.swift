@@ -48,25 +48,31 @@ final class Calculations
 		accumulator = operand
 	}
 	//Выполняем пришедшую операцию, либо откладываем если операция с двумя операндами
-	func makeOperation(symbol: String) {
+	func makeOperation(symbol: String, getBothOperandsForBinaryOperation: Bool) {
 		guard let operation = operations[symbol] else { return }
 		switch operation {
 		case .unaryOperation(let function):
 			accumulator = function(accumulator)
 			previousAccumulator = accumulator
 		case .binaryOperation(let function, let priority):
-			if pending.count > 0 {
-				if previousPriority > priority {
-					executePendingOperations()
+			if getBothOperandsForBinaryOperation {
+				if pending.count > 0 {
+					if previousPriority > priority {
+						executePendingOperations()
+					}
+					else if previousPriority == priority {
+						executeLastPendingOperation()
+					}
 				}
-				else if previousPriority == priority {
-					executeLastPendingOperation()
-				}
+				pending.append(PendingBinaryOperationInfo(function: function,
+														  firstOperand: accumulator))
+				previousPriority = priority
+				previousAccumulator = accumulator
 			}
-			pending.append(PendingBinaryOperationInfo(function: function,
-													  firstOperand: accumulator))
-			previousPriority = priority
-			previousAccumulator = accumulator
+			else {
+				updateLastPendingOperation(symbol: symbol)
+			}
+
 		case .percentOperation(let functionForUnary, let functionForBinary ):
 			if pending.count > 0 {
 				accumulator = functionForBinary(accumulator, previousAccumulator)
@@ -106,5 +112,17 @@ final class Calculations
 	private func executeLastPendingOperation() {
 		let operation = pending.removeLast()
 		accumulator = operation.function(operation.firstOperand, accumulator)
+	}
+	//Обновляем операцию в последней отложенной при множественном нажатии
+	private func updateLastPendingOperation(symbol: String) {
+	  guard let operation = operations[symbol] else { return }
+	  if pending.isEmpty == false {
+		switch operation {
+		case .binaryOperation(let function, _):
+		  pending[pending.count - 1].function = function
+		default:
+		  break
+		}
+	  }
 	}
 }
