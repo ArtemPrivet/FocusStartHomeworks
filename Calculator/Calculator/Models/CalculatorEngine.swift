@@ -132,6 +132,26 @@ struct CalculatorEngine
 			completion?(.success(accumulator))
 		}
 
+		func evaluate(using binaryFunction: BinaryOperation,
+					  infixArray: [OperationStack],
+					  operand: Double,
+					  completion: ((Response) -> Void)?) {
+			do {
+				let resultBeforePercentOperator = try evaluateUsingPostfixNotation(infixArray)
+
+				accumulator = binaryFunction(resultBeforePercentOperator, operand)
+				setOperand(accumulator)
+			}
+			catch CalculateError.error(message: let message) {
+				completion?(.failure(.error(message: message)))
+				return
+			}
+			catch {
+				completion?(.failure(.error(message: "ERROR")))
+				return
+			}
+		}
+
 		if infixArray.isEmpty {
 			setOperand(accumulator)
 		}
@@ -190,19 +210,10 @@ struct CalculatorEngine
 
 				let newInfixArray = infixArray[...previousOperatorStackIndex]
 
-				do {
-					let resultBeforePercentOperator = try evaluateUsingPostfixNotation(Array(newInfixArray))
-					accumulator = binaryFunction(resultBeforePercentOperator, operand)
-					setOperand(accumulator)
-				}
-				catch CalculateError.error(message: let message) {
-					completion?(.failure(.error(message: message)))
-					return
-				}
-				catch {
-					completion?(.failure(.error(message: "ERROR")))
-					return
-				}
+				evaluate(using: binaryFunction,
+						 infixArray: Array(newInfixArray),
+						 operand: operand,
+						 completion: completion)
 			}
 		}
 		else {
@@ -230,16 +241,12 @@ struct CalculatorEngine
 				}
 
 				if infixArray.count > 1 {
+					let newInfixArray = infixArray[...(infixArray.endIndex - 3)]
 
-					let previousOperationStack = infixArray[infixArray.endIndex - 3]
-
-					guard case .operand(let previousOperand) = previousOperationStack else {
-
-						completion?(.failure(.error(message: "ERROR")))
-						return
-					}
-
-					accumulator = binaryFunction(previousOperand, operand)
+					evaluate(using: binaryFunction,
+							 infixArray: Array(newInfixArray),
+							 operand: operand,
+							 completion: completion)
 				}
 				else {
 					accumulator = unaryFunction(accumulator)
