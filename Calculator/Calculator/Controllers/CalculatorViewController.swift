@@ -27,7 +27,7 @@ final class CalculatorViewController: UIViewController
 
 	var currentInput: Double {
 		get {
-			guard let text = displayLabel.text else { return 0 }
+			guard let text = displayLabel.text?.replacedComma() else { return 0 }
 			return Double(text) ?? 0
 		}
 		set {
@@ -118,12 +118,12 @@ final class CalculatorViewController: UIViewController
 
 	@objc private func floatButtonPressed(_ sender: CalculatorButton) {
 		if isTyping && isFloatNumber == false {
-			displayLabel.text = (displayLabel.text ?? "") + "."
+			displayLabel.text = (displayLabel.text ?? "") + ","
 			isFloatNumber = true
 		}
 		else if isTyping == false && isFloatNumber == false {
 			currentInput = Double(displayLabel.text ?? "") ?? 0.0
-			displayLabel.text = "0."
+			displayLabel.text = "0,"
 			isFloatNumber = true
 			isTyping = true
 		}
@@ -160,7 +160,7 @@ final class CalculatorViewController: UIViewController
 		guard var displayText = displayLabel.text else { return }
 		if isTyping {
 			if displayText.count < 9 {
-				if displayText.hasPrefix("0") && displayText.hasPrefix("0.") == false {
+				if displayText.hasPrefix("0") && displayText.hasPrefix("0,") == false {
 					displayText = String(displayText.dropFirst())
 				}
 				displayLabel.text = displayText + String(sender.tag)
@@ -189,7 +189,7 @@ final class CalculatorViewController: UIViewController
 		default: break
 		}
 		if isTyping {
-			rpnExpression.append(String(operatorSign))
+			rpnExpression.append(String(operatorSign).replacedDot())
 		}
 		firstOperand = currentInput
 		isTyping = false

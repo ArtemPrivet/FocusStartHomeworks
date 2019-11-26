@@ -14,4 +14,8 @@ extension String
 	func replacedDot() -> String {
 		return self.replacingOccurrences(of: ".", with: ",")
 	}
+
+	func replacedComma() -> String {
+		return self.replacingOccurrences(of: ",", with: ".")
+	}
 }
