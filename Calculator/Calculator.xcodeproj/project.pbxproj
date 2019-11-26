@@ -11,7 +11,7 @@
 		580479A32380A3C300A23A15 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		580479A52380A50000A23A15 /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580479A42380A50000A23A15 /* ButtonView.swift */; };
 		58185C0F2384850400073CC6 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C0E2384850400073CC6 /* Stack.swift */; };
-		58185C112384985000073CC6 /* ConverterInfixToPostfixNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */; };
+		58185C112384985000073CC6 /* ButtonViewCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C102384985000073CC6 /* ButtonViewCreator.swift */; };
 		58185C132385704F00073CC6 /* UIButton+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C122385704F00073CC6 /* UIButton+Color.swift */; };
 		58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58185C142385722000073CC6 /* UIColor+Adjust.swift */; };
 		584EA37D23819C3700C0987B /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584EA37C23819C3700C0987B /* CalculatorEngine.swift */; };
@@ -57,7 +57,7 @@
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		580479A42380A50000A23A15 /* ButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
 		58185C0E2384850400073CC6 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
-		58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverterInfixToPostfixNotation.swift; sourceTree = "<group>"; };
+		58185C102384985000073CC6 /* ButtonViewCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonViewCreator.swift; sourceTree = "<group>"; };
 		58185C122385704F00073CC6 /* UIButton+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Color.swift"; sourceTree = "<group>"; };
 		58185C142385722000073CC6 /* UIColor+Adjust.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Adjust.swift"; sourceTree = "<group>"; };
 		584EA37C23819C3700C0987B /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 			children = (
 				584EA37C23819C3700C0987B /* CalculatorEngine.swift */,
 				58591B64238B1AFC007497F2 /* InfixToPostfixConverter.swift */,
-				58185C102384985000073CC6 /* ConverterInfixToPostfixNotation.swift */,
+				58185C102384985000073CC6 /* ButtonViewCreator.swift */,
 				58185C0E2384850400073CC6 /* Stack.swift */,
 				58DA4AC9238754A700BC10B1 /* Queue.swift */,
 			);
@@ -446,7 +446,7 @@
 				58793E6623808DAD003EFDEA /* ButtonsAreaView.swift in Sources */,
 				58FA3E0523820D60005970BA /* AppSetting.swift in Sources */,
 				58591B5D2389C094007497F2 /* Numeric+Formatter.swift in Sources */,
-				58185C112384985000073CC6 /* ConverterInfixToPostfixNotation.swift in Sources */,
+				58185C112384985000073CC6 /* ButtonViewCreator.swift in Sources */,
 				58185C152385722000073CC6 /* UIColor+Adjust.swift in Sources */,
 				58793E6823809950003EFDEA /* ResultView.swift in Sources */,
 				580479A52380A50000A23A15 /* ButtonView.swift in Sources */,

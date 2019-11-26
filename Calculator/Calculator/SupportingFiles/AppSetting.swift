@@ -10,7 +10,6 @@ import UIKit
 
 enum AppSetting
 {
-
 	enum Color
 	{
 		static let main = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.9490196078, alpha: 1)
@@ -27,8 +26,5 @@ enum AppSetting
 		static let multiple = #imageLiteral(resourceName: "multiply")
 		static let divide = #imageLiteral(resourceName: "divide")
 		static let magnitude = #imageLiteral(resourceName: "magnitude")
-//		static let plus = #imageLiteral(resourceName: "divide")
-//		static let minus = #imageLiteral(resourceName: "divide")
-//		static let equals = #imageLiteral(resourceName: "divide")
 	}
 }

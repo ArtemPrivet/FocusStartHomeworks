@@ -50,21 +50,17 @@ final class CalculatorViewController: UIViewController
 
 	private lazy var buttons: [[ButtonView?]] = {
 		self.types.map { rowOfType in
-			rowOfType.reduce(into: [ButtonView?]()) { result, type in
+			rowOfType.map { type -> ButtonView? in
 				if case .other(let symbol, _) = type, symbol == clearType.rawValue {
-					result.append(clearButtonView)
-					return
+					return clearButtonView
 				}
-				guard let type = type else {
-					result.append(nil)
-					return
-				}
+				guard let type = type else { return nil }
 				var tapHandler: ButtonView.Action
 				switch type {
 				case .number, .decimal: tapHandler = actionTouchDigit
 				case .mainOperator, .other: tapHandler = actionPerformOperation
 				}
-				result.append(ButtonViewCreator.createButton(type: type, tapHandler: tapHandler))
+				return ButtonViewCreator.createButton(type: type, tapHandler: tapHandler)
 			}
 		}
 	}()
@@ -210,10 +206,10 @@ final class CalculatorViewController: UIViewController
 }
 
 // MARK: - Actions
-extension CalculatorViewController
+private extension CalculatorViewController
 {
 
-	private func actionTouchDigit(_ sender: ButtonView) {
+	func actionTouchDigit(_ sender: ButtonView) {
 
 		lastOperatorButtonView?.deselect()
 
@@ -257,7 +253,7 @@ extension CalculatorViewController
 		clearType = .clean
 	}
 
-	private func actionPerformOperation(_ sender: ButtonView) {
+	func actionPerformOperation(_ sender: ButtonView) {
 
 		guard let symbol = CalculatorEngine.Operator(rawValue: sender.title) else {
 			return
@@ -288,7 +284,7 @@ extension CalculatorViewController
 		}
 	}
 
-	private func actionClean(_ sender: ButtonView) {
+	func actionClean(_ sender: ButtonView) {
 		switch clearType {
 		case .clean:
 			calculatorEngine.clean()
@@ -303,7 +299,7 @@ extension CalculatorViewController
 		userInTheMiddleOfTyping = false
 	}
 
-	@objc private func actionBackspace() {
+	@objc func actionBackspace() {
 		guard userInTheMiddleOfTyping, let text = resultView.text, text.isEmpty == false else { return }
 		let newText = String(text.dropLast())
 		let stringValue = newText.filter { $0 != " " }
@@ -318,9 +314,10 @@ extension CalculatorViewController
 	}
 }
 
-extension CalculatorViewController
+// MARK: - Constants
+private extension CalculatorViewController
 {
-	private enum ConstantOfConstraints: Int
+	enum ConstantOfConstraints: Int
 	{
 		case shortOffset = 8
 		case longOffset = 16

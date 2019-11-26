@@ -13,7 +13,7 @@ import Foundation
 struct CalculatorEngine
 {
 	/// Операции
-	/// - case percentOperation - (унарная операцияб бинарная операция)
+	/// - case percentOperation - (унарная операция, бинарная операция)
 	/// - case unaryOperation - (операция, валидация)
 	/// - case binaryOperation - (операция, валидация)
 	/// - case equals - операция "равно"
@@ -171,25 +171,25 @@ struct CalculatorEngine
 			}
 
 			guard
-				let lastOperation = `operator`.operation(from: operations),
+				`operator`.operation(from: operations) != nil,
 				let newOperation = symbol.operation(from: operations) else {
 
 					completion?(.failure(.error(message: "ERROR")))
 					return
 			}
 
-			switch (lastOperation, newOperation) {
+			switch newOperation {
 
-			case (_, let .unaryOperation(function, _)):
+			case .unaryOperation(let function, _):
 				accumulator = function(0)
 				setOperand(accumulator)
 
-			case (_, .binaryOperation):
+			case .binaryOperation:
 				infixArray.removeLast()
 				performOperation(with: symbol, completion: completion) // РЕКУРСИЯ
 				return
 
-			case (_, .equals):
+			case .equals:
 				equalsIsTapped = true
 				infixArray.append(.operand(lastOperand))
 				evaluate(completion)
@@ -198,7 +198,7 @@ struct CalculatorEngine
 				infixArray.append(.operator(`operator`))
 				return
 
-			case (_, let .percentOperation(_, binaryFunction)):
+			case .percentOperation(_, let binaryFunction):
 
 				let previousOperatorStackIndex = infixArray.endIndex - 2
 				let previousOperationStack = infixArray[previousOperatorStackIndex]
@@ -217,7 +217,7 @@ struct CalculatorEngine
 			}
 		}
 		else {
-			// В стэке послдний элемент - операнд
+			// В стэке последний элемент - операнд
 			guard let operation = symbol.operation(from: operations) else {
 
 					completion?(.failure(.error(message: "ERROR")))
@@ -274,7 +274,6 @@ struct CalculatorEngine
 
 		completion?(.success(accumulator))
 	}
-	// swiftlint:enable cyclomatic_complexity
 
 	// MARK: ... Private metods
 	private func evaluateUsingPostfixNotation(_ infixArray: [OperationStack]) throws -> Double {

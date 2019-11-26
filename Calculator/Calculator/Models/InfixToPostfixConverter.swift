@@ -26,11 +26,11 @@ enum InfixToPostfixConverter
 		var stack = Stack<OperationStack>()
 		var postfixNotationArray = Queue<OperationStack>()
 
-		func popImfixToPostfixNotation() {
+		func popInfixToPostfixNotation() {
 			postfixNotationArray.push(array.removeFirst())
 		}
 
-		func popImfixNotationToStack() {
+		func popInfixNotationToStack() {
 			stack.push(array.removeFirst())
 		}
 
@@ -76,11 +76,11 @@ enum InfixToPostfixConverter
 			switch `operator` {
 
 			case .plus, .minus:
-				guard let top = stack.top else { return popImfixNotationToStack }
+				guard let top = stack.top else { return popInfixNotationToStack }
 
 				switch top {
 
-				case .operator(let symbol) where symbol == .openBracket: return popImfixNotationToStack
+				case .operator(let symbol) where symbol == .openBracket: return popInfixNotationToStack
 
 				case .operator: return popStackToPostfixNotation
 
@@ -92,11 +92,11 @@ enum InfixToPostfixConverter
 					return popStackToPostfixNotation
 				}
 				else {
-					return popImfixNotationToStack
+					return popInfixNotationToStack
 				}
 
 			case .openBracket:
-				return popImfixNotationToStack
+				return popInfixNotationToStack
 
 			case .closeBracket:
 				guard let top = stack.top else {
@@ -121,7 +121,7 @@ enum InfixToPostfixConverter
 		while let item = array.first {
 			switch item {
 			case .operand:
-				popImfixToPostfixNotation()
+				popInfixToPostfixNotation()
 			case .operator(let symbol):
 				do {
 					let action = try choosingAction(incomingOperator: symbol)
