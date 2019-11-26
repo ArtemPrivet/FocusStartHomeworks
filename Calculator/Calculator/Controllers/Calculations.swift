@@ -48,7 +48,7 @@ final class Calculations
 		accumulator = operand
 	}
 	//Выполняем пришедшую операцию, либо откладываем если операция с двумя операндами
-	func makeOperation(symbol: String, getBothOperandsForBinaryOperation: Bool) {
+	func makeOperation(symbol: String, getBothOperandsForBinaryOperation: Bool = true) {
 		guard let operation = operations[symbol] else { return }
 		switch operation {
 		case .unaryOperation(let function):
