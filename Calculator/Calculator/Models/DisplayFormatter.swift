@@ -25,11 +25,11 @@ final class DisplayFormatter
 		return formatter
 	}
 
-	private init() {}
-
 	/// если число длинное то на экране будет отображаться число в экспоненте
-	 func switchFormatterNumberStyle(with number: Double) {
+	 static func automaticNumberStyle(with number: Double) -> NumberFormatter.Style {
 		let maxNumber = 999_999_999.0
-		format.numberStyle = ( number > maxNumber || number < -maxNumber) ? .scientific : .decimal
+		return ( number > maxNumber || number < -maxNumber) ? .scientific : .decimal
 	}
+
+	private init() {}
 }

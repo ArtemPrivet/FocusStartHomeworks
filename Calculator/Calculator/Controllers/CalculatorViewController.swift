@@ -23,7 +23,7 @@ final class CalculatorViewController: UIViewController
 		}
 		set {
 			if let value = newValue {
-				DisplayFormatter.shared.switchFormatterNumberStyle(with: value)
+				formatter.numberStyle = DisplayFormatter.automaticNumberStyle(with: value)
 				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: value))
 				//calculator.setOperand(value)
 			}
@@ -173,7 +173,7 @@ final class CalculatorViewController: UIViewController
 			.replacingOccurrences(of: ",", with: ".")
 		if let filter = filtered {
 			if let double = Double(filter) {
-				DisplayFormatter.shared.switchFormatterNumberStyle(with: double)
+				formatter.numberStyle = DisplayFormatter.automaticNumberStyle(with: double)
 				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: double))
 			}
 		}
