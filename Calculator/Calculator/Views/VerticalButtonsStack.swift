@@ -16,6 +16,8 @@ final class VerticalButtonsStack: UIStackView
 	private let cellsCount: Int
 	private var currentRow: UIStackView?
 
+	private let rowPadding: CGFloat = 15
+
 	private let rowSize: Int
 	private let rowHeight: CGFloat
 
@@ -37,14 +39,14 @@ final class VerticalButtonsStack: UIStackView
 
 	private func initialSetup() {
 		axis = .vertical
-		spacing = 14
+		spacing = rowPadding
 		distribution = .fillEqually
 	}
 
 	private func preparedHorizontalRow() -> UIStackView {
 		let row = UIStackView(arrangedSubviews: [])
 		row.axis = .horizontal
-		row.spacing = 14
+		row.spacing = rowPadding
 		row.distribution = .fillEqually
 		return row
 	}
