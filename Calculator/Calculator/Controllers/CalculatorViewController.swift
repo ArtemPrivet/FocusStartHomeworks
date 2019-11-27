@@ -25,7 +25,7 @@ final class CalculatorViewController: UIViewController
 			if let value = newValue {
 				DisplayFormatter.shared.switchFormatterNumberStyle(with: value)
 				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: value))
-				calculator.setOperand(value)
+				//calculator.setOperand(value)
 			}
 		}
 	}
@@ -109,10 +109,16 @@ final class CalculatorViewController: UIViewController
 			if let value = displayValue {
 				calculator.setOperand(value)
 			}
+
 			isUserInTheMiddleOfInput = false
 		}
 
 		if let operationSign = sender.currentTitle {
+			if calculator.hasLastResult {
+				if let value = displayValue {
+				calculator.setOperand(value)
+				}
+			}
 			calculator.setOperation(operationSign)
 		}
 
@@ -129,7 +135,7 @@ final class CalculatorViewController: UIViewController
 		}
 		if button.currentTitle == Sign.allClear {
 			isUserInTheMiddleOfInput = false
-			calculator.clear()
+			calculator.allClear()
 			displayResult = calculator.evaluate()
 			return true
 		}

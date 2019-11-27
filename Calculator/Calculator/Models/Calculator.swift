@@ -48,6 +48,8 @@ struct Calculator
 	]
 
 	private var accumulatedValue: Double? // запоминает операнды в отложенной операции
+	private var lastResult: Double?
+	var hasLastResult: Bool { lastResult != nil }
 
 	private var currentOperationSign: String? {
 		// знак последней операции, которая пришла от юзера
@@ -73,6 +75,7 @@ struct Calculator
 	private var operationStack = [ExpressionBody]()
 
 	// MARK: INTERNAL METHODS
+
 	mutating func setOperand(_ operand: Double) {
 		if operationStack.isEmpty {
 			operationStack.append(ExpressionBody.operand(operand))
@@ -90,7 +93,7 @@ struct Calculator
 	}
 
 	mutating func setOperation(_ symbol: String) {
-		if symbol != Sign.allClear {
+		if symbol != Sign.allClear && symbol != Sign.clear  {
 			guard let lastItem = operationStack.last else { return }
 			switch lastItem {
 			case .operation(let sign):
@@ -109,7 +112,7 @@ struct Calculator
 		}
 	}
 
-	mutating func clear() {
+	mutating func allClear() {
 		operationStack = []
 		waitingBinaryOperation = nil
 		accumulatedValue = nil
@@ -184,7 +187,9 @@ extension Calculator
 				}
 			}
 
-			return (result, resultIsWaiting)
+		lastResult = result
+
+		return (result, resultIsWaiting)
 	}
 
 	private mutating func cleanAfterPercantage() {
