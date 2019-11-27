@@ -32,8 +32,8 @@ final class CalculatorViewController: UIViewController
 
 	var displayResult: (result: Double?, isWaiting: Bool) = (nil, false) {
 		didSet {
-			switch displayResult {
-			case (let result, _): displayValue = result
+			if let result = displayResult.result {
+				displayValue = result
 			}
 		}
 	}
