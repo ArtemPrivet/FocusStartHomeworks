@@ -10,33 +10,7 @@ import Foundation
 
 struct Calculator
 {
-	// MARK: - PRIVATE STRUCTS
-	private enum OperationType
-	{
-		// типы операций
-		case unary((Double) -> Double, String) 			 // унарная
-		case binary((Double, Double) -> Double, String) // бинарная
-		case equals 								   // равно
-	}
-
-	private enum ExpressionBody
-	{
-		// тело выражения
-		case operand(Double)    // число (операнд)
-		case operation(String) // математическая операция
-	}
-
-	private struct WaitingBinaryOperation
-	{
-		var function: (Double, Double) -> Double // функция применяемая к операндам
-		let funcSign: String 					// знак операции
-		let firstOperand: Double 			   // первый операнд
-
-		func perform(with secondOperand: Double) -> Double {
-			return function(firstOperand, secondOperand)
-		}
-	}
-	// MARK: - PRIVATE PROPERTIES
+	// MARK: - Private Properies
 	private let operations: [String: OperationType] = [
 		Sign.changeSign: .unary ({ -$0 }, Sign.changeSign),	//меняет знак операнда
 		Sign.percent: .unary ({ $0 / 100 }, Sign.percent),	//процент от операнда
@@ -49,13 +23,16 @@ struct Calculator
 
 	private var accumulatedValue: Double? // запоминает операнды в отложенной операции
 	private var lastResult: Double?
-	var hasLastResult: Bool { lastResult != nil }
+	private var waitingBinaryOperation: WaitingBinaryOperation? // отложенная операция
+	private var result: Double? { accumulatedValue } // результат вычислений операции
+	private var resultIsWaiting: Bool { waitingBinaryOperation != nil }
+	private var operationStack = [ExpressionBody]()
 
 	private var currentOperationSign: String? {
 		// знак последней операции, которая пришла от юзера
 		didSet(newSign) {
-			// юзер изменил знак операции, меняем его в отложенной операции
 			if let sign = newSign {
+				// юзер изменил знак операции, меняем его в отложенной операции
 				if waitingBinaryOperation != nil {
 					guard let operation = operations[sign] else { return }
 					switch operation {
@@ -68,14 +45,10 @@ struct Calculator
 		}
 	}
 
-	private var waitingBinaryOperation: WaitingBinaryOperation? // отложенная операция
-	private var result: Double? { accumulatedValue } // результат вычислений операции
-	private var resultIsWaiting: Bool { waitingBinaryOperation != nil }
+	// MARK: Internal Properties
+	var hasLastResult: Bool { lastResult != nil }
 
-	private var operationStack = [ExpressionBody]()
-
-	// MARK: INTERNAL METHODS
-
+	// MARK: Internal Methods
 	mutating func setOperand(_ operand: Double) {
 		if operationStack.isEmpty {
 			operationStack.append(ExpressionBody.operand(operand))
@@ -83,33 +56,52 @@ struct Calculator
 		else {
 			guard let lastItem = operationStack.last else { return }
 			switch lastItem {
-			case .operation:
-//				if sign != Sign.allClear || sign != Sign.clear {
-				operationStack.append(ExpressionBody.operand(operand))
-//				}
+			case .operation: operationStack.append(ExpressionBody.operand(operand))
 			default: break
 			}
 		}
 	}
 
 	mutating func setOperation(_ symbol: String) {
-//		if symbol != Sign.allClear && symbol != Sign.clear  {
-			guard let lastItem = operationStack.last else { return }
-			switch lastItem {
-			case .operation(let sign):
-				switch sign {
-				case Sign.divide, Sign.multiply, Sign.minus, Sign.plus, Sign.equals:
-					// "Меняю знак операции если пользователь вдруг поменял знак при уже нажатом знаке, ожидаю второй операнд"
-					currentOperationSign = symbol
-					let lastIndex = operationStack.count - 1
-					operationStack[lastIndex] = ExpressionBody.operation(symbol)
-				default: break
-				}
-			default:
-				// если впереди стоит операнд(число), то можно добавить новый знак операции
-				operationStack.append(ExpressionBody.operation(symbol))
+		guard let lastItem = operationStack.last else { return }
+
+		switch lastItem {
+		case .operation(let sign):
+			switch sign {
+			case Sign.divide, Sign.multiply, Sign.minus, Sign.plus, Sign.equals:
+				// "Меняю знак операции если пользователь вдруг поменял знак при уже нажатом знаке, ожидаю второй операнд"
+				currentOperationSign = symbol
+				let lastIndex = operationStack.count - 1
+				operationStack[lastIndex] = ExpressionBody.operation(symbol)
+			default: break
 			}
-//		}
+		default:
+			// если впереди стоит операнд(число), то можно добавить новый знак операции
+			operationStack.append(ExpressionBody.operation(symbol))
+		}
+	}
+
+	mutating func evaluate() -> ( result: Double?, isWaiting: Bool) {
+		// Nested Function
+		func accumulateOperand(_ operand: Double) {
+			accumulatedValue = operand
+		}
+
+		// Body
+		guard operationStack.isEmpty == false else { return (nil, false) }
+
+		for existOperation in operationStack {
+			switch existOperation {
+			case .operand(let operand):
+				accumulateOperand(operand)
+			case .operation(let operation):
+				performOperation(operation)
+			}
+		}
+
+		lastResult = result
+
+		return (result, resultIsWaiting)
 	}
 
 	mutating func allClear() {
@@ -117,79 +109,85 @@ struct Calculator
 		waitingBinaryOperation = nil
 		accumulatedValue = nil
 		currentOperationSign = nil
+		lastResult = nil
 	}
 }
 
-// MARK: - CALCULATIONS ENGINE
-extension Calculator
+// MARK: - Private Structs and Enums
+private extension Calculator
 {
-	mutating func evaluate() -> ( result: Double?, isWaiting: Bool) {
-			// NESTED FUNCTIONS
-			func performWaitingBinaryOperation() {
-				if let operation = waitingBinaryOperation,
-					let value = accumulatedValue {
-					accumulatedValue = operation.perform(with: value)
-					waitingBinaryOperation = nil
-					// считаем все выражение
-					cleanAfterPercantage()
-					accumulatedValue = expressionValue()
-				}
-			}
+	private enum OperationType
+	{
+		case unary((Double) -> Double, String) 			 // унарная
+		case binary((Double, Double) -> Double, String) // бинарная
+		case equals 								   // равно
+	}
 
-			func setOperand(_ operand: Double) {
-				accumulatedValue = operand
-			}
+	private enum ExpressionBody
+	{
+		case operand(Double)    // число (операнд)
+		case operation(String) // математическая операция
+	}
 
-			func performOperation(_ symbol: String) {
-				guard let operation = operations[symbol] else { return }
+	private struct WaitingBinaryOperation
+	{
+		var function: (Double, Double) -> Double // функция применяемая к операндам
+		let functionSign: String 					// знак операции
+		let firstOperand: Double 			   // первый операнд
 
-				switch operation {
-				case .unary(let operationFunction, let sign):
-					if let notEmptyValue = accumulatedValue {
-						if sign == Sign.percent {
-							if let previosOperand = waitingBinaryOperation?.firstOperand {
-								// найден предыдущий операнд, находим его %
-								let percentageFromPreviosOperand = (previosOperand * notEmptyValue) / 100
-								accumulatedValue = percentageFromPreviosOperand
-							}
-							else {
-								// если перед числом не было операций то выполняем деление на 100
-								accumulatedValue = operationFunction(notEmptyValue)
-							}
-						}
-						else {
-							// если это знак +/- то, меняем знак числа
-							accumulatedValue = operationFunction(notEmptyValue)
-						}
+		func perform(with secondOperand: Double) -> Double {
+			return function(firstOperand, secondOperand)
+		}
+	}
+}
+
+// MARK: - Private Methods
+private extension Calculator
+{
+	private mutating func performWaitingBinaryOperation() {
+		if let operation = waitingBinaryOperation,
+			let value = accumulatedValue {
+			accumulatedValue = operation.perform(with: value)
+			waitingBinaryOperation = nil
+			// считаем все выражение
+			cleanAfterPercantage()
+			accumulatedValue = expressionValue()
+		}
+	}
+
+	private mutating func performOperation(_ symbol: String) {
+		guard let operation = operations[symbol] else { return }
+
+		switch operation {
+		case .unary(let operationFunction, let sign):
+			if let notEmptyValue = accumulatedValue {
+				if sign == Sign.percent {
+					if let previosOperand = waitingBinaryOperation?.firstOperand {
+						// найден предыдущий операнд, находим его %
+						let percentageFromPreviosOperand = (previosOperand * notEmptyValue) / 100
+						accumulatedValue = percentageFromPreviosOperand
 					}
-				case .binary(let operationFunction, let signDescr):
-					if let value = accumulatedValue {
-						waitingBinaryOperation = WaitingBinaryOperation(
-							function: operationFunction, funcSign: signDescr,
-							firstOperand: value
-						)
-						accumulatedValue = nil
+					else {
+						// если перед числом не было операций то выполняем деление на 100
+						accumulatedValue = operationFunction(notEmptyValue)
 					}
-				case .equals:
-					performWaitingBinaryOperation()
+				}
+				else {
+					// если это знак +/- то, меняем знак числа
+					accumulatedValue = operationFunction(notEmptyValue)
 				}
 			}
-
-			// FUNCTION BODY
-			guard operationStack.isEmpty == false else { return (nil, false) }
-
-			for existOperation in operationStack {
-				switch existOperation {
-				case .operand(let operand):
-					setOperand(operand)
-				case .operation(let operation):
-					performOperation(operation)
-				}
+		case .binary(let operationFunction, let signDescr):
+			if let value = accumulatedValue {
+				waitingBinaryOperation = WaitingBinaryOperation(
+					function: operationFunction, functionSign: signDescr,
+					firstOperand: value
+				)
+				accumulatedValue = nil
 			}
-
-		lastResult = result
-
-		return (result, resultIsWaiting)
+		case .equals:
+			performWaitingBinaryOperation()
+		}
 	}
 
 	private mutating func cleanAfterPercantage() {
@@ -215,7 +213,7 @@ extension Calculator
 				operationsArray.append(String(number))
 			case .operation(let operationSign):
 				if operationSign != Sign.equals {
-				operationsArray.append(operationSign)
+					operationsArray.append(operationSign)
 				}
 			}
 		}

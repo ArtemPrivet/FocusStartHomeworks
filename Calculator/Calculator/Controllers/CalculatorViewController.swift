@@ -25,7 +25,6 @@ final class CalculatorViewController: UIViewController
 			if let value = newValue {
 				formatter.numberStyle = DisplayFormatter.automaticNumberStyle(with: value)
 				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: value))
-				//calculator.setOperand(value)
 			}
 		}
 	}
@@ -38,12 +37,12 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	// MARK: - SUPER CLASS PROPERTIES
+	// MARK: - Super Class Properties
 	override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
 
-	// MARK: - VC LIFE CYCLE METHODS
+	// MARK: - Vc Life Cycle Methods
 	override func loadView() {
 		view = calculatorView
 	}
@@ -53,15 +52,19 @@ final class CalculatorViewController: UIViewController
 		addTargetToButtons()
 		addSwipeToLabel()
 	}
+}
 
-	// MARK: - BUTTONS HANDLING
+// MARK: - PRIVATE METHODS
+private extension CalculatorViewController
+{
+	// MARK: Buttons Handling
 	private func addTargetToButtons() {
 		for button in calculatorView.buttonsStack.cells {
 			guard let title = button.currentTitle else { return }
 			let isDigitOrSeparator = (Int(title) != nil) ||
 				(button.currentTitle == formatter.decimalSeparator)
 			if isDigitOrSeparator {
-				// это число
+				// это число или сепаратор
 				button.addTarget(self, action: #selector(digitTapped(_:)), for: .touchUpInside)
 			}
 			else {
@@ -88,17 +91,17 @@ final class CalculatorViewController: UIViewController
 					calculatorView.displayLabel.text = currentTextInDisplay + digit
 				}
 				if isDigitNotSeparator {
-					updateDisplay()
+					updateDisplayLabel()
 				}
 			}
 		}
 		else {
 			// начала ввода
-			calculatorView.displayLabel.text = isDigitNotSeparator ?  digit : Sign.zero + digit
+			calculatorView.displayLabel.text = isDigitNotSeparator ? digit : Sign.zero + digit
 			isUserInTheMiddleOfInput = true
 		}
-		toggleClearButtonTitle()
-		toggleButtonState(of: sender)
+		switchClearButtonTitle()
+		setSelectedButtonState(of: sender)
 	}
 
 	/// юзер нажал на один из операторов
@@ -116,13 +119,13 @@ final class CalculatorViewController: UIViewController
 		if let operationSign = sender.currentTitle {
 			if calculator.hasLastResult {
 				if let value = displayValue {
-				calculator.setOperand(value)
+					calculator.setOperand(value)
 				}
 			}
 			calculator.setOperation(operationSign)
 		}
 
-		toggleButtonState(of: sender)
+		setSelectedButtonState(of: sender)
 		displayResult = calculator.evaluate()
 	}
 
@@ -130,7 +133,7 @@ final class CalculatorViewController: UIViewController
 	private func userTappedClear(_ button: Button) -> Bool {
 		if button.currentTitle == Sign.clear {
 			calculatorView.displayLabel.text = Sign.zero
-			toggleClearButtonTitle()
+			switchClearButtonTitle()
 			return true
 		}
 		if button.currentTitle == Sign.allClear {
@@ -144,7 +147,7 @@ final class CalculatorViewController: UIViewController
 	}
 
 	/// переключает состояние кнопок
-	private func toggleButtonState(of sender: Button) {
+	private func setSelectedButtonState(of sender: Button) {
 		switch sender.currentTitle {
 		case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
 			sender.isSelected = true
@@ -158,24 +161,21 @@ final class CalculatorViewController: UIViewController
 		}
 	}
 
-	private func toggleClearButtonTitle() {
+	private func switchClearButtonTitle() {
 		// AC <-> C
 		calculatorView.buttonsStack.cells.first?.setTitle(
-				isUserInTheMiddleOfInput && calculatorView.displayLabel.text != Sign.zero ? "C" : "AC",
-				for: .normal
-			)
+			isUserInTheMiddleOfInput && calculatorView.displayLabel.text != Sign.zero ? "C" : "AC",
+			for: .normal
+		)
 	}
-
-	// MARK: - LABEL HANDLING
-	private func updateDisplay() {
+	// MARK: Label Handling
+	private func updateDisplayLabel() {
 		let filtered = calculatorView.displayLabel.text?
 			.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
 			.replacingOccurrences(of: ",", with: ".")
-		if let filter = filtered {
-			if let double = Double(filter) {
-				formatter.numberStyle = DisplayFormatter.automaticNumberStyle(with: double)
-				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: double))
-			}
+		if let filter = filtered, let double = Double(filter) {
+			formatter.numberStyle = DisplayFormatter.automaticNumberStyle(with: double)
+			calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: double))
 		}
 	}
 
@@ -187,10 +187,11 @@ final class CalculatorViewController: UIViewController
 	}
 
 	@objc private func swipeOnLabel() {
+		guard calculator.hasLastResult == false else { return }
 		if calculatorView.displayLabel.text?.isEmpty == false {
 			if calculatorView.displayLabel.text != Sign.zero {
 				calculatorView.displayLabel.text?.removeLast()
-				updateDisplay()
+				updateDisplayLabel()
 				if calculatorView.displayLabel.text?.first == nil {
 					calculatorView.displayLabel.text = Sign.zero
 				}
