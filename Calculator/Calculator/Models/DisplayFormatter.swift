@@ -16,11 +16,12 @@ final class DisplayFormatter
 		let formatter = NumberFormatter()
 		formatter.numberStyle = .decimal
 		formatter.usesGroupingSeparator = true
-		formatter.notANumberSymbol = "0"
+		formatter.notANumberSymbol = "Error"
 		formatter.maximumFractionDigits = 8
 		formatter.groupingSeparator = " "
 		formatter.locale = Locale.current
 		formatter.positiveInfinitySymbol = "Error"
+		formatter.negativeInfinitySymbol = "Error"
 		return formatter
 	}
 

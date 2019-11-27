@@ -136,6 +136,7 @@ final class CalculatorViewController: UIViewController
 		if button.currentTitle == Sign.allClear {
 			isUserInTheMiddleOfInput = false
 			calculator.allClear()
+			displayValue = 0
 			displayResult = calculator.evaluate()
 			return true
 		}

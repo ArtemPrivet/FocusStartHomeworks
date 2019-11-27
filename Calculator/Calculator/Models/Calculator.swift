@@ -83,17 +83,17 @@ struct Calculator
 		else {
 			guard let lastItem = operationStack.last else { return }
 			switch lastItem {
-			case .operation(let sign):
-				if sign != Sign.allClear || sign != Sign.clear {
+			case .operation:
+//				if sign != Sign.allClear || sign != Sign.clear {
 				operationStack.append(ExpressionBody.operand(operand))
-				}
+//				}
 			default: break
 			}
 		}
 	}
 
 	mutating func setOperation(_ symbol: String) {
-		if symbol != Sign.allClear && symbol != Sign.clear  {
+//		if symbol != Sign.allClear && symbol != Sign.clear  {
 			guard let lastItem = operationStack.last else { return }
 			switch lastItem {
 			case .operation(let sign):
@@ -109,7 +109,7 @@ struct Calculator
 				// если впереди стоит операнд(число), то можно добавить новый знак операции
 				operationStack.append(ExpressionBody.operation(symbol))
 			}
-		}
+//		}
 	}
 
 	mutating func allClear() {
