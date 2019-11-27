@@ -54,7 +54,7 @@ final class Button: UIButton
 	}
 
 	private func animateWhenHighlighted() {
-		UIView.animate(withDuration: 0.3,
+		UIView.animate(withDuration: 0.05,
 					   delay: 0.0,
 					   options: [.curveLinear],
 					   animations: {
@@ -75,15 +75,13 @@ final class Button: UIButton
 						default:
 							self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.8) : .darkGray
 						}
-		},
-					   completion: nil
-		)
+		})
 	}
 
 	private func animateWhenSelected() {
 		switch currentTitle {
 		case Sign.divide:
-			UIView.animate(withDuration: 0.5,
+			UIView.animate(withDuration: 0.25,
 						   delay: 0.0,
 						   options: [.curveLinear],
 						   animations: {
@@ -97,10 +95,9 @@ final class Button: UIButton
 								self.backgroundColor = .systemOrange
 								self.setBackgroundImage(UIImage(named: "divideS"), for: .selected)
 							}
-			},
-						   completion: nil )
+			})
 		case Sign.multiply, Sign.minus, Sign.plus:
-			UIView.animate(withDuration: 0.5,
+			UIView.animate(withDuration: 0.25,
 						   delay: 0.0,
 						   options: [.curveLinear],
 						   animations: {
@@ -112,8 +109,7 @@ final class Button: UIButton
 								self.setTitleColor(.white, for: .normal)
 								self.backgroundColor = .systemOrange
 							}
-			},
-						   completion: nil)
+			})
 
 		default: break
 		}
