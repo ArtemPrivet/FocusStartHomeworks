@@ -60,11 +60,7 @@ final class Button: UIButton
 					   animations: {
 						switch self.currentTitle {
 						case Sign.divide:
-							self.setBackgroundImage(
-								UIImage(
-								named: self.isHighlighted ? "divideSReversed" : "divideSReversed"
-								),
-								for: .highlighted)
+							self.setBackgroundImage(UIImage(named: "divideS"), for: .highlighted)
 						case Sign.multiply, Sign.minus, Sign.plus:
 							break
 						case Sign.equals:
