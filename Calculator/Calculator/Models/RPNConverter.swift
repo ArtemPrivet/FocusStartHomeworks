@@ -1,5 +1,5 @@
 //
-//  RPNDecoder.swift
+//  RPNEncoder.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 22.11.2019.
@@ -8,11 +8,61 @@
 
 import Foundation
 
-struct RPNDecoder
+struct RPNConverter
 {
-	let double: Double
+	///определяем приоритет операции
+	private func operatorPriority(_ operatorSign: String) -> Int {
+		switch operatorSign {
+		case Sign.plus, Sign.minus:
+			return 1
+		case Sign.multiply, Sign.divide:
+			return 2
+		case Sign.percent, Sign.changeSign:
+			return 3
+		default: // числа
+			return -1
+		}
+	}
 
-	private static func evaluatedRPN(expressionInArrayFormat: [String]) -> Double {
+	/// конвертируем выражение  в обратную польскую нотацию
+	func getRPNFrom(inputExpressionsArray: [String]) -> [String] {
+		var stack = [String]()
+		var output = [String]()
+		// алгоритм
+		for item in inputExpressionsArray {
+			switch operatorPriority(item) {
+			case -1: output.append(item)
+			case 0: stack.append(item)
+			case 4:
+				while let last = stack.last {
+					if operatorPriority(last) != 0 {
+						output.append(stack.removeLast())
+					}
+					else {
+						stack.removeLast()
+					}
+				}
+			default:
+				while let last = stack.last {
+					if operatorPriority(last) >= operatorPriority(item) {
+						output.append(stack.removeLast())
+					}
+					else {
+						break
+					}
+				}
+				stack.append(item)
+			}
+		}
+
+		while stack.last != nil {
+			output.append(stack.removeLast())
+		}
+
+		return output
+	}
+
+	func getDoubleFromRPN(expressionInArrayFormat: [String]) -> Double {
 		var stack = [String]()
 
 		for (index, sign) in expressionInArrayFormat.enumerated() {
@@ -67,9 +117,5 @@ struct RPNDecoder
 			return result
 		}
 		return 0
-	}
-
-	init(expressionInArrayFormat: [String]) {
-		self.double = RPNDecoder.evaluatedRPN(expressionInArrayFormat: expressionInArrayFormat)
 	}
 }

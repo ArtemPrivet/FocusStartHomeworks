@@ -43,7 +43,7 @@ final class CalculatorView: UIView
 	}
 
 	private func setConstraints() {
-		
+
 		buttonsStack.cells.forEach {
 			$0.translatesAutoresizingMaskIntoConstraints = false
 			if $0.currentTitle != Sign.zero {

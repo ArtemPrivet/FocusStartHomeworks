@@ -201,23 +201,24 @@ extension Calculator
 
 	///перебирает стек операций и творит польскую магию
 	private mutating func expressionValue() -> Double {
-		var testArray = [String]()
+		let rnpConverter = RPNConverter()
+		var operationsArray = [String]()
 
 		for item in operationStack {
 			switch item {
 			case .operand(let number):
-				testArray.append(String(number))
+				operationsArray.append(String(number))
 			case .operation(let operationSign):
 				if operationSign != Sign.equals {
-				testArray.append(operationSign)
+				operationsArray.append(operationSign)
 				}
 			}
 		}
 
-		let rpnEncoder = RPNEncoder(testArray)
-		let rpnDecoder = RPNDecoder(expressionInArrayFormat: rpnEncoder.expressionsAsRPN)
-
 		operationStack.removeAll()
-		return rpnDecoder.double
+
+		let rpnStringArray = rnpConverter.getRPNFrom(inputExpressionsArray: operationsArray)
+
+		return rnpConverter.getDoubleFromRPN(expressionInArrayFormat: rpnStringArray)
 	}
 }
