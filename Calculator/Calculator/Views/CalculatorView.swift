@@ -10,13 +10,13 @@ import UIKit
 
 final class CalculatorView: UIView
 {
-	let screenLabel = ScreenLabel()
-	let buttonsStack = ButtonsStack(rowSize: 4, rowHeight: 75, cellsCount: 19)
+	let displayLabel = DisplayLabel()
+	let buttonsStack = VerticalButtonsStack(rowSize: 4, rowHeight: 75, cellsCount: 19)
 
 	init() {
 		super.init(frame: .zero)
 		initialSetup()
-		createSubviews()
+		addSubviews()
 	}
 
 	@available(*, unavailable)
@@ -28,8 +28,8 @@ final class CalculatorView: UIView
 		backgroundColor = .black
 	}
 
-	private func createSubviews() {
-		addSubview(screenLabel)
+	private func addSubviews() {
+		addSubview(displayLabel)
 		addSubview(buttonsStack)
 		resizeLastRow()
 		setConstraints()
@@ -37,39 +37,35 @@ final class CalculatorView: UIView
 
 	private func resizeLastRow() {
 		if let lastRow = buttonsStack.rows.last {
-			if let zero = lastRow.arrangedSubviews.first as? Button {
-				zero.isRounded = false
-				zero.widthAnchor.constraint(
-					greaterThanOrEqualTo: buttonsStack.widthAnchor,
-					multiplier: 0.45,
-					constant: 0
-				).isActive = true
-				lastRow.distribution = .fillProportionally
+				lastRow.distribution = .fill
 				lastRow.alignment = .fill
-			}
 		}
 	}
 
 	private func setConstraints() {
+		buttonsStack.cells.forEach {
+			$0.translatesAutoresizingMaskIntoConstraints = false
+			if $0.currentTitle != Sign.zero {
+					$0.widthAnchor.constraint(equalTo: $0.heightAnchor).isActive = true
+			}
+		}
 		translatesAutoresizingMaskIntoConstraints = false
+		buttonsStack.translatesAutoresizingMaskIntoConstraints = false
+		displayLabel.translatesAutoresizingMaskIntoConstraints = false
 
-		screenLabel.setContentHuggingPriority(
-			UILayoutPriority(1),
-			for: .vertical
-		)
-		screenLabel.setContentCompressionResistancePriority(
-			UILayoutPriority(749),
-			for: .vertical)
+		buttonsStack.rows.forEach {
+			$0.translatesAutoresizingMaskIntoConstraints = false
+		}
 
-			NSLayoutConstraint.activate([
-			screenLabel.topAnchor.constraint(greaterThanOrEqualTo: self.layoutMarginsGuide.topAnchor, constant: 20),
-			screenLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
-			screenLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
+		NSLayoutConstraint.activate([
+			displayLabel.topAnchor.constraint(greaterThanOrEqualTo: self.layoutMarginsGuide.topAnchor, constant: 20),
+			displayLabel.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
+			displayLabel.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
 
-			buttonsStack.topAnchor.constraint(equalTo: screenLabel.bottomAnchor),
+			buttonsStack.topAnchor.constraint(equalTo: displayLabel.bottomAnchor),
 			buttonsStack.leadingAnchor.constraint(equalTo: self.layoutMarginsGuide.leadingAnchor),
 			buttonsStack.trailingAnchor.constraint(equalTo: self.layoutMarginsGuide.trailingAnchor),
 			buttonsStack.bottomAnchor.constraint(equalTo: self.layoutMarginsGuide.bottomAnchor, constant: -20),
-			])
+		])
 	}
 }

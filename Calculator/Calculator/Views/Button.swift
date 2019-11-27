@@ -10,8 +10,6 @@ import UIKit
 
 final class Button: UIButton
 {
-	var isRounded = true
-
 	override var isSelected: Bool {
 		didSet {
 			animateWhenSelected()
@@ -35,21 +33,22 @@ final class Button: UIButton
 	}
 
 	private func initialSetup() {
-		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 36)
+		titleLabel?.font = UIFont(name: "FiraSans-Regular", size: 34)
 		titleLabel?.textAlignment = .center
 		backgroundColor = .darkGray
 	}
 
 	override func layoutSubviews() {
 		super.layoutSubviews()
-		if isRounded {
-			bounds.size.width = bounds.size.height
-			titleEdgeInsets = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-		}
-		else {
-			//offset zero button title to left side
+		switch currentTitle {
+		case Sign.divide, Sign.minus, Sign.multiply, Sign.plus, Sign.equals:
+			titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 4, right: 0)
+		case Sign.zero:
 			titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: bounds.size.width / 2)
+		default:
+			titleEdgeInsets = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
 		}
+
 		layer.cornerRadius = bounds.size.height / 2
 	}
 
@@ -59,13 +58,12 @@ final class Button: UIButton
 					   options: [.curveLinear],
 					   animations: {
 						switch self.currentTitle {
-						case Sign.divide:
-							self.setBackgroundImage(UIImage(named: "divideS"), for: .highlighted)
-						case Sign.multiply, Sign.minus, Sign.plus:
-							break
+						case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+							self.alpha = self.isHighlighted ? 0.9 : 1
 						case Sign.equals:
+							self.setTitleColor(self.isHighlighted ? .systemOrange : .systemOrange, for: .highlighted)
 							self.backgroundColor =
-								self.isHighlighted ? UIColor(white: 1, alpha: 0.8) : .systemOrange
+								self.isHighlighted ? .white : .systemOrange
 						case Sign.clear, Sign.allClear, Sign.percent, Sign.changeSign:
 							self.backgroundColor = self.isHighlighted ?  UIColor(white: 1, alpha: 0.9) : .lightGray
 						default:
@@ -76,23 +74,8 @@ final class Button: UIButton
 
 	private func animateWhenSelected() {
 		switch currentTitle {
-		case Sign.divide:
-			UIView.animate(withDuration: 0.25,
-						   delay: 0.0,
-						   options: [.curveLinear],
-						   animations: {
-							if self.isSelected {
-								self.setTitleColor(.systemOrange, for: .selected)
-								self.backgroundColor = .white
-								self.setBackgroundImage(UIImage(named: "divideSReversed"), for: .selected)
-							}
-							else {
-								self.setTitleColor(.white, for: .normal)
-								self.backgroundColor = .systemOrange
-								self.setBackgroundImage(UIImage(named: "divideS"), for: .selected)
-							}
-			})
-		case Sign.multiply, Sign.minus, Sign.plus:
+		case Sign.divide, Sign.multiply, Sign.minus, Sign.plus:
+			self.alpha = 1
 			UIView.animate(withDuration: 0.25,
 						   delay: 0.0,
 						   options: [.curveLinear],
@@ -106,7 +89,6 @@ final class Button: UIButton
 								self.backgroundColor = .systemOrange
 							}
 			})
-
 		default: break
 		}
 	}

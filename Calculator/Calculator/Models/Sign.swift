@@ -20,6 +20,6 @@ enum Sign
 	static let clear = "C"
 	static let allClear = "AC"
 	static let zero = "0"
-	static let decimalSeparator = MyFormatter.shared.format.decimalSeparator
+	static let decimalSeparator = DisplayFormatter.shared.format.decimalSeparator
 	static let arrayExpressionSeparator = " "
 }

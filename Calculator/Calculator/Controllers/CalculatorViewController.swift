@@ -10,21 +10,21 @@ import UIKit
 
 final class CalculatorViewController: UIViewController
 {
-	// MARK: - PROPERTIES
+	// MARK: - Properties
 	private let calculatorView = CalculatorView()
 	private var calculator = Calculator()
 	private var isUserInTheMiddleOfInput = false
-	private var formatter = MyFormatter.shared.format
+	private var formatter = DisplayFormatter.shared.format
 
 	private var displayValue: Double? {
 		get {
-			guard let displayText = calculatorView.screenLabel.text else { return nil }
+			guard let displayText = calculatorView.displayLabel.text else { return nil }
 			return formatter.number(from: displayText)?.doubleValue
 		}
 		set {
 			if let value = newValue {
-				MyFormatter.shared.switchFormatterNumberStyle(with: value)
-				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: value))
+				DisplayFormatter.shared.switchFormatterNumberStyle(with: value)
+				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: value))
 				calculator.setOperand(value)
 			}
 		}
@@ -73,7 +73,7 @@ final class CalculatorViewController: UIViewController
 
 	@objc private func digitTapped(_ sender: Button) {
 		guard let digit = sender.currentTitle else { return }
-		guard let currentTextInDisplay = calculatorView.screenLabel.text else { return }
+		guard let currentTextInDisplay = calculatorView.displayLabel.text else { return }
 		let digitsCount = currentTextInDisplay.filter { $0.isNumber }.count
 
 		let isDigitNotSeparator = (digit != formatter.decimalSeparator)
@@ -85,7 +85,7 @@ final class CalculatorViewController: UIViewController
 			// юзер уже что то ввел ранее
 			if notAllowsDoubleSeparator {
 				if digitsCount < 9 {
-					calculatorView.screenLabel.text = currentTextInDisplay + digit
+					calculatorView.displayLabel.text = currentTextInDisplay + digit
 				}
 				if isDigitNotSeparator {
 					updateDisplay()
@@ -94,7 +94,7 @@ final class CalculatorViewController: UIViewController
 		}
 		else {
 			// начала ввода
-			calculatorView.screenLabel.text = isDigitNotSeparator ?  digit : Sign.zero + digit
+			calculatorView.displayLabel.text = isDigitNotSeparator ?  digit : Sign.zero + digit
 			isUserInTheMiddleOfInput = true
 		}
 		toggleClearButtonTitle()
@@ -105,7 +105,7 @@ final class CalculatorViewController: UIViewController
 	@objc private func operatorTapped(_ sender: Button) {
 		guard userTappedClear(sender) == false else { return }
 
-		if isUserInTheMiddleOfInput || calculatorView.screenLabel.text == Sign.zero {
+		if isUserInTheMiddleOfInput || calculatorView.displayLabel.text == Sign.zero {
 			if let value = displayValue {
 				calculator.setOperand(value)
 			}
@@ -123,7 +123,7 @@ final class CalculatorViewController: UIViewController
 	/// чистит экран / модель
 	private func userTappedClear(_ button: Button) -> Bool {
 		if button.currentTitle == Sign.clear {
-			calculatorView.screenLabel.text = Sign.zero
+			calculatorView.displayLabel.text = Sign.zero
 			toggleClearButtonTitle()
 			return true
 		}
@@ -154,20 +154,20 @@ final class CalculatorViewController: UIViewController
 	private func toggleClearButtonTitle() {
 		// AC <-> C
 		calculatorView.buttonsStack.cells.first?.setTitle(
-				isUserInTheMiddleOfInput && calculatorView.screenLabel.text != Sign.zero ? "C" : "AC",
+				isUserInTheMiddleOfInput && calculatorView.displayLabel.text != Sign.zero ? "C" : "AC",
 				for: .normal
 			)
 	}
 
 	// MARK: - LABEL HANDLING
 	private func updateDisplay() {
-		let filtered = calculatorView.screenLabel.text?
+		let filtered = calculatorView.displayLabel.text?
 			.filter { $0.isNumber || $0.isMathSymbol || $0.isPunctuation }
 			.replacingOccurrences(of: ",", with: ".")
 		if let filter = filtered {
 			if let double = Double(filter) {
-				MyFormatter.shared.switchFormatterNumberStyle(with: double)
-				calculatorView.screenLabel.text = formatter.string(from: NSNumber(value: double))
+				DisplayFormatter.shared.switchFormatterNumberStyle(with: double)
+				calculatorView.displayLabel.text = formatter.string(from: NSNumber(value: double))
 			}
 		}
 	}
@@ -175,17 +175,17 @@ final class CalculatorViewController: UIViewController
 	private func addSwipeToLabel() {
 		let swipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipeOnLabel))
 		swipeRecognizer.direction = [.left, .right]
-		calculatorView.screenLabel.isUserInteractionEnabled = true
-		calculatorView.screenLabel.addGestureRecognizer(swipeRecognizer)
+		calculatorView.displayLabel.isUserInteractionEnabled = true
+		calculatorView.displayLabel.addGestureRecognizer(swipeRecognizer)
 	}
 
 	@objc private func swipeOnLabel() {
-		if calculatorView.screenLabel.text?.isEmpty == false {
-			if calculatorView.screenLabel.text != Sign.zero {
-				calculatorView.screenLabel.text?.removeLast()
+		if calculatorView.displayLabel.text?.isEmpty == false {
+			if calculatorView.displayLabel.text != Sign.zero {
+				calculatorView.displayLabel.text?.removeLast()
 				updateDisplay()
-				if calculatorView.screenLabel.text?.first == nil {
-					calculatorView.screenLabel.text = Sign.zero
+				if calculatorView.displayLabel.text?.first == nil {
+					calculatorView.displayLabel.text = Sign.zero
 				}
 			}
 			else {

@@ -1,5 +1,5 @@
 //
-//  ButtonsStack.swift
+//  VerticalButtonsStack.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 16.11.2019.
@@ -8,10 +8,11 @@
 
 import UIKit
 
-final class ButtonsStack: UIStackView
+final class VerticalButtonsStack: UIStackView
 {
 	var cells: [Button] = []
 	var rows: [UIStackView] = []
+
 	private let cellsCount: Int
 	private var currentRow: UIStackView?
 
@@ -35,40 +36,28 @@ final class ButtonsStack: UIStackView
 	}
 
 	private func initialSetup() {
-		translatesAutoresizingMaskIntoConstraints = false
-		spacing = 15
 		axis = .vertical
+		spacing = 14
 		distribution = .fillEqually
 	}
 
-	private func preparedRow() -> UIStackView {
+	private func preparedHorizontalRow() -> UIStackView {
 		let row = UIStackView(arrangedSubviews: [])
-		row.translatesAutoresizingMaskIntoConstraints = false
 		row.axis = .horizontal
-		row.spacing = 15
+		row.spacing = 14
 		row.distribution = .fillEqually
 		return row
 	}
 
-	private func addCell(button: Button) {
+	private func addCellToRow(button: Button) {
 		let isFirstCellOfRow = self.cells.count % self.rowSize == 0
 
 		if currentRow == nil || isFirstCellOfRow {
-			currentRow = preparedRow()
+			currentRow = preparedHorizontalRow()
 			if let currentRow = self.currentRow {
 				self.addArrangedSubview(currentRow)
 				rows.append(currentRow)
 			}
-		}
-
-		button.translatesAutoresizingMaskIntoConstraints = false
-
-		if UIScreen.main.bounds.width <= 320 {
-			//SE and below
-			button.heightAnchor.constraint(equalToConstant: self.rowHeight * 0.8).isActive = true
-		}
-		else {
-			button.heightAnchor.constraint(equalToConstant: self.rowHeight).isActive = true
 		}
 
 		cells.append(button)
@@ -81,9 +70,10 @@ final class ButtonsStack: UIStackView
 	private func fillGridWithCells() {
 		for _ in 0..<cellsCount {
 			let button = Button()
-			addCell(button: button)
+			addCellToRow(button: button)
 		}
 	}
+
 	// MARK: Configure Buttons View
 	private func configureOperatorsButtonsBackground() {
 		//configure side buttons view
@@ -117,11 +107,11 @@ final class ButtonsStack: UIStackView
 
 		for (index, button) in cells.enumerated() {
 			button.setTitle(titles[index], for: .normal)
-			button.titleLabel?.adjustsFontSizeToFitWidth = true
-			button.titleLabel?.minimumScaleFactor = 0.5
-			if button.currentTitle == Sign.divide {
-				button.titleLabel?.layer.opacity = 0.0
-				button.setBackgroundImage(UIImage(named: "divideS"), for: .normal)
+			switch button.currentTitle {
+			case Sign.divide, Sign.minus, Sign.multiply, Sign.plus, Sign.equals:
+				button.titleLabel?.font = UIFont.systemFont(ofSize: 38, weight: .regular)
+			default:
+				break
 			}
 		}
 	}

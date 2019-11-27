@@ -1,5 +1,5 @@
 //
-//  MyFormatter.swift
+//  DisplayFormatter.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 19.11.2019.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-final class MyFormatter
+final class DisplayFormatter
 {
-	static let shared = MyFormatter()
+	static let shared = DisplayFormatter()
 
 	var format: NumberFormatter {
 		let formatter = NumberFormatter()

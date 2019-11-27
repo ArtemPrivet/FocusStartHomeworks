@@ -1,5 +1,5 @@
 //
-//  ScreenLabel.swift
+//  DisplayLabel.swift
 //  Calculator
 //
 //  Created by Mikhail Medvedev on 16.11.2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ScreenLabel: UILabel
+final class DisplayLabel: UILabel
 {
 	init() {
 		super.init(frame: .zero)
