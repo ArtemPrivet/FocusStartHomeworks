@@ -11,15 +11,4 @@ import UIKit
 protocol CalculatorViewDelegate: AnyObject
 {
 	func clickedButton(_ text: String)
-	func allClear()
-	func clear()
-	func plusMinusSign()
-	func percent()
-	func addAction()
-	func subtractAction()
-	func multiplyAction()
-	func divideAction()
-	func equal()
-	func comma()
-	func digit(inputText: String)
 }

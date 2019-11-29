@@ -10,6 +10,23 @@ import Foundation
 
 struct PolishNotation
 {
+	func makeCalculationToDouble(_ items: [Item]) -> Double? {
+		let reversePolishNotation = self.convertToReversePolishNotation(items)
+		let stringArray = self.convertPolishScriptNotationToStringArray(reversePolishNotation)
+		return self.getResult(stringArray)
+	}
+
+	func makeCalculationToString(_ items: [Item]) -> String? {
+		let reversePolishNotation = self.convertToReversePolishNotation(items)
+		let stringArray = self.convertPolishScriptNotationToStringArray(reversePolishNotation)
+		guard let resultInDouble = self.getResult(stringArray) else { return nil }
+		let resultInString = String(resultInDouble).replacingOccurrences(of: ".", with: ",")
+		return resultInString
+	}
+}
+
+extension PolishNotation
+{
 	private func convertToReversePolishNotation(_ items: [Item]) -> [Item] {
 		var stack = Stack<Item>()
 		var result: [Item] = []
@@ -132,11 +149,5 @@ struct PolishNotation
 		}
 		guard let resultOfPolishScript = stack.pop() else { return nil }
 		return resultOfPolishScript
-	}
-
-	func makeCalculation(_ items: [Item]) -> Double? {
-		let reversePolishNotation = self.convertToReversePolishNotation(items)
-		let stringArray = self.convertPolishScriptNotationToStringArray(reversePolishNotation)
-		return self.getResult(stringArray)
 	}
 }

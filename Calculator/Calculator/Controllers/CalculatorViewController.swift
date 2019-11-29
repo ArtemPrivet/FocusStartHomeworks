@@ -8,25 +8,29 @@
 
 import UIKit
 
-final class CalculatorViewController: UIViewController, CalculatorViewDelegate
+final class CalculatorViewController: UIViewController
 {
-	var calculatorView: CalculatorView? {
-		return self.view as? CalculatorView
-	}
+	private let calculatorView = CalculatorView()
 
-	var polandItems: [Item] = []
-	let polishNotation = PolishNotation()
-	var clearLabel = false
+	private var calculatorEngine = CalculatorEngine()
+	private var clearLabel = false
 
 	override func loadView() {
-		self.view = CalculatorView()
+		self.view = calculatorView
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		calculatorView?.delegate = self
+		calculatorView.delegate = self
 	}
 
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		return .lightContent
+	}
+}
+
+extension CalculatorViewController: CalculatorViewDelegate
+{
 	func clickedButton(_ text: String) {
 		print(text)
 		switch text {
@@ -46,147 +50,136 @@ final class CalculatorViewController: UIViewController, CalculatorViewDelegate
 	}
 
 	func allClear() {
-		self.polandItems.removeAll()
-		calculatorView?.resultLabel.text = "0"
+		self.calculatorEngine.allClearCalculation()
+		calculatorView.resultLabel.text = "0"
 		self.clearLabel = false
 		print("allClear")
 	}
 
 	func clear() {
-		calculatorView?.resultLabel.text = "0"
-		calculatorView?.buttonsLabels[0].text = "AC"
+		calculatorView.resultLabel.text = "0"
+		calculatorView.buttonsLabels[0].text = "AC"
 		self.clearLabel = false
+		self.calculatorEngine.clearCalculation()
 	}
 
 	func plusMinusSign() {
 		print("plusMinusSign")
-		if clearLabel {
-			calculatorView?.resultLabel.text = "0"
-			self.clearLabel = false
-		}
-		guard let resultLabel = calculatorView?.resultLabel,
-			let resultLabelStartIndex = resultLabel.text?.startIndex else { return }
-		if resultLabel.text?.first != "-" {
-			resultLabel.text?.insert("-", at: resultLabelStartIndex)
+		//		if clearLabel {
+		//			calculatorView.resultLabel.text = "0"
+		//			self.clearLabel = false
+		//			self.calculatorEngine.isNewValue = true
+		//		}
+		guard let resultLabelStartIndex = calculatorView.resultLabel.text?.startIndex else { return }
+		if calculatorView.resultLabel.text?.first != "-" {
+			calculatorView.resultLabel.text?.insert("-", at: resultLabelStartIndex)
 		}
 		else {
-			resultLabel.text?.removeFirst()
+			calculatorView.resultLabel.text?.removeFirst()
 		}
 	}
 
 	func percent() {
-		guard let text = calculatorView?.resultLabel.text,
-		let value = Double(text.replacingOccurrences(of: ",", with: "."))else { return }
-		if polandItems.count == 2, let firstItem = polandItems.first {
-			switch firstItem {
-			case .number(let number):
-				let resultValue = number * value / 100
-				let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-				calculatorView?.resultLabel.text = result.format()
-			default:
-				return
-			}
-		}
-		else {
-			let resultValue = value / 100
-			polandItems.append(.number(resultValue))
-			let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-			calculatorView?.resultLabel.text = result
-		}
+		//		guard let text = calculatorView.resultLabel.text,
+		//		let value = Double(text.replacingOccurrences(of: ",", with: "."))else { return }
+		//		if polandItems.count == 2, let firstItem = polandItems.first {
+		//			switch firstItem {
+		//			case .number(let number):
+		//				let resultValue = number * value / 100
+		//				let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
+		//				calculatorView?.resultLabel.text = result.format()
+		//			default:
+		//				return
+		//			}
+		//		}
+		//		else {
+		//			let resultValue = value / 100
+		//			polandItems.append(.number(resultValue))
+		//			let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
+		//			calculatorView.resultLabel.text = result
+		//		}
 	}
 
-	func calculateResultAndSetInLabel() {
-		guard let resultLabelText = calculatorView?.resultLabel.text,
-			let value = Double(resultLabelText.replacingOccurrences(of: ",", with: ".")) else { return }
-		polandItems.append(.number(value))
-		if polandItems.count >= 3 {
-			guard let polishNotationResult = polishNotation.makeCalculation(self.polandItems) else { return }
-			polandItems.removeAll()
-			polandItems.append(.number(polishNotationResult))
-			let stringResult = String(polishNotationResult).replacingOccurrences(of: ".", with: ",").format()
-			if polishNotationResult.truncatingRemainder(dividingBy: 1) == 0 {
-				let intResult = Int(polishNotationResult)
-				calculatorView?.resultLabel.text = String(intResult).replacingOccurrences(of: ".", with: ",").format()
-			}
-			else {
-				calculatorView?.resultLabel.text = stringResult
-			}
+	func addAction() {
+		if let result = self.calculatorEngine.addAction(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
 		}
 		self.clearLabel = true
 	}
 
-	// Переделать условия выполнения во всех операторах (Высчитывание в момент встречи разных приоритетов)
-	func addAction() {
-		calculateResultAndSetInLabel()
-		polandItems.append(.sign(.plus))
-	}
-
 	func subtractAction() {
-		calculateResultAndSetInLabel()
-		polandItems.append(.sign(.minus))
+		if let result = self.calculatorEngine.subtractAction(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
+		}
+		self.clearLabel = true
 	}
 
 	func multiplyAction() {
-		calculateResultAndSetInLabel()
-		polandItems.append(.sign(.multiply))
+		if let result = self.calculatorEngine.multiplyAction(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
+		}
+		self.clearLabel = true
 	}
 
 	func divideAction() {
-		calculateResultAndSetInLabel()
-		polandItems.append(.sign(.divide))
+		if let result = self.calculatorEngine.divideAction(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
+		}
+		self.clearLabel = true
 	}
 
 	func equal() {
-		calculateResultAndSetInLabel()
+		if let result = self.calculatorEngine.resultAction(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
+		}
+		self.clearLabel = true
 	}
 
 	func comma() {
-		guard let text = calculatorView?.resultLabel.text else { return }
+		guard let text = calculatorView.resultLabel.text else { return }
 		guard text.contains(",") == false else { return }
 		let containMinus = (text.first == "-")
 		if containMinus && text.count < 10 {
-			calculatorView?.resultLabel.text?.append(",")
+			calculatorView.resultLabel.text?.append(",")
 		}
 		else if containMinus == false && text.count < 9 {
-			calculatorView?.resultLabel.text?.append(",")
+			calculatorView.resultLabel.text?.append(",")
 		}
 	}
 
 	func digit(inputText: String) {
-		guard let resultLabel = calculatorView?.resultLabel else { return }
-		if resultLabel.text == "0" {
-			resultLabel.text = "\(inputText)"
-			calculatorView?.buttonsLabels[0].text = "C"
+		if calculatorView.resultLabel.text == "0" {
+			calculatorView.resultLabel.text = "\(inputText)"
+			calculatorView.buttonsLabels[0].text = "C"
+			self.calculatorEngine.isNewValue = true
 		}
-		else if resultLabel.text == "-0" {
-			resultLabel.text = "-\(inputText)"
-			calculatorView?.buttonsLabels[0].text = "C"
+		else if calculatorView.resultLabel.text == "-0" {
+			calculatorView.resultLabel.text = "-\(inputText)"
+			calculatorView.buttonsLabels[0].text = "C"
+			self.calculatorEngine.isNewValue = true
 		}
 		else {
 			if clearLabel {
-				resultLabel.text = ""
+				calculatorView.resultLabel.text = ""
 				self.clearLabel = false
+				self.calculatorEngine.isNewValue = true
 			}
-			guard let text = resultLabel.text else { return }
+			guard let text = calculatorView.resultLabel.text else { return }
 			let containMinus = (text.first == "-")
 			let containComma = text.contains(",")
 
 			if containMinus && containComma && text.count < 11 {
-				calculatorView?.resultLabel.text?.append(inputText)
+				calculatorView.resultLabel.text?.append(inputText)
 			}
 			else if containMinus == false && containComma && text.count < 10 {
-				calculatorView?.resultLabel.text?.append(inputText)
+				calculatorView.resultLabel.text?.append(inputText)
 			}
 			else if containMinus && containComma == false && text.count < 10 {
-				calculatorView?.resultLabel.text?.append(inputText)
+				calculatorView.resultLabel.text?.append(inputText)
 			}
 			else if text.count < 9 {
-				calculatorView?.resultLabel.text?.append(inputText)
+				calculatorView.resultLabel.text?.append(inputText)
 			}
 		}
-	}
-
-	override var preferredStatusBarStyle: UIStatusBarStyle {
-		return .lightContent
 	}
 }
