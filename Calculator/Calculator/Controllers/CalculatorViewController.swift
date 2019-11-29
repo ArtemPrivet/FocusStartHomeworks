@@ -36,7 +36,7 @@ final class CalculatorViewController: UIViewController, CalculatorViewDelegate
 		case "%": self.percent()
 		case "÷": self.divideAction()
 		case "×": self.multiplyAction()
-		case "-": self.subtractAction()
+		case "−": self.subtractAction()
 		case "+": self.addAction()
 		case "=": self.equal()
 		case ",": self.comma()

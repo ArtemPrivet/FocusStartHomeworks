@@ -197,29 +197,29 @@ final class CalculatorView: UIView
 
 		for index in 0 ..< buttons.count {
 			let label = UILabel()
-			label.font = UIFont(name: "FiraSans-Regular", size: 30)
+			label.font = UIFont(name: "FiraSans-Regular", size: 32)
 			buttonsLabels.append(label)
 
 			switch index {
 			case 0: label.text = "AC"; label.textColor = .black
 			case 1: label.text = "⁺⁄₋"; label.textColor = .black
 			case 2: label.text = "%"; label.textColor = .black
-			case 3: label.text = "÷"; label.textColor = .white
+			case 3: label.text = "÷"; label.textColor = .white; label.font = UIFont(name: "FiraSans-Regular", size: 40)
 			case 4: label.text = "7"; label.textColor = .white
 			case 5: label.text = "8"; label.textColor = .white
 			case 6: label.text = "9"; label.textColor = .white
-			case 7: label.text = "×"; label.textColor = .white
+			case 7: label.text = "×"; label.textColor = .white; label.font = UIFont(name: "FiraSans-Regular", size: 40)
 			case 8: label.text = "4"; label.textColor = .white
 			case 9: label.text = "5"; label.textColor = .white
 			case 10: label.text = "6"; label.textColor = .white
-			case 11: label.text = "-"; label.textColor = .white
+			case 11: label.text = "−"; label.textColor = .white; label.font = UIFont(name: "FiraSans-Regular", size: 40)
 			case 12: label.text = "1"; label.textColor = .white
 			case 13: label.text = "2"; label.textColor = .white
 			case 14: label.text = "3"; label.textColor = .white
-			case 15: label.text = "+"; label.textColor = .white
+			case 15: label.text = "+"; label.textColor = .white; label.font = UIFont(name: "FiraSans-Regular", size: 40)
 			case 16: label.text = "0"; label.textColor = .white
 			case 17: label.text = ","; label.textColor = .white
-			case 18: label.text = "="; label.textColor = .white
+			case 18: label.text = "="; label.textColor = .white; label.font = UIFont(name: "FiraSans-Regular", size: 40)
 			default: assertionFailure("Создается лишний label, который нигде не используется.")
 			}
 			buttons[index].addSubview(label)

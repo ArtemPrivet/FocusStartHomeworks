@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		720A375E239143150026EFC9 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A375D239143150026EFC9 /* CalculatorEngine.swift */; };
 		726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F952383D77D000F54C4 /* CalculatorView.swift */; };
@@ -45,6 +46,7 @@
 		28450808F086F21E93E1C3E6 /* Pods_Calculator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Calculator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
+		720A375D239143150026EFC9 /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
 		726A0F952383D77D000F54C4 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
 		726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewDelegate.swift; sourceTree = "<group>"; };
 		726A0F9C23844E9C000F54C4 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				726A0FA7238846CE000F54C4 /* Constants.swift */,
 				726A0FA923886BA2000F54C4 /* Item.swift */,
 				726A0FAB23886BC0000F54C4 /* Sign.swift */,
+				720A375D239143150026EFC9 /* CalculatorEngine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */,
 				726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */,
 				726A0FAC23886BC0000F54C4 /* Sign.swift in Sources */,
+				720A375E239143150026EFC9 /* CalculatorEngine.swift in Sources */,
 				726A0F9F23844ECD000F54C4 /* PolishNotation.swift in Sources */,
 				726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */,
 				726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */,

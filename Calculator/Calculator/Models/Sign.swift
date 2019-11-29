@@ -11,7 +11,7 @@ import Foundation
 enum Sign: String
 {
 	case plus = "+"
-	case minus = "-"
+	case minus = "−"
 	case divide = "÷"
 	case multiply = "×"
 }

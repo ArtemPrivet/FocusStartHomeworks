@@ -103,7 +103,7 @@ struct PolishNotation
 		var stack = Stack<Double>()
 
 		items.forEach { item in
-			if item == "+" || item == "÷" || item == "×" || item == "-" {
+			if item == "+" || item == "÷" || item == "×" || item == "−" {
 				var result = 0.0
 				guard let value1 = stack.pop() else { return }
 				guard let value2 = stack.pop() else { return }
@@ -111,7 +111,7 @@ struct PolishNotation
 					result = value2 + value1
 					stack.push(newElement: result)
 				}
-				if item == "-" {
+				if item == "−" {
 					result = value2 - value1
 					stack.push(newElement: result)
 				}
