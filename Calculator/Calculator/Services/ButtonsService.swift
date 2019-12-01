@@ -51,9 +51,18 @@ final class ButtonsService
 	}
 
 	func percentTapped(_ view: CalculatorView) {
-		let floatCalculatingLabelText = Float(view.calculatingLabel.text ?? "") ?? 0
-		view.calculatingLabel.text = String(floatCalculatingLabelText / 100)
-		firstNumber = Double(view.calculatingLabel.text ?? "0") ?? 0.0
+		let numberFormatter = NumberFormatter()
+		numberFormatter.numberStyle = .decimal
+		if firstNumber == 0.0 {
+			let doubleCalculatingLabelText = Double(view.calculatingLabel.text ?? "") ?? 0
+			view.calculatingLabel.text = numberFormatter.string(from: doubleCalculatingLabelText / 100 as NSNumber) ?? ""
+			firstNumber = Double(view.calculatingLabel.text ?? "0") ?? 0.0
+		}
+		else {
+			let result = firstNumber / 100 * (Double(view.calculatingLabel.text ?? "") ?? 0)
+			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
+			secondNumber = Double(view.calculatingLabel.text ?? "0") ?? 0.0
+		}
 	}
 
 	func divisionTapped(_ view: CalculatorView) {
@@ -118,15 +127,21 @@ final class ButtonsService
 	}
 
 	func calculate(_ operand: String, _ view: CalculatorView) {
+		let numberFormatter = NumberFormatter()
+		numberFormatter.numberStyle = .decimal
 		switch operand {
 		case "/":
-			view.calculatingLabel.text = String(firstNumber / secondNumber)
+			let result = firstNumber / secondNumber
+			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
 		case "*":
-			view.calculatingLabel.text = String(firstNumber * secondNumber)
+			let result = firstNumber * secondNumber
+			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
 		case "-":
-			view.calculatingLabel.text = String(firstNumber - secondNumber)
+			let result = firstNumber - secondNumber
+			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
 		case "+":
-			view.calculatingLabel.text = String(firstNumber + secondNumber)
+			let result = firstNumber + secondNumber
+			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
 		default:
 			print("error")
 		}

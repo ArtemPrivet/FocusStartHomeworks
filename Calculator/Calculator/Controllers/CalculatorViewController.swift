@@ -17,9 +17,9 @@ final class CalculatorViewController: UIViewController
 		super.viewDidLoad()
 		view.backgroundColor = .black
 		view.translatesAutoresizingMaskIntoConstraints = false
-		self.view = CalculatorView(frame: self.view.frame)
-		guard let view = view as? CalculatorView else { return }
-		view.delegate = self
+		calculateView = CalculatorView(frame: self.view.frame)
+		self.view = calculateView
+		calculateView?.delegate = self
 	}
 
 	private func operandSettings(_ view: CalculatorView) {
@@ -49,7 +49,7 @@ final class CalculatorViewController: UIViewController
 extension CalculatorViewController: TappedButtonsDelegate
 {
 	func deleteNumber() {
-		guard let view = view as? CalculatorView else { return }
+		guard let view = self.calculateView else { return }
 		if view.calculatingLabel.text != "0" {
 			if view.calculatingLabel.text?.count == 1 {
 				view.calculatingLabel.text = "0"
@@ -62,7 +62,7 @@ extension CalculatorViewController: TappedButtonsDelegate
 	}
 
 	func tappedButtons(_ sender: UIButton) {
-		guard let view = view as? CalculatorView else { return }
+		guard let view = self.calculateView else { return }
 		operandSettings(view)
 		switch sender.tag {
 		case 0..<10:
