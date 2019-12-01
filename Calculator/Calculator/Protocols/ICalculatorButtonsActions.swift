@@ -8,7 +8,8 @@
 
 import Foundation
 
-protocol ICalculatorButtonsActions {
+protocol ICalculatorButtonsActions
+{
 	func allClear()
 	func clear()
 	func plusMinusSign()
