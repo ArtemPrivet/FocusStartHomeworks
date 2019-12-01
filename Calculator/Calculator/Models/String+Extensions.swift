@@ -12,24 +12,22 @@ extension String
 {
 	func format() -> String {
 		var result = ""
-		let containMinus = (self.first == "-")
-		let containComma = self.contains(",")
 
-		if containComma && containMinus {
-			result = String(self.prefix(11))
-			return result
-		}
-		else if containComma == false && containMinus {
-			result = String(self.prefix(10))
-			return result
-		}
-		else if containComma && containMinus == false {
-			result = String(self.prefix(10))
-			return result
+		guard let number = Double(self.replacingOccurrences(of: ",", with: ".")) else { return result }
+
+		let formatter = NumberFormatter()
+		formatter.usesGroupingSeparator = false
+		if self.count <= 9 || number.exponent == 0 {
+			formatter.maximumSignificantDigits = 9
+			formatter.numberStyle = .decimal
 		}
 		else {
-			result = String(self.prefix(9))
-			return result
+			formatter.numberStyle = .scientific
+			formatter.positiveFormat = "0.###E0"
+			formatter.exponentSymbol = "e"
 		}
+
+		result = formatter.string(from: NSNumber(value: number))?.replacingOccurrences(of: ".", with: ",") ?? "0"
+		return result
 	}
 }

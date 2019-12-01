@@ -43,7 +43,7 @@ struct CalculatorEngine
 			guard let resultInDouble = self.polishNotation.makeCalculationToDouble(self.polandItems) else { return nil }
 			self.polandItems.removeAll()
 			self.polandItems.append(.number(resultInDouble))
-			return resultInString
+			return resultInString.format()
 		}
 		if lastItem == "number" {
 			guard let firstOperand = self.polandItems.last else { return nil }
@@ -51,19 +51,15 @@ struct CalculatorEngine
 			guard let resultInDouble = PolishNotation().makeCalculationToDouble(items) else { return nil }
 			guard let resultInString = PolishNotation().makeCalculationToString(items) else { return nil }
 			self.polandItems.append(.number(resultInDouble))
-			print(self.polandItems)
-			return resultInString
+			return resultInString.format()
 		}
 		else {
-			let lastSign = self.polandItems[self.polandItems.count - 1]
 			let firstOperand = self.polandItems[self.polandItems.count - 2]
 			let items = [firstOperand, .sign(.multiply), item, .sign(.divide), .number(100)]
 			guard let resultInDouble = PolishNotation().makeCalculationToDouble(items) else { return nil }
 			guard let resultInString = PolishNotation().makeCalculationToString(items) else { return nil }
 			self.polandItems.append(.number(resultInDouble))
-			self.lastInputItems = [lastSign, .number(resultInDouble)]
-			print(self.polandItems)
-			return resultInString
+			return resultInString.format()
 		}
 	}
 
@@ -117,11 +113,11 @@ struct CalculatorEngine
 		}
 		guard self.polandItems.count >= 3 else { return nil }
 
-			guard let resultInString = self.polishNotation.makeCalculationToString(self.polandItems) else { return nil }
-			guard let resultInDouble = self.polishNotation.makeCalculationToDouble(self.polandItems) else { return nil }
-			self.polandItems.removeAll()
-			self.polandItems.append(.number(resultInDouble))
-			return resultInString
+		guard let resultInString = self.polishNotation.makeCalculationToString(self.polandItems) else { return nil }
+		guard let resultInDouble = self.polishNotation.makeCalculationToDouble(self.polandItems) else { return nil }
+		self.polandItems.removeAll()
+		self.polandItems.append(.number(resultInDouble))
+		return resultInString.format()
 	}
 }
 
@@ -155,14 +151,14 @@ extension CalculatorEngine
 			if self.secondLastSign() != nil {
 				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
 				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				return resultInString
+				return resultInString.format()
 			}
 		case .multiply, .divide:
 			if let secondLastSign = self.secondLastSign() {
 				if secondLastSign == "multiply" || secondLastSign == "divide" {
 					let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
 					guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-					return resultInString
+					return resultInString.format()
 				}
 			}
 		}
