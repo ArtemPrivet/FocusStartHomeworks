@@ -1,5 +1,5 @@
 //
-//  CharctersPresenter.swift
+//  Urls.swift
 //  MarvelAPI
 //
 //  Created by Kirill Fedorov on 01.12.2019.
@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+enum Urls {
+	static let baseUrl = "https://gateway.marvel.com/v1/public/"
+	static let chracterEndpoint = "characters?"
+}

@@ -31,8 +31,8 @@ extension String {
 		return digestData.map { String(format: "%02hhx", $0) }.joined()
 	}
 	
-	static func getUrlString (path: String, variant: String, extension: String) -> String {
-		return "\(path)/\(variant).\(`extension`)"
+	static func getUrlString (character: Character, variant: String) -> String {
+		return "\(character.thumbnail.path)/\(variant).\(character.thumbnail.extension)"
 	}
 }
 
