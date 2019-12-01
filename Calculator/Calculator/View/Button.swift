@@ -6,15 +6,13 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
-//swiftlint:disable all
-
 import UIKit
 
 final class Button: UIButton
 {
 	var buttonArray = [UIButton]()
-	private let symbolArray = ["0", ",", "=", "1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "×", "AC", "⁺∕₋", "%", "÷"]
-	private let count = 19
+	private let symbolArray =
+		["0", ",", "=", "1", "2", "3", "+", "4", "5", "6", "-", "7", "8", "9", "×", "AC", "⁺∕₋", "%", "÷"]
 
 	init() {
 		super.init(frame: .zero)
@@ -30,7 +28,7 @@ final class Button: UIButton
 	}
 
 	private func createArray() {
-		for _ in 1...count {
+		for _ in 1...symbolArray.count {
 			let button = UIButton()
 			button.showsTouchWhenHighlighted = true
 			buttonArray.append(button)
@@ -64,9 +62,8 @@ final class Button: UIButton
 			button.setTitle(symbol, for: .normal)
 		}
 	}
-	
+
 	func setTitleForACButton(_ title: String) {
 		buttonArray[15].setTitle(title, for: .normal)
 	}
 }
-
