@@ -20,7 +20,7 @@ final class CalculatorView: UIView
 	var buttonsLabels: [UILabel] = []
 	let resultLabel = UILabel()
 
-	weak var delegate: CalculatorViewDelegate?
+	weak var delegate: ICalculatorViewDelegate?
 
 	override init(frame: CGRect) {
 		super.init(frame: frame)

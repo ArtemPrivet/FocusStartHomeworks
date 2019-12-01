@@ -29,7 +29,7 @@ final class CalculatorViewController: UIViewController
 	}
 }
 
-extension CalculatorViewController: CalculatorViewDelegate
+extension CalculatorViewController: ICalculatorViewDelegate
 {
 	func clickedButton(_ text: String) {
 		print(text)
@@ -48,7 +48,10 @@ extension CalculatorViewController: CalculatorViewDelegate
 		default: assertionFailure("clickedButton() обрабатывает несуществующий кейс.")
 		}
 	}
+}
 
+extension CalculatorViewController: ICalculatorButtonsActions
+{
 	func allClear() {
 		self.calculatorEngine.allClearCalculation()
 		calculatorView.resultLabel.text = "0"

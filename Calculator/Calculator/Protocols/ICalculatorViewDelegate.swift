@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CalculatorViewDelegate: AnyObject
+protocol ICalculatorViewDelegate: AnyObject
 {
 	func clickedButton(_ text: String)
 }

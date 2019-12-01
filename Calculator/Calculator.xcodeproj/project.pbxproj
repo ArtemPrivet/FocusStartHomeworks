@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		720A375E239143150026EFC9 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A375D239143150026EFC9 /* CalculatorEngine.swift */; };
+		720A37952393C7DB0026EFC9 /* ICalculatorButtonsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A37942393C7DB0026EFC9 /* ICalculatorButtonsActions.swift */; };
 		726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F952383D77D000F54C4 /* CalculatorView.swift */; };
-		726A0F9B23844003000F54C4 /* CalculatorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */; };
+		726A0F9B23844003000F54C4 /* ICalculatorViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9A23844003000F54C4 /* ICalculatorViewDelegate.swift */; };
 		726A0F9D23844E9C000F54C4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9C23844E9C000F54C4 /* Stack.swift */; };
 		726A0F9F23844ECD000F54C4 /* PolishNotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F9E23844ECC000F54C4 /* PolishNotation.swift */; };
 		726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */; };
@@ -47,8 +48,9 @@
 		4D383C9B63F56ED84F2EA3E1 /* Pods_CalculatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalculatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		51A3557A67958599931DAAB0 /* Pods-Calculator.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Calculator.debug.xcconfig"; path = "Target Support Files/Pods-Calculator/Pods-Calculator.debug.xcconfig"; sourceTree = "<group>"; };
 		720A375D239143150026EFC9 /* CalculatorEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorEngine.swift; sourceTree = "<group>"; };
+		720A37942393C7DB0026EFC9 /* ICalculatorButtonsActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalculatorButtonsActions.swift; sourceTree = "<group>"; };
 		726A0F952383D77D000F54C4 /* CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorView.swift; sourceTree = "<group>"; };
-		726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorViewDelegate.swift; sourceTree = "<group>"; };
+		726A0F9A23844003000F54C4 /* ICalculatorViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ICalculatorViewDelegate.swift; sourceTree = "<group>"; };
 		726A0F9C23844E9C000F54C4 /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		726A0F9E23844ECC000F54C4 /* PolishNotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolishNotation.swift; sourceTree = "<group>"; };
 		726A0FA123857A56000F54C4 /* UIButton+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Extensions.swift"; sourceTree = "<group>"; };
@@ -129,7 +131,8 @@
 		726A0F9923843FE7000F54C4 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				726A0F9A23844003000F54C4 /* CalculatorViewDelegate.swift */,
+				726A0F9A23844003000F54C4 /* ICalculatorViewDelegate.swift */,
+				720A37942393C7DB0026EFC9 /* ICalculatorButtonsActions.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				720A37952393C7DB0026EFC9 /* ICalculatorButtonsActions.swift in Sources */,
 				726A0FAA23886BA2000F54C4 /* Item.swift in Sources */,
 				CA33EE3E237ACA1500B5D09F /* CalculatorViewController.swift in Sources */,
 				726A0FA223857A56000F54C4 /* UIButton+Extensions.swift in Sources */,
@@ -427,7 +431,7 @@
 				726A0FA423858D5E000F54C4 /* String+Extensions.swift in Sources */,
 				726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */,
 				CA33EE3A237ACA1500B5D09F /* AppDelegate.swift in Sources */,
-				726A0F9B23844003000F54C4 /* CalculatorViewDelegate.swift in Sources */,
+				726A0F9B23844003000F54C4 /* ICalculatorViewDelegate.swift in Sources */,
 				726A0FA8238846CF000F54C4 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
