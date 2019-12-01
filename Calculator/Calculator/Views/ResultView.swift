@@ -6,7 +6,6 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
-import UIKit
 import SnapKit
 
 final class ResultView: UIView
