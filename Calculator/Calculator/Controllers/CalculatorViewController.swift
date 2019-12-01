@@ -56,7 +56,6 @@ extension CalculatorViewController: ICalculatorButtonsActions
 		self.calculatorEngine.allClearCalculation()
 		calculatorView.resultLabel.text = "0"
 		self.clearLabel = false
-		print("allClear")
 	}
 
 	func clear() {
@@ -67,7 +66,6 @@ extension CalculatorViewController: ICalculatorButtonsActions
 	}
 
 	func plusMinusSign() {
-		print("plusMinusSign")
 		self.calculatorEngine.isNewValue = true
 		guard let resultLabelStartIndex = calculatorView.resultLabel.text?.startIndex else { return }
 		if calculatorView.resultLabel.text?.first != "-" {
@@ -79,24 +77,11 @@ extension CalculatorViewController: ICalculatorButtonsActions
 	}
 
 	func percent() {
-		//		guard let text = calculatorView.resultLabel.text,
-		//		let value = Double(text.replacingOccurrences(of: ",", with: "."))else { return }
-		//		if polandItems.count == 2, let firstItem = polandItems.first {
-		//			switch firstItem {
-		//			case .number(let number):
-		//				let resultValue = number * value / 100
-		//				let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-		//				calculatorView?.resultLabel.text = result.format()
-		//			default:
-		//				return
-		//			}
-		//		}
-		//		else {
-		//			let resultValue = value / 100
-		//			polandItems.append(.number(resultValue))
-		//			let result = String(resultValue).replacingOccurrences(of: ".", with: ",")
-		//			calculatorView.resultLabel.text = result
-		//		}
+		guard calculatorView.resultLabel.text != "0" else { return }
+		if let result = self.calculatorEngine.percent(input: calculatorView.resultLabel.text) {
+			self.calculatorView.resultLabel.text = result
+		}
+		self.clearLabel = true
 	}
 
 	func addAction() {

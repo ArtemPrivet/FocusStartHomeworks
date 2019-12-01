@@ -27,17 +27,44 @@ struct CalculatorEngine
 		self.isNewValue = true
 	}
 
+	//swiftlint:disable:next cyclomatic_complexity
 	mutating func percent(input: String?) -> String? {
-		if self.polandItems.count == 1 {
+		self.isNewValue = false
+		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
+		guard let number = Double(inputNotNil) else { return nil }
+		let item = Item.number(number)
+
+		guard let lastItem = self.lastItem() else {
+			self.polandItems.append(item)
+			self.polandItems.append(.sign(.divide))
+			self.polandItems.append(.number(100))
+			print(self.polandItems)
+			guard let resultInString = self.polishNotation.makeCalculationToString(self.polandItems) else { return nil }
+			guard let resultInDouble = self.polishNotation.makeCalculationToDouble(self.polandItems) else { return nil }
+			self.polandItems.removeAll()
+			self.polandItems.append(.number(resultInDouble))
+			return resultInString
+		}
+		if lastItem == "number" {
+			guard let firstOperand = self.polandItems.last else { return nil }
+			let items = [firstOperand, .sign(.divide), .number(100)]
+			guard let resultInDouble = PolishNotation().makeCalculationToDouble(items) else { return nil }
+			guard let resultInString = PolishNotation().makeCalculationToString(items) else { return nil }
+			self.polandItems.append(.number(resultInDouble))
+			print(self.polandItems)
+			return resultInString
 		}
 		else {
-			guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
-			guard let number = Double(inputNotNil) else { return nil }
-			let item = Item.number(number)
-
-			self.polandItems.append(item)
+			let lastSign = self.polandItems[self.polandItems.count - 1]
+			let firstOperand = self.polandItems[self.polandItems.count - 2]
+			let items = [firstOperand, .sign(.multiply), item, .sign(.divide), .number(100)]
+			guard let resultInDouble = PolishNotation().makeCalculationToDouble(items) else { return nil }
+			guard let resultInString = PolishNotation().makeCalculationToString(items) else { return nil }
+			self.polandItems.append(.number(resultInDouble))
+			self.lastInputItems = [lastSign, .number(resultInDouble)]
+			print(self.polandItems)
+			return resultInString
 		}
-		return nil
 	}
 
 	mutating func addAction(input: String?) -> String? {
