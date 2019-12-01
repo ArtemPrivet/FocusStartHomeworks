@@ -6,14 +6,17 @@
 //  Copyright © 2019 Kirill Fedorov. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 typealias CharactersResult = Result<CharacterDataWrapper, ServiceError>
+typealias ImageResult = Result<UIImage, ServiceError>
+
 typealias DataResult = Result<Data, ServiceError>
 
 
 protocol IMarvelApiService {
 	func loadCharacters(url: URL, _ completion: @escaping(CharactersResult) -> Void)
+	func loadCharcterImage(urlString: String, _ completion: @escaping(ImageResult) -> Void)
 }
 
 class MarvelApiService {
@@ -38,6 +41,20 @@ class MarvelApiService {
 }
 
 extension MarvelApiService: IMarvelApiService {
+	func loadCharcterImage(urlString: String, _ completion: @escaping (ImageResult) -> Void) {
+		guard let url = URL(string: urlString) else { return }
+		fetchData(from: url) { imageResult in
+			switch imageResult {
+			case .success(let data):
+				guard let image = UIImage(data: data) else { return }
+				print("success")
+				completion(.success(image))
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
+	}
+	
 	func loadCharacters( url: URL, _ completion: @escaping (CharactersResult) -> Void) {
 		fetchData(from: url) { dataResult in
 			switch dataResult {

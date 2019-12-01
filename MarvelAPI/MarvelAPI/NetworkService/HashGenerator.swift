@@ -11,7 +11,7 @@ import Foundation
 class HashGenerator {
 	
 	static func generateHash() -> String {
-		let combinedHash = "\(Constans.timestamp)\(Constans.privateKey)\(Constans.publicKey)"
+		let combinedHash = "\(Constants.timestamp)\(Constants.privateKey)\(Constants.publicKey)"
 		return combinedHash.MD5()
 	}
 }

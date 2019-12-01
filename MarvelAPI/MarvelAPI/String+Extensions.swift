@@ -30,4 +30,9 @@ extension String {
 		}
 		return digestData.map { String(format: "%02hhx", $0) }.joined()
 	}
+	
+	static func getUrlString (path: String, variant: String, extension: String) -> String {
+		return "\(path)/\(variant).\(`extension`)"
+	}
 }
+
