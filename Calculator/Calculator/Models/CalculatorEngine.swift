@@ -27,178 +27,37 @@ struct CalculatorEngine
 		self.isNewValue = true
 	}
 
-	mutating func addAction(input: String?) -> String? {
-
-		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
-		guard let number = Double(inputNotNil) else { return nil }
-		let item = Item.number(number)
-
-		if isNewValue {
-			print("NewValue")
-			self.polandItems.append(item)
-			self.isNewValue = false
-		}
-
-		self.lastInputSign = .plus
-
-		guard let lastItem = self.lastItem() else { return nil }
-
-		if lastItem == "number" {
-			print("Last item is number")
-			self.polandItems.append(.sign(.plus))
+	mutating func percent(input: String?) -> String? {
+		if self.polandItems.count == 1 {
 		}
 		else {
-			print("Last item is plus|minus|multiply|divide")
-			self.polandItems.removeLast()
-			self.polandItems.append(.sign(.plus))
-			return nil
-		}
+			guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
+			guard let number = Double(inputNotNil) else { return nil }
+			let item = Item.number(number)
 
-		if let secondLastSign = self.secondLastSign() {
-			if secondLastSign == "plus" || secondLastSign == "minus" {
-				print("Last sign was plus|minus")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
-			else {
-				print("Last sign was multiply|divide")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
+			self.polandItems.append(item)
 		}
+		return nil
+	}
 
-	return nil
+	mutating func addAction(input: String?) -> String? {
+		guard let result = self.makeAction(input: input, sign: .plus) else { return nil }
+		return result
 	}
 
 	mutating func subtractAction(input: String?) -> String? {
-		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
-		guard let number = Double(inputNotNil) else { return nil }
-		let item = Item.number(number)
-
-		if isNewValue {
-			print("NewValue")
-			self.polandItems.append(item)
-			self.isNewValue = false
-		}
-
-		self.lastInputSign = .minus
-
-		guard let lastItem = self.lastItem() else { return nil }
-
-		if lastItem == "number" {
-			print("Last item is number")
-			self.polandItems.append(.sign(.minus))
-			print(self.polandItems)
-		}
-		else {
-			print("Last item is plus|minus|multiply|divide")
-			self.polandItems.removeLast()
-			self.polandItems.append(.sign(.minus))
-			return nil
-		}
-		if let secondLastSign = self.secondLastSign() {
-			if secondLastSign == "plus" || secondLastSign == "minus" {
-				print("Last sign was plus|minus")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
-			else {
-				print("Last sign was multiply|divide")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
-		}
-		return nil
+		guard let result = self.makeAction(input: input, sign: .minus) else { return nil }
+		return result
 	}
 
 	mutating func multiplyAction(input: String?) -> String? {
-		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
-		guard let number = Double(inputNotNil) else { return nil }
-		let item = Item.number(number)
-
-		if isNewValue {
-			print("NewValue")
-			self.polandItems.append(item)
-			self.isNewValue = false
-		}
-
-		self.lastInputSign = .multiply
-
-		guard let lastItem = self.lastItem() else { return nil }
-
-		if lastItem == "number" {
-			print("Last item is number")
-			self.polandItems.append(.sign(.multiply))
-			print(self.polandItems)
-		}
-		else {
-			print("Last item is plus|minus|multiply|divide")
-			self.polandItems.removeLast()
-			self.polandItems.append(.sign(.multiply))
-			return nil
-		}
-		if let secondLastSign = self.secondLastSign() {
-			if secondLastSign == "plus" || secondLastSign == "minus" {
-				print("Last sign was plus|minus")
-			}
-			else {
-				print("Last sign was multiply|divide")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
-		}
-		return nil
+		guard let result = self.makeAction(input: input, sign: .multiply) else { return nil }
+		return result
 	}
 
 	mutating func divideAction(input: String?) -> String? {
-		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
-		guard let number = Double(inputNotNil) else { return nil }
-		let item = Item.number(number)
-
-		if isNewValue {
-			print("NewValue")
-			self.polandItems.append(item)
-			self.isNewValue = false
-		}
-
-		self.lastInputSign = .divide
-
-		guard let lastItem = self.lastItem() else { return nil }
-
-		if lastItem == "number" {
-			print("Last item is number")
-			self.polandItems.append(.sign(.divide))
-			print(self.polandItems)
-		}
-		else {
-			print("Last item is plus|minus|multiply|divide")
-			self.polandItems.removeLast()
-			self.polandItems.append(.sign(.divide))
-			return nil
-		}
-		if let secondLastSign = self.secondLastSign() {
-			if secondLastSign == "plus" || secondLastSign == "minus" {
-				print("Last sign was plus|minus")
-			}
-			else {
-				print("Last sign was multiply|divide")
-				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
-				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
-				print(resultInString)
-				return resultInString
-			}
-		}
-		return nil
+		guard let result = self.makeAction(input: input, sign: .divide) else { return nil }
+		return result
 	}
 
 	mutating func resultAction(input: String?) -> String? {
@@ -232,7 +91,6 @@ struct CalculatorEngine
 		guard self.polandItems.count >= 3 else { return nil }
 
 			guard let resultInString = self.polishNotation.makeCalculationToString(self.polandItems) else { return nil }
-			print(resultInString)
 			guard let resultInDouble = self.polishNotation.makeCalculationToDouble(self.polandItems) else { return nil }
 			self.polandItems.removeAll()
 			self.polandItems.append(.number(resultInDouble))
@@ -242,6 +100,48 @@ struct CalculatorEngine
 
 extension CalculatorEngine
 {
+	private mutating func makeAction(input: String?, sign: Sign) -> String? {
+		guard let inputNotNil = input?.replacingOccurrences(of: ",", with: ".") else { return nil }
+		guard let number = Double(inputNotNil) else { return nil }
+		let item = Item.number(number)
+
+		if isNewValue {
+			self.polandItems.append(item)
+			self.isNewValue = false
+		}
+
+		self.lastInputSign = sign
+
+		guard let lastItem = self.lastItem() else { return nil }
+
+		if lastItem == "number" {
+			self.polandItems.append(.sign(sign))
+		}
+		else {
+			self.polandItems.removeLast()
+			self.polandItems.append(.sign(sign))
+			return nil
+		}
+
+		switch sign {
+		case .plus, .minus:
+			if self.secondLastSign() != nil {
+				let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
+				guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
+				return resultInString
+			}
+		case .multiply, .divide:
+			if let secondLastSign = self.secondLastSign() {
+				if secondLastSign == "multiply" || secondLastSign == "divide" {
+					let items = Array(self.polandItems[0 ..< self.polandItems.count - 1])
+					guard let resultInString = self.polishNotation.makeCalculationToString(items) else { return nil }
+					return resultInString
+				}
+			}
+		}
+		return nil
+	}
+
 	private func lastItem() -> String? {
 		guard let lastItem = self.polandItems.last else { return nil }
 		switch lastItem {

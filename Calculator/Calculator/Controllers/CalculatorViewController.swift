@@ -68,11 +68,7 @@ extension CalculatorViewController: ICalculatorButtonsActions
 
 	func plusMinusSign() {
 		print("plusMinusSign")
-		//		if clearLabel {
-		//			calculatorView.resultLabel.text = "0"
-		//			self.clearLabel = false
-		//			self.calculatorEngine.isNewValue = true
-		//		}
+		self.calculatorEngine.isNewValue = true
 		guard let resultLabelStartIndex = calculatorView.resultLabel.text?.startIndex else { return }
 		if calculatorView.resultLabel.text?.first != "-" {
 			calculatorView.resultLabel.text?.insert("-", at: resultLabelStartIndex)
