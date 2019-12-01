@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		720A375E239143150026EFC9 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A375D239143150026EFC9 /* CalculatorEngine.swift */; };
 		720A37952393C7DB0026EFC9 /* ICalculatorButtonsActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A37942393C7DB0026EFC9 /* ICalculatorButtonsActions.swift */; };
+		720A3796239431F60026EFC9 /* CalculatorEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720A375D239143150026EFC9 /* CalculatorEngine.swift */; };
+		720A3797239433010026EFC9 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0FA323858D5E000F54C4 /* String+Extensions.swift */; };
 		726A0F9123816B7D000F54C4 /* FiraSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE59237AD45500B5D09F /* FiraSans-Regular.ttf */; };
 		726A0F92238194E3000F54C4 /* FiraSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA33EE5B237AD45500B5D09F /* FiraSans-Light.ttf */; };
 		726A0F962383D77D000F54C4 /* CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726A0F952383D77D000F54C4 /* CalculatorView.swift */; };
@@ -441,10 +443,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				726A0FAD23887B74000F54C4 /* PolishNotation.swift in Sources */,
+				720A3797239433010026EFC9 /* String+Extensions.swift in Sources */,
 				726A0FB023887D22000F54C4 /* Stack.swift in Sources */,
 				726A0FAE23887B7F000F54C4 /* Item.swift in Sources */,
 				726A0FAF23887B82000F54C4 /* Sign.swift in Sources */,
 				CA33EE76237EF41600B5D09F /* CalculatorTests.swift in Sources */,
+				720A3796239431F60026EFC9 /* CalculatorEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
