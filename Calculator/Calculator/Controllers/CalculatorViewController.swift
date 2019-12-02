@@ -6,6 +6,7 @@
 //  Copyright © 2019 Artem Orlov. All rights reserved.
 //
 
+import UIKit
 import SnapKit
 
 final class CalculatorViewController: UIViewController
@@ -49,7 +50,7 @@ final class CalculatorViewController: UIViewController
 
 	private lazy var buttons: [[ButtonView?]] = {
 		self.types.map { rowOfType in
-			rowOfType.map { type in
+			rowOfType.map { type -> ButtonView? in
 				if case .other(let symbol, _) = type, symbol == clearType.rawValue {
 					return clearButtonView
 				}

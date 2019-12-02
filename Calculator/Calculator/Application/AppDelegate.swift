@@ -18,6 +18,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 		window = UIWindow(frame: UIScreen.main.bounds)
 		window?.rootViewController = CalculatorViewController()
 		window?.makeKeyAndVisible()
+		//guard let _ = (scene as? UIWindowScene) else { return }
 
 		return true
 	}

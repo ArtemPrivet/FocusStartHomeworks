@@ -121,8 +121,8 @@ struct CalculatorEngine
 			do {
 				accumulator = try evaluateUsingPostfixNotation(infixArray)
 			}
-			catch let error as CalculateError {
-				completion?(.failure(.error(message: error.localizedDescription)))
+			catch CalculateError.error(message: let message) {
+				completion?(.failure(.error(message: message)))
 				return
 			}
 			catch {
