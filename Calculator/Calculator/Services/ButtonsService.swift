@@ -13,6 +13,8 @@ final class ButtonsService
 {
 	var firstNumber = 0.0
 	var secondNumber = 0.0
+	var thirdNumber = 0.0
+	var firstOperand = ""
 	var divisionButtonTapped = false
 	var divisionButtonTappedCount = 0
 	var multipleButtonTapped = false
@@ -39,9 +41,13 @@ final class ButtonsService
 		multipleButtonTappedCount = 0
 		plusButtonTappedCount = 0
 		minusButtonTappedCount = 0
+		thirdNumber = 0.0
 	}
 
 	func oppositeSignTapped(_ view: CalculatorView) {
+		if firstNumber != 0.0 {
+			firstNumber *= -1
+		}
 		if (view.calculatingLabel.text ?? "").first != "-" {
 			view.calculatingLabel.text = "-" + (view.calculatingLabel.text ?? "")
 		}
@@ -74,10 +80,12 @@ final class ButtonsService
 		else if firstNumber == 0.0 {
 			firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
-		else if firstNumber != 0 && secondNumber != 0 {
+		else if secondNumber == 0.0 {
+			thirdNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
+		}
+		else if firstNumber != 0.0 && secondNumber != 0.0 {
 			firstNumber /= secondNumber
 			secondNumber = 0.0
-			print("firstNNum", firstNumber)
 		}
 	}
 
@@ -85,48 +93,53 @@ final class ButtonsService
 		multipleButtonTapped = true
 		multipleButtonTappedCount += 1
 		if multipleButtonTappedCount > 1 {
-			firstNumber /= Double(view.calculatingLabel.text ?? "") ?? 0.0
+			firstNumber *= Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
 		else if firstNumber == 0.0 {
 			firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
+		else if secondNumber == 0.0 {
+			thirdNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
+		}
 		else if firstNumber != 0 && secondNumber != 0 {
-			firstNumber /= secondNumber
+			firstNumber *= secondNumber
 			secondNumber = 0.0
 		}
 	}
 
 	func minusTapped(_ view: CalculatorView) {
+		firstOperand = "-"
 		minusButtonTapped = true
 		minusButtonTappedCount += 1
 		if minusButtonTappedCount > 1 {
-			firstNumber /= Double(view.calculatingLabel.text ?? "") ?? 0.0
+			firstNumber -= Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
 		else if firstNumber == 0.0 {
 			firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
 		else if firstNumber != 0 && secondNumber != 0 {
-			firstNumber /= secondNumber
+			firstNumber -= secondNumber
 			secondNumber = 0.0
 		}
 	}
 
 	func plusTapped(_ view: CalculatorView) {
+		firstOperand = "+"
 		plusButtonTapped = true
 		plusButtonTappedCount += 1
 		if plusButtonTappedCount > 1 {
-			firstNumber /= Double(view.calculatingLabel.text ?? "") ?? 0.0
+			firstNumber += Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
 		else if firstNumber == 0.0 {
 			firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
 		}
 		else if firstNumber != 0 && secondNumber != 0 {
-			firstNumber /= secondNumber
+			firstNumber += secondNumber
 			secondNumber = 0.0
 		}
 	}
 
-	func calculate(_ operand: String, _ view: CalculatorView) {
+	func calculate(_ operand: String, _ view: CalculatorView, _ firstNumber: Double, _ secondNumber: Double) {
 		let numberFormatter = NumberFormatter()
 		numberFormatter.numberStyle = .decimal
 		switch operand {
@@ -143,10 +156,16 @@ final class ButtonsService
 			let result = firstNumber + secondNumber
 			view.calculatingLabel.text = numberFormatter.string(from: result as NSNumber) ?? ""
 		default:
-			print("error")
+			break
 		}
-		firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
-		secondNumber = 0.0
+		if self.thirdNumber != 0.0 {
+			self.thirdNumber = 0.0
+			self.secondNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
+		}
+		else {
+			self.firstNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
+			self.secondNumber = 0.0
+		}
 	}
 
 	func equallyTapped(_ view: CalculatorView, _ operand: String) {
@@ -154,12 +173,17 @@ final class ButtonsService
 		multipleButtonTappedCount = 0
 		plusButtonTappedCount = 0
 		minusButtonTappedCount = 0
-		if firstNumber != 0.0 && secondNumber != 0.0 {
-			calculate(operand, view)
+		if firstNumber != 0.0 && secondNumber != 0.0 && thirdNumber == 0.0 {
+			calculate(operand, view, firstNumber, secondNumber)
 		}
-		else if secondNumber == 0.0 {
+		else if secondNumber == 0.0 && thirdNumber == 0.0 {
 			secondNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
-			calculate(operand, view)
+			calculate(operand, view, firstNumber, secondNumber)
+		}
+		else if thirdNumber != 0.0 {
+			secondNumber = Double(view.calculatingLabel.text ?? "") ?? 0.0
+			calculate(operand, view, thirdNumber, secondNumber)
+			equallyTapped(view, firstOperand)
 		}
 	}
 

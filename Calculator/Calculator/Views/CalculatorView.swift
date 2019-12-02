@@ -29,7 +29,8 @@ final class CalculatorView: UIView
 		calculatingLabel.text = "0"
 		calculatingLabel.textColor = .white
 		calculatingLabel.textAlignment = .right
-		calculatingLabel.font = UIFont(name: "FiraSans-Light", size: 94)
+		calculatingLabel
+			.font = UIFont(name: "FiraSans-Light", size: 94)
 		return calculatingLabel
 	}()
 	weak var delegate: TappedButtonsDelegate?
