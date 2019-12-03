@@ -21,8 +21,8 @@ class CharactersPresenter {
 	weak var charactersView: CharactersViewController?
 	var repository: Repository
 	var router: ICharactersRouter
-	private let dispatchGroup = DispatchGroup()
-	
+	let serialQueue = DispatchQueue(label: "loadCharactersQueue")
+
 	private var characters: [Character] = []
 	private var charactersImage: [UIImage] = []
 
@@ -49,45 +49,46 @@ extension CharactersPresenter: ICharacterPresenter {
 	
 	
 	func setupView() {
-		print("setupView")
-		dispatchGroup.enter()
-		repository.loadCharacters { [weak self] charactersResult in
+		serialQueue.async { [weak self] in
 			guard let self = self else { return }
-			switch charactersResult {
-			case .success(let loadedData):
-				self.characters = loadedData.data.results
-				DispatchQueue.main.async {
-					self.charactersView?.updateData()
+			self.repository.loadCharacters { [weak self] charactersResult in
+				guard let self = self else { return }
+				switch charactersResult {
+				case .success(let loadedData):
+					self.characters = loadedData.data.results
+					DispatchQueue.main.async {
+						self.charactersView?.updateData()
+					}
+				case .failure(let error):
+					print(error.localizedDescription)
 				}
-			case .failure(let error):
-				print(error.localizedDescription)
 			}
-			self.dispatchGroup.leave()
 		}
 	}
 	
 	func getCharacterImage(index: Int) -> UIImage {
-		dispatchGroup.enter()
 		var resultImage = UIImage()
-		let character = characters[index]
-		repository.loadCharcterImage(urlString:
-			String.getUrlString(character: character, variant: ThumbnailVarians.standardMedium))
-		{ imageResult in
-			switch imageResult {
-			case .success(let image):
-				DispatchQueue.main.async {
-					guard let cell = self.charactersView?.tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
-					cell.imageView?.image = image
-					cell.layoutSubviews()
-					cell.imageView?.clipsToBounds = true
-					guard let imageView = cell.imageView else { return }
-					cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
+		serialQueue.async { [weak self] in
+			guard let self = self else { return }
+			let character = self.characters[index]
+			self.repository.loadImage(urlString:
+				String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardMedium))
+			{ imageResult in
+				switch imageResult {
+				case .success(let image):
+					DispatchQueue.main.async {
+						guard let cell = self.charactersView?.tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+						cell.imageView?.image = image
+						cell.layoutSubviews()
+						cell.imageView?.clipsToBounds = true
+						guard let imageView = cell.imageView else { return }
+						cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
+					}
+					resultImage = image
+				case .failure(let error):
+					print(error.localizedDescription)
 				}
-				resultImage = image
-			case .failure(let error):
-				print(error.localizedDescription)
 			}
-			self.dispatchGroup.leave()
 		}
 		return resultImage
 	}

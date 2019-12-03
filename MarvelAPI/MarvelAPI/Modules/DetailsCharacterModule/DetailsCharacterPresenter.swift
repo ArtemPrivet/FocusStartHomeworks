@@ -13,7 +13,7 @@ protocol IDetailsCharacterPresenter {
 	func getComicsCount() -> Int
 	func getComics(index: Int) -> Comic
 	func getComicsImage(index: Int) -> UIImage
-//	func showDetailCharacter(index: Int)
+	//	func showDetailCharacter(index: Int)
 	func setupView()
 }
 
@@ -22,7 +22,9 @@ class DetailsCharacterPresenter {
 	var character: Character
 	var repository: Repository
 	var comicses: [Comic] = []
-
+	let serialQueue = DispatchQueue(label: "loadComicsQueue")
+	
+	
 	init(character: Character, repository: Repository) {
 		self.character = character
 		self.repository = repository
@@ -50,7 +52,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 			case .success(let loadedData):
 				self.comicses = loadedData.data.results
 				DispatchQueue.main.async {
-					self.detailsView?.comicsTableView.reloadData()
+					self.detailsView?.updateData()
 				}
 			case .failure(let error):
 				print(error.localizedDescription)
@@ -59,7 +61,27 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 	}
 	
 	func getComicsImage(index: Int) -> UIImage {
-		return UIImage()
+		var resultImage = UIImage()
+		serialQueue.async { [weak self] in
+			guard let self = self else { return }
+			let comics = self.comicses[index]
+			self.repository.loadImage(urlString:
+				String.getUrlString(image: comics.thumbnail, variant: ThumbnailVarians.standardMedium))
+			{ imageResult in
+				switch imageResult {
+				case .success(let image):
+					DispatchQueue.main.async {
+						guard let cell = self.detailsView?.comicsTableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+						cell.imageView?.image = image
+						cell.layoutSubviews()
+					}
+					resultImage = image
+				case .failure(let error):
+					print(error.localizedDescription)
+				}
+			}
+		}
+		return resultImage
 	}
 	
 	func getCharacter() -> Character {

@@ -17,17 +17,6 @@ typealias DataResult = Result<Data, ServiceError>
 class Repository {
 	private let decoder = JSONDecoder()
 	
-	private func getCharactersRequest() -> URL? {
-		var components = URLComponents(string: Urls.baseUrl + Urls.chracterEndpoint)
-		components?.queryItems = [
-			URLQueryItem(name: "ts", value: Constants.timestamp),
-			URLQueryItem(name: "limit", value: "100"),
-			URLQueryItem(name: "orderBy", value: "name"),
-			URLQueryItem(name: "apikey", value: Constants.publicKey),
-			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
-		]
-		return components?.url
-	}
 	
 	private func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void) {
 		let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -46,6 +35,19 @@ class Repository {
 		task.resume()
 	}
 	
+	//load characters
+	private func getCharactersRequest() -> URL? {
+		var components = URLComponents(string: Urls.baseUrl + Urls.chracterEndpoint)
+		components?.queryItems = [
+			URLQueryItem(name: "ts", value: Constants.timestamp),
+			URLQueryItem(name: "limit", value: "100"),
+			URLQueryItem(name: "orderBy", value: "name"),
+			URLQueryItem(name: "apikey", value: Constants.publicKey),
+			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
+		]
+		return components?.url
+	}
+
 	func loadCharacters(_ completion: @escaping (CharactersResult) -> Void) {
 		guard let url = getCharactersRequest() else { return }
 		fetchData(from: url) { dataResult in
@@ -66,13 +68,12 @@ class Repository {
 		}
 	}
 	
-	func loadCharcterImage(urlString: String, _ completion: @escaping (ImageResult) -> Void) {
+	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void) {
 		guard let url = URL(string: urlString) else { return }
 		fetchData(from: url) { imageResult in
 			switch imageResult {
 			case .success(let data):
 				guard let image = UIImage(data: data) else { return }
-				print("ЗАГРУЗИЛАСЬ")
 				completion(.success(image))
 			case .failure(let error):
 				completion(.failure(error))
@@ -85,12 +86,9 @@ class Repository {
 		var components = URLComponents(string: "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(characterId)/\(Urls.chracterComicsEndpoint)")
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
-//			URLQueryItem(name: "limit", value: "100"),
-//			URLQueryItem(name: "characterId", value: characterId),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
-		print(components?.url)
 		return components?.url
 	}
 	

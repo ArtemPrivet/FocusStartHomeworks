@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol IDetailsCharacterViewController: class {
+	func updateData()
+}
+
 class DetailsCharacterViewController: UIViewController {
 
 	var titleLabel = UILabel()
@@ -87,6 +91,12 @@ class DetailsCharacterViewController: UIViewController {
 	}
 }
 
+extension DetailsCharacterViewController: IDetailsCharacterViewController {
+	func updateData() {
+		self.comicsTableView.reloadData()
+	}
+}
+
 extension DetailsCharacterViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return presenter.getComicsCount()
@@ -95,6 +105,7 @@ extension DetailsCharacterViewController: UITableViewDataSource, UITableViewDele
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = comicsTableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .default, reuseIdentifier: "comicsCell")
 		cell.textLabel?.text = presenter.getComics(index: indexPath.row).title
+		cell.imageView?.image = presenter.getComicsImage(index: indexPath.row)
 		return cell
 	}
 	
