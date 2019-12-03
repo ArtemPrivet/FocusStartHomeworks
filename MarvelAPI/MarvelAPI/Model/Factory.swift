@@ -20,8 +20,10 @@ class Factory {
 	}
 	
 	func createDetailsVC(chracter: Character) -> DetailsCharacterViewController {
-		let detailsPresenter = DetailsCharacterPresenter(character: chracter)
+		let repository = Repository()
+		let detailsPresenter = DetailsCharacterPresenter(character: chracter, repository: repository)
 		let detailsVC = DetailsCharacterViewController(presenter: detailsPresenter)
+		detailsPresenter.detailsView = detailsVC
 		return detailsVC
 	}
 }

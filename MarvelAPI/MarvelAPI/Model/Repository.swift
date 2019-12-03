@@ -10,6 +10,7 @@ import UIKit
 
 typealias CharactersResult = Result<CharacterDataWrapper, ServiceError>
 typealias ImageResult = Result<UIImage, ServiceError>
+typealias ComicsResult = Result<ComicDataWrapper, ServiceError>
 
 typealias DataResult = Result<Data, ServiceError>
 
@@ -20,7 +21,8 @@ class Repository {
 		var components = URLComponents(string: Urls.baseUrl + Urls.chracterEndpoint)
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
-			URLQueryItem(name: "limit", value: "10"),
+			URLQueryItem(name: "limit", value: "100"),
+			URLQueryItem(name: "orderBy", value: "name"),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
@@ -77,4 +79,38 @@ class Repository {
 			}
 		}
 	}
+	
+	//load comics
+	private func getCharacterComicsRequest(characterId: String) -> URL? { //\(characterId)/
+		var components = URLComponents(string: "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(characterId)/\(Urls.chracterComicsEndpoint)")
+		components?.queryItems = [
+			URLQueryItem(name: "ts", value: Constants.timestamp),
+//			URLQueryItem(name: "limit", value: "100"),
+//			URLQueryItem(name: "characterId", value: characterId),
+			URLQueryItem(name: "apikey", value: Constants.publicKey),
+			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
+		]
+		print(components?.url)
+		return components?.url
+	}
+	
+	func loadComics(characterId: Int, _ completion: @escaping (ComicsResult) -> Void) {
+		guard let url = getCharacterComicsRequest(characterId: String(characterId)) else { return }
+		fetchData(from: url) { comicsResult in
+			switch comicsResult {
+			case .success(let data):
+				do {
+					let comic = try self.decoder.decode(ComicDataWrapper.self, from: data)
+					completion(.success(comic))
+					print("LOADED COMICS")
+				} catch {
+					completion(.failure(ServiceError.dataError(error)))
+					return
+				}
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
+	}
+
 }

@@ -18,7 +18,7 @@ protocol ICharacterPresenter {
 
 class CharactersPresenter {
 	
-	weak var charactersView: ICharactersViewController?
+	weak var charactersView: CharactersViewController?
 	var repository: Repository
 	var router: ICharactersRouter
 	private let dispatchGroup = DispatchGroup()
@@ -71,10 +71,18 @@ extension CharactersPresenter: ICharacterPresenter {
 		var resultImage = UIImage()
 		let character = characters[index]
 		repository.loadCharcterImage(urlString:
-			String.getUrlString(character: character, variant: ThumbnailVarians.landspaceSmall))
+			String.getUrlString(character: character, variant: ThumbnailVarians.standardMedium))
 		{ imageResult in
 			switch imageResult {
 			case .success(let image):
+				DispatchQueue.main.async {
+					guard let cell = self.charactersView?.tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+					cell.imageView?.image = image
+					cell.layoutSubviews()
+					cell.imageView?.clipsToBounds = true
+					guard let imageView = cell.imageView else { return }
+					cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
+				}
 				resultImage = image
 			case .failure(let error):
 				print(error.localizedDescription)

@@ -45,13 +45,9 @@ class CharactersViewController: UIViewController {
 	}
 	
 	private func setupConstraints() {
-//		searchBar.translatesAutoresizingMaskIntoConstraints = false
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
-//			searchBar.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-//			searchBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-//			searchBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			
 			tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -65,6 +61,7 @@ class CharactersViewController: UIViewController {
 		let searchController = UISearchController(searchResultsController: nil)
 		navigationItem.searchController = searchController
 		title = "🦸‍♂️Heroes"
+		tabBarItem = UITabBarItem(title: "Heroes", image: #imageLiteral(resourceName: "shield"), tag: 1)
 	}
 }
 
@@ -84,14 +81,13 @@ extension CharactersViewController: UITableViewDataSource, UITableViewDelegate {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
 		
 		let character = presenter.getCharacter(index: indexPath.row)
-		
+		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = character.name
 		cell.detailTextLabel?.textColor = .gray
 		
 		cell.detailTextLabel?.text = character.description == "" ? "No info" : character.description
-		
 		cell.imageView?.image = presenter.getCharacterImage(index: indexPath.row)
-		
+
 		return cell
 	}
 	

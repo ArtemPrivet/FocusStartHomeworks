@@ -10,5 +10,6 @@ import Foundation
 
 enum Urls {
 	static let baseUrl = "https://gateway.marvel.com/v1/public/"
-	static let chracterEndpoint = "characters?"
+	static let chracterEndpoint = "characters"
+	static let chracterComicsEndpoint = "comics"
 }
