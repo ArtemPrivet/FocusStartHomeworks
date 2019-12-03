@@ -13,12 +13,12 @@ protocol IDetailsCharacterViewController: class {
 }
 
 class DetailsCharacterViewController: UIViewController {
-
+	
 	var titleLabel = UILabel()
 	var descriptionLabel = UILabel()
 	var comicsTableView = UITableView()
 	var backgroundImageView = ImageViewWithGradient(frame: .zero)
-
+	
 	var presenter: IDetailsCharacterPresenter
 	
 	init(presenter: IDetailsCharacterPresenter) {
@@ -31,7 +31,7 @@ class DetailsCharacterViewController: UIViewController {
 		self.view.backgroundColor = .white
 		comicsTableView.dataSource = self
 		comicsTableView.delegate = self
-
+		
 		setupViews()
 		setupConstraints()
 		setupNavigationBar()
@@ -59,14 +59,14 @@ class DetailsCharacterViewController: UIViewController {
 		print(backgroundImageView.bounds)
 		
 		backgroundImageView.contentMode = .scaleAspectFill
-
-
+		
+		
 		let selectedCharacter = presenter.getCharacter()
 		
 		titleLabel.text = selectedCharacter.name
 		titleLabel.numberOfLines = 0
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
-
+		
 		descriptionLabel.text = selectedCharacter.description == "" ? "No info" : selectedCharacter.description
 		descriptionLabel.numberOfLines = 0
 		descriptionLabel.textAlignment = .justified
@@ -85,7 +85,7 @@ class DetailsCharacterViewController: UIViewController {
 			backgroundImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			backgroundImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			backgroundImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor,multiplier: 1 / 2),
-
+			
 			titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			titleLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
 			titleLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
@@ -115,11 +115,10 @@ extension DetailsCharacterViewController: UITableViewDataSource, UITableViewDele
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = comicsTableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .default, reuseIdentifier: "comicsCell")
+		cell.imageView?.image = #imageLiteral(resourceName: "standard_medium_wait_image")
+		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = presenter.getComics(index: indexPath.row).title
-		cell.imageView?.image = presenter.getComicsImage(index: indexPath.row)
+		presenter.getComicsImage(index: indexPath.row)
 		return cell
 	}
-	
-
-	
 }

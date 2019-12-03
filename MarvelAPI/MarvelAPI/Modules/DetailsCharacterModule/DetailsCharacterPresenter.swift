@@ -12,9 +12,9 @@ protocol IDetailsCharacterPresenter {
 	func getCharacter() -> Character
 	func getComicsCount() -> Int
 	func getComics(index: Int) -> Comic
-	func getComicsImage(index: Int) -> UIImage
+	func getComicsImage(index: Int)
 	func setupView()
-	func setupBackgroungImage() -> UIImage
+	func setupBackgroungImage()
 }
 
 class DetailsCharacterPresenter {
@@ -37,21 +37,19 @@ class DetailsCharacterPresenter {
 }
 
 extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
-	func setupBackgroungImage() -> UIImage {
-			self.repository.loadImage(urlString:
-				String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
-			{ imageResult in
-				switch imageResult {
-				case .success(let image):
-					DispatchQueue.main.async {
-						self.detailsView?.backgroundImageView.image = image
-//						self.detailsView?.view.layoutSubviews()
-					}
-				case .failure(let error):
-					print(error.localizedDescription)
+	func setupBackgroungImage() {
+		self.repository.loadImage(urlString:
+			String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
+		{ imageResult in
+			switch imageResult {
+			case .success(let image):
+				DispatchQueue.main.async {
+					self.detailsView?.backgroundImageView.image = image
 				}
+			case .failure(let error):
+				print(error.localizedDescription)
 			}
-		return UIImage()
+		}
 	}
 	
 	func getComicsCount() -> Int {
@@ -78,8 +76,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 		})
 	}
 	
-	func getComicsImage(index: Int) -> UIImage {
-		var resultImage = UIImage()
+	func getComicsImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]
@@ -93,13 +90,11 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 						cell.imageView?.image = image
 						cell.layoutSubviews()
 					}
-					resultImage = image
 				case .failure(let error):
 					print(error.localizedDescription)
 				}
 			}
 		}
-		return resultImage
 	}
 	
 	func getCharacter() -> Character {

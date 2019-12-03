@@ -11,7 +11,7 @@ import UIKit
 protocol ICharacterPresenter {
 	func getCharactersCount() -> Int
 	func getCharacter(index: Int) -> Character
-	func getCharacterImage(index: Int) -> UIImage
+	func getCharacterImage(index: Int)
 	func showDetailCharacter(index: Int)
 	func setupView()
 }
@@ -66,8 +66,7 @@ extension CharactersPresenter: ICharacterPresenter {
 		}
 	}
 	
-	func getCharacterImage(index: Int) -> UIImage {
-		var resultImage = UIImage()
+	func getCharacterImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
 			let character = self.characters[index]
@@ -84,12 +83,10 @@ extension CharactersPresenter: ICharacterPresenter {
 						guard let imageView = cell.imageView else { return }
 						cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
 					}
-					resultImage = image
 				case .failure(let error):
 					print(error.localizedDescription)
 				}
 			}
 		}
-		return resultImage
 	}
 }

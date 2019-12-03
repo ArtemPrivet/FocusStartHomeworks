@@ -14,6 +14,18 @@ protocol ICharactersViewController: class {
 
 class CharactersViewController: UIViewController {
 	
+	let refreshControl: UIRefreshControl = {
+		let refreshControl = UIRefreshControl()
+		refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+		return refreshControl
+	}()
+	
+	@objc private func refresh(sender: UIRefreshControl) {
+		presenter.setupView()
+		self.updateData()
+		sender.endRefreshing()
+	}
+	
 	//UI Elements
 	let searchBar = UISearchBar()
 	let tableView = UITableView()
@@ -37,6 +49,7 @@ class CharactersViewController: UIViewController {
 		setupConstraints()
 		setupNavigationBar()
 		self.view.backgroundColor = .white
+		tableView.refreshControl = refreshControl
     }
 	
 	private func setupSubViews() {
@@ -79,14 +92,14 @@ extension CharactersViewController: UITableViewDataSource, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-		
+		cell.imageView?.image = #imageLiteral(resourceName: "standard_medium_wait_image")
 		let character = presenter.getCharacter(index: indexPath.row)
 		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = character.name
 		cell.detailTextLabel?.textColor = .gray
 		
 		cell.detailTextLabel?.text = character.description == "" ? "No info" : character.description
-		cell.imageView?.image = presenter.getCharacterImage(index: indexPath.row)
+		presenter.getCharacterImage(index: indexPath.row)
 
 		return cell
 	}
