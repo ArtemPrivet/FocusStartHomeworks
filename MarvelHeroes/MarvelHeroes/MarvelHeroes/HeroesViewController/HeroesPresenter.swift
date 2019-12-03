@@ -39,11 +39,12 @@ final class HeroesPresenter: IHeroesPresenter
 		}
 	}
 	func getCharacterImage(for characterImage: CharacterImage, by indexPath: IndexPath) {
-		repository.getCharacterImage(for: characterImage) { characters in
+		repository.loadCharacterImage(for: characterImage) { characters in
 			switch characters {
 			case .success(let result):
 				DispatchQueue.main.async {
 					self.view?.tableView.cellForRow(at: indexPath)?.imageView?.image = result
+
 				}
 			case .failure(let message):
 				print(message)

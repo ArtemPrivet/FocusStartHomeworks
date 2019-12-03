@@ -50,6 +50,9 @@ extension HeroesViewController: UITableViewDataSource {
 		presenter?.getCharacterImage(for: character.thumbnail, by: indexPath)
 		return cell
 	}
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		presenter?.getCharacterImage(for: characters[indexPath.row].thumbnail, by: indexPath)
+    }
 
 
 }

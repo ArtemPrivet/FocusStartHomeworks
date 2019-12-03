@@ -12,6 +12,6 @@ import UIKit
 struct StructTableViewModel
 {
 	let name: String
-	let discription: String
+	let description: String
 	let image: UIImage
 }

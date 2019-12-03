@@ -21,6 +21,11 @@ enum ServiceError: Error {
 	case noHTTPResponse
 	case convertionImageError
 }
+enum ImageSize
+{
+	static let medium = "/standard_medium"
+	static let large = "/standard_large"
+}
 
 protocol IRemoteDataService{
 	func loadCharacters(_ completion: @escaping (CharacterResult)-> Void)
@@ -100,7 +105,7 @@ extension RemoteDataService: IRemoteDataService {
 	}
 	func loadCharacterImage(for characterImage: CharacterImage,
 							_ completion: @escaping (CharacterImageResult)-> Void) {
-		let urlString = characterImage.path + "." + characterImage.imageExtension
+		let urlString = characterImage.path + ImageSize.large + "." + characterImage.imageExtension
 		guard let url = URL(string: urlString) else { return }
 		fetchData(from: url) { result in
 			switch result {

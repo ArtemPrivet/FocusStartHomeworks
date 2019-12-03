@@ -9,7 +9,7 @@
 import Foundation
 protocol IRepository {
 	func getCharacters(_ completion: @escaping (CharacterResult)-> Void)
-	func getCharacterImage(for characterImage: CharacterImage, _ completion: @escaping (CharacterImageResult)-> Void)
+	func loadCharacterImage(for characterImage: CharacterImage, _ completion: @escaping (CharacterImageResult)-> Void)
 }
 final class Repository: IRepository
 {
@@ -32,7 +32,7 @@ final class Repository: IRepository
 			}
 		}
 	}
-	func getCharacterImage(for characterImage: CharacterImage, _ completion: @escaping (CharacterImageResult)-> Void) {
+	func loadCharacterImage(for characterImage: CharacterImage, _ completion: @escaping (CharacterImageResult)-> Void) {
 		remoteDataService.loadCharacterImage(for: characterImage) { result in
 			switch result {
 			case .success(let result):
