@@ -17,7 +17,8 @@ class DetailsCharacterViewController: UIViewController {
 	var titleLabel = UILabel()
 	var descriptionLabel = UILabel()
 	var comicsTableView = UITableView()
-	
+	var backgroundImageView = ImageViewWithGradient(frame: .zero)
+
 	var presenter: IDetailsCharacterPresenter
 	
 	init(presenter: IDetailsCharacterPresenter) {
@@ -46,13 +47,19 @@ class DetailsCharacterViewController: UIViewController {
 	}
 	
 	private func setupNavigationBar() {
-		self.navigationController?.navigationBar.backgroundColor = .green
-
+		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+		self.navigationController?.navigationBar.shadowImage = UIImage()
 	}
+	
 	private func setupViews() {
+		self.view.addSubview(backgroundImageView)
 		self.view.addSubview(titleLabel)
 		self.view.addSubview(descriptionLabel)
 		self.view.addSubview(comicsTableView)
+		print(backgroundImageView.bounds)
+		
+		backgroundImageView.contentMode = .scaleAspectFill
+
 
 		let selectedCharacter = presenter.getCharacter()
 		
@@ -63,18 +70,22 @@ class DetailsCharacterViewController: UIViewController {
 		descriptionLabel.text = selectedCharacter.description == "" ? "No info" : selectedCharacter.description
 		descriptionLabel.numberOfLines = 0
 		descriptionLabel.textAlignment = .justified
-		descriptionLabel.backgroundColor = .green
-		
-		self.view.backgroundColor = .yellow
+		descriptionLabel.backgroundColor = UIColor.white.withAlphaComponent(0.0)
 	}
 	
 	private func setupConstraints() {
+		backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		comicsTableView.translatesAutoresizingMaskIntoConstraints = false
 		
 		
 		NSLayoutConstraint.activate([
+			backgroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
+			backgroundImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			backgroundImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			backgroundImageView.heightAnchor.constraint(equalTo: self.view.heightAnchor,multiplier: 1 / 2),
+
 			titleLabel.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			titleLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
 			titleLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
@@ -83,9 +94,9 @@ class DetailsCharacterViewController: UIViewController {
 			descriptionLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
 			descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
 			
-			comicsTableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 16),
-			comicsTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-			comicsTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+			comicsTableView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor),
+			comicsTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+			comicsTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
 			comicsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
 			])
 	}
@@ -109,5 +120,6 @@ extension DetailsCharacterViewController: UITableViewDataSource, UITableViewDele
 		return cell
 	}
 	
+
 	
 }

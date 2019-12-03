@@ -13,8 +13,8 @@ protocol IDetailsCharacterPresenter {
 	func getComicsCount() -> Int
 	func getComics(index: Int) -> Comic
 	func getComicsImage(index: Int) -> UIImage
-	//	func showDetailCharacter(index: Int)
 	func setupView()
+	func setupBackgroungImage() -> UIImage
 }
 
 class DetailsCharacterPresenter {
@@ -29,6 +29,7 @@ class DetailsCharacterPresenter {
 		self.character = character
 		self.repository = repository
 		setupView()
+		setupBackgroungImage()
 	}
 	deinit {
 		print("DetailsPresenter deinit")
@@ -36,6 +37,23 @@ class DetailsCharacterPresenter {
 }
 
 extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
+	func setupBackgroungImage() -> UIImage {
+			self.repository.loadImage(urlString:
+				String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
+			{ imageResult in
+				switch imageResult {
+				case .success(let image):
+					DispatchQueue.main.async {
+						self.detailsView?.backgroundImageView.image = image
+//						self.detailsView?.view.layoutSubviews()
+					}
+				case .failure(let error):
+					print(error.localizedDescription)
+				}
+			}
+		return UIImage()
+	}
+	
 	func getComicsCount() -> Int {
 		return comicses.count
 	}
