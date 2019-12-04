@@ -13,7 +13,7 @@ protocol ICharacterPresenter {
 	func getCharacter(index: Int) -> Character
 	func getCharacterImage(index: Int)
 	func showDetailCharacter(index: Int)
-	func setupView()
+	func setupView(with search: String?)
 }
 
 class CharactersPresenter {
@@ -29,7 +29,7 @@ class CharactersPresenter {
 	init(repository: Repository, router: ICharactersRouter) {
 		self.repository = repository
 		self.router = router
-		setupView()
+		setupView(with: nil)
 	}
 }
 
@@ -48,10 +48,10 @@ extension CharactersPresenter: ICharacterPresenter {
 	}
 	
 	
-	func setupView() {
+	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadCharacters { [weak self] charactersResult in
+			self.repository.loadCharacters(with: search, { [weak self] charactersResult in
 				guard let self = self else { return }
 				switch charactersResult {
 				case .success(let loadedData):
@@ -62,7 +62,7 @@ extension CharactersPresenter: ICharacterPresenter {
 				case .failure(let error):
 					print(error.localizedDescription)
 				}
-			}
+			})
 		}
 	}
 	

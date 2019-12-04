@@ -95,8 +95,8 @@ class DetailsCharacterViewController: UIViewController {
 			descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
 			
 			comicsTableView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor),
-			comicsTableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-			comicsTableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+			comicsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			comicsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			comicsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
 			])
 	}
@@ -120,5 +120,9 @@ extension DetailsCharacterViewController: UITableViewDataSource, UITableViewDele
 		cell.textLabel?.text = presenter.getComics(index: indexPath.row).title
 		presenter.getComicsImage(index: indexPath.row)
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }

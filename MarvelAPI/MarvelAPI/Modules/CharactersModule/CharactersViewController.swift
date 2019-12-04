@@ -21,15 +21,13 @@ class CharactersViewController: UIViewController {
 	}()
 	
 	@objc private func refresh(sender: UIRefreshControl) {
-		presenter.setupView()
+		presenter.setupView(with: self.searchController.searchBar.text)
 		self.updateData()
 		sender.endRefreshing()
 	}
 	
-	//UI Elements
-	let searchBar = UISearchBar()
+	private let searchController = UISearchController(searchResultsController: nil)
 	let tableView = UITableView()
-
 	let presenter: ICharacterPresenter
 	
 	init(presenter: ICharacterPresenter) {
@@ -48,12 +46,21 @@ class CharactersViewController: UIViewController {
 		setupSubViews()
 		setupConstraints()
 		setupNavigationBar()
+		setupsearchController()
 		self.view.backgroundColor = .white
 		tableView.refreshControl = refreshControl
     }
 	
+	private func setupsearchController() {
+//		searchController.searchResultsUpdater = self
+		searchController.searchBar.delegate = self
+		searchController.obscuresBackgroundDuringPresentation = false
+		searchController.searchBar.placeholder = "Enter character name"
+		navigationItem.searchController = searchController
+		definesPresentationContext = true
+	}
+	
 	private func setupSubViews() {
-		self.view.addSubview(searchBar)
 		self.view.addSubview(tableView)
 	}
 	
@@ -71,10 +78,17 @@ class CharactersViewController: UIViewController {
 	
 	private func setupNavigationBar() {
 		navigationController?.navigationBar.prefersLargeTitles = true
-		let searchController = UISearchController(searchResultsController: nil)
-		navigationItem.searchController = searchController
+		navigationItem.hidesSearchBarWhenScrolling = false
 		title = "🦸‍♂️Heroes"
 		tabBarItem = UITabBarItem(title: "Heroes", image: #imageLiteral(resourceName: "shield"), tag: 1)
+	}
+}
+
+extension CharactersViewController: UISearchBarDelegate {
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		print(searchBar.text)
+		presenter.setupView(with: searchBar.text)
+		self.updateData()
 	}
 }
 
@@ -105,6 +119,7 @@ extension CharactersViewController: UITableViewDataSource, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 		presenter.showDetailCharacter(index: indexPath.row)
 	}
 }

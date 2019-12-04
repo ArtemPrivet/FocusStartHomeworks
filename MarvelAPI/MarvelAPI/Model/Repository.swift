@@ -16,7 +16,7 @@ typealias DataResult = Result<Data, ServiceError>
 
 class Repository {
 	private let decoder = JSONDecoder()
-	
+	private var dataTask: URLSessionDataTask?
 	
 	private func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void) {
 		let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
@@ -36,7 +36,7 @@ class Repository {
 	}
 	
 	//load characters
-	private func getCharactersRequest() -> URL? {
+	private func getCharactersRequest(with search: String?) -> URL? {
 		var components = URLComponents(string: Urls.baseUrl + Urls.chracterEndpoint)
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
@@ -45,11 +45,14 @@ class Repository {
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
+		if let seatchText = search {
+			components?.queryItems?.append(URLQueryItem(name: "nameStartsWith", value: seatchText))
+		}
 		return components?.url
 	}
 
-	func loadCharacters(_ completion: @escaping (CharactersResult) -> Void) {
-		guard let url = getCharactersRequest() else { return }
+	func loadCharacters(with search: String?, _ completion: @escaping (CharactersResult) -> Void) {
+		guard let url = getCharactersRequest(with: search) else { return }
 		fetchData(from: url) { dataResult in
 			switch dataResult {
 			case .success(let data):
@@ -110,5 +113,42 @@ class Repository {
 			}
 		}
 	}
+	
+//	func loadCharactersBySearch(term: String, completion: @escaping ((Result<SearchResult, NSError>) -> Void)) {
+//		dataTask?.cancel() //отменяем прошлый запрос если он еще не выполнился
+//
+//		let urlConponents = URLComponents(string: "https://itunes.apple.com/search/media=music&entity=song&term=\(term)")!
+//		let url = urlConponents.url!
+//
+//
+//		dataTask = session.dataTask(with: url) { data, response, error in
+//			if let error = error {
+//				DispatchQueue.main.async {
+//					completion(.failure(error as NSError))
+//				}
+//				return
+//			}
+//			if let data = data,
+//				let response = response as? HTTPURLResponse, response.statusCode == 200 {
+//				do {
+//					let object = try JSONDecoder().decode(SearchResult.self, from: data)
+//					DispatchQueue.main.async {
+//						completion(.success(object))
+//					}
+//
+//				} catch {
+//					DispatchQueue.main.async {
+//						completion(.failure(error as NSError))
+//					}
+//				}
+//			} else {
+//				DispatchQueue.main.async {
+//					completion(.failure(NSError()))
+//				}
+//			}
+//		}
+//		dataTask?.resume()
+//	}
+
 
 }

@@ -105,6 +105,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5C1BF95523970F0E0067E253 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				5C1BF953239705D90067E253 /* ImageViewWithGradient.swift */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
 		5C59D68B239396D60094CB19 = {
 			isa = PBXGroup;
 			children = (
@@ -132,7 +140,7 @@
 				5CB838A823942383001C58BB /* Modules */,
 				5CB838942393EC31001C58BB /* Extensions */,
 				5CB838892393A044001C58BB /* Enums */,
-				5C1BF953239705D90067E253 /* ImageViewWithGradient.swift */,
+				5C1BF95523970F0E0067E253 /* Style */,
 			);
 			path = MarvelAPI;
 			sourceTree = "<group>";
