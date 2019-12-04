@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		let tabBarController = UITabBarController(nibName: nil, bundle: nil)
 		tabBarController.tabBar.shadowImage = UIImage()
-//		tabBarController.tabBar.backgroundImage = UIImage()
 		let comicsVC = ComicsViewController(nibName: nil, bundle: nil)
 		comicsVC.tabBarItem = UITabBarItem(title: "Comics", image: #imageLiteral(resourceName: "comic"), tag: 2)
 		

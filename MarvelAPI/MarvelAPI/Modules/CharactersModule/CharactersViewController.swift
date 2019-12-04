@@ -14,19 +14,16 @@ protocol ICharactersViewController: class {
 
 class CharactersViewController: UIViewController {
 	
-	let refreshControl: UIRefreshControl = {
-		let refreshControl = UIRefreshControl()
-		refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-		return refreshControl
-	}()
+	let refreshControl = UIRefreshControl()
 	
 	@objc private func refresh(sender: UIRefreshControl) {
-		presenter.setupView(with: self.searchController.searchBar.text)
-		self.updateData()
+		presenter.setupView(with: nil)
 		sender.endRefreshing()
 	}
 	
 	private let searchController = UISearchController(searchResultsController: nil)
+	let searchStubView = UIImageView(image: #imageLiteral(resourceName: "search_stub"))
+	let searchStubLabel = UILabel()
 	let tableView = UITableView()
 	let presenter: ICharacterPresenter
 	
@@ -47,12 +44,13 @@ class CharactersViewController: UIViewController {
 		setupConstraints()
 		setupNavigationBar()
 		setupsearchController()
+		refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		self.view.backgroundColor = .white
 		tableView.refreshControl = refreshControl
     }
 	
 	private func setupsearchController() {
-//		searchController.searchResultsUpdater = self
+		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
 		searchController.obscuresBackgroundDuringPresentation = false
 		searchController.searchBar.placeholder = "Enter character name"
@@ -62,17 +60,49 @@ class CharactersViewController: UIViewController {
 	
 	private func setupSubViews() {
 		self.view.addSubview(tableView)
+		self.view.addSubview(searchStubView)
+		self.searchStubView.contentMode = .center
+		self.searchStubView.addSubview(searchStubLabel)
+		self.searchStubLabel.text = "Nothing found of query"
+		self.searchStubLabel.textColor = .gray
+		self.searchStubLabel.numberOfLines = 0
+		self.searchStubLabel.textAlignment = .center
+		self.tableView.isHidden = true
+	}
+	
+	func  checkRequestResult(isEmpty: Bool) {
+		if isEmpty {
+			self.tableView.isHidden = true
+			self.searchStubView.isHidden = false
+			self.searchStubLabel.text = "Nothing found of query \"\(searchController.searchBar.text ?? "")\""
+		} else {
+			self.tableView.isHidden = false
+			self.searchStubView.isHidden = true
+		}
 	}
 	
 	private func setupConstraints() {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
-		
+		searchStubView.translatesAutoresizingMaskIntoConstraints = false
+		searchStubLabel.translatesAutoresizingMaskIntoConstraints = false
+
 		NSLayoutConstraint.activate([
-			
 			tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+			
+			searchStubView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+			searchStubView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			searchStubView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			searchStubView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+			
+			searchStubLabel.centerXAnchor.constraint(equalTo: searchStubView.centerXAnchor),
+			searchStubLabel.centerYAnchor.constraint(equalTo: searchStubView.centerYAnchor,constant: 100),
+			searchStubLabel.widthAnchor.constraint(equalToConstant: 300),
+
+//			searchStubLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+//			searchStubLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
 			])
 	}
 	
@@ -86,9 +116,17 @@ class CharactersViewController: UIViewController {
 
 extension CharactersViewController: UISearchBarDelegate {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-		print(searchBar.text)
 		presenter.setupView(with: searchBar.text)
 		self.updateData()
+	}
+}
+
+extension CharactersViewController: UISearchResultsUpdating {
+	func updateSearchResults(for searchController: UISearchController) {
+		if searchController.searchBar.text == "" {
+			presenter.setupView(with: nil)
+			self.updateData()
+		}
 	}
 }
 

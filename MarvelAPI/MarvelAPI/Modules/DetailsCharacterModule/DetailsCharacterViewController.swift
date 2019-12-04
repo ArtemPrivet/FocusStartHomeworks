@@ -15,7 +15,7 @@ protocol IDetailsCharacterViewController: class {
 class DetailsCharacterViewController: UIViewController {
 	
 	var titleLabel = UILabel()
-	var descriptionLabel = UILabel()
+	var descriptionLabel = UITextView()
 	var comicsTableView = UITableView()
 	var backgroundImageView = ImageViewWithGradient(frame: .zero)
 	
@@ -49,6 +49,7 @@ class DetailsCharacterViewController: UIViewController {
 	private func setupNavigationBar() {
 		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 		self.navigationController?.navigationBar.shadowImage = UIImage()
+		self.navigationItem.largeTitleDisplayMode = .never
 	}
 	
 	private func setupViews() {
@@ -68,7 +69,9 @@ class DetailsCharacterViewController: UIViewController {
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
 		
 		descriptionLabel.text = selectedCharacter.description == "" ? "No info" : selectedCharacter.description
-		descriptionLabel.numberOfLines = 0
+//		descriptionLabel.numberOfLines = 0
+		descriptionLabel.backgroundColor = .red
+		descriptionLabel.font = UIFont.boldSystemFont(ofSize: 14)
 		descriptionLabel.textAlignment = .justified
 		descriptionLabel.backgroundColor = UIColor.white.withAlphaComponent(0.0)
 	}
@@ -93,7 +96,8 @@ class DetailsCharacterViewController: UIViewController {
 			descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
 			descriptionLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
 			descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
-			
+			descriptionLabel.bottomAnchor.constraint(equalTo: comicsTableView.topAnchor, constant: -8),
+
 			comicsTableView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor),
 			comicsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			comicsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
