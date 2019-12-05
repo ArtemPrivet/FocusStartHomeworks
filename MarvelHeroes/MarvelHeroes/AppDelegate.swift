@@ -18,7 +18,11 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
 		let mainScreen = MainScreen()
-		window?.rootViewController = mainScreen
+		let navigationController = UINavigationController(rootViewController: mainScreen)
+		if #available(iOS 11.0, *) {
+			navigationController.navigationBar.prefersLargeTitles = true
+		}
+		window?.rootViewController = navigationController
 		window?.makeKeyAndVisible()
 		// Override point for customization after application launch.
 		return true
