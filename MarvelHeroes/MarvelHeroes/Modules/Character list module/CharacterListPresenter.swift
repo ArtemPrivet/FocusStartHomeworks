@@ -14,7 +14,9 @@ protocol IItemListPresenter
 	var tableViewViewModels: [IItemViewModel] { get }
 
 	func performLoadItems(after time: TimeInterval, with string: String)
-	func onThumbnailUpdate(by path: String, extension: String, _ completion: @escaping (UIImage?) -> Void)
+	func onThumbnailUpdate(by thumbnail: Thumbnail,
+						   aspectRatio: AspectRatio,
+						   _ completion: @escaping (UIImage?) -> Void)
 	func showDetail(viewModel: IItemViewModel)
 }
 
@@ -138,12 +140,16 @@ extension ItemListPresenter: IItemListPresenter
 		}
 	}
 
-	func onThumbnailUpdate(by path: String, extension: String, _ completion: @escaping (UIImage?) -> Void) {
+	func onThumbnailUpdate(by thumbnail: Thumbnail,
+						   aspectRatio: AspectRatio = .standard(.small),
+						   _ completion: @escaping (UIImage?) -> Void) {
 
 		DispatchQueue(label: "com.marvelHeroes.imageLoad",
 					  qos: .userInitiated,
 					  attributes: .concurrent).async { [weak self] in
-			self?.repository.fetchImage(from: path, extension: `extension`) { result in
+			self?.repository.fetchImage(
+			fromURL: thumbnail.url(withAspectRatio: aspectRatio)) { result in
+
 				switch result {
 				case .success(let image):
 					DispatchQueue.main.async {

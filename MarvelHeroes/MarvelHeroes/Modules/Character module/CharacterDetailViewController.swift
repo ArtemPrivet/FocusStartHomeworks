@@ -183,9 +183,10 @@ final class ItemDetailViewController: UIViewController
 		activityIndicator.startAnimating()
 		// Load imgae
 		presenter.onThumbnailUpdate(
-			by: presenter.detailViewModel.thumbnail.path,
-			extension: presenter.detailViewModel.thumbnail.extension.rawValue) { [weak self] image in
-					self?.imageView.image = image
+			by: presenter.detailViewModel.thumbnail,
+			aspectRatio: .landscape(.incredible)) { [weak self] image in
+
+			self?.imageView.image = image
 		}
 
 		// Load items
@@ -206,9 +207,8 @@ extension ItemDetailViewController: UITableViewDataSource
 		let viewModel = presenter.tableViewViewModels[indexPath.row]
 		cell?.updateIcon(image: nil)
 		cell?.configure(using: viewModel)
-		presenter.onThumbnailUpdate(
-			by: viewModel.thumbnail.path,
-			extension: viewModel.thumbnail.extension.rawValue) { image in
+		presenter.onThumbnailUpdate(by: viewModel.thumbnail,
+									aspectRatio: .portrait(.small)) { image in
 			cell?.updateIcon(image: image)
 		}
 		return cell ?? UITableViewCell()

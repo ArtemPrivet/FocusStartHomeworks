@@ -124,7 +124,7 @@ final class ItemListViewController: UIViewController
 
 		// Alert view constraints
 		alertView.translatesAutoresizingMaskIntoConstraints = false
-		alertView.topAnchor.constraint(equalTo: view.topAnchor, constant: 300).isActive = true
+		alertView.topAnchor.constraint(equalTo: view.topAnchor, constant: 250).isActive = true
 		alertView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
 		alertView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
@@ -189,10 +189,9 @@ extension ItemListViewController: UITableViewDataSource
 
 		cell?.configure(using: viewModel)
 		cell?.updateIcon(image: #imageLiteral(resourceName: "placeholder"))
-		presenter.onThumbnailUpdate(
-			by: viewModel.thumbnail.path,
-			extension: viewModel.thumbnail.extension.rawValue) { image in
-				cell?.updateIcon(image: image)
+		presenter.onThumbnailUpdate(by: viewModel.thumbnail,
+									aspectRatio: .portrait(.small)) { image in
+			cell?.updateIcon(image: image)
 		}
 		return cell ?? UITableViewCell()
 	}

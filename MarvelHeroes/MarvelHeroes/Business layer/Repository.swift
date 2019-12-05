@@ -45,8 +45,7 @@ protocol ICreatorsRepository
 // MARK: - Protocol IImagesRepository
 protocol IImagesRepository
 {
-	func fetchImage(from path: String,
-					extension: String?,
+	func fetchImage(fromURL url: URL?,
 					_ completion: @escaping (ImageResult) -> Void)
 }
 
@@ -219,15 +218,8 @@ extension ItemsRepository: ICreatorsRepository
 // MARK: - IImagesRepository
 extension ItemsRepository: IImagesRepository
 {
-	func fetchImage(from path: String,
-					extension: String? = nil,
-					_ completion: @escaping ImageResultCompletion) {
-
-		var url = URL(string: path)
-
-		if let `extension` = `extension` {
-			url?.appendPathExtension(`extension`)
-		}
+	func fetchImage(fromURL url: URL?,
+					_ completion: @escaping (ImageResult) -> Void) {
 
 		imageDownloadServise.loadImage(from: url) { result in
 			switch result {
