@@ -16,7 +16,15 @@ protocol IImageDownloadService
 
 final class ImageDownloadService
 {
-	private var imageDataCache = NSCache<NSString, NSData>()
+
+	init() {
+		let memoryCapacity = 500 * 1024 * 1024
+		let diskCapacity = 500 * 1024 * 1024
+		let imageDataCache = URLCache(memoryCapacity: memoryCapacity,
+									  diskCapacity: diskCapacity,
+									  diskPath: "imagesCache")
+		URLCache.shared = imageDataCache
+	}
 }
 
 extension ImageDownloadService: IImageDownloadService
@@ -28,13 +36,8 @@ extension ImageDownloadService: IImageDownloadService
 			return
 		}
 
-		if let cachedImageData = imageDataCache.object(forKey: url.absoluteString as NSString) {
-			completion(.success(cachedImageData as Data))
-			return
-		}
-
 		let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad, timeoutInterval: 5)
-		let dataTask = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+		let dataTask = URLSession.shared.dataTask(with: request) { data, response, error in
 
 			if let error = error {
 				completion(.failure(.sessionError(error)))
@@ -52,9 +55,6 @@ extension ImageDownloadService: IImageDownloadService
 				completion(.failure(.noData))
 				return
 			}
-
-			self?.imageDataCache.setObject(data as NSData,
-										   forKey: url.absoluteString as NSString)
 
 			completion(.success(data))
 			return

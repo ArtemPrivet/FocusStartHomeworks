@@ -186,9 +186,8 @@ extension ItemListViewController: UITableViewDataSource
 												 for: indexPath) as? DetailItemTableViewCell
 
 		let viewModel = presenter.tableViewViewModels[indexPath.row]
-
+		cell?.updateIcon(image: nil)
 		cell?.configure(using: viewModel)
-		cell?.updateIcon(image: #imageLiteral(resourceName: "placeholder"))
 		presenter.onThumbnailUpdate(by: viewModel.thumbnail,
 									aspectRatio: .portrait(.small)) { image in
 			cell?.updateIcon(image: image)
