@@ -25,11 +25,13 @@ class ComicsViewController: UIViewController {
 	let searchStubView = UIImageView(image: #imageLiteral(resourceName: "search_stub"))
 	let searchStubLabel = UILabel()
 	let tableView = UITableView()
+	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	let presenter: IComicsPresenter
 	
 	init(presenter: IComicsPresenter) {
 		self.presenter = presenter
 		super.init(nibName: nil, bundle: nil)
+		self.activityIndicator.startAnimating()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -41,7 +43,6 @@ class ComicsViewController: UIViewController {
         super.viewDidLoad()
 		self.view.backgroundColor = .white
 		setupNavigationBar()
-		
 		self.tableView.dataSource = self
 		self.tableView.delegate = self
 		setupSubViews()
@@ -51,7 +52,6 @@ class ComicsViewController: UIViewController {
 		refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
 		self.view.backgroundColor = .white
 		tableView.refreshControl = refreshControl
-
     }
 	
 	private func setupNavigationBar() {
@@ -76,6 +76,8 @@ class ComicsViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.addSubview(tableView)
 		self.view.addSubview(searchStubView)
+		self.view.addSubview(activityIndicator)
+		self.activityIndicator.color = .black
 		self.tableView.tableFooterView = UIView()
 		self.searchStubView.contentMode = .center
 		self.searchStubView.addSubview(searchStubLabel)
@@ -83,7 +85,6 @@ class ComicsViewController: UIViewController {
 		self.searchStubLabel.textColor = .gray
 		self.searchStubLabel.numberOfLines = 0
 		self.searchStubLabel.textAlignment = .center
-//		self.tableView.isHidden = true
 	}
 	
 	func  checkRequestResult(isEmpty: Bool) {
@@ -101,7 +102,8 @@ class ComicsViewController: UIViewController {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubLabel.translatesAutoresizingMaskIntoConstraints = false
-		
+		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
 		NSLayoutConstraint.activate([
 			tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -116,6 +118,9 @@ class ComicsViewController: UIViewController {
 			searchStubLabel.centerXAnchor.constraint(equalTo: searchStubView.centerXAnchor),
 			searchStubLabel.centerYAnchor.constraint(equalTo: searchStubView.centerYAnchor,constant: 100),
 			searchStubLabel.widthAnchor.constraint(equalToConstant: 300),
+			
+			activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
 			])
 	}
 }

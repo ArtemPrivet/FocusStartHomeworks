@@ -18,6 +18,7 @@ class DetailsCharacterViewController: UIViewController {
 	var descriptionLabel = UITextView()
 	var comicsTableView = UITableView()
 	var backgroundImageView = ImageViewWithGradient(frame: .zero)
+	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	
 	var presenter: IDetailsCharacterPresenter
 	
@@ -31,7 +32,7 @@ class DetailsCharacterViewController: UIViewController {
 		self.view.backgroundColor = .white
 		comicsTableView.dataSource = self
 		comicsTableView.delegate = self
-		
+		activityIndicator.startAnimating()
 		setupViews()
 		setupConstraints()
 		setupNavigationBar()
@@ -57,9 +58,11 @@ class DetailsCharacterViewController: UIViewController {
 		self.view.addSubview(titleLabel)
 		self.view.addSubview(descriptionLabel)
 		self.view.addSubview(comicsTableView)
-		print(backgroundImageView.bounds)
+		self.comicsTableView.addSubview(activityIndicator)
+		self.activityIndicator.color = .black
 		self.comicsTableView.tableFooterView = UIView()
-		
+		self.activityIndicator.startAnimating()
+
 		backgroundImageView.contentMode = .scaleAspectFill
 		
 		
@@ -70,7 +73,6 @@ class DetailsCharacterViewController: UIViewController {
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
 		
 		descriptionLabel.text = selectedCharacter.description == "" ? "No info" : selectedCharacter.description
-//		descriptionLabel.numberOfLines = 0
 		descriptionLabel.backgroundColor = .red
 		descriptionLabel.font = UIFont.boldSystemFont(ofSize: 14)
 		descriptionLabel.textAlignment = .justified
@@ -82,7 +84,7 @@ class DetailsCharacterViewController: UIViewController {
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		comicsTableView.translatesAutoresizingMaskIntoConstraints = false
-		
+		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
 			backgroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -103,6 +105,9 @@ class DetailsCharacterViewController: UIViewController {
 			comicsTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			comicsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			comicsTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+			
+			activityIndicator.centerXAnchor.constraint(equalTo: self.comicsTableView.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: self.comicsTableView.centerYAnchor),
 			])
 	}
 }

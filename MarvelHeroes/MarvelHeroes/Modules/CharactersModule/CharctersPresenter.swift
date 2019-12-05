@@ -58,9 +58,13 @@ extension CharactersPresenter: ICharacterPresenter {
 					self.characters = loadedData.data.results
 					DispatchQueue.main.async {
 						self.charactersView?.updateData()
+						self.charactersView?.activityIndicator.stopAnimating()
 						self.charactersView?.checkRequestResult(isEmpty: loadedData.data.results.isEmpty)
 					}
 				case .failure(let error):
+					DispatchQueue.main.async {
+						self.charactersView?.activityIndicator.stopAnimating()
+					}
 					print(error.localizedDescription)
 				}
 			})

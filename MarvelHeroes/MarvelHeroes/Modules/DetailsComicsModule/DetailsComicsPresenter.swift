@@ -69,9 +69,13 @@ extension DetailsComicsPresenter: IDetailsComicsPresenter {
 				self.characters = loadedData.data.results
 				print(self.characters)
 				DispatchQueue.main.async {
+					self.detailsView?.activityIndicator.stopAnimating()
 					self.detailsView?.updateData()
 				}
 			case .failure(let error):
+				DispatchQueue.main.async {
+					self.detailsView?.activityIndicator.stopAnimating()
+				}
 				print(error.localizedDescription)
 			}
 		}

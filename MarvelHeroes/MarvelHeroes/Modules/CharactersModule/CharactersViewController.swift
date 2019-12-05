@@ -15,6 +15,7 @@ protocol ICharactersViewController: class {
 class CharactersViewController: UIViewController {
 	
 	let refreshControl = UIRefreshControl()
+	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	
 	@objc private func refresh(sender: UIRefreshControl) {
 		presenter.setupView(with: nil)
@@ -61,6 +62,8 @@ class CharactersViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.addSubview(tableView)
 		self.view.addSubview(searchStubView)
+		self.view.addSubview(activityIndicator)
+		self.activityIndicator.color = .black
 		self.tableView.tableFooterView = UIView()
 		self.searchStubView.contentMode = .center
 		self.searchStubView.addSubview(searchStubLabel)
@@ -69,6 +72,7 @@ class CharactersViewController: UIViewController {
 		self.searchStubLabel.numberOfLines = 0
 		self.searchStubLabel.textAlignment = .center
 		self.tableView.isHidden = true
+		self.activityIndicator.startAnimating()
 	}
 	
 	func  checkRequestResult(isEmpty: Bool) {
@@ -86,7 +90,8 @@ class CharactersViewController: UIViewController {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubLabel.translatesAutoresizingMaskIntoConstraints = false
-		
+		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+
 		NSLayoutConstraint.activate([
 			tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -101,6 +106,9 @@ class CharactersViewController: UIViewController {
 			searchStubLabel.centerXAnchor.constraint(equalTo: searchStubView.centerXAnchor),
 			searchStubLabel.centerYAnchor.constraint(equalTo: searchStubView.centerYAnchor,constant: 100),
 			searchStubLabel.widthAnchor.constraint(equalToConstant: 300),
+			
+			activityIndicator.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
 			])
 	}
 	

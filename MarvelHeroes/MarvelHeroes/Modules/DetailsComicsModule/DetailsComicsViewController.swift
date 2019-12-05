@@ -20,7 +20,8 @@ class DetailsComicsViewController: UIViewController {
 	var descriptionLabel = UITextView()
 	var charactersTableView = UITableView()
 	var backgroundImageView = ImageViewWithGradient(frame: .zero)
-	
+	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+
 	var presenter: IDetailsComicsPresenter
 	
 	init(presenter: IDetailsComicsPresenter) {
@@ -59,9 +60,11 @@ class DetailsComicsViewController: UIViewController {
 		self.view.addSubview(titleLabel)
 		self.view.addSubview(descriptionLabel)
 		self.view.addSubview(charactersTableView)
-		print(backgroundImageView.bounds)
+		self.charactersTableView.addSubview(activityIndicator)
+		self.activityIndicator.color = .black
 		self.charactersTableView.tableFooterView = UIView()
-		
+		self.activityIndicator.startAnimating()
+
 		backgroundImageView.contentMode = .scaleAspectFill
 		
 		
@@ -83,7 +86,7 @@ class DetailsComicsViewController: UIViewController {
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		charactersTableView.translatesAutoresizingMaskIntoConstraints = false
-		
+		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
 			backgroundImageView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -104,6 +107,9 @@ class DetailsComicsViewController: UIViewController {
 			charactersTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			charactersTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			charactersTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+			
+			activityIndicator.centerXAnchor.constraint(equalTo: self.charactersTableView.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: self.charactersTableView.centerYAnchor),
 			])
 	}
 }

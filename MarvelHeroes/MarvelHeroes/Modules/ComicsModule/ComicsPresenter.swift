@@ -57,9 +57,13 @@ extension ComicsPresenter: IComicsPresenter {
 					self.comicses = loadedData.data.results
 					DispatchQueue.main.async {
 						self.comicsView?.updateData()
+						self.comicsView?.activityIndicator.stopAnimating()
 						self.comicsView?.checkRequestResult(isEmpty: loadedData.data.results.isEmpty)
 					}
 				case .failure(let error):
+					DispatchQueue.main.async {
+						self.comicsView?.activityIndicator.stopAnimating()
+					}
 					print(error.localizedDescription)
 				}
 			})
