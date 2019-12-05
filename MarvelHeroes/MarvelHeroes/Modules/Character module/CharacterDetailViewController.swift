@@ -72,6 +72,7 @@ final class ItemDetailViewController: UIViewController
 
 	private var didLoaditems = false
 	private var indexPathForSelectedRow: IndexPath?
+	private static var cellIdentifier = "ItemCell"
 
 	private let presenter: IItemPresenter
 
@@ -110,7 +111,7 @@ final class ItemDetailViewController: UIViewController
 
 		view.backgroundColor = .systemBackground
 
-		tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: "Cell")
+		tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
 
 		setNavigationController()
 		setHeaderView()
@@ -200,10 +201,10 @@ extension ItemDetailViewController: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? ItemTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: Self.cellIdentifier,
+												 for: indexPath) as? ItemTableViewCell
 		let viewModel = presenter.tableViewViewModels[indexPath.row]
 		cell?.updateIcon(image: nil)
-//		cell?.updateIcon(image: #imageLiteral(resourceName: "placeholder"))
 		cell?.configure(using: viewModel)
 		presenter.onThumbnailUpdate(
 			by: viewModel.thumbnail.path,

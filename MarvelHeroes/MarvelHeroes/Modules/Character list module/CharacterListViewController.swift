@@ -63,6 +63,7 @@ final class ItemListViewController: UIViewController
 	}
 
 	private var indexPathForSelectedRow: IndexPath?
+	private static var cellIdentifier = "ItemCell"
 
 	private let presenter: IItemListPresenter
 
@@ -88,7 +89,7 @@ final class ItemListViewController: UIViewController
 		_ = resultSearchController.searchBar
 		setConstraints()
 
-		tableView.register(DetailItemTableViewCell.self, forCellReuseIdentifier: "Cell")
+		tableView.register(DetailItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -181,7 +182,8 @@ extension ItemListViewController: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? DetailItemTableViewCell
+		let cell = tableView.dequeueReusableCell(withIdentifier: Self.cellIdentifier,
+												 for: indexPath) as? DetailItemTableViewCell
 
 		let viewModel = presenter.tableViewViewModels[indexPath.row]
 
