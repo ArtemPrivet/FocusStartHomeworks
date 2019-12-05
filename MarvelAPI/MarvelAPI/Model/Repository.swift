@@ -85,18 +85,28 @@ class Repository {
 	}
 	
 	//load comics
-	private func getCharacterComicsRequest(characterId: String) -> URL? { //\(characterId)/
-		var components = URLComponents(string: "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(characterId)/\(Urls.chracterComicsEndpoint)")
+	private func getCharacterComicsRequest(characterId: String?) -> URL? { //\(characterId)/
+		let urlString: String
+		if let charId = characterId {
+			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.chracterComicsEndpoint)"
+		} else {
+			urlString = "\(Urls.baseUrl)/\(Urls.chracterComicsEndpoint)"
+		}
+
+		var components = URLComponents(string: urlString)
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
+			URLQueryItem(name: "limit", value: "100"),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
 		return components?.url
 	}
 	
-	func loadComics(characterId: Int, _ completion: @escaping (ComicsResult) -> Void) {
-		guard let url = getCharacterComicsRequest(characterId: String(characterId)) else { return }
+	func loadComics(characterId: Int?, _ completion: @escaping (ComicsResult) -> Void) {
+		let str: String? = characterId == nil ? nil : String(characterId!)
+		guard let url = getCharacterComicsRequest(characterId: str) else { return }
+		print(url)
 		fetchData(from: url) { comicsResult in
 			switch comicsResult {
 			case .success(let data):
@@ -113,42 +123,4 @@ class Repository {
 			}
 		}
 	}
-	
-//	func loadCharactersBySearch(term: String, completion: @escaping ((Result<SearchResult, NSError>) -> Void)) {
-//		dataTask?.cancel() //отменяем прошлый запрос если он еще не выполнился
-//
-//		let urlConponents = URLComponents(string: "https://itunes.apple.com/search/media=music&entity=song&term=\(term)")!
-//		let url = urlConponents.url!
-//
-//
-//		dataTask = session.dataTask(with: url) { data, response, error in
-//			if let error = error {
-//				DispatchQueue.main.async {
-//					completion(.failure(error as NSError))
-//				}
-//				return
-//			}
-//			if let data = data,
-//				let response = response as? HTTPURLResponse, response.statusCode == 200 {
-//				do {
-//					let object = try JSONDecoder().decode(SearchResult.self, from: data)
-//					DispatchQueue.main.async {
-//						completion(.success(object))
-//					}
-//
-//				} catch {
-//					DispatchQueue.main.async {
-//						completion(.failure(error as NSError))
-//					}
-//				}
-//			} else {
-//				DispatchQueue.main.async {
-//					completion(.failure(NSError()))
-//				}
-//			}
-//		}
-//		dataTask?.resume()
-//	}
-
-
 }

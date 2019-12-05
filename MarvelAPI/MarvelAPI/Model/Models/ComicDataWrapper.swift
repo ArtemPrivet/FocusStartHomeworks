@@ -19,4 +19,6 @@ struct ComicDataContainer: Decodable {
 struct Comic: Decodable {
 	let title: String
 	let thumbnail: Image
+	let variantDescription: String
+//	let description: String
 }

@@ -26,4 +26,16 @@ class Factory {
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
 	}
+	
+	//create comics module
+	func createComicModule() -> ComicsViewController {
+		let repository = Repository()
+		let comicsRouter = ComicsRouter(factory: self)
+		let comicsPresenter = ComicsPresenter(repository: repository, router: comicsRouter)
+		let comicsView = ComicsViewController(presenter: comicsPresenter)
+		comicsPresenter.comicsView = comicsView
+		comicsRouter.comicsView = comicsView
+		return comicsView
+	}
+
 }

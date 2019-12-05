@@ -61,6 +61,7 @@ class CharactersViewController: UIViewController {
 	private func setupSubViews() {
 		self.view.addSubview(tableView)
 		self.view.addSubview(searchStubView)
+		self.tableView.tableFooterView = UIView()
 		self.searchStubView.contentMode = .center
 		self.searchStubView.addSubview(searchStubLabel)
 		self.searchStubLabel.text = "Nothing found of query"
@@ -85,7 +86,7 @@ class CharactersViewController: UIViewController {
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubView.translatesAutoresizingMaskIntoConstraints = false
 		searchStubLabel.translatesAutoresizingMaskIntoConstraints = false
-
+		
 		NSLayoutConstraint.activate([
 			tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
 			tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
@@ -100,9 +101,6 @@ class CharactersViewController: UIViewController {
 			searchStubLabel.centerXAnchor.constraint(equalTo: searchStubView.centerXAnchor),
 			searchStubLabel.centerYAnchor.constraint(equalTo: searchStubView.centerYAnchor,constant: 100),
 			searchStubLabel.widthAnchor.constraint(equalToConstant: 300),
-
-//			searchStubLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-//			searchStubLabel.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
 			])
 	}
 	

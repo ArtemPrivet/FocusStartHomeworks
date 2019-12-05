@@ -58,6 +58,7 @@ class DetailsCharacterViewController: UIViewController {
 		self.view.addSubview(descriptionLabel)
 		self.view.addSubview(comicsTableView)
 		print(backgroundImageView.bounds)
+		self.comicsTableView.tableFooterView = UIView()
 		
 		backgroundImageView.contentMode = .scaleAspectFill
 		

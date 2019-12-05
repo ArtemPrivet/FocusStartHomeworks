@@ -21,8 +21,8 @@ class CharactersPresenter {
 	weak var charactersView: CharactersViewController?
 	var repository: Repository
 	var router: ICharactersRouter
-	let serialQueue = DispatchQueue(label: "loadCharactersQueue")
-
+	let serialQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive)
+	
 	private var characters: [Character] = []
 	private var charactersImage: [UIImage] = []
 
