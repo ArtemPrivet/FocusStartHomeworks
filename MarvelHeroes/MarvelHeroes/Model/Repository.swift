@@ -9,9 +9,10 @@
 import UIKit
 
 typealias CharactersResult = Result<CharacterDataWrapper, ServiceError>
-typealias ImageResult = Result<UIImage, ServiceError>
 typealias ComicsResult = Result<ComicDataWrapper, ServiceError>
+typealias AuthorResult = Result<CreatorDataWrapper, ServiceError>
 
+typealias ImageResult = Result<UIImage, ServiceError>
 typealias DataResult = Result<Data, ServiceError>
 
 class Repository {
@@ -52,7 +53,7 @@ class Repository {
 	private func getCharactersRequest(comicsId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let comicsId = comicsId {
-			urlString = "\(Urls.baseUrl)\(Urls.chracterComicsEndpoint)/\(comicsId)/\(Urls.chracterEndpoint)" //FIXIT
+			urlString = "\(Urls.baseUrl)\(Urls.comicsEndpoint)/\(comicsId)/\(Urls.chracterEndpoint)" //FIXIT
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.chracterEndpoint)"
 		}
@@ -80,10 +81,10 @@ class Repository {
 		fetchData(from: url) { dataResult in
 			switch dataResult {
 			case .success(let data):
-				print(data)
 				do {
 					let characters = try self.decoder.decode(CharacterDataWrapper.self, from: data)
 					completion(.success(characters))
+					print("CHARACTERS LOADED")
 				} catch {
 					completion(.failure(ServiceError.dataError(error)))
 					return
@@ -99,10 +100,9 @@ class Repository {
 	private func getComicsRequest(characterId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let charId = characterId {
-			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.chracterComicsEndpoint)"
-			print(urlString)
+			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.comicsEndpoint)"
 		} else {
-			urlString = "\(Urls.baseUrl)/\(Urls.chracterComicsEndpoint)"
+			urlString = "\(Urls.baseUrl)/\(Urls.comicsEndpoint)"
 		}
 		
 		var components = URLComponents(string: urlString)
@@ -125,14 +125,59 @@ class Repository {
 			objectId = String(id)
 		}
 		guard let url = getComicsRequest(characterId: objectId, searchResult: searchResult) else { return }
-		print(url)
 		fetchData(from: url) { comicsResult in
 			switch comicsResult {
 			case .success(let data):
 				do {
 					let comics = try self.decoder.decode(ComicDataWrapper.self, from: data)
 					completion(.success(comics))
-					print("LOADED COMICS")
+					print("COMICS LOADED")
+				} catch {
+					completion(.failure(ServiceError.dataError(error)))
+					return
+				}
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
+	}
+	
+	//load authors
+	private func getAuthorRequest(comicsId: String?, searchResult: String?) -> URL? {
+		let urlString: String
+		if let comicsId = comicsId {
+			urlString = "\(Urls.baseUrl)\(Urls.comicsEndpoint)/\(comicsId)/\(Urls.authorEndpoint)" //FIXIT
+		} else {
+			urlString = "\(Urls.baseUrl)/\(Urls.authorEndpoint)"
+		}
+		
+		var components = URLComponents(string: urlString)
+		components?.queryItems = [
+			URLQueryItem(name: "ts", value: Constants.timestamp),
+			URLQueryItem(name: "limit", value: "100"),
+			URLQueryItem(name: "orderBy", value: "lastName"),
+			URLQueryItem(name: "apikey", value: Constants.publicKey),
+			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
+		]
+		if let seatchText = searchResult {
+			components?.queryItems?.append(URLQueryItem(name: "nameStartsWith", value: seatchText))
+		}
+		return components?.url
+	}
+	
+	func loadAuthors(with id: Int?, searchResult: String?, _ completion: @escaping (AuthorResult) -> Void) {
+		var objectId:String? = nil
+		if let id = id {
+			objectId = String(id)
+		}
+		guard let url = getAuthorRequest(comicsId: objectId, searchResult: searchResult) else { return }
+		fetchData(from: url) { authorResult in
+			switch authorResult {
+			case .success(let data):
+				do {
+					let authors = try self.decoder.decode(CreatorDataWrapper.self, from: data)
+					completion(.success(authors))
+					print("AUTHORS LOADED")
 				} catch {
 					completion(.failure(ServiceError.dataError(error)))
 					return

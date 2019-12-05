@@ -24,7 +24,6 @@ class ComicsRouter {
 
 extension ComicsRouter: IComicsRouter {
 	func showDetails(comics: Comic) {
-		print(comics.id)
 		let detailsView = factory.createDetailsVC(comics: comics)
 		comicsView?.navigationController?.pushViewController(detailsView, animated: true)
 	}

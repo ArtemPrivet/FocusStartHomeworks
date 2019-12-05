@@ -32,7 +32,7 @@ class DetailsCharacterPresenter {
 		setupBackgroungImage()
 	}
 	deinit {
-		print("DetailsPresenter deinit")
+		print("DetailsCharacterPresenter deinit")
 	}
 }
 
@@ -61,7 +61,6 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 	}
 	
 	func setupView() {
-		print("setupView")
 		repository.loadComics(with: character.id, searchResult: nil, { [weak self] comicsResult in
 			guard let self = self else { return }
 			switch comicsResult {

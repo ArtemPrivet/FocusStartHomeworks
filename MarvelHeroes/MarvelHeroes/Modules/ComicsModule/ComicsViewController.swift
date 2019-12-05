@@ -68,7 +68,7 @@ class ComicsViewController: UIViewController {
 		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
 		searchController.obscuresBackgroundDuringPresentation = false
-		searchController.searchBar.placeholder = "Enter character name"
+		searchController.searchBar.placeholder = "Enter comics title"
 		navigationItem.searchController = searchController
 		definesPresentationContext = true
 	}

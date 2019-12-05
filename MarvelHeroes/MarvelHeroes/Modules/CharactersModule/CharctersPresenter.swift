@@ -24,7 +24,6 @@ class CharactersPresenter {
 	let serialQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive)
 	
 	private var characters: [Character] = []
-	private var charactersImage: [UIImage] = []
 
 	init(repository: Repository, router: ICharactersRouter) {
 		self.repository = repository

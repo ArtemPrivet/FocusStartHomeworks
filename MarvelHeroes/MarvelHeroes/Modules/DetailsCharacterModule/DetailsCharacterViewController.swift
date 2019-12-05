@@ -44,7 +44,7 @@ class DetailsCharacterViewController: UIViewController {
 	}
 	
 	deinit {
-		print("DetailsViewController deinit")
+		print("DetailsCharacterViewController deinit")
 	}
 	
 	private func setupNavigationBar() {

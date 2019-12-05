@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let comicsVC = Factory().createComicsModule()
 		comicsVC.tabBarItem = UITabBarItem(title: "Comics", image: #imageLiteral(resourceName: "comic"), tag: 2)
 		
-		let authorVC = AuthorsViewController(nibName: nil, bundle: nil)
+		let authorVC = Factory().createAuthorsModule()
 		authorVC.tabBarItem = UITabBarItem(title: "Authors", image: #imageLiteral(resourceName: "writer"), tag: 3)
 
 		tabBarController.addChild(UINavigationController(rootViewController: Factory().createCharactersModule()))

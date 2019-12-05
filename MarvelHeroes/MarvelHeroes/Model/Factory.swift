@@ -48,4 +48,16 @@ class Factory {
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
 	}
+	
+	//create authors module
+	func createAuthorsModule() -> AuthorsViewController {
+		let repository = Repository()
+		let authorsRouter = AuthorRouter(factory: self)
+		let authorsPresenter = AuthorsPresenter(repository: repository, router: authorsRouter)
+		let authorsView = AuthorsViewController(presenter: authorsPresenter)
+		authorsPresenter.authorView = authorsView
+		authorsRouter.authorView = authorsView
+		return authorsView
+	}
+
 }

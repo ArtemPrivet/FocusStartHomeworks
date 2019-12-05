@@ -24,7 +24,6 @@ class ComicsPresenter {
 	let serialQueue = DispatchQueue(label: "loadComicsQueue", qos: .userInteractive)
 	
 	private var comicses: [Comic] = []
-	private var charactersImage: [UIImage] = []
 	
 	init(repository: Repository, router: IComicsRouter) {
 		self.repository = repository

@@ -24,7 +24,6 @@ class CharactersRouter {
 
 extension CharactersRouter: ICharactersRouter {
 	func showDetails(character: Character) {
-		print("showDetails")
 		let detailsView = factory.createDetailsVC(chracter: character)
 		charactersView?.navigationController?.pushViewController(detailsView, animated: true)
 	}

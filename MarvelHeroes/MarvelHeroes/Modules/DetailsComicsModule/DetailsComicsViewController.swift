@@ -46,7 +46,7 @@ class DetailsComicsViewController: UIViewController {
 	}
 	
 	deinit {
-		print("DetailsViewController deinit")
+		print("DetailsComicsViewController deinit")
 	}
 	
 	private func setupNavigationBar() {
@@ -136,6 +136,5 @@ extension DetailsComicsViewController: UITableViewDataSource, UITableViewDelegat
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		print(indexPath)
 	}
 }
