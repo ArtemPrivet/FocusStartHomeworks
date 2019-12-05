@@ -9,7 +9,7 @@
 import Foundation
 
 protocol IComicsRouter {
-	func showDetails(comic: Comic)
+	func showDetails(comics: Comic)
 }
 
 class ComicsRouter {
@@ -23,7 +23,7 @@ class ComicsRouter {
 }
 
 extension ComicsRouter: IComicsRouter {
-	func showDetails(comic: Comic) {
+	func showDetails(comics: Comic) {
 //		let detailsView = factory.createDetailsVC(chracter: comic)
 //		comicsView?.navigationController?.pushViewController(detailsView, animated: true)
 	}

@@ -51,7 +51,7 @@ extension CharactersPresenter: ICharacterPresenter {
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadCharacters(with: search, { [weak self] charactersResult in
+			self.repository.loadCharacters(with: nil, searchResult: search, { [weak self] charactersResult in
 				guard let self = self else { return }
 				switch charactersResult {
 				case .success(let loadedData):

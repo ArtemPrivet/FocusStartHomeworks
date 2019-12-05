@@ -10,9 +10,9 @@ import UIKit
 
 protocol IComicsPresenter {
 	func getComicsCount() -> Int
-	func getComic(index: Int) -> Comic
-	func getComicImage(index: Int)
-	func showDetailComic(index: Int)
+	func getComics(index: Int) -> Comic
+	func getComicsImage(index: Int)
+	func showDetailComics(index: Int)
 	func setupView(with search: String?)
 }
 
@@ -39,18 +39,18 @@ extension ComicsPresenter: IComicsPresenter {
 		return comicses.count
 	}
 	
-	func getComic(index: Int) -> Comic {
+	func getComics(index: Int) -> Comic {
 		return comicses[index]
 	}
 	
-	func showDetailComic(index: Int) {
-		router.showDetails(comic: comicses[index])
+	func showDetailComics(index: Int) {
+		router.showDetails(comics: comicses[index])
 	}
 	
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadComics(characterId: nil, { [weak self] comicsResult in
+			self.repository.loadComics(with: nil, searchResult: search, { [weak self] comicsResult in
 				guard let self = self else { return }
 				switch comicsResult {
 				case .success(let loadedData):
@@ -66,7 +66,7 @@ extension ComicsPresenter: IComicsPresenter {
 		}
 	}
 	
-	func getComicImage(index: Int) {
+	func getComicsImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]

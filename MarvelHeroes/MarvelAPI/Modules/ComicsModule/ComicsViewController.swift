@@ -151,19 +151,19 @@ extension ComicsViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "comicsCell")
 		cell.imageView?.image = #imageLiteral(resourceName: "standard_medium_wait_image")
-		let comics = presenter.getComic(index: indexPath.row)
+		let comics = presenter.getComics(index: indexPath.row)
 		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = comics.title
 		cell.detailTextLabel?.textColor = .gray
 		
-		cell.detailTextLabel?.text = comics.variantDescription == "" ? "No info" : comics.variantDescription
-		presenter.getComicImage(index: indexPath.row)
+		cell.detailTextLabel?.text = comics.description == "" || comics.description == nil ? "No info" : comics.description
+		presenter.getComicsImage(index: indexPath.row)
 		
 		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		presenter.showDetailComic(index: indexPath.row)
+		presenter.showDetailComics(index: indexPath.row)
 	}
 }

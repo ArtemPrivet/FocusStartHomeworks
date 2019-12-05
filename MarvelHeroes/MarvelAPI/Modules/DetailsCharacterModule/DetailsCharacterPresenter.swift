@@ -62,7 +62,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 	
 	func setupView() {
 		print("setupView")
-		repository.loadComics(characterId: character.id, { [weak self] comicsResult in
+		repository.loadComics(with: character.id, searchResult: nil, { [weak self] comicsResult in
 			guard let self = self else { return }
 			switch comicsResult {
 			case .success(let loadedData):

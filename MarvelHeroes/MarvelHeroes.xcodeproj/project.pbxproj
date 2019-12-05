@@ -55,7 +55,7 @@
 		5C1BF953239705D90067E253 /* ImageViewWithGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewWithGradient.swift; sourceTree = "<group>"; };
 		5C1BF956239858930067E253 /* ComicsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsPresenter.swift; sourceTree = "<group>"; };
 		5C1BF958239858E70067E253 /* ComicsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsRouter.swift; sourceTree = "<group>"; };
-		5C59D694239396D60094CB19 /* MarvelAPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelAPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C59D694239396D60094CB19 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C59D697239396D60094CB19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5C59D69E239396D70094CB19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5C59D6A1239396D70094CB19 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -128,7 +128,7 @@
 		5C59D695239396D60094CB19 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5C59D694239396D60094CB19 /* MarvelAPI.app */,
+				5C59D694239396D60094CB19 /* MarvelHeroes.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -303,9 +303,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5C59D693239396D60094CB19 /* MarvelAPI */ = {
+		5C59D693239396D60094CB19 /* MarvelHeroes */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5C59D6A6239396D70094CB19 /* Build configuration list for PBXNativeTarget "MarvelAPI" */;
+			buildConfigurationList = 5C59D6A6239396D70094CB19 /* Build configuration list for PBXNativeTarget "MarvelHeroes" */;
 			buildPhases = (
 				5C59D690239396D60094CB19 /* Sources */,
 				5C59D691239396D60094CB19 /* Frameworks */,
@@ -315,9 +315,9 @@
 			);
 			dependencies = (
 			);
-			name = MarvelAPI;
+			name = MarvelHeroes;
 			productName = MarvelAPI;
-			productReference = 5C59D694239396D60094CB19 /* MarvelAPI.app */;
+			productReference = 5C59D694239396D60094CB19 /* MarvelHeroes.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -335,7 +335,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5C59D68F239396D60094CB19 /* Build configuration list for PBXProject "MarvelAPI" */;
+			buildConfigurationList = 5C59D68F239396D60094CB19 /* Build configuration list for PBXProject "MarvelHeroes" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -348,7 +348,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5C59D693239396D60094CB19 /* MarvelAPI */,
+				5C59D693239396D60094CB19 /* MarvelHeroes */,
 			);
 		};
 /* End PBXProject section */
@@ -581,7 +581,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5C59D68F239396D60094CB19 /* Build configuration list for PBXProject "MarvelAPI" */ = {
+		5C59D68F239396D60094CB19 /* Build configuration list for PBXProject "MarvelHeroes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5C59D6A4239396D70094CB19 /* Debug */,
@@ -590,7 +590,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5C59D6A6239396D70094CB19 /* Build configuration list for PBXNativeTarget "MarvelAPI" */ = {
+		5C59D6A6239396D70094CB19 /* Build configuration list for PBXNativeTarget "MarvelHeroes" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5C59D6A7239396D70094CB19 /* Debug */,

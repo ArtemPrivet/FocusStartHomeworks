@@ -35,9 +35,29 @@ class Repository {
 		task.resume()
 	}
 	
+	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void) {
+		guard let url = URL(string: urlString) else { return }
+		fetchData(from: url) { imageResult in
+			switch imageResult {
+			case .success(let data):
+				guard let image = UIImage(data: data) else { return }
+				completion(.success(image))
+			case .failure(let error):
+				completion(.failure(error))
+			}
+		}
+	}
+	
 	//load characters
-	private func getCharactersRequest(with search: String?) -> URL? {
-		var components = URLComponents(string: Urls.baseUrl + Urls.chracterEndpoint)
+	private func getCharactersRequest(comicsId: String?, searchResult: String?) -> URL? {
+		let urlString: String
+		if let comicsId = comicsId {
+			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(comicsId)/\(Urls.chracterComicsEndpoint)" //FIXIT
+		} else {
+			urlString = "\(Urls.baseUrl)/\(Urls.chracterEndpoint)"
+		}
+
+		var components = URLComponents(string: urlString)
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
 			URLQueryItem(name: "limit", value: "100"),
@@ -45,14 +65,18 @@ class Repository {
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
-		if let seatchText = search {
+		if let seatchText = searchResult {
 			components?.queryItems?.append(URLQueryItem(name: "nameStartsWith", value: seatchText))
 		}
 		return components?.url
 	}
 
-	func loadCharacters(with search: String?, _ completion: @escaping (CharactersResult) -> Void) {
-		guard let url = getCharactersRequest(with: search) else { return }
+	func loadCharacters(with id: Int?, searchResult: String?, _ completion: @escaping (CharactersResult) -> Void) {
+		var objectId:String? = nil
+		if let id = id {
+			objectId = String(id)
+		}
+		guard let url = getCharactersRequest(comicsId: objectId, searchResult: searchResult) else { return }
 		fetchData(from: url) { dataResult in
 			switch dataResult {
 			case .success(let data):
@@ -71,48 +95,42 @@ class Repository {
 		}
 	}
 	
-	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void) {
-		guard let url = URL(string: urlString) else { return }
-		fetchData(from: url) { imageResult in
-			switch imageResult {
-			case .success(let data):
-				guard let image = UIImage(data: data) else { return }
-				completion(.success(image))
-			case .failure(let error):
-				completion(.failure(error))
-			}
-		}
-	}
-	
 	//load comics
-	private func getCharacterComicsRequest(characterId: String?) -> URL? { //\(characterId)/
+	private func getComicsRequest(characterId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let charId = characterId {
 			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.chracterComicsEndpoint)"
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.chracterComicsEndpoint)"
 		}
-
+		
 		var components = URLComponents(string: urlString)
 		components?.queryItems = [
 			URLQueryItem(name: "ts", value: Constants.timestamp),
 			URLQueryItem(name: "limit", value: "100"),
+			URLQueryItem(name: "orderBy", value: "title"),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
 			URLQueryItem(name: "hash", value: HashGenerator.generateHash()),
 		]
+		if let seatchText = searchResult {
+			components?.queryItems?.append(URLQueryItem(name: "titleStartsWith", value: seatchText))
+		}
 		return components?.url
 	}
 	
-	func loadComics(characterId: Int?, _ completion: @escaping (ComicsResult) -> Void) {
-		let str: String? = characterId == nil ? nil : String(characterId!)
-		guard let url = getCharacterComicsRequest(characterId: str) else { return }
+	func loadComics(with id: Int?, searchResult: String?, _ completion: @escaping (ComicsResult) -> Void) {
+		var objectId:String? = nil
+		if let id = id {
+			objectId = String(id)
+		}
+		guard let url = getComicsRequest(characterId: objectId, searchResult: searchResult) else { return }
 		print(url)
 		fetchData(from: url) { comicsResult in
 			switch comicsResult {
 			case .success(let data):
 				do {
-					let comic = try self.decoder.decode(ComicDataWrapper.self, from: data)
-					completion(.success(comic))
+					let comics = try self.decoder.decode(ComicDataWrapper.self, from: data)
+					completion(.success(comics))
 					print("LOADED COMICS")
 				} catch {
 					completion(.failure(ServiceError.dataError(error)))

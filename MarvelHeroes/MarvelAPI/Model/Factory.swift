@@ -28,7 +28,7 @@ class Factory {
 	}
 	
 	//create comics module
-	func createComicModule() -> ComicsViewController {
+	func createComicsModule() -> ComicsViewController {
 		let repository = Repository()
 		let comicsRouter = ComicsRouter(factory: self)
 		let comicsPresenter = ComicsPresenter(repository: repository, router: comicsRouter)
