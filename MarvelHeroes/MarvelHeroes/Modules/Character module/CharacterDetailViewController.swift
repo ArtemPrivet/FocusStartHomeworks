@@ -71,6 +71,7 @@ final class ItemDetailViewController: UIViewController
 	private var headerView: HeaderView?
 
 	private var didLoaditems = false
+	private var indexPathForSelectedRow: IndexPath?
 
 	private let presenter: IItemPresenter
 
@@ -96,9 +97,12 @@ final class ItemDetailViewController: UIViewController
 		loadData()
 	}
 
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		navigationItem.largeTitleDisplayMode = .automatic
+		if let indexPath = indexPathForSelectedRow {
+			tableView.deselectRow(at: indexPath, animated: true)
+		}
 	}
 
 	// MARK: ...Private methods
@@ -228,6 +232,7 @@ extension ItemDetailViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		presenter.showDetail(viewModel: presenter.tableViewViewModels[indexPath.row])
+		indexPathForSelectedRow = indexPath
 	}
 
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
