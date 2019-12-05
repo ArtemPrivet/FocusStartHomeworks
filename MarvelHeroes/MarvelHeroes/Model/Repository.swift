@@ -53,7 +53,8 @@ class Repository {
 	private func getCharactersRequest(comicsId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let comicsId = comicsId {
-			urlString = "\(Urls.baseUrl)\(Urls.comicsEndpoint)/\(comicsId)/\(Urls.chracterEndpoint)" //FIXIT
+			urlString = "\(Urls.baseUrl)\(Urls.comicsEndpoint)/\(comicsId)/\(Urls.chracterEndpoint)"
+			print(urlString)
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.chracterEndpoint)"
 		}
@@ -97,9 +98,11 @@ class Repository {
 	}
 	
 	//load comics
-	private func getComicsRequest(characterId: String?, searchResult: String?) -> URL? {
+	private func getComicsRequest(fromPastScreen: String?, characterId: String?, searchResult: String?) -> URL? {
 		let urlString: String
-		if let charId = characterId {
+		if let charId = characterId, fromPastScreen == PastScreen.authors {
+			urlString = "\(Urls.baseUrl)\(Urls.authorEndpoint)/\(charId)/\(Urls.comicsEndpoint)"
+		} else if let charId = characterId, fromPastScreen == PastScreen.characters {
 			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.comicsEndpoint)"
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.comicsEndpoint)"
@@ -119,12 +122,12 @@ class Repository {
 		return components?.url
 	}
 	
-	func loadComics(with id: Int?, searchResult: String?, _ completion: @escaping (ComicsResult) -> Void) {
-		var objectId:String? = nil
+	func loadComics(fromPastScreen: String?, with id: Int?, searchResult: String?, _ completion: @escaping (ComicsResult) -> Void) {
+		var objectId: String? = nil
 		if let id = id {
 			objectId = String(id)
 		}
-		guard let url = getComicsRequest(characterId: objectId, searchResult: searchResult) else { return }
+		guard let url = getComicsRequest(fromPastScreen: fromPastScreen, characterId: objectId, searchResult: searchResult) else { return }
 		fetchData(from: url) { comicsResult in
 			switch comicsResult {
 			case .success(let data):
@@ -146,7 +149,7 @@ class Repository {
 	private func getAuthorRequest(comicsId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let comicsId = comicsId {
-			urlString = "\(Urls.baseUrl)\(Urls.comicsEndpoint)/\(comicsId)/\(Urls.authorEndpoint)" //FIXIT
+			urlString = "\(Urls.baseUrl)\(Urls.authorEndpoint)/\(comicsId)/\(Urls.comicsEndpoint)" //FIXIT
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.authorEndpoint)"
 		}

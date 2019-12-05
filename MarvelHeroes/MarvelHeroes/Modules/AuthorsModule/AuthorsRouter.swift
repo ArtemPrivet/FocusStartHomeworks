@@ -24,7 +24,7 @@ class AuthorRouter {
 
 extension AuthorRouter: IAuthorRouter {
 	func showDetails(author: Creator) {
-//		let detailsView = factory.createDetailsVC(comics: comics)
-//		comicsView?.navigationController?.pushViewController(detailsView, animated: true)
+		let detailsView = factory.createDetailsVC(author: author)
+		authorView?.navigationController?.pushViewController(detailsView, animated: true)
 	}
 }

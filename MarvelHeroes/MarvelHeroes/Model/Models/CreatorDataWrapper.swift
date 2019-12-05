@@ -20,6 +20,7 @@ struct Creator: Decodable {
 	let id: Int
 	let firstName: String
 	let lastName: String
+	let middleName: String
 	let fullName: String?
 	let thumbnail: Image
 }

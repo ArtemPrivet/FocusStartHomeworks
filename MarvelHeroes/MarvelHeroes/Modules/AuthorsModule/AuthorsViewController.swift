@@ -151,14 +151,12 @@ extension AuthorsViewController: UITableViewDataSource, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "comicsCell")
+		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .default, reuseIdentifier: "comicsCell")
 		cell.imageView?.image = #imageLiteral(resourceName: "standard_medium_wait_image")
 		let author = presenter.getAuthor(index: indexPath.row)
 		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = author.firstName
-		cell.detailTextLabel?.textColor = .gray
 		
-		cell.detailTextLabel?.text = author.lastName == "" ? "No info" : author.lastName
 		presenter.getAuthorImage(index: indexPath.row)
 		
 		return cell

@@ -1,5 +1,5 @@
 //
-//  DetailsComicsViewController.swift
+//  DetailsAuthorViewController.swift
 //  MarvelHeroes
 //
 //  Created by Kirill Fedorov on 05.12.2019.
@@ -8,21 +8,21 @@
 
 import UIKit
 
-protocol IDetailsComicsViewController: class {
+protocol IDetailsAuthorViewController: class {
 	func updateData()
 }
 
-class DetailsComicsViewController: UIViewController {
+class DetailsAuthorViewController: UIViewController {
 	
 	var titleLabel = UILabel()
-	var descriptionLabel = UITextView()
-	var charactersTableView = UITableView()
+	var lastNameLabel = UITextView()
+	var comicsesTableView = UITableView()
 	var backgroundImageView = ImageViewWithGradient(frame: .zero)
 	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-
-	var presenter: IDetailsComicsPresenter
 	
-	init(presenter: IDetailsComicsPresenter) {
+	var presenter: IDetailsAuthorPresenter
+	
+	init(presenter: IDetailsAuthorPresenter) {
 		self.presenter = presenter
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -30,21 +30,20 @@ class DetailsComicsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.view.backgroundColor = .white
-		charactersTableView.dataSource = self
-		charactersTableView.delegate = self
+		comicsesTableView.dataSource = self
+		comicsesTableView.delegate = self
 		
 		setupViews()
 		setupConstraints()
 		setupNavigationBar()
 	}
 	
-	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
 	deinit {
-		print("DetailsComicsViewController deinit")
+		print("DetailsAuthorViewController deinit")
 	}
 	
 	private func setupNavigationBar() {
@@ -56,34 +55,34 @@ class DetailsComicsViewController: UIViewController {
 	private func setupViews() {
 		self.view.addSubview(backgroundImageView)
 		self.view.addSubview(titleLabel)
-		self.view.addSubview(descriptionLabel)
-		self.view.addSubview(charactersTableView)
-		self.charactersTableView.addSubview(activityIndicator)
+		self.view.addSubview(lastNameLabel)
+		self.view.addSubview(comicsesTableView)
+		self.comicsesTableView.addSubview(activityIndicator)
 		self.activityIndicator.color = .black
-		self.charactersTableView.tableFooterView = UIView()
+		self.comicsesTableView.tableFooterView = UIView()
 		self.activityIndicator.startAnimating()
-
+		
 		backgroundImageView.contentMode = .scaleAspectFill
 		
 		
-		let selectedComics = presenter.getComics()
+		let selectedAuthor = presenter.getAuthor()
 		
-		titleLabel.text = selectedComics.title
+		titleLabel.text = selectedAuthor.firstName
 		titleLabel.numberOfLines = 0
 		titleLabel.font = UIFont.boldSystemFont(ofSize: 34.0)
 		
-		descriptionLabel.text = selectedComics.description == "" || selectedComics.description == nil ? "No info" : selectedComics.description
-		descriptionLabel.backgroundColor = .red
-		descriptionLabel.font = UIFont.boldSystemFont(ofSize: 14)
-		descriptionLabel.textAlignment = .justified
-		descriptionLabel.backgroundColor = UIColor.white.withAlphaComponent(0.0)
+		lastNameLabel.text = selectedAuthor.lastName == "" ? "No info" : selectedAuthor.lastName
+		lastNameLabel.backgroundColor = .red
+		lastNameLabel.font = UIFont.boldSystemFont(ofSize: 14)
+		lastNameLabel.textAlignment = .justified
+		lastNameLabel.backgroundColor = UIColor.white.withAlphaComponent(0.0)
 	}
 	
 	private func setupConstraints() {
 		backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
-		descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-		charactersTableView.translatesAutoresizingMaskIntoConstraints = false
+		lastNameLabel.translatesAutoresizingMaskIntoConstraints = false
+		comicsesTableView.translatesAutoresizingMaskIntoConstraints = false
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		
 		NSLayoutConstraint.activate([
@@ -96,39 +95,39 @@ class DetailsComicsViewController: UIViewController {
 			titleLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
 			titleLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
 			
-			descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-			descriptionLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
-			descriptionLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
-			descriptionLabel.bottomAnchor.constraint(equalTo: charactersTableView.topAnchor, constant: -8),
+			lastNameLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+			lastNameLabel.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 8),
+			lastNameLabel.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -8),
+			lastNameLabel.bottomAnchor.constraint(equalTo: comicsesTableView.topAnchor, constant: -8),
 			
-			charactersTableView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor),
-			charactersTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-			charactersTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-			charactersTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+			comicsesTableView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor),
+			comicsesTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			comicsesTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			comicsesTableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
 			
-			activityIndicator.centerXAnchor.constraint(equalTo: self.charactersTableView.centerXAnchor),
-			activityIndicator.centerYAnchor.constraint(equalTo: self.charactersTableView.centerYAnchor),
+			activityIndicator.centerXAnchor.constraint(equalTo: self.comicsesTableView.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: self.comicsesTableView.centerYAnchor),
 			])
 	}
 }
 
-extension DetailsComicsViewController: IDetailsComicsViewController {
+extension DetailsAuthorViewController: IDetailsAuthorViewController {
 	func updateData() {
-		self.charactersTableView.reloadData()
+		self.comicsesTableView.reloadData()
 	}
 }
 
-extension DetailsComicsViewController: UITableViewDataSource, UITableViewDelegate {
+extension DetailsAuthorViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter.getCharactersCount()
+		return presenter.getComicsesCount()
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = charactersTableView.dequeueReusableCell(withIdentifier: "characterCell") ?? UITableViewCell(style: .default, reuseIdentifier: "characterCell")
+		let cell = comicsesTableView.dequeueReusableCell(withIdentifier: "comicsCell") ?? UITableViewCell(style: .default, reuseIdentifier: "comicsCell")
 		cell.imageView?.image = #imageLiteral(resourceName: "standard_medium_wait_image")
 		cell.accessoryType = .disclosureIndicator
-		cell.textLabel?.text = presenter.getCharacter(index: indexPath.row).name
-		presenter.getCharacterImage(index: indexPath.row)
+		cell.textLabel?.text = presenter.getComics(index: indexPath.row).title
+		presenter.getComicsImage(index: indexPath.row)
 		return cell
 	}
 	

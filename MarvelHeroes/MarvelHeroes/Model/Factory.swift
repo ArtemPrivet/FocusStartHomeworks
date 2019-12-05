@@ -60,4 +60,12 @@ class Factory {
 		return authorsView
 	}
 
+	//create details comics module
+	func createDetailsVC(author: Creator) -> DetailsAuthorViewController {
+		let repository = Repository()
+		let detailsPresenter = DetailsAuthorPresenter(author: author, repository: repository)
+		let detailsVC = DetailsAuthorViewController(presenter: detailsPresenter)
+		detailsPresenter.detailsView = detailsVC
+		return detailsVC
+	}
 }

@@ -49,7 +49,7 @@ extension ComicsPresenter: IComicsPresenter {
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadComics(with: nil, searchResult: search, { [weak self] comicsResult in
+			self.repository.loadComics(fromPastScreen: nil, with: nil, searchResult: search, { [weak self] comicsResult in
 				guard let self = self else { return }
 				switch comicsResult {
 				case .success(let loadedData):
