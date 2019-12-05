@@ -91,6 +91,9 @@ extension HeroViewController: UISearchBarDelegate {
 
 extension HeroViewController: UITableViewDataSource, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		self.tableView.isHidden = false
+		stubImage.isHidden = true
+		stubText.isHidden = true
 		return presenter.heroesCount
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
