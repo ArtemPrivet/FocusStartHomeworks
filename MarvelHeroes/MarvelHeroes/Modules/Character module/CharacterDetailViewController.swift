@@ -80,7 +80,6 @@ final class ItemDetailViewController: UIViewController
 	init(presenter: IItemPresenter) {
 		self.presenter = presenter
 		super.init(nibName: nil, bundle: nil)
-		print("Init")
 	}
 
 	@available(*, unavailable)

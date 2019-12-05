@@ -146,7 +146,6 @@ extension ItemListViewController: IItemListViewController
 		activityIndicator.stopAnimating()
 		tableView.isHidden = false
 		alertView.isHidden = true
-		print("---")
 	}
 
 	func showAlert(with message: String) {
@@ -154,7 +153,6 @@ extension ItemListViewController: IItemListViewController
 		tableView.isHidden = true
 		alertView.setTitle(message)
 		alertView.isHidden = false
-		print("ERROR")
 	}
 }
 
