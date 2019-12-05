@@ -52,7 +52,7 @@ class Repository {
 	private func getCharactersRequest(comicsId: String?, searchResult: String?) -> URL? {
 		let urlString: String
 		if let comicsId = comicsId {
-			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(comicsId)/\(Urls.chracterComicsEndpoint)" //FIXIT
+			urlString = "\(Urls.baseUrl)\(Urls.chracterComicsEndpoint)/\(comicsId)/\(Urls.chracterEndpoint)" //FIXIT
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.chracterEndpoint)"
 		}
@@ -100,6 +100,7 @@ class Repository {
 		let urlString: String
 		if let charId = characterId {
 			urlString = "\(Urls.baseUrl)\(Urls.chracterEndpoint)/\(charId)/\(Urls.chracterComicsEndpoint)"
+			print(urlString)
 		} else {
 			urlString = "\(Urls.baseUrl)/\(Urls.chracterComicsEndpoint)"
 		}
