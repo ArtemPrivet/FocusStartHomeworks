@@ -83,11 +83,9 @@ extension HeroViewController: UISearchBarDelegate {
 
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
-		DispatchQueue.main.async {
 			guard let text = searchBar.text, text.isEmpty == false else { return }
 			self.presenter.getHeroes(of: text)
 			self.tableView.reloadData()
-		}
 	}
 }
 
