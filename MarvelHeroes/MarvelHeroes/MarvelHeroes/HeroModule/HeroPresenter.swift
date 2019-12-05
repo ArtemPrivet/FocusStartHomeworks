@@ -33,7 +33,10 @@ extension HeroPresenter: IHeroPresenter {
 	}
 
 	func getHeroes(of text: String) {
-		heroes = repository.getHeroes(text)
+		repository.getHeroes(of: text, completion: { heroList in
+			self.heroes = heroList ?? []
+			return
+		})
 	}
 }
 

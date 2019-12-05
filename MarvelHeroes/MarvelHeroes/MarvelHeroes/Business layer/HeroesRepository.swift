@@ -9,21 +9,20 @@
 import UIKit
 
 class HeroesRepository {
-	let netService = NetService()
+	private let netService = NetService()
 }
 
 extension HeroesRepository: IHeroRepository {
-	func getHeroes(_ text: String) -> [ResultChar] {
-		var heroes = [ResultChar]()
+	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void){
 			self.netService.loadHeroes(text) { dataResult in
 				switch dataResult {
 				case .success(let data):
-					heroes = data.data.results
-				case .failure(let error):
-					print(error)
-					heroes = []
+					completion(data.data.results)
+					return
+				case .failure(_):
+					completion(nil)
+					return
 				}
 			}
-		return heroes
 	}
 }

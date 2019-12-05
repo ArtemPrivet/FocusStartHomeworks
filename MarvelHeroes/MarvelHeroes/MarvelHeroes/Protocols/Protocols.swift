@@ -25,5 +25,5 @@ protocol IHeroRouter {
 }
 
 protocol IHeroRepository {
-	func getHeroes(_ text: String) -> [ResultChar]
+	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> ())
 }
