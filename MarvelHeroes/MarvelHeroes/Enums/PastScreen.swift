@@ -8,7 +8,8 @@
 
 import Foundation
 
-enum PastScreen {
+enum PastScreen
+{
 	static let characters = "characters"
 	static let authors  = "authors"
 }

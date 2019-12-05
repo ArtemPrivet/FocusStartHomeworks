@@ -8,7 +8,8 @@
 
 import Foundation
 
-struct CharacterDataWrapper: Decodable {
+struct CharacterDataWrapper: Decodable
+{
 	let code: Int
 	let status: String
 	let copyright: String
@@ -17,14 +18,18 @@ struct CharacterDataWrapper: Decodable {
 	let data: CharacterDataContainer
 	let etag: String
 }
-struct CharacterDataContainer: Decodable {
+
+struct CharacterDataContainer: Decodable
+{
 	let offset: Int
 	let limit: Int
 	let total: Int
 	let count: Int
 	let results: [Character]
 }
-struct Character: Decodable {
+
+struct Character: Decodable
+{
 	let id: Int
 	let name: String
 	let description: String
@@ -37,52 +42,70 @@ struct Character: Decodable {
 	let events: EventList
 	let series: SeriesList
 }
-struct Url: Decodable {
+
+struct Url: Decodable
+{
 	let type: String
 	let url: String
 }
-struct Image: Decodable {
+
+struct Image: Decodable
+{
 	let path: String
 	let `extension`: String
 }
-struct ComicList: Decodable {
+
+struct ComicList: Decodable
+{
 	let available: Int
 	let returned: Int
 	let collectionURI: String
 	let items: [ComicSummary]
 }
-struct ComicSummary: Decodable {
+
+struct ComicSummary: Decodable
+{
 	let resourceURI: String
 	let name: String
 }
-struct StoryList: Decodable {
+
+struct StoryList: Decodable
+{
 	let available: Int
 	let returned: Int
 	let collectionURI: String
 	let items: [StorySummary]
 }
-struct StorySummary: Decodable {
+
+struct StorySummary: Decodable
+{
 	let resourceURI: String
 	let name: String
 	let type: String
 }
-struct EventList: Decodable {
+struct EventList: Decodable
+{
 	let available: Int
 	let returned: Int
 	let collectionURI: String
 	let items: [EventSummary]
 }
-struct EventSummary: Decodable {
+
+struct EventSummary: Decodable
+{
 	let resourceURI: String
 	let name: String
 }
-struct SeriesList: Decodable {
+
+struct SeriesList: Decodable
+{
 	let available: Int
 	let returned: Int
 	let collectionURI: String
 	let items: [SeriesSummary]
 }
-struct SeriesSummary: Decodable {
+struct SeriesSummary: Decodable
+{
 	let resourceURI: String
 	let name: String
 }

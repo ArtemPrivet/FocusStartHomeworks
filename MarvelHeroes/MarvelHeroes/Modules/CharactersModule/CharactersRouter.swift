@@ -8,21 +8,24 @@
 
 import Foundation
 
-protocol ICharactersRouter {
+protocol ICharactersRouter
+{
 	func showDetails(character: Character)
 }
 
-class CharactersRouter {
-	
+final class CharactersRouter
+{
+
 	weak var charactersView: CharactersViewController?
 	var factory: Factory
-	
+
 	init(factory: Factory) {
 		self.factory = factory
 	}
 }
 
-extension CharactersRouter: ICharactersRouter {
+extension CharactersRouter: ICharactersRouter
+{
 	func showDetails(character: Character) {
 		let detailsView = factory.createDetailsVC(chracter: character)
 		charactersView?.navigationController?.pushViewController(detailsView, animated: true)

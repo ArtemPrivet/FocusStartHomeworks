@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol IDetailsAuthorPresenter {
+protocol IDetailsAuthorPresenter
+{
 	func getAuthor() -> Creator
 	func getComicsesCount() -> Int
 	func getComics(index: Int) -> Comic
@@ -17,26 +18,24 @@ protocol IDetailsAuthorPresenter {
 	func setupBackgroungImage()
 }
 
-class DetailsAuthorPresenter {
+final class DetailsAuthorPresenter
+{
 	weak var detailsView: DetailsAuthorViewController?
 	var author: Creator
 	var repository: Repository
 	var comicses: [Comic] = []
 	let serialQueue = DispatchQueue(label: "loadComicsesQueue")
-	
-	
+
 	init(author: Creator, repository: Repository) {
 		self.author = author
 		self.repository = repository
 		setupView()
 		setupBackgroungImage()
 	}
-	deinit {
-		print("DetailsAuthorPresenter deinit")
-	}
 }
 
-extension DetailsAuthorPresenter: IDetailsAuthorPresenter {
+extension DetailsAuthorPresenter: IDetailsAuthorPresenter
+{
 	func setupBackgroungImage() {
 		self.repository.loadImage(urlString:
 			String.getUrlString(image: author.thumbnail, variant: ThumbnailVarians.standardFantastic))
@@ -51,18 +50,18 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter {
 			}
 		}
 	}
-	
+
 	func getComicsesCount() -> Int {
 		return comicses.count
 	}
-	
+
 	func getComics(index: Int) -> Comic {
 		return comicses[index]
 	}
-	
+
 	func setupView() {
-		repository.loadComics(fromPastScreen: PastScreen.authors, with: author.id, searchResult: nil) { [weak self] comicsesResult in
-			
+		repository.loadComics(fromPastScreen: PastScreen.authors, with: author.id, searchResult: nil)
+		{ [weak self] comicsesResult in
 			guard let self = self else { return }
 			switch comicsesResult {
 			case .success(let loadedData):
@@ -79,7 +78,7 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter {
 			}
 		}
 	}
-	
+
 	func getComicsImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -90,7 +89,8 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter {
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.detailsView?.comicsesTableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+						guard let cell = self.detailsView?.comicsesTableView.cellForRow(at: IndexPath(row: index, section: 0))
+							else { return }
 						cell.imageView?.image = image
 						cell.layoutSubviews()
 					}
@@ -99,9 +99,8 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter {
 				}
 			}
 		}
-		
 	}
-	
+
 	func getAuthor() -> Creator {
 		return author
 	}

@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol IAuthorsPresenter {
+protocol IAuthorsPresenter
+{
 	func getAuthorsCount() -> Int
 	func getAuthor(index: Int) -> Creator
 	func getAuthorImage(index: Int)
@@ -16,15 +17,15 @@ protocol IAuthorsPresenter {
 	func setupView(with search: String?)
 }
 
-class AuthorsPresenter {
-	
+final class AuthorsPresenter
+{
+
 	weak var authorView: AuthorsViewController?
 	var repository: Repository
 	var router: IAuthorRouter
 	let serialQueue = DispatchQueue(label: "loadAuthorsQueue", qos: .userInteractive)
-	
 	private var authors: [Creator] = []
-	
+
 	init(repository: Repository, router: IAuthorRouter) {
 		self.repository = repository
 		self.router = router
@@ -32,20 +33,21 @@ class AuthorsPresenter {
 	}
 }
 
-extension AuthorsPresenter: IAuthorsPresenter {
-	
+extension AuthorsPresenter: IAuthorsPresenter
+{
+
 	func getAuthorsCount() -> Int {
 		return authors.count
 	}
-	
+
 	func getAuthor(index: Int) -> Creator {
 		return authors[index]
 	}
-	
+
 	func showDetailAuthor(index: Int) {
 		router.showDetails(author: authors[index])
 	}
-	
+
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -68,7 +70,7 @@ extension AuthorsPresenter: IAuthorsPresenter {
 			})
 		}
 	}
-	
+
 	func getAuthorImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }

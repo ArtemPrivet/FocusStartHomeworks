@@ -8,21 +8,23 @@
 
 import Foundation
 
-protocol IComicsRouter {
+protocol IComicsRouter
+{
 	func showDetails(comics: Comic)
 }
 
-class ComicsRouter {
-	
+final class ComicsRouter
+{
 	weak var comicsView: ComicsViewController?
 	var factory: Factory
-	
+
 	init(factory: Factory) {
 		self.factory = factory
 	}
 }
 
-extension ComicsRouter: IComicsRouter {
+extension ComicsRouter: IComicsRouter
+{
 	func showDetails(comics: Comic) {
 		let detailsView = factory.createDetailsVC(comics: comics)
 		comicsView?.navigationController?.pushViewController(detailsView, animated: true)

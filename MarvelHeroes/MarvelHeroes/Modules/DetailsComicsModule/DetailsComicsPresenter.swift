@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol IDetailsComicsPresenter {
+protocol IDetailsComicsPresenter
+{
 	func getComics() -> Comic
 	func getCharactersCount() -> Int
 	func getCharacter(index: Int) -> Character
@@ -17,26 +18,24 @@ protocol IDetailsComicsPresenter {
 	func setupBackgroungImage()
 }
 
-class DetailsComicsPresenter {
+final class DetailsComicsPresenter
+{
 	weak var detailsView: DetailsComicsViewController?
 	var comics: Comic
 	var repository: Repository
 	var characters: [Character] = []
 	let serialQueue = DispatchQueue(label: "loadCharactersQueue")
-	
-	
+
 	init(comics: Comic, repository: Repository) {
 		self.comics = comics
 		self.repository = repository
 		setupView()
 		setupBackgroungImage()
 	}
-	deinit {
-		print("DetailsComicsPresenter deinit")
-	}
 }
 
-extension DetailsComicsPresenter: IDetailsComicsPresenter {
+extension DetailsComicsPresenter: IDetailsComicsPresenter
+{
 	func setupBackgroungImage() {
 		self.repository.loadImage(urlString:
 			String.getUrlString(image: comics.thumbnail, variant: ThumbnailVarians.standardFantastic))
@@ -51,15 +50,15 @@ extension DetailsComicsPresenter: IDetailsComicsPresenter {
 			}
 		}
 	}
-	
+
 	func getCharactersCount() -> Int {
 		return characters.count
 	}
-	
+
 	func getCharacter(index: Int) -> Character {
 		return characters[index]
 	}
-	
+
 	func setupView() {
 		repository.loadCharacters(with: comics.id, searchResult: nil) { [weak self] charactersResult in
 			guard let self = self else { return }
@@ -89,7 +88,8 @@ extension DetailsComicsPresenter: IDetailsComicsPresenter {
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.detailsView?.charactersTableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+						guard let cell = self.detailsView?.charactersTableView.cellForRow(at: IndexPath(row: index, section: 0))
+							else { return }
 						cell.imageView?.image = image
 						cell.layoutSubviews()
 					}
@@ -98,9 +98,8 @@ extension DetailsComicsPresenter: IDetailsComicsPresenter {
 				}
 			}
 		}
-
 	}
-	
+
 	func getComics() -> Comic {
 		return comics
 	}

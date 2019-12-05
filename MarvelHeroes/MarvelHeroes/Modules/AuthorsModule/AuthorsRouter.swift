@@ -8,21 +8,24 @@
 
 import Foundation
 
-protocol IAuthorRouter {
+protocol IAuthorRouter
+{
 	func showDetails(author: Creator)
 }
 
-class AuthorRouter {
-	
+final class AuthorRouter
+{
+
 	weak var authorView: AuthorsViewController?
 	var factory: Factory
-	
+
 	init(factory: Factory) {
 		self.factory = factory
 	}
 }
 
-extension AuthorRouter: IAuthorRouter {
+extension AuthorRouter: IAuthorRouter
+{
 	func showDetails(author: Creator) {
 		let detailsView = factory.createDetailsVC(author: author)
 		authorView?.navigationController?.pushViewController(detailsView, animated: true)

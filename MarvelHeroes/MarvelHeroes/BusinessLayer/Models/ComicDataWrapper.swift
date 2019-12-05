@@ -8,15 +8,18 @@
 
 import Foundation
 
-struct ComicDataWrapper: Decodable {
+struct ComicDataWrapper: Decodable
+{
 	let data: ComicDataContainer
 }
 
-struct ComicDataContainer: Decodable {
+struct ComicDataContainer: Decodable
+{
 	let results: [Comic]
 }
 
-struct Comic: Decodable {
+struct Comic: Decodable
+{
 	let id: Int
 	let title: String
 	let thumbnail: Image

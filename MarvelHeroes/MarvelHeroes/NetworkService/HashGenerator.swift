@@ -8,11 +8,10 @@
 
 import Foundation
 
-class HashGenerator {
-	
+enum HashGenerator
+{
 	static func generateHash() -> String {
 		let combinedHash = "\(Constants.timestamp)\(Constants.privateKey)\(Constants.publicKey)"
 		return combinedHash.MD5()
 	}
 }
-

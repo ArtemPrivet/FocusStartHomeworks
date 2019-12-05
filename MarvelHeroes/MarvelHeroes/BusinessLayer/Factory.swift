@@ -8,7 +8,8 @@
 
 import Foundation
 
-class Factory {
+final class Factory
+{
 	//create characters module
 	func createCharactersModule() -> CharactersViewController {
 		let repository = Repository()
@@ -19,7 +20,7 @@ class Factory {
 		charactersRouter.charactersView = charactersView
 		return charactersView
 	}
-	
+
 	//create details characters module
 	func createDetailsVC(chracter: Character) -> DetailsCharacterViewController {
 		let repository = Repository()
@@ -28,7 +29,7 @@ class Factory {
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
 	}
-	
+
 	//create comics module
 	func createComicsModule() -> ComicsViewController {
 		let repository = Repository()
@@ -39,7 +40,7 @@ class Factory {
 		comicsRouter.comicsView = comicsView
 		return comicsView
 	}
-	
+
 	//create details comics module
 	func createDetailsVC(comics: Comic) -> DetailsComicsViewController {
 		let repository = Repository()
@@ -48,7 +49,7 @@ class Factory {
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
 	}
-	
+
 	//create authors module
 	func createAuthorsModule() -> AuthorsViewController {
 		let repository = Repository()

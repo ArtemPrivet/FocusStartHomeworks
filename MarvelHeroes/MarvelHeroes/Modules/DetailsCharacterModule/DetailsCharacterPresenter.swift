@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol IDetailsCharacterPresenter {
+protocol IDetailsCharacterPresenter
+{
 	func getCharacter() -> Character
 	func getComicsCount() -> Int
 	func getComics(index: Int) -> Comic
@@ -17,26 +18,24 @@ protocol IDetailsCharacterPresenter {
 	func setupBackgroungImage()
 }
 
-class DetailsCharacterPresenter {
+final class DetailsCharacterPresenter
+{
 	weak var detailsView: DetailsCharacterViewController?
 	var character: Character
 	var repository: Repository
 	var comicses: [Comic] = []
 	let serialQueue = DispatchQueue(label: "loadComicsQueue")
-	
-	
+
 	init(character: Character, repository: Repository) {
 		self.character = character
 		self.repository = repository
 		setupView()
 		setupBackgroungImage()
 	}
-	deinit {
-		print("DetailsCharacterPresenter deinit")
-	}
 }
 
-extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
+extension DetailsCharacterPresenter: IDetailsCharacterPresenter
+{
 	func setupBackgroungImage() {
 		self.repository.loadImage(urlString:
 			String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
@@ -51,17 +50,20 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 			}
 		}
 	}
-	
+
 	func getComicsCount() -> Int {
 		return comicses.count
 	}
-	
+
 	func getComics(index: Int) -> Comic {
 		return comicses[index]
 	}
-	
+
 	func setupView() {
-		repository.loadComics(fromPastScreen: PastScreen.characters, with: character.id, searchResult: nil, { [weak self] comicsResult in
+		repository.loadComics(fromPastScreen: PastScreen.characters,
+							  with: character.id,
+							  searchResult: nil,
+							  { [weak self] comicsResult in
 			guard let self = self else { return }
 			switch comicsResult {
 			case .success(let loadedData):
@@ -76,7 +78,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 			}
 		})
 	}
-	
+
 	func getComicsImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -87,7 +89,8 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.detailsView?.comicsTableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
+						guard let cell = self.detailsView?.comicsTableView.cellForRow(at: IndexPath(row: index, section: 0))
+							else { return }
 						cell.imageView?.image = image
 						cell.layoutSubviews()
 					}
@@ -97,7 +100,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter {
 			}
 		}
 	}
-	
+
 	func getCharacter() -> Character {
 		return character
 	}

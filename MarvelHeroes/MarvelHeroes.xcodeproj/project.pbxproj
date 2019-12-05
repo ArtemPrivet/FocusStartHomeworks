@@ -156,7 +156,7 @@
 			children = (
 				5C59D6AA239397CB0094CB19 /* Application */,
 				5C59D6B0239399940094CB19 /* NetworkService */,
-				5C59D6AF239399360094CB19 /* Model */,
+				5C59D6AF239399360094CB19 /* BusinessLayer */,
 				5CB838A823942383001C58BB /* Modules */,
 				5CB838942393EC31001C58BB /* Extensions */,
 				5CB838892393A044001C58BB /* Enums */,
@@ -183,14 +183,14 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		5C59D6AF239399360094CB19 /* Model */ = {
+		5C59D6AF239399360094CB19 /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
 				5CB838D823961CBE001C58BB /* Models */,
 				5CB838A023941433001C58BB /* Factory.swift */,
 				5CB838A223941440001C58BB /* Repository.swift */,
 			);
-			path = Model;
+			path = BusinessLayer;
 			sourceTree = "<group>";
 		};
 		5C59D6B0239399940094CB19 /* NetworkService */ = {
@@ -337,6 +337,7 @@
 				5C59D690239396D60094CB19 /* Sources */,
 				5C59D691239396D60094CB19 /* Frameworks */,
 				5C59D692239396D60094CB19 /* Resources */,
+				5C1BF96D2399B69E0067E253 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -407,6 +408,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5C1BF96D2399B69E0067E253 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5C59D690239396D60094CB19 /* Sources */ = {

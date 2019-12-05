@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol ICharacterPresenter {
+protocol ICharacterPresenter
+{
 	func getCharactersCount() -> Int
 	func getCharacter(index: Int) -> Character
 	func getCharacterImage(index: Int)
@@ -16,13 +17,13 @@ protocol ICharacterPresenter {
 	func setupView(with search: String?)
 }
 
-class CharactersPresenter {
-	
+final class CharactersPresenter
+{
 	weak var charactersView: CharactersViewController?
 	var repository: Repository
 	var router: ICharactersRouter
 	let serialQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive)
-	
+
 	private var characters: [Character] = []
 
 	init(repository: Repository, router: ICharactersRouter) {
@@ -32,21 +33,20 @@ class CharactersPresenter {
 	}
 }
 
-extension CharactersPresenter: ICharacterPresenter {
-	
+extension CharactersPresenter: ICharacterPresenter
+{
 	func getCharactersCount() -> Int {
 		return characters.count
 	}
-	
+
 	func getCharacter(index: Int) -> Character {
 		return characters[index]
 	}
-	
+
 	func showDetailCharacter(index: Int) {
 		router.showDetails(character: characters[index])
 	}
-	
-	
+
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -69,7 +69,7 @@ extension CharactersPresenter: ICharacterPresenter {
 			})
 		}
 	}
-	
+
 	func getCharacterImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }

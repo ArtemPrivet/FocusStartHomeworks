@@ -8,26 +8,23 @@
 
 import UIKit
 
-class ImageViewWithGradient: UIImageView
+final class ImageViewWithGradient: UIImageView
 {
 	let myGradientLayer: CAGradientLayer
-	
-	override init(frame: CGRect)
-	{
+
+	override init(frame: CGRect) {
 		myGradientLayer = CAGradientLayer()
 		super.init(frame: frame)
 		self.setup()
 	}
-	
-	required init?(coder aDecoder: NSCoder)
-	{
+
+	required init?(coder aDecoder: NSCoder) {
 		myGradientLayer = CAGradientLayer()
 		super.init(coder: aDecoder)
 		self.setup()
 	}
-	
-	func setup()
-	{
+
+	func setup() {
 		myGradientLayer.startPoint = CGPoint(x: 0, y: 0)
 		myGradientLayer.endPoint = CGPoint(x: 0, y: 1)
 		let colors: [CGColor] = [
@@ -37,14 +34,12 @@ class ImageViewWithGradient: UIImageView
 			UIColor.white.withAlphaComponent(0.9).cgColor,
 			UIColor.white.withAlphaComponent(1.0).cgColor,
 		]
-		
 		myGradientLayer.colors = colors
 		myGradientLayer.isOpaque = false
 		self.layer.addSublayer(myGradientLayer)
 	}
-	
-	override func layoutSubviews()
-	{
+
+	override func layoutSubviews() {
 		myGradientLayer.frame = self.layer.bounds
 	}
 }

@@ -8,15 +8,18 @@
 
 import Foundation
 
-struct CreatorDataWrapper: Decodable {
+struct CreatorDataWrapper: Decodable
+{
 	let data: CreatorDataContainer
 }
 
-struct CreatorDataContainer: Decodable {
+struct CreatorDataContainer: Decodable
+{
 	let results: [Creator]
 }
 
-struct Creator: Decodable {
+struct Creator: Decodable
+{
 	let id: Int
 	let firstName: String
 	let lastName: String

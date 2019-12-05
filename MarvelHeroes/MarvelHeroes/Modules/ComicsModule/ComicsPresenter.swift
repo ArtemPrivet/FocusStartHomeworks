@@ -8,7 +8,8 @@
 
 import UIKit
 
-protocol IComicsPresenter {
+protocol IComicsPresenter
+{
 	func getComicsCount() -> Int
 	func getComics(index: Int) -> Comic
 	func getComicsImage(index: Int)
@@ -16,15 +17,15 @@ protocol IComicsPresenter {
 	func setupView(with search: String?)
 }
 
-class ComicsPresenter {
-	
+final class ComicsPresenter
+{
+
 	weak var comicsView: ComicsViewController?
 	var repository: Repository
 	var router: IComicsRouter
 	let serialQueue = DispatchQueue(label: "loadComicsQueue", qos: .userInteractive)
-	
 	private var comicses: [Comic] = []
-	
+
 	init(repository: Repository, router: IComicsRouter) {
 		self.repository = repository
 		self.router = router
@@ -32,20 +33,20 @@ class ComicsPresenter {
 	}
 }
 
-extension ComicsPresenter: IComicsPresenter {
-	
+extension ComicsPresenter: IComicsPresenter
+{
 	func getComicsCount() -> Int {
 		return comicses.count
 	}
-	
+
 	func getComics(index: Int) -> Comic {
 		return comicses[index]
 	}
-	
+
 	func showDetailComics(index: Int) {
 		router.showDetails(comics: comicses[index])
 	}
-	
+
 	func setupView(with search: String?) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -68,7 +69,7 @@ extension ComicsPresenter: IComicsPresenter {
 			})
 		}
 	}
-	
+
 	func getComicsImage(index: Int) {
 		serialQueue.async { [weak self] in
 			guard let self = self else { return }

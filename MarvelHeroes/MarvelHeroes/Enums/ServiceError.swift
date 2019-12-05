@@ -8,7 +8,8 @@
 
 import Foundation
 
-enum ServiceError: Error {
+enum ServiceError: Error
+{
 	case sessionError(Error)
 	case notFound(Error)
 	case dataError(Error)
