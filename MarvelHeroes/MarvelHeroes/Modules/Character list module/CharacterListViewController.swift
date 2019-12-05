@@ -26,6 +26,7 @@ final class ItemListViewController: UIViewController
 		tableView.delegate = self
 		tableView.dataSource = self
 		tableView.isHidden = true
+		tableView.keyboardDismissMode = .onDrag
 		return tableView
 	}()
 
