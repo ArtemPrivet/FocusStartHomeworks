@@ -7,7 +7,8 @@
 
 import Foundation
 
-enum ServiceError: Error {
+enum ServiceError: Error
+{
 	case cannotMakeURL
 	case noData
 	case statusCodeError(Int)
@@ -17,15 +18,53 @@ enum ServiceError: Error {
 }
 
 typealias CharacterDataWrapperResult = Result<Data, ServiceError>
-typealias ComicDataWrapperResult = Result<[Comic], ServiceError>
+typealias ComicDataWrapperResult = Result<Data, ServiceError>
+typealias CreatorDataWrapperResult = Result<Data, ServiceError>
 
-protocol IMarvelAPIService {
-	func loadCharacters(name: String, _ completion: @escaping (CharacterDataWrapperResult) -> Void)
-	func loadComics(_ completion: @escaping (ComicDataWrapperResult) -> Void)
+typealias CharacterDataWrapperCompletion = (CharacterDataWrapperResult) -> Void
+typealias ComicDataWrapperCompletion = (ComicDataWrapperResult) -> Void
+typealias CreatorDataWrapperCompletion = (CreatorDataWrapperResult) -> Void
+
+// MARK: - Protocol IMarvelAPIService
+protocol IMarvelAPIService
+{
+	func loadCharacters(name: String, _ completion: @escaping CharacterDataWrapperCompletion)
+	func loadComics(title: String, _ completion: @escaping ComicDataWrapperCompletion)
+	func loadCreators(lastName: String, _ completion: @escaping CreatorDataWrapperCompletion)
+
+	func loadComics(characterID: String, _ completion: @escaping ComicDataWrapperCompletion)
+	func loadComics(creatorID: String, _ completion: @escaping ComicDataWrapperCompletion)
+	func loadCreators(comicID: String, _ completion: @escaping CreatorDataWrapperCompletion)
 }
 
-final class MarvelAPIService {
+// MARK: - Class
+final class MarvelAPIService
+{
 
+	private typealias DataReult = Result<Data, ServiceError>
+
+	private enum URLS: String
+	{
+		case characters, comics, creators
+
+		private static let base = URL(string: "https://gateway.marvel.com:443/v1/public")
+
+		var url: URL? {
+			Self.base?.appendingPathComponent(self.rawValue)
+		}
+	}
+
+	private enum Parameters: String
+	{
+		case nameStartsWith, modifiedSince, orderBy, characterID, titleStartsWith, lastNameStartsWith
+	}
+
+	private enum OrderBy: String
+	{
+		case name, modified, focDate, lastName, firstName, middleName, suffix
+	}
+
+	// MARK: ...Private properties
 	private let apiKey = "385b86e3ae22c2b0f3e18cc61579e4ea"
 	private let privateApiKey = "a01fbf7404225c0f9e07d1886ce7a9a1ee2e758e"
 	private var timestamp: TimeInterval { Date().timeIntervalSince1970 }
@@ -34,31 +73,12 @@ final class MarvelAPIService {
 	private lazy var requiredQueryItems = [
 		URLQueryItem(name: "apikey", value: apiKey),
 		URLQueryItem(name: "ts", value: String(Int(timestamp))),
-		URLQueryItem(name: "hash", value: hash)
+		URLQueryItem(name: "hash", value: hash),
 	]
-
-	private typealias DataReult = Result<Data, ServiceError>
 
 	private let urlSession = URLSession.shared
 
-	private enum URLS: String {
-		case characters, comics
-
-		private static let base = URL(string: "https://gateway.marvel.com:443/v1/public")!
-
-		var url: URL? {
-			Self.base.appendingPathComponent(self.rawValue)
-		}
-	}
-
-	private enum Parameters: String {
-		case name, nameStartsWith, modifiedSince, orderBy
-	}
-
-	private enum OrderBy: String {
-		case name, modified
-	}
-
+	// MARK: ...Private methods
 	private func fetchData(
 		from url: URL?,
 		parameters: [URLQueryItem],
@@ -102,30 +122,109 @@ final class MarvelAPIService {
 	}
 }
 
-extension MarvelAPIService: IMarvelAPIService {
-	func loadCharacters(name: String, _ completion: @escaping (CharacterDataWrapperResult) -> Void) {
+// MARK: - IMarvelAPIService
+extension MarvelAPIService: IMarvelAPIService
+{
+
+	// MARK: ...Load item by name
+
+	/// Load characters by name
+	/// - Parameters:
+	///   - name: start with name
+	///   - completion: returns data
+	func loadCharacters(name: String, _ completion: @escaping CharacterDataWrapperCompletion) {
 		let parameters = [
-			URLQueryItem(name: Parameters.orderBy.rawValue, value: OrderBy.name.rawValue),
-			URLQueryItem(name: Parameters.nameStartsWith.rawValue, value: name)
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.name.rawValue),
+			URLQueryItem(name: Parameters.nameStartsWith.rawValue,
+						 value: name),
 		]
 		fetchData(from: URLS.characters.url, parameters: parameters) { result in
 			completion(result)
 		}
 	}
 
-	func loadComics(_ completion: @escaping (ComicDataWrapperResult) -> Void) {
-		fetchData(from: URLS.comics.url, parameters: []) { result in
-//			switch result {
-//			case .success(let data):
-//				do {
-//					let response = try self.decoder.decode(ComicDataWrapper.self, from: data)
-//					completion(.success((response.data.results)))
-//				} catch {
-//					completion(.failure(.decodingError(error)))
-//				}
-//			case .failure(let error):
-//				completion(.failure(error))
-//			}
+	/// Load comics by title
+	/// - Parameters:
+	///   - title: start with title
+	///   - completion: returns data
+	func loadComics(title: String, _ completion: @escaping ComicDataWrapperCompletion) {
+		let parameters = [
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.focDate.rawValue),
+			URLQueryItem(name: Parameters.titleStartsWith.rawValue,
+						 value: title),
+		]
+		fetchData(from: URLS.comics.url, parameters: parameters) { result in
+			completion(result)
+		}
+	}
+
+	/// Load creators by last name
+	/// - Parameters:
+	///   - lastName: start with last name
+	///   - completion: returns data
+	func loadCreators(lastName: String, _ completion: @escaping CreatorDataWrapperCompletion) {
+		let parameters = [
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.lastName.rawValue),
+			URLQueryItem(name: Parameters.lastNameStartsWith.rawValue,
+						 value: lastName),
+		]
+		fetchData(from: URLS.creators.url, parameters: parameters) { result in
+			completion(result)
+		}
+	}
+
+	// MARK: ...Load item by id
+	/// Load comics by character ID
+	/// - Parameters:
+	///   - characterID: ID of character
+	///   - completion: result data
+	func loadComics(characterID: String, _ completion: @escaping ComicDataWrapperCompletion) {
+		let parameters = [
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.focDate.rawValue),
+		]
+		let url = URLS.characters.url?
+			.appendingPathComponent(characterID)
+			.appendingPathComponent(URLS.comics.rawValue)
+		fetchData(from: url, parameters: parameters) { result in
+			completion(result)
+		}
+	}
+
+	/// Load comics by creator ID
+	/// - Parameters:
+	///   - creatorID: ID of creator
+	///   - completion: result data
+	func loadComics(creatorID: String, _ completion: @escaping ComicDataWrapperCompletion) {
+		let parameters = [
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.focDate.rawValue),
+		]
+		let url = URLS.creators.url?
+			.appendingPathComponent(creatorID)
+			.appendingPathComponent(URLS.comics.rawValue)
+		fetchData(from: url, parameters: parameters) { result in
+			completion(result)
+		}
+	}
+
+	/// Load creators by comic ID
+	/// - Parameters:
+	///   - comicID: ID of comic
+	///   - completion: result data
+	func loadCreators(comicID: String, _ completion: @escaping CreatorDataWrapperCompletion) {
+		let parameters = [
+			URLQueryItem(name: Parameters.orderBy.rawValue,
+						 value: OrderBy.lastName.rawValue),
+		]
+		let url = URLS.comics.url?
+			.appendingPathComponent(comicID)
+			.appendingPathComponent(URLS.creators.rawValue)
+		fetchData(from: url, parameters: parameters) { result in
+			completion(result)
 		}
 	}
 }

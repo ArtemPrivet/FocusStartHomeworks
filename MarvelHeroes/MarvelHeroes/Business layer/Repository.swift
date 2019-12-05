@@ -9,38 +9,75 @@ import UIKit
 
 typealias ImageResult = Result<UIImage, ServiceError>
 
-protocol ICharactersRepository {
-	func fetchCharacters(name: String, _ completion: @escaping (CharactersResult) -> Void)
+typealias CharacterResultCompletion = (CharactersResult) -> Void
+typealias ComicsResultCompletion = (ComicsResult) -> Void
+typealias CreatorResultCompletion = (CreatorsResult) -> Void
+typealias ImageResultCompletion = (ImageResult) -> Void
+
+typealias IItemsRepository = ICharactersRepository & IComicsRepository & ICreatorsRepository
+
+// MARK: - Protocol ICharactersRepository
+protocol ICharactersRepository
+{
+	func fetchCharacters(name: String,
+						 _ completion: @escaping CharacterResultCompletion)
 }
 
-protocol IComicsRepository {
-	func fetchComics(name: String, _ completion: @escaping (ComicsResult) -> Void)
+// MARK: - Protocol IComicsRepository
+protocol IComicsRepository
+{
+	func fetchComics(title: String,
+					 _ completion: @escaping ComicsResultCompletion)
+	func fetchComics(fromType type: ItemType,
+					 itemId: String,
+					 _ completion: @escaping ComicsResultCompletion)
 }
 
-protocol IImagesRepository {
-	func fetchImage(from path: String, extension: String, _ completion: @escaping (ImageResult) -> Void)
+// MARK: - Protocol ICreatorsRepository
+protocol ICreatorsRepository
+{
+	func fetchCreators(lastName: String,
+					   _ completion: @escaping CreatorResultCompletion)
+	func fetchCreator(comicID: String,
+					  _ completion: @escaping CreatorResultCompletion)
 }
 
-class CharactersRepository {
+// MARK: - Protocol IImagesRepository
+protocol IImagesRepository
+{
+	func fetchImage(from path: String,
+					extension: String?,
+					_ completion: @escaping (ImageResult) -> Void)
+}
 
+final class ItemsRepository
+{
+	// MARK: Private methods
 	private var imageDownloadServise: IImageDownloadService
 	private var networkServise: IMarvelAPIService
 	private var decoderServise: IDecoderService
 
-	init(jsonPlaceholderService: IMarvelAPIService, decoderServise: IDecoderService, imageDownloadServise: IImageDownloadService) {
+	// MARK: Initialization
+	init(jsonPlaceholderService: IMarvelAPIService,
+		 decoderServise: IDecoderService,
+		 imageDownloadServise: IImageDownloadService) {
+
 		self.networkServise = jsonPlaceholderService
 		self.decoderServise = decoderServise
 		self.imageDownloadServise = imageDownloadServise
 	}
 }
 
-extension CharactersRepository: ICharactersRepository {
+// MARK: - ICharactersRepository
+extension ItemsRepository: ICharactersRepository
+{
+	func fetchCharacters(name: String,
+						 _ completion: @escaping CharacterResultCompletion) {
 
-	func fetchCharacters(name: String, _ completion: @escaping (CharactersResult) -> Void) {
-		networkServise.loadCharacters(name: name) { result in
+		networkServise.loadCharacters(name: name) { [weak self] result in
 			switch result {
 			case .success(let data):
-				self.decoderServise.decodeCharacters(data) { result in
+				self?.decoderServise.decodeCharacters(data) { result in
 					switch result {
 					case .success(let characters):
 						completion(.success(characters))
@@ -52,14 +89,146 @@ extension CharactersRepository: ICharactersRepository {
 				}
 			case .failure(let error):
 				completion(.failure(error))
+				return
 			}
 		}
 	}
 }
 
-extension CharactersRepository: IImagesRepository {
-	func fetchImage(from path: String, extension: String, _ completion: @escaping (ImageResult) -> Void) {
-		let url = URL(string: path)?.appendingPathExtension(`extension`)
+// MARK: - IComicsRepository
+extension ItemsRepository: IComicsRepository
+{
+	func fetchComics(title: String, _ completion: @escaping ComicsResultCompletion) {
+		networkServise.loadComics(title: title) { [weak self] result in
+			switch result {
+			case .success(let data):
+				self?.decoderServise.decodeComics(data) { result in
+					switch result {
+					case .success(let comics):
+						completion(.success(comics))
+						return
+					case .failure(let error):
+						completion(.failure(error))
+						return
+					}
+				}
+			case .failure(let error):
+				completion(.failure(error))
+				return
+			}
+		}
+	}
+
+	func fetchComics(fromType type: ItemType,
+					 itemId: String,
+					 _ completion: @escaping ComicsResultCompletion) {
+
+		switch type {
+		case .charactor: self.fetchComics(characterId: itemId, completion)
+		case .comic: break
+		case .creator: self.fetchComics(creatorId: itemId, completion)
+		}
+	}
+
+	private func fetchComics(characterId: String,
+							 _ completion: @escaping ComicsResultCompletion) {
+		networkServise.loadComics(characterID: characterId) { result in
+			self.fetchComics(result: result, completion)
+		}
+	}
+
+	private func fetchComics(creatorId: String,
+							 _ completion: @escaping ComicsResultCompletion) {
+		networkServise.loadComics(creatorID: creatorId) { [weak self] result in
+			self?.fetchComics(result: result, completion)
+		}
+	}
+
+	private func fetchComics(result: ComicDataWrapperResult,
+							 _ completion: @escaping ComicsResultCompletion) {
+
+		switch result {
+		case .success(let data):
+			self.decoderServise.decodeComics(data) { result in
+				switch result {
+				case .success(let comics):
+					completion(.success(comics))
+					return
+				case .failure(let error):
+					completion(.failure(error))
+					return
+				}
+			}
+		case .failure(let error):
+			completion(.failure(error))
+			return
+		}
+	}
+}
+
+// MARK: - IComicsRepository
+extension ItemsRepository: ICreatorsRepository
+{
+	func fetchCreators(lastName: String,
+					   _ completion: @escaping CreatorResultCompletion) {
+
+		networkServise.loadCreators(lastName: lastName) { [weak self] result in
+			switch result {
+			case .success(let data):
+				self?.decoderServise.decodeCreator(data) { result in
+					switch result {
+					case .success(let creators):
+						completion(.success(creators))
+						return
+					case .failure(let error):
+						completion(.failure(error))
+						return
+					}
+				}
+			case .failure(let error):
+				completion(.failure(error))
+				return
+			}
+		}
+	}
+
+	func fetchCreator(comicID: String,
+					  _ completion: @escaping CreatorResultCompletion) {
+
+		networkServise.loadCreators(comicID: comicID) { [weak self] result in
+			switch result {
+			case .success(let data):
+				self?.decoderServise.decodeCreator(data) { result in
+					switch result {
+					case .success(let creator):
+						completion(.success(creator))
+						return
+					case .failure(let error):
+						completion(.failure(error))
+						return
+					}
+				}
+			case .failure(let error):
+				completion(.failure(error))
+				return
+			}
+		}
+	}
+}
+
+// MARK: - IImagesRepository
+extension ItemsRepository: IImagesRepository
+{
+	func fetchImage(from path: String,
+					extension: String? = nil,
+					_ completion: @escaping ImageResultCompletion) {
+
+		var url = URL(string: path)
+
+		if let `extension` = `extension` {
+			url?.appendPathExtension(`extension`)
+		}
+
 		imageDownloadServise.loadImage(from: url) { result in
 			switch result {
 			case .success(let data):
@@ -75,6 +244,4 @@ extension CharactersRepository: IImagesRepository {
 			}
 		}
 	}
-
-
 }

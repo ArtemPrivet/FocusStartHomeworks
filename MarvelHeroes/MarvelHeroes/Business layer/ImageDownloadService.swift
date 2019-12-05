@@ -9,15 +9,18 @@ import Foundation
 
 typealias ImageDataResult = Result<Data, ServiceError>
 
-protocol IImageDownloadService {
+protocol IImageDownloadService
+{
 	func loadImage(from url: URL?, _ completion: @escaping (ImageDataResult) -> Void)
 }
 
-class ImageDownloadService {
+final class ImageDownloadService
+{
 	private var imageDataCache = NSCache<NSString, NSData>()
 }
 
-extension ImageDownloadService: IImageDownloadService {
+extension ImageDownloadService: IImageDownloadService
+{
 	func loadImage(from url: URL?, _ completion: @escaping (ImageDataResult) -> Void) {
 
 		guard let url = url else {

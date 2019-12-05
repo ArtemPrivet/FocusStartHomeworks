@@ -5,22 +5,35 @@
 //  Created by Arkadiy Grigoryanc on 01.12.2019.
 //
 
-class ModulesFactory {
+final class ModulesFactory
+{
+	func getItemListModule(
+		withRepository repository: IItemsRepository & IImagesRepository,
+		itemType: ItemType) -> ItemListViewController {
 
-	func getCharacterListModule(withRepository repository: ICharactersRepository & IImagesRepository) -> CharacterListViewController {
-
-		let router = CharactersRouter(factory: self)
-		let presenter = CharactersPresenter(repository: repository, router: router)
-		let viewController = CharacterListViewController(presenter: presenter)
+		let router = ItemListRouter(factory: self)
+		let presenter = ItemListPresenter(itemType: itemType,
+										  repository: repository,
+										  router: router)
+		let viewController = ItemListViewController(presenter: presenter)
 		router.view = viewController
 		presenter.view = viewController
 
 		return viewController
 	}
 
-//	func getDetailContactModule(contact: Contact) -> DetailContactViewController {
-//		let presenter = DetailContactPresenter(contact: contact)
-//		let viewController = DetailContactViewController(presenter: presenter)
-//		return viewController
-//	}
+	func getDetailItemModule(
+		viewModel: IItemViewModel,
+		repository: IItemsRepository & IImagesRepository) -> ItemDetailViewController {
+
+		let router = ItemRouter(factory: self)
+		let presenter = ItemPresenter(viewModel: viewModel,
+									  repository: repository,
+									  router: router)
+		let viewController = ItemDetailViewController(presenter: presenter)
+		router.view = viewController
+		presenter.view = viewController
+
+		return viewController
+	}
 }

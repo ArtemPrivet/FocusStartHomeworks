@@ -9,13 +9,17 @@ import Foundation
 
 typealias CharactersResult = Result<[Character], ServiceError>
 typealias ComicsResult = Result<[Comic], ServiceError>
+typealias CreatorsResult = Result<[Creator], ServiceError>
 
-protocol IDecoderService {
+protocol IDecoderService
+{
 	func decodeCharacters(_ data: Data, _ completion: @escaping (CharactersResult) -> Void)
-	func decodeComics(_ completion: @escaping (ComicsResult) -> Void)
+	func decodeComics(_ data: Data, _ completion: @escaping (ComicsResult) -> Void)
+	func decodeCreator(_ data: Data, _ completion: @escaping (CreatorsResult) -> Void)
 }
 
-final class DecoderService {
+final class DecoderService
+{
 	private let decoder: JSONDecoder = {
 		let decoder = JSONDecoder()
 		decoder.dateDecodingStrategy = .iso8601
@@ -23,19 +27,72 @@ final class DecoderService {
 	}()
 }
 
-extension DecoderService: IDecoderService {
+extension DecoderService: IDecoderService
+{
 
 	func decodeCharacters(_ data: Data, _ completion: @escaping (CharactersResult) -> Void) {
-		do {
-			let result = try CharacterDataWrapper(data: data, decoder: decoder)
-			completion(.success(result.data.results))
-		} catch {
-			completion(.failure(.decodingError(error)))
-		}
+		DispatchQueue(
+			label: "com.marvelHeroes.decodeCharacters",
+			qos: .userInitiated,
+			attributes: .concurrent).async { [weak self] in
 
+			guard let self = self else { return }
+			do {
+				let result = try CharacterDataWrapper(data: data,
+													  decoder: self.decoder)
+				DispatchQueue.main.async {
+					completion(.success(result.data.results))
+				}
+			}
+			catch {
+				DispatchQueue.main.async {
+					completion(.failure(.decodingError(error)))
+				}
+			}
+		}
 	}
 
-	func decodeComics(_ completion: @escaping (ComicsResult) -> Void) {
+	func decodeComics(_ data: Data, _ completion: @escaping (ComicsResult) -> Void) {
+		DispatchQueue(
+			label: "com.marvelHeroes.decodeComics",
+			qos: .userInitiated,
+			attributes: .concurrent).async { [weak self] in
 
+			guard let self = self else { return }
+			do {
+				let result = try ComicDataWrapper(data: data,
+												  decoder: self.decoder)
+				DispatchQueue.main.async {
+					completion(.success(result.data.results))
+				}
+			}
+			catch {
+				DispatchQueue.main.async {
+					completion(.failure(.decodingError(error)))
+				}
+			}
+		}
+	}
+
+	func decodeCreator(_ data: Data, _ completion: @escaping (CreatorsResult) -> Void) {
+		DispatchQueue(
+			label: "com.marvelHeroes.decodeCreator",
+			qos: .userInitiated,
+			attributes: .concurrent).async { [weak self] in
+
+			guard let self = self else { return }
+			do {
+				let result = try CreatorDataWrapper(data: data,
+												  decoder: self.decoder)
+				DispatchQueue.main.async {
+					completion(.success(result.data.results))
+				}
+			}
+			catch {
+				DispatchQueue.main.async {
+					completion(.failure(.decodingError(error)))
+				}
+			}
+		}
 	}
 }
