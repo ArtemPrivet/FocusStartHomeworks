@@ -104,7 +104,6 @@ extension RemoteDataService: IRemoteDataService
 		guard let path = characterImage.path,
 			let imageExtension = characterImage.imageExtension else { return }
 		let urlString = "\(path)\(size).\(imageExtension)"
-		print(urlString)
 		guard let url = URL(string: urlString) else { return }
 		fetchData(from: url) { result in
 			switch result {
