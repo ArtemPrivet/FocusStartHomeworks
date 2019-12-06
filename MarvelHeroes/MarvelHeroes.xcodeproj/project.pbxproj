@@ -183,14 +183,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		58AD6A9123955E3F000041BF /* Character module */ = {
+		58AD6A9123955E3F000041BF /* Item module */ = {
 			isa = PBXGroup;
 			children = (
 				58AD6A8923955583000041BF /* ItemDetailViewController.swift */,
 				58AD6A8D23955D6C000041BF /* ItemPresenter.swift */,
 				58AD6A8F23955DC6000041BF /* ItemRouter.swift */,
 			);
-			path = "Character module";
+			path = "Item module";
 			sourceTree = "<group>";
 		};
 		58DA7213239861B000498977 /* Protocols */ = {
@@ -202,21 +202,21 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		58E6DFAA23945D4600E52083 /* Character list module */ = {
+		58E6DFAA23945D4600E52083 /* Item list module */ = {
 			isa = PBXGroup;
 			children = (
 				58E6DFA42394522900E52083 /* ItemListViewController.swift */,
 				58E6DFAD23945F0400E52083 /* ItemListPresenter.swift */,
 				58E6DFAB23945EF800E52083 /* ItemListRouter.swift */,
 			);
-			path = "Character list module";
+			path = "Item list module";
 			sourceTree = "<group>";
 		};
 		58E6DFAF239461EF00E52083 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				58E6DFAA23945D4600E52083 /* Character list module */,
-				58AD6A9123955E3F000041BF /* Character module */,
+				58E6DFAA23945D4600E52083 /* Item list module */,
+				58AD6A9123955E3F000041BF /* Item module */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
