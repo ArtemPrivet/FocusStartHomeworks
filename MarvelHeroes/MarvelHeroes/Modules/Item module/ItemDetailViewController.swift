@@ -30,6 +30,7 @@ final class ItemDetailViewController: UIViewController
 		tableView.delegate = self
 		tableView.dataSource = self
 		tableView.backgroundColor = .clear
+		tableView.separatorStyle = .none
 		return tableView
 	}()
 
@@ -264,6 +265,7 @@ extension ItemDetailViewController: IItemDetailViewController
 	func showItems() {
 		activityIndicator.stopAnimating()
 		didLoaditems = true
+		tableView.separatorStyle = .singleLine
 		tableView.reloadData()
 	}
 
