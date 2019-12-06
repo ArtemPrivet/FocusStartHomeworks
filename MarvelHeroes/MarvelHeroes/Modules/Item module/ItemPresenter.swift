@@ -28,6 +28,10 @@ final class ItemPresenter
 	private let repository: IItemsRepository & IImagesRepository
 	private let router: IItemRouter
 
+	let dispatchQueueImageDownload = DispatchQueue(label: "com.marvelHeroes.ImageLoad",
+												   qos: .userInitiated,
+												   attributes: .concurrent)
+
 	private(set) var detailViewModel: IItemViewModel
 	private(set) var tableViewViewModels = [IItemViewModel]()
 
@@ -89,9 +93,8 @@ extension ItemPresenter: IItemPresenter
 	func onThumbnailUpdate(by thumbnail: Thumbnail,
 						   aspectRatio: AspectRatio = .standard(.small),
 						   _ completion: @escaping (UIImage?) -> Void) {
-		DispatchQueue(label: "com.marvelHeroes.ImageLoad",
-					  qos: .userInitiated,
-					  attributes: .concurrent).async { [weak self] in
+
+		dispatchQueueImageDownload.async { [weak self] in
 			self?.repository.fetchImage(fromURL: thumbnail.url(withAspectRatio: aspectRatio)) { result in
 
 				switch result {

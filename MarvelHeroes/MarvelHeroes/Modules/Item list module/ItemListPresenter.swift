@@ -29,6 +29,9 @@ final class ItemListPresenter
 	private let router: IItemListRouter
 
 	private var pendingRequesrWorkItem: DispatchWorkItem?
+	let dispatchQueueImageDownload = DispatchQueue(label: "com.marvelHeroes.ImageLoad",
+												   qos: .userInitiated,
+												   attributes: .concurrent)
 
 	private(set) var itemType: ItemType
 	private(set) var tableViewViewModels = [IItemViewModel]()
@@ -144,9 +147,7 @@ extension ItemListPresenter: IItemListPresenter
 						   aspectRatio: AspectRatio = .standard(.small),
 						   _ completion: @escaping (UIImage?) -> Void) {
 
-		DispatchQueue(label: "com.marvelHeroes.imageLoad",
-					  qos: .userInitiated,
-					  attributes: .concurrent).async { [weak self] in
+		dispatchQueueImageDownload.async { [weak self] in
 			self?.repository.fetchImage(
 			fromURL: thumbnail.url(withAspectRatio: aspectRatio)) { result in
 

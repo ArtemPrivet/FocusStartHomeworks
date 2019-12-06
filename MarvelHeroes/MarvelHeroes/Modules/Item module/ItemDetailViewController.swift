@@ -45,16 +45,18 @@ final class ItemDetailViewController: UIViewController
 			return self.imageView.addGradientLayerInForeground(
 				colors: [
 					UIColor.systemBackground.withAlphaComponent(0.25),
-					UIColor.systemBackground,
-					UIColor.systemBackground,
+					.systemBackground,
+					.systemBackground,
+					.systemBackground,
 			])
 		}
 		else {
 			return self.imageView.addGradientLayerInForeground(
 				colors: [
 					UIColor.white.withAlphaComponent(0.25),
-					UIColor.white,
-					UIColor.white,
+					.white,
+					.white,
+					.white,
 			])
 		}
 	}()
