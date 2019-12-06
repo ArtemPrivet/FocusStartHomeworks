@@ -56,7 +56,8 @@ final class MarvelAPIService
 
 	private enum Parameters: String
 	{
-		case nameStartsWith, modifiedSince, orderBy, characterID, titleStartsWith, lastNameStartsWith
+		case nameStartsWith, modifiedSince, orderBy, characterID, titleStartsWith, lastNameStartsWith, apikey, hash, limit
+		case timeStamp = "ts"
 	}
 
 	private enum OrderBy: String
@@ -71,9 +72,10 @@ final class MarvelAPIService
 	private var hash: String { MD5(String(Int(timestamp)) + privateApiKey + apiKey) }
 
 	private lazy var requiredQueryItems = [
-		URLQueryItem(name: "apikey", value: apiKey),
-		URLQueryItem(name: "ts", value: String(Int(timestamp))),
-		URLQueryItem(name: "hash", value: hash),
+		URLQueryItem(name: Parameters.apikey.rawValue, value: apiKey),
+		URLQueryItem(name: Parameters.timeStamp.rawValue, value: String(Int(timestamp))),
+		URLQueryItem(name: Parameters.hash.rawValue, value: hash),
+		URLQueryItem(name: Parameters.limit.rawValue, value: String(100)),
 	]
 
 	private let urlSession = URLSession.shared
