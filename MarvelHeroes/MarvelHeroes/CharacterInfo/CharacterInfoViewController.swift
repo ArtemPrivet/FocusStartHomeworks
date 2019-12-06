@@ -31,7 +31,7 @@ final class CharacterInfoViewController: UIViewController
 			return UIColor.white
 		}
 	}()
-	private let loadIndicator = UIActivityIndicatorView(style: .gray)
+	private let loadIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	var presenter: ICharacterInfoPresenter?
 
 	override func viewDidLoad() {

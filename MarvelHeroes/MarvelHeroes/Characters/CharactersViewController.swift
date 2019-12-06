@@ -15,7 +15,7 @@ final class CharactersViewController: UIViewController
 	private lazy var searchController = UISearchController()
 	private let searchStubView = UIImageView()
 	private let searchStubLabel = UILabel()
-	private let loadIndicator = UIActivityIndicatorView(style: .gray)
+	private let loadIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	private let cdllId = "cell"
 	var presenter: ICharactersPresenter?
 
