@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A1096A3239985F000FC636F /* DetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1096A2239985F000FC636F /* DetailScreen.swift */; };
+		3A1096A5239985F800FC636F /* DetailScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */; };
 		3A4DC4CD23969F1000264B93 /* HeroesScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */; };
 		3A5F591923940D08003FCA74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F591823940D08003FCA74 /* AppDelegate.swift */; };
 		3A5F592223940D0E003FCA74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F592123940D0E003FCA74 /* Assets.xcassets */; };
@@ -15,10 +17,13 @@
 		3A5F593023941483003FCA74 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F592F23941483003FCA74 /* NetworkService.swift */; };
 		3A5F593223941895003FCA74 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F593123941895003FCA74 /* Extensions.swift */; };
 		3A5F593423941ECB003FCA74 /* NetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */; };
-		3A5F59362394512C003FCA74 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F59352394512C003FCA74 /* Model.swift */; };
+		3A5F59362394512C003FCA74 /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F59352394512C003FCA74 /* Hero.swift */; };
+		3A8DD52E239AB95700AC61C0 /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8DD52D239AB95700AC61C0 /* Series.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A1096A2239985F000FC636F /* DetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailScreen.swift; sourceTree = "<group>"; };
+		3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailScreenPresenter.swift; sourceTree = "<group>"; };
 		3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroesScreenPresenter.swift; sourceTree = "<group>"; };
 		3A5F591523940D08003FCA74 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5F591823940D08003FCA74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -29,7 +34,8 @@
 		3A5F592F23941483003FCA74 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		3A5F593123941895003FCA74 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProtocol.swift; sourceTree = "<group>"; };
-		3A5F59352394512C003FCA74 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		3A5F59352394512C003FCA74 /* Hero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
+		3A8DD52D239AB95700AC61C0 /* Series.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,14 +49,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A4DC4CB23969ECF00264B93 /* HeroesModule */ = {
+		3A1096A6239985FF00FC636F /* DetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				3A1096A2239985F000FC636F /* DetailScreen.swift */,
+				3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */,
+			);
+			path = DetailScreen;
+			sourceTree = "<group>";
+		};
+		3A2065D7239B1B3A00059322 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				3A5F59352394512C003FCA74 /* Hero.swift */,
+				3A8DD52D239AB95700AC61C0 /* Series.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		3A2065D8239B1B4700059322 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				3A5F592F23941483003FCA74 /* NetworkService.swift */,
+				3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		3A2065D9239B1B5900059322 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				3A5F593123941895003FCA74 /* Extensions.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		3A4DC4CB23969ECF00264B93 /* HeroesSearchScreen */ = {
 			isa = PBXGroup;
 			children = (
 				3A5F592D23940E77003FCA74 /* MainScreen.swift */,
 				3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */,
-				3A5F59352394512C003FCA74 /* Model.swift */,
+				3A1096A6239985FF00FC636F /* DetailScreen */,
 			);
-			path = HeroesModule;
+			path = HeroesSearchScreen;
 			sourceTree = "<group>";
 		};
 		3A5F590C23940D08003FCA74 = {
@@ -73,13 +114,13 @@
 			isa = PBXGroup;
 			children = (
 				3A5F591823940D08003FCA74 /* AppDelegate.swift */,
-				3A4DC4CB23969ECF00264B93 /* HeroesModule */,
+				3A2065D7239B1B3A00059322 /* Model */,
+				3A4DC4CB23969ECF00264B93 /* HeroesSearchScreen */,
 				3A5F592123940D0E003FCA74 /* Assets.xcassets */,
 				3A5F592323940D0E003FCA74 /* LaunchScreen.storyboard */,
 				3A5F592623940D0E003FCA74 /* Info.plist */,
-				3A5F592F23941483003FCA74 /* NetworkService.swift */,
-				3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */,
-				3A5F593123941895003FCA74 /* Extensions.swift */,
+				3A2065D8239B1B4700059322 /* Network */,
+				3A2065D9239B1B5900059322 /* Support */,
 			);
 			path = MarvelHeroes;
 			sourceTree = "<group>";
@@ -176,10 +217,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A1096A3239985F000FC636F /* DetailScreen.swift in Sources */,
 				3A5F592E23940E77003FCA74 /* MainScreen.swift in Sources */,
 				3A5F593023941483003FCA74 /* NetworkService.swift in Sources */,
 				3A5F593423941ECB003FCA74 /* NetworkProtocol.swift in Sources */,
-				3A5F59362394512C003FCA74 /* Model.swift in Sources */,
+				3A5F59362394512C003FCA74 /* Hero.swift in Sources */,
+				3A8DD52E239AB95700AC61C0 /* Series.swift in Sources */,
+				3A1096A5239985F800FC636F /* DetailScreenPresenter.swift in Sources */,
 				3A5F591923940D08003FCA74 /* AppDelegate.swift in Sources */,
 				3A4DC4CD23969F1000264B93 /* HeroesScreenPresenter.swift in Sources */,
 				3A5F593223941895003FCA74 /* Extensions.swift in Sources */,
@@ -328,7 +372,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.antonbelov.MarvelHeroes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -346,7 +390,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.antonbelov.MarvelHeroes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

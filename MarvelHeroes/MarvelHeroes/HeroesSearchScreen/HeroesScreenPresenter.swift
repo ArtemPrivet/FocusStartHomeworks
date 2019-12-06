@@ -20,13 +20,10 @@ final class HeroesScreenPresenter
 {
 	weak private var mainScreen: MainScreen?
 	private (set) var heroesArray = [Character?]()
+	let networkService: INetworkProtocol = NetworkService()
 	var mainTitle: String {
 		guard #available(iOS 12.0, *) else { return "Heroes" }
 		return "🦸🏼‍♂️ Heroes"
-	}
-
-	deinit {
-		print("Presenter deinit")
 	}
 
 	func attachMainScreen(_ mainScreen: MainScreen) {
@@ -43,9 +40,8 @@ final class HeroesScreenPresenter
 		guard let enlargement = heroesArray[indexPath.row]?.thumbnail?.enlargement else { return }
 		let urlString = "\(path + "." + enlargement)"
 		guard let url = URL(string: urlString) else { return }
-		networkService.getHeroesImageData(url: url) { data in
+		networkService.getImageData(url: url) { data in
 			callBack(data)
-			//self?.mainScreen?.updateRow(indexPath: indexPath)
 		}
 	}
 
@@ -54,8 +50,6 @@ final class HeroesScreenPresenter
 			self.mainScreen?.setEmptyHeroes(characterName: characterName)
 		}
 	}
-
-	let networkService: INetworkProtocol = NetworkService()
 
 	func getData(characterName: String) {
 		self.heroesArray.removeAll()
@@ -80,5 +74,12 @@ final class HeroesScreenPresenter
 				self?.mainScreen?.finishLoading()
 			}
 		}
+	}
+
+	func transitionToDetailScreen(indexPath: IndexPath) {
+		guard let heroID = heroesArray[indexPath.row] else { return }
+		let detailPresenter = DetailScreenPresenter(character: heroID)
+		let detailViewController = DetailScreenViewController(detailPresenter: detailPresenter)
+		self.mainScreen?.navigationController?.pushViewController(detailViewController, animated: true)
 	}
 }

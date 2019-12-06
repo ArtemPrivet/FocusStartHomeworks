@@ -32,7 +32,7 @@ final class MainScreen: UIViewController
 
 	private func setupSearchBar() {
 		if #available(iOS 11.0, *) {
-			searchController.searchBar.placeholder = "Placeholder"
+			searchController.searchBar.placeholder = "Enter the name of hero"
 			self.navigationItem.searchController = searchController
 			self.navigationItem.hidesSearchBarWhenScrolling = false
 		}
@@ -85,11 +85,6 @@ final class MainScreen: UIViewController
 		setupSearchBar()
 		setupActivityIndicator()
 		presenter.attachMainScreen(self)
-		self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
-	}
-
-	@objc func hideKeyboard() {
-		self.view.endEditing(true)
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -103,6 +98,9 @@ extension MainScreen: UISearchBarDelegate
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		guard let text = searchBar.text, text.isEmpty == false else { return }
 		presenter.getData(characterName: text)
+		searchBar.placeholder = text
+		self.searchController.searchBar.endEditing(true)
+		searchController.isActive = false
 	}
 }
 // MARK: - IMainScreenData
@@ -128,19 +126,19 @@ extension MainScreen: IMainScreenData
 	}
 
 	func setEmptyHeroes(characterName: String) {
+		self.tableView.reloadData()
+		UIApplication.shared.isNetworkActivityIndicatorVisible = false
 		self.activityIndicator.isHidden = true
 		self.activityIndicator.stopAnimating()
-		self.tableView.isHidden = true
+		self.tableView.isHidden = false
 		self.verticalStackFromImageAndLabel.isHidden = false
 		self.notFoundLabel.text = "Nothing found on query \"\(characterName)\""
-		return
 	}
 
 	func updateRow(indexPath: IndexPath) {
 		self.tableView.beginUpdates()
 		self.tableView.reloadRows(at: [indexPath], with: .fade)
 		self.tableView.endUpdates()
-		print("Update at\(indexPath)")
 	}
 }
 // MARK: - TableViewDelegate, TableViewDataSource
@@ -155,6 +153,7 @@ extension MainScreen: UITableViewDelegate, UITableViewDataSource
 		cell.accessoryType = .disclosureIndicator
 		cell.textLabel?.text = presenter.getHero(indexPath)?.name
 		cell.detailTextLabel?.text = presenter.getHero(indexPath)?.description
+		cell.detailTextLabel?.textColor = #colorLiteral(red: 0.5406504869, green: 0.5422019362, blue: 0.5556592345, alpha: 1)
 		cell.imageView?.clipsToBounds = true
 		presenter.getHeroImageData(indexPath) { data in
 			DispatchQueue.main.async {
@@ -163,10 +162,18 @@ extension MainScreen: UITableViewDelegate, UITableViewDataSource
 				cell.layoutSubviews()
 				guard let height = cell.imageView?.bounds.size.height else { return }
 				cell.imageView?.image = cell.imageView?.image?.imageWithImage(scaledToSize: CGSize(width: height, height: height))
-				//cell.layoutSubviews()
 				cell.imageView?.layer.cornerRadius = height / 2
 			}
 		}
 		return cell
+	}
+
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		presenter.transitionToDetailScreen(indexPath: indexPath)
+	}
+
+	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		tableView.keyboardDismissMode = .onDrag
 	}
 }

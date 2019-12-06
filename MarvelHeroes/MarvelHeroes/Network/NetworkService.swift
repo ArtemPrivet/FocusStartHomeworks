@@ -21,13 +21,44 @@ final class NetworkService
 	}
 	private var charactersData: CharacterDataWrapper?
 
-	private let beginnedUrl = "https://gateway.marvel.com/v1/public/characters"
+	private let beginnerURLFromDownloadHero = "https://gateway.marvel.com/v1/public/characters"
 	//private var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters")
+	//https://gateway.marvel.com:443/v1/public/characters/1009609/comics?apikey=0868a1cf9476b6000657f58609a76967
+
 }
 
 extension NetworkService: INetworkProtocol
 {
-	func getHeroesImageData(url: URL, callBack: @escaping (Data) -> Void) {
+	func getComicsAtHeroesID(id: String, callBack: @escaping (SeriesDataWrapper) -> Void) {
+		let newHash = hash
+		guard let timestamp = timestamp else { return }
+		guard var urlComponents = URLComponents(string: beginnerURLFromDownloadHero + "/\(id)/" + "comics") else { return }
+		urlComponents.queryItems = [
+			URLQueryItem(name: "limit", value: "100"),
+			URLQueryItem(name: "ts", value: timestamp),
+			URLQueryItem(name: "apikey", value: publicKey),
+			URLQueryItem(name: "hash", value: newHash),
+		]
+		guard let url = urlComponents.url else { return }
+		let request = URLRequest(url: url)
+		let task = URLSession.shared.dataTask(with: request, completionHandler: { data, _, error in
+			if let error = error {
+				fatalError(error.localizedDescription)
+			}
+			if let data = data {
+				do {
+					let result = try JSONDecoder().decode(SeriesDataWrapper.self, from: data)
+					callBack(result)
+				}
+				catch let error as NSError {
+					fatalError(error.localizedDescription)
+				}
+			}
+		})
+		task.resume()
+	}
+
+	func getImageData(url: URL, callBack: @escaping (Data) -> Void) {
 		URLSession.shared.dataTask(with: url) { data, _, error in
 			guard let data = data, error == nil else { return }
 			callBack(data)
@@ -38,7 +69,7 @@ extension NetworkService: INetworkProtocol
 	func getHeroes(charactersName: String, callBack: @escaping (CharacterDataWrapper) -> Void) {
 		let newHash = hash
 		guard let timestamp = timestamp else { return }
-		guard var urlComponents = URLComponents(string: beginnedUrl) else { return }
+		guard var urlComponents = URLComponents(string: beginnerURLFromDownloadHero) else { return }
 		urlComponents.queryItems = [
 			URLQueryItem(name: "nameStartsWith", value: charactersName),
 			URLQueryItem(name: "orderBy", value: "name"),
@@ -51,8 +82,7 @@ extension NetworkService: INetworkProtocol
 		let request = URLRequest(url: url)
 		let task = URLSession.shared.dataTask(with: request) { data, response, error in
 			if let error = error {
-				print("Error 1 = \(error.localizedDescription)")
-				return
+				fatalError(error.localizedDescription)
 			}
 			if let data = data, response != nil {
 				do {
@@ -60,7 +90,7 @@ extension NetworkService: INetworkProtocol
 					callBack(result)
 				}
 				catch let error as NSError {
-					print("Error 2 - \(error.localizedDescription)")
+					fatalError(error.localizedDescription)
 				}
 			}
 		}

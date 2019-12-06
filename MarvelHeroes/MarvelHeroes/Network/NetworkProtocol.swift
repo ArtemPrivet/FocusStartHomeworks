@@ -9,6 +9,7 @@
 import Foundation
 protocol INetworkProtocol
 {
-	func getHeroesImageData(url: URL, callBack: @escaping (Data) -> Void)
+	func getImageData(url: URL, callBack: @escaping (Data) -> Void)
 	func getHeroes(charactersName: String, callBack: @escaping (CharacterDataWrapper) -> Void)
+	func getComicsAtHeroesID(id: String, callBack: @escaping (SeriesDataWrapper) -> Void)
 }
