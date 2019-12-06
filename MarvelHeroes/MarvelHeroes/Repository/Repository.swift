@@ -113,6 +113,7 @@ private extension Repository
 				}
 			}
 		}
+		dataTask?.priority = 1.0
 		dataTask?.resume()
 	}
 }
