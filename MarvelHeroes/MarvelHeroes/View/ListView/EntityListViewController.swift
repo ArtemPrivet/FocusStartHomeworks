@@ -30,6 +30,7 @@ final class EntityListViewController: UIViewController
 
 	override func loadView() {
 		self.view = ListView(presenter: presenter)
+		navigationController?.navigationBar.prefersLargeTitles = true
 	}
 }
 
@@ -64,7 +65,7 @@ extension EntityListViewController: IEntityListViewController
 			listView.reloadData()
 		}
 	}
-
+	//Сообщение об ошибке
 	func showAlert(with text: String) {
 		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

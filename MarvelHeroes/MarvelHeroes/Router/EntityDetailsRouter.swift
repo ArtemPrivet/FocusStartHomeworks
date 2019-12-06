@@ -27,6 +27,7 @@ final class EntityDetailsRouter
 
 extension EntityDetailsRouter: IEntityDetailsRouter
 {
+	//Переход к дочерней сущности
 	func routeToAccessory(accessory: IEntity?) {
 		if let currentAccessory = accessory {
 			var detailsViewController: UIViewController

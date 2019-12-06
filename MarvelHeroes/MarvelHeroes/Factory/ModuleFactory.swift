@@ -42,10 +42,9 @@ struct ModuleFactory
 
 	private func createNavigationBarController(with rootController: UIViewController) -> UIViewController {
 		let navigationController = UINavigationController(rootViewController: rootController)
-		navigationController.navigationBar.prefersLargeTitles = true
 		return  navigationController
 	}
-
+	//Создание модуля списка
 	func createList(with entityType: EntityType) -> UIViewController {
 		let view = EntityListViewController()
 		let presenter = EntityListPresenter(with: entityType)
@@ -56,7 +55,7 @@ struct ModuleFactory
 		view.title = entityType.getTabTitle()
 		return view
 	}
-
+	//Создание модуля деталей
 	func createEntityDetails(entity: IEntity, with entityType: EntityType) -> UIViewController {
 		let view = EntityDetailsViewController()
 		let presenter = EntityDetailsPresenter(entity: entity, with: entityType)

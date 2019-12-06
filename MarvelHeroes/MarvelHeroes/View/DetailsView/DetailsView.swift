@@ -133,7 +133,7 @@ private extension DetailsView
 			descriptionTextView.heightAnchor.constraint(equalTo: margins.heightAnchor, multiplier: 0.5),
 		])
 	}
-	//Настройка списка комиксов tableView
+	//Настройка  tableView
 	func setupTableView() {
 		table.register(Cell.self, forCellReuseIdentifier: "comicsCell")
 		table.tableFooterView = UIView()
@@ -178,7 +178,7 @@ private extension DetailsView
 				backgroundImageView = UIImageView(image: imageFromCache)
 			}
 			else {
-				DispatchQueue.global(qos: .utility).async {
+				DispatchQueue.global(qos: .userInitiated).async {
 					let contentsOfURL = try? Data(contentsOf: url)
 					DispatchQueue.main.async {
 						if url == imageURL {

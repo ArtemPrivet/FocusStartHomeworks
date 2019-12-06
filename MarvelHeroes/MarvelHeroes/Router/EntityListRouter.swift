@@ -31,7 +31,7 @@ extension EntityListRouter: IEntityListRouter
 	func inject(view: UIViewController) {
 		self.view = view
 	}
-
+	//Переход к деталям
 	func routeToDetails(entity: IEntity?) {
 		if let currentEntity = entity {
 			let detailsViewController = moduleFactory.createEntityDetails(entity: currentEntity, with: entityType)

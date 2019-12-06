@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		854DA91D239A9EA1009C843D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DA91C239A9EA1009C843D /* String+Extension.swift */; };
+		854DA91D239A9EA1009C843D /* String+md5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DA91C239A9EA1009C843D /* String+md5.swift */; };
 		854DA91F239ABA36009C843D /* SeviceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DA91E239ABA36009C843D /* SeviceError.swift */; };
 		85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C2B239A8CE000F8EA22 /* AppDelegate.swift */; };
 		85D28C35239A8CE200F8EA22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85D28C34239A8CE200F8EA22 /* Assets.xcassets */; };
@@ -24,9 +24,9 @@
 		85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5C239A960800F8EA22 /* DetailsView.swift */; };
 		85D28C5F239A964800F8EA22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5E239A964800F8EA22 /* Constants.swift */; };
 		85D28C61239A966000F8EA22 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C60239A966000F8EA22 /* Cell.swift */; };
-		85D28C63239A967F00F8EA22 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */; };
-		85D28C65239A969500F8EA22 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */; };
-		85D28C67239A96AA00F8EA22 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */; };
+		85D28C63239A967F00F8EA22 /* UITableView+EmptyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */; };
+		85D28C65239A969500F8EA22 /* UIImageView+makeRound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */; };
+		85D28C67239A96AA00F8EA22 /* UIView+setWhiteGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */; };
 		85D28C69239A96C800F8EA22 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C68239A96C800F8EA22 /* Cache.swift */; };
 		85D28C6B239A96E300F8EA22 /* ImageURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */; };
 		85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C6C239A970A00F8EA22 /* ComicsResponse.swift */; };
@@ -38,7 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		854DA91C239A9EA1009C843D /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		854DA91C239A9EA1009C843D /* String+md5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+md5.swift"; sourceTree = "<group>"; };
 		854DA91E239ABA36009C843D /* SeviceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeviceError.swift; sourceTree = "<group>"; };
 		85D28C28239A8CE000F8EA22 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D28C2B239A8CE000F8EA22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -57,9 +57,9 @@
 		85D28C5C239A960800F8EA22 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		85D28C5E239A964800F8EA22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		85D28C60239A966000F8EA22 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
-		85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
-		85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
-		85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+EmptyImage.swift"; sourceTree = "<group>"; };
+		85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+makeRound.swift"; sourceTree = "<group>"; };
+		85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+setWhiteGradient.swift"; sourceTree = "<group>"; };
 		85D28C68239A96C800F8EA22 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLGenerator.swift; sourceTree = "<group>"; };
 		85D28C6C239A970A00F8EA22 /* ComicsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsResponse.swift; sourceTree = "<group>"; };
@@ -155,12 +155,12 @@
 			children = (
 				85D28C5E239A964800F8EA22 /* Constants.swift */,
 				85D28C60239A966000F8EA22 /* Cell.swift */,
-				85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */,
-				85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */,
-				85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */,
+				85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */,
+				85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */,
+				85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */,
+				854DA91C239A9EA1009C843D /* String+md5.swift */,
 				85D28C68239A96C800F8EA22 /* Cache.swift */,
 				85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */,
-				854DA91C239A9EA1009C843D /* String+Extension.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -304,15 +304,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				85D28C65239A969500F8EA22 /* UIImageView+Extension.swift in Sources */,
+				85D28C65239A969500F8EA22 /* UIImageView+makeRound.swift in Sources */,
 				85D28C75239A977000F8EA22 /* IEntity.swift in Sources */,
 				85D28C4C239A950200F8EA22 /* EntityDetailsRouter.swift in Sources */,
 				85D28C6F239A972700F8EA22 /* CharacterResponse.swift in Sources */,
-				85D28C67239A96AA00F8EA22 /* UIView+Extension.swift in Sources */,
+				85D28C67239A96AA00F8EA22 /* UIView+setWhiteGradient.swift in Sources */,
 				85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */,
 				85D28C71239A973B00F8EA22 /* AuthorResponse.swift in Sources */,
 				85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */,
-				854DA91D239A9EA1009C843D /* String+Extension.swift in Sources */,
+				854DA91D239A9EA1009C843D /* String+md5.swift in Sources */,
 				85D28C69239A96C800F8EA22 /* Cache.swift in Sources */,
 				85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */,
 				85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */,
@@ -323,7 +323,7 @@
 				85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */,
 				85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */,
 				85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */,
-				85D28C63239A967F00F8EA22 /* UITableView+Extension.swift in Sources */,
+				85D28C63239A967F00F8EA22 /* UITableView+EmptyImage.swift in Sources */,
 				85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */,
 				85D28C53239A956400F8EA22 /* EntityDetailsPresenter.swift in Sources */,
 				85D28C51239A954C00F8EA22 /* EntityListPresenter.swift in Sources */,

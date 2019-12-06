@@ -79,7 +79,7 @@ private extension Repository
 		dataTask?.cancel()
 		var urlComponent = URLComponents(string: Constants.marvelAPIUrl + directory)
 		let timestamp = String(Int64(Date().timeIntervalSince1970))
-		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)+").md5()
+		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)").md5()
 		urlComponent?.queryItems = [
 			URLQueryItem(name: "limit", value: String(Constants.limit)),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),

@@ -42,26 +42,26 @@ final class EntityDetailsViewController: UIViewController
 
 	override func loadView() {
 		self.view = DetailsView(presenter: presenter)
-		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationItem.largeTitleDisplayMode = .always
 		self.navigationItem.title = presenter?.getCurrentRecord().showingName
+		self.title = presenter?.getCurrentRecord().showingName
 	}
 }
 // MARK: - IEntityDetailsView
 extension EntityDetailsViewController: IEntityDetailsViewController
 {
+	//Начало анимации спиннера
 	func startSpinnerAnimation() {
 		if let detailsView = self.view as? IDetailsView {
 			detailsView.startSpinnerAnimation()
 		}
 	}
-
+	//Остановка анимации спиннера
 	func stopSpinnerAnimation() {
 		if let detailsView = self.view as? IDetailsView {
 			detailsView.stopSpinnerAnimation()
 		}
 	}
-
+	//Обновление данных в таблице
 	func reloadData() {
 		if let detailsView = self.view as? IDetailsView {
 			detailsView.reloadData()
@@ -71,7 +71,7 @@ extension EntityDetailsViewController: IEntityDetailsViewController
 	func inject(presenter: IEntityDetailsPresenter) {
 		self.presenter = presenter
 	}
-
+	//Сообщение об ошибке
 	func showAlert(with text: String) {
 		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

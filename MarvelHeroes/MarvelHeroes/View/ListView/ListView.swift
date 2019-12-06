@@ -106,7 +106,7 @@ private extension ListView
 		setupTable()
 		setupSpinner()
 	}
-
+	//Настройка serchBar
 	func setupSearchBar() {
 		self.addSubview(searchBar)
 		searchBar.delegate = self
@@ -118,7 +118,7 @@ private extension ListView
 			searchBar.topAnchor.constraint(equalTo: margins.topAnchor),
 		])
 	}
-
+	//Настройка таблицы
 	func setupTable() {
 		self.addSubview(table)
 		table.dataSource = self
@@ -134,7 +134,7 @@ private extension ListView
 			table.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
 		])
 	}
-
+	//Настройка спиннера
 	func setupSpinner() {
 		self.addSubview(spinner)
 		spinner.translatesAutoresizingMaskIntoConstraints = false

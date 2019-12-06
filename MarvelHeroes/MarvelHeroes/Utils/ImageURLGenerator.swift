@@ -12,7 +12,7 @@ enum ImageURLGenerator: String
 	case smallSquare
 	case smallPortrait
 	case bigSquare
-
+//Генерируем урл для разных размеров картинок
 	func getURL(_ link: String, ext: String) -> URL? {
 		var modificaror = ""
 		switch self {

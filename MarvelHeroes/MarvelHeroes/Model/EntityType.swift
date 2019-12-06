@@ -12,7 +12,7 @@ enum EntityType
 	case character
 	case comics
 	case author
-
+	//Тайтлы для navigationcontroller
 	func getNavigationTitle() -> String {
 		switch self {
 		case .character:
@@ -23,6 +23,7 @@ enum EntityType
 			return "Authors"
 		}
 	}
+	//тайтлы для таббара
 	func getTabTitle() -> String {
 		switch self {
 		case .character:
@@ -33,7 +34,7 @@ enum EntityType
 			return "Authors"
 		}
 	}
-
+	//Директория для запроса данных в детализации
 	func directoryOfAccessories(id: Int) -> String {
 		switch self {
 		case .character:
@@ -44,7 +45,7 @@ enum EntityType
 			return "creators/\(id)/comics"
 		}
 	}
-
+	//Директория для запросов
 	func getEntityDirectory() -> String {
 		switch self {
 		case .character:
@@ -55,7 +56,7 @@ enum EntityType
 			return "creators"
 		}
 	}
-
+	//Название параметров передаваемых для фильтрации
 	func getEntityQueryParameter() -> String {
 		switch self {
 		case .character:
@@ -64,17 +65,6 @@ enum EntityType
 			return "titleStartsWith"
 		case .author:
 			return "nameStartsWith"
-		}
-	}
-
-	func getNameTabImage() -> String {
-		switch self {
-		case .character:
-			return "shield"
-		case .comics:
-			return "comic"
-		case .author:
-			return "writer"
 		}
 	}
 }
