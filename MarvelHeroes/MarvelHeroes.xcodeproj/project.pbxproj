@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		854DA91D239A9EA1009C843D /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DA91C239A9EA1009C843D /* String+Extension.swift */; };
+		854DA91F239ABA36009C843D /* SeviceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 854DA91E239ABA36009C843D /* SeviceError.swift */; };
 		85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C2B239A8CE000F8EA22 /* AppDelegate.swift */; };
 		85D28C35239A8CE200F8EA22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85D28C34239A8CE200F8EA22 /* Assets.xcassets */; };
 		85D28C38239A8CE200F8EA22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85D28C36239A8CE200F8EA22 /* LaunchScreen.storyboard */; };
@@ -38,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		854DA91C239A9EA1009C843D /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		854DA91E239ABA36009C843D /* SeviceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeviceError.swift; sourceTree = "<group>"; };
 		85D28C28239A8CE000F8EA22 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85D28C2B239A8CE000F8EA22 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		85D28C34239A8CE200F8EA22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				85D28C72239A974C00F8EA22 /* Thumbnail.swift */,
 				85D28C74239A977000F8EA22 /* IEntity.swift */,
 				85D28C76239A978A00F8EA22 /* EntityType.swift */,
+				854DA91E239ABA36009C843D /* SeviceError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -314,6 +317,7 @@
 				85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */,
 				85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */,
 				85D28C73239A974C00F8EA22 /* Thumbnail.swift in Sources */,
+				854DA91F239ABA36009C843D /* SeviceError.swift in Sources */,
 				85D28C5B239A95E900F8EA22 /* EntityDetailsViewController.swift in Sources */,
 				85D28C61239A966000F8EA22 /* Cell.swift in Sources */,
 				85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */,

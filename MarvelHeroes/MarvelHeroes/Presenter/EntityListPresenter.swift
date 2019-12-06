@@ -69,11 +69,12 @@ extension EntityListPresenter: IEntityListPresenter
 		self.view?.startSpinnerAnimation()
 		let directory = entityType.getEntityDirectory()
 		let parameter = entityType.getEntityQueryParameter()
+
 		switch entityType {
 		case .character:
 			localRepository.loadEntities(with: nameStarts,
 										 directory: directory,
-										 queryParameter: parameter){ (result: Result<CharacterResponse, NSError>) in
+										 queryParameter: parameter){ (result: Result<CharacterResponse, ServiceError>) in
 											switch result {
 											case .success(let responseCharacters):
 												self.records = responseCharacters.data.results
@@ -81,7 +82,9 @@ extension EntityListPresenter: IEntityListPresenter
 													self.view?.setEmptyImage(with: nameStarts)
 												}
 											case .failure(let error):
-												print(error)
+												error.errorHandler { errorMessage in
+													self.view?.showAlert(with: errorMessage)
+												}
 												self.records = []
 											}
 											self.view?.reloadData()
@@ -90,7 +93,7 @@ extension EntityListPresenter: IEntityListPresenter
 		case .comics:
 			localRepository.loadEntities(with: nameStarts,
 										 directory: directory,
-										 queryParameter: parameter){ (result: Result<ComicsResponse, NSError>) in
+										 queryParameter: parameter){ (result: Result<ComicsResponse, ServiceError>) in
 											switch result {
 											case .success(let responseCharacters):
 												self.records = responseCharacters.data.results
@@ -98,7 +101,9 @@ extension EntityListPresenter: IEntityListPresenter
 													self.view?.setEmptyImage(with: nameStarts)
 												}
 											case .failure(let error):
-												print(error)
+												error.errorHandler { errorMessage in
+													self.view?.showAlert(with: errorMessage)
+												}
 												self.records = []
 											}
 											self.view?.reloadData()
@@ -107,7 +112,7 @@ extension EntityListPresenter: IEntityListPresenter
 		case .author:
 			localRepository.loadEntities(with: nameStarts,
 										 directory: directory,
-										 queryParameter: parameter){ (result: Result<AuthorResponse, NSError>) in
+										 queryParameter: parameter){ (result: Result<AuthorResponse, ServiceError>) in
 											switch result {
 											case .success(let responseCharacters):
 												self.records = responseCharacters.data.results
@@ -115,7 +120,9 @@ extension EntityListPresenter: IEntityListPresenter
 													self.view?.setEmptyImage(with: nameStarts)
 												}
 											case .failure(let error):
-												print(error)
+												error.errorHandler { errorMessage in
+													self.view?.showAlert(with: errorMessage)
+												}
 												self.records = []
 											}
 											self.view?.reloadData()

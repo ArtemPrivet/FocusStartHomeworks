@@ -14,6 +14,7 @@ protocol IEntityDetailsViewController: AnyObject
 	func reloadData()
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
+	func showAlert(with text: String)
 }
 
 final class EntityDetailsViewController: UIViewController
@@ -69,5 +70,11 @@ extension EntityDetailsViewController: IEntityDetailsViewController
 
 	func inject(presenter: IEntityDetailsPresenter) {
 		self.presenter = presenter
+	}
+
+	func showAlert(with text: String) {
+		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+		self.present(alert, animated: true, completion: nil)
 	}
 }

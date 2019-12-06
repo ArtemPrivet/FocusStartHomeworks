@@ -17,7 +17,7 @@ final class Repository
 	func loadEntities<T: Decodable>(with nameStarts: String = "",
 									directory: String,
 									queryParameter: String,
-						completion: @escaping (Result<T, NSError>) -> Void)  {
+						completion: @escaping (Result<T, ServiceError>) -> Void)  {
 		var additionParameters: [URLQueryItem] = []
 		if nameStarts.isEmpty == false {
 			additionParameters.append(URLQueryItem(name: queryParameter, value: nameStarts))
@@ -33,7 +33,7 @@ final class Repository
 				}
 				catch {
 					DispatchQueue.main.async {
-						completion( .failure(NSError()))
+						completion( .failure(.parsingError(error)))
 					}
 				}
 			case .failure(let error):
@@ -46,7 +46,7 @@ final class Repository
 // MARK: - Загрузка по ID
 //Загрузить доп список для сущности
 	func loadAccessoryByEntityID<T: Decodable>(from directory: String,
-						completion: @escaping (Result<T, NSError>) -> Void)  {
+						completion: @escaping (Result<T, ServiceError>) -> Void)  {
 		fetchData(directory: directory){ result in
 			switch result {
 			case .success(let data):
@@ -58,7 +58,7 @@ final class Repository
 				}
 				catch {
 					DispatchQueue.main.async {
-						completion( .failure(NSError()))
+						completion( .failure(.parsingError(error)))
 					}
 				}
 			case .failure(let error):
@@ -75,11 +75,11 @@ private extension Repository
 	// Загрузка данных
 	func fetchData(directory: String,
 				   additionParameters: [URLQueryItem] = [],
-				   _ completion: @escaping (Result<Data, NSError>) -> Void ) {
+				   _ completion: @escaping (Result<Data, ServiceError>) -> Void ) {
 		dataTask?.cancel()
 		var urlComponent = URLComponents(string: Constants.marvelAPIUrl + directory)
 		let timestamp = String(Int64(Date().timeIntervalSince1970))
-		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)").md5()
+		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)+").md5()
 		urlComponent?.queryItems = [
 			URLQueryItem(name: "limit", value: String(Constants.limit)),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
@@ -93,16 +93,15 @@ private extension Repository
 			urlComponent?.queryItems = additionParameters
 		}
 		guard let url = urlComponent?.url else { return }
-//		print(url)
 		dataTask = session.dataTask(with: url) { data, response, error in
-			if let error = error {
+			if error != nil {
 				DispatchQueue.main.async {
-					completion( .failure(error as NSError))
+					completion( .failure(.networkError))
 				}
 			}
 			if let response = response as? HTTPURLResponse, response.statusCode != 200 {
 				DispatchQueue.main.async {
-					completion( .failure(NSError()))
+					completion( .failure(.httpError(response.statusCode)))
 				}
 			}
 			if let data = data {
@@ -110,7 +109,7 @@ private extension Repository
 			}
 			else {
 				DispatchQueue.main.async {
-					completion( .failure(NSError()))
+					completion( .failure(.dataError))
 				}
 			}
 		}

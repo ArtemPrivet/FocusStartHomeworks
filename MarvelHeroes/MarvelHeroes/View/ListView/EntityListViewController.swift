@@ -15,6 +15,7 @@ protocol IEntityListViewController: AnyObject
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
 	func setEmptyImage(with text: String)
+	func showAlert(with text: String)
 }
 
 final class EntityListViewController: UIViewController
@@ -62,5 +63,11 @@ extension EntityListViewController: IEntityListViewController
 		if let listView = self.view as? IListView {
 			listView.reloadData()
 		}
+	}
+
+	func showAlert(with text: String) {
+		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
+		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+		self.present(alert, animated: true, completion: nil)
 	}
 }

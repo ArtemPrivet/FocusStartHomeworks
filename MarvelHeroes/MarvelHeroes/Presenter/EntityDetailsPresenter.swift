@@ -72,25 +72,29 @@ private extension EntityDetailsPresenter
 		let directory = entityType.directoryOfAccessories(id: currentRecord.id)
 		switch entityType {
 		case .character, .author:
-			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<ComicsResponse, NSError>) in
+			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<ComicsResponse, ServiceError>) in
 				switch result {
 				case .success(let accessories):
 					self.accesories = accessories.data.results
 				case .failure(let error):
+					error.errorHandler { errorMessage in
+						self.view?.showAlert(with: errorMessage)
+					}
 					self.accesories = []
-					print(error)
 				}
 				self.view?.reloadData()
 				self.view?.stopSpinnerAnimation()
 			}
 		case .comics:
-			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<AuthorResponse, NSError>) in
+			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<AuthorResponse, ServiceError>) in
 				switch result {
 				case .success(let accessories):
 					self.accesories = accessories.data.results
 				case .failure(let error):
+					error.errorHandler { errorMessage in
+						self.view?.showAlert(with: errorMessage)
+					}
 					self.accesories = []
-					print(error)
 				}
 				self.view?.reloadData()
 				self.view?.stopSpinnerAnimation()
