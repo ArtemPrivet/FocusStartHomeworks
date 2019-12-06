@@ -108,7 +108,12 @@ final class ItemDetailViewController: UIViewController
 	// MARK: ...Private methods
 	private func setup() {
 
-		view.backgroundColor = .systemBackground
+		if #available(iOS 13.0, *) {
+			view.backgroundColor = .systemBackground
+		}
+		else {
+			view.backgroundColor = .white
+		}
 
 		tableView.register(ItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
 

@@ -6,8 +6,10 @@
 //
 
 import Foundation
-import CryptoKit
 import CommonCrypto
+#if canImport(CryptoKit)
+  import CryptoKit
+#endif
 
 extension String
 {
