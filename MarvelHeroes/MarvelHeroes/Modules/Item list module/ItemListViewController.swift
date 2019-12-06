@@ -7,11 +7,15 @@
 
 import UIKit
 
+// MARK: - INavigationItemListViewController Protocol
+protocol INavigationItemListViewController: AnyObject
+{
+	var navigationController: UINavigationController? { get }
+}
+
 // MARK: - IItemListViewController Protocol
 protocol IItemListViewController: AnyObject
 {
-	var navController: UINavigationController? { get }
-
 	func showItems()
 	func showAlert(with message: String)
 }
@@ -142,11 +146,12 @@ final class ItemListViewController: UIViewController
 	}
 }
 
+// MARK: - INavigationItemListViewController
+extension ItemListViewController: INavigationItemListViewController { }
+
 // MARK: - ICharacterListViewController
 extension ItemListViewController: IItemListViewController
 {
-	var navController: UINavigationController? { navigationController }
-
 	func showItems() {
 		activityIndicator.stopAnimating()
 		tableView.reloadData()

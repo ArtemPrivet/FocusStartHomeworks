@@ -32,7 +32,7 @@ final class ItemPresenter
 	private(set) var tableViewViewModels = [IItemViewModel]()
 
 	// MARK: ...Internal properties
-	weak var view: IItemViewController?
+	weak var view: IItemDetailViewController?
 
 	// MARK: ...Initialization
 	init(viewModel: IItemViewModel, repository: IItemsRepository & IImagesRepository, router: IItemRouter) {

@@ -19,7 +19,7 @@ final class ItemRouter
 	private let factory: ModulesFactory
 
 	// MARK: ...Internal properties
-	weak var view: IItemViewController?
+	weak var view: INavigationItemDetailViewController?
 
 	// MARK: ...Initialization
 	init(factory: ModulesFactory) {
@@ -41,6 +41,6 @@ extension ItemRouter: IItemRouter
 			viewModel: viewModel,
 			repository: repository)
 
-		view?.navController?.pushViewController(viewController, animated: true)
+		view?.navigationController?.pushViewController(viewController, animated: true)
 	}
 }

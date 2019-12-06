@@ -7,11 +7,15 @@
 
 import UIKit
 
-// MARK: - IItemViewController protocol
-protocol IItemViewController: AnyObject
+// MARK: - INavigationItemDetailViewController protocol
+protocol INavigationItemDetailViewController: AnyObject
 {
-	var navController: UINavigationController? { get }
+	var navigationController: UINavigationController? { get }
+}
 
+// MARK: - IItemDetailViewController protocol
+protocol IItemDetailViewController: AnyObject
+{
 	func showItems()
 	func showAlert()
 }
@@ -249,11 +253,12 @@ extension ItemDetailViewController: UITableViewDelegate
 	}
 }
 
-// MARK: - IItemViewController
-extension ItemDetailViewController: IItemViewController
-{
-	var navController: UINavigationController? { navigationController }
+// MARK: - INavigationItemDetailViewController
+extension ItemDetailViewController: INavigationItemDetailViewController { }
 
+// MARK: - IItemDetailViewController
+extension ItemDetailViewController: IItemDetailViewController
+{
 	func showItems() {
 		activityIndicator.stopAnimating()
 		didLoaditems = true
