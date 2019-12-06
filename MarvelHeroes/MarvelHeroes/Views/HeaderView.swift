@@ -31,6 +31,7 @@ final class HeaderView: UIView
 
 	private var titleLabelSize: CGSize = .zero
 	private var descriptionTextViewSize: CGSize = .zero
+	private let maxDescriptionTextViewHeight: CGFloat = 200
 
 	// MARK: Initializations
 	init(withWidth width: CGFloat, titleText: String?, descriptionText: String?) {
@@ -60,7 +61,7 @@ final class HeaderView: UIView
 		let textViewHeight = calculateHeight(descriptionTextView, byWidth: width)
 		descriptionTextViewSize =
 			CGSize(width: width - layoutMargins.left - layoutMargins.right,
-				   height: min(textViewHeight + 10, 200))
+				   height: min(textViewHeight + 10, maxDescriptionTextViewHeight))
 	}
 
 	private func calculateHeight(_ view: UIView, byWidth width: CGFloat) -> CGFloat {
