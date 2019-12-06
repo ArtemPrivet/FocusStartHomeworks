@@ -72,17 +72,19 @@ final class Repository
 // MARK: - Приватные методы
 private extension Repository
 {
-// Загрузка данных
+	// Загрузка данных
 	func fetchData(directory: String,
-						   additionParameters: [URLQueryItem] = [],
-						   _ completion: @escaping (Result<Data, NSError>) -> Void ) {
+				   additionParameters: [URLQueryItem] = [],
+				   _ completion: @escaping (Result<Data, NSError>) -> Void ) {
 		dataTask?.cancel()
 		var urlComponent = URLComponents(string: Constants.marvelAPIUrl + directory)
+		let timestamp = String(Int64(Date().timeIntervalSince1970))
+		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)").md5()
 		urlComponent?.queryItems = [
 			URLQueryItem(name: "limit", value: String(Constants.limit)),
 			URLQueryItem(name: "apikey", value: Constants.publicKey),
-			URLQueryItem(name: "ts", value: Constants.ts),
-			URLQueryItem(name: "hash", value: Constants.hash),
+			URLQueryItem(name: "ts", value: String(timestamp)),
+			URLQueryItem(name: "hash", value: hash),
 		]
 		if urlComponent?.queryItems != nil {
 			urlComponent?.queryItems? += additionParameters
@@ -91,7 +93,7 @@ private extension Repository
 			urlComponent?.queryItems = additionParameters
 		}
 		guard let url = urlComponent?.url else { return }
-		print(url)
+//		print(url)
 		dataTask = session.dataTask(with: url) { data, response, error in
 			if let error = error {
 				DispatchQueue.main.async {

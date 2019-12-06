@@ -18,7 +18,6 @@ enum Constants
 	]
 	static let marvelAPIUrl = "https://gateway.marvel.com/v1/public/"
 	static let publicKey = "0133174c0832e7c36210d38a43f0a1d5"
-	static let hash = "e18f163d3a1c61b5e8aa43119c235a44"
-	static let ts = "stanislav"
+	static let privateKey = "69ca4c8f61f9806ef497666a74a2bfc1d701047d"
 	static let limit = 100
 }
