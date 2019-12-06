@@ -35,6 +35,7 @@ final class ComicsTableViewCell: UITableViewCell
 	private func confirureViews() {
 		nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
 		nameLabel.textAlignment = .left
+		nameLabel.numberOfLines = 0
 		comicCover.contentMode = .scaleAspectFit
 	}
 	private func makeConstraints() {
@@ -49,6 +50,7 @@ final class ComicsTableViewCell: UITableViewCell
 			maker.leading.equalTo(comicCover.snp.trailing).offset(8)
 			maker.trailing.equalToSuperview().offset(-8)
 			maker.centerY.equalToSuperview()
+			maker.bottom.equalToSuperview().offset(-8)
 		}
 	}
 }

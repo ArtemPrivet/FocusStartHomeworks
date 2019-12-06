@@ -13,8 +13,8 @@ final class CharactersViewController: UIViewController
 {
 	let tableView = UITableView()
 	private lazy var searchController = UISearchController()
-	private let searchImage = UIImageView()
-	private let searchErrorText = UILabel()
+	private let searchStubView = UIImageView()
+	private let searchStubLabel = UILabel()
 	private let loadIndicator = UIActivityIndicatorView(style: .gray)
 	var presenter: ICharactersPresenter?
 
@@ -30,35 +30,36 @@ final class CharactersViewController: UIViewController
 	}
 	private func addSubviews() {
 		view.addSubview(tableView)
-		view.addSubview(searchImage)
-		view.addSubview(searchErrorText)
+		view.addSubview(searchStubView)
+		view.addSubview(searchStubLabel)
 	}
 	private func configureViews() {
 		title = "🦸🏻‍♂️ Heroes"
+		tabBarItem = UITabBarItem(title: "Heroes", image: UIImage(named: "shield"), selectedImage: nil)
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.searchController = searchController
 		tableView.tableFooterView = UIView()
 		tableView.backgroundView = loadIndicator
 		tableView.register(CharactersTableViewCell.self, forCellReuseIdentifier: "cell")
-		searchImage.image = UIImage(named: "search_stub")
-		searchErrorText.numberOfLines = 0
-		searchErrorText.textAlignment = .center
-		searchErrorText.textColor = .gray
+		searchStubView.image = UIImage(named: "search_stub")
+		searchStubLabel.numberOfLines = 0
+		searchStubLabel.textAlignment = .center
+		searchStubLabel.textColor = .gray
 		hideError()
 	}
 	private func makeConstraints() {
 		tableView.snp.makeConstraints { maker in
 			maker.leading.trailing.top.bottom.equalToSuperview()
 		}
-		searchImage.snp.makeConstraints { maker in
-			maker.width.equalTo(searchImage.image?.size.width ?? 0)
-			maker.height.equalTo(searchImage.image?.size.height ?? 0)
+		searchStubView.snp.makeConstraints { maker in
+			maker.width.equalTo(searchStubView.image?.size.width ?? 0)
+			maker.height.equalTo(searchStubView.image?.size.height ?? 0)
 			maker.center.equalToSuperview()
 		}
-		searchErrorText.snp.makeConstraints { maker in
-			maker.leading.equalTo(searchImage.snp.leading)
-			maker.top.equalTo(searchImage.snp.bottom)
-			maker.trailing.equalTo(searchImage.snp.trailing)
+		searchStubLabel.snp.makeConstraints { maker in
+			maker.leading.equalTo(searchStubView.snp.leading)
+			maker.top.equalTo(searchStubView.snp.bottom)
+			maker.trailing.equalTo(searchStubView.snp.trailing)
 			//maker.bottom.equalToSuperview()
 		}
 	}
@@ -69,13 +70,13 @@ final class CharactersViewController: UIViewController
 		self.loadIndicator.stopAnimating()
 	}
 	func showError(with query: String) {
-		searchImage.isHidden = false
-		searchErrorText.isHidden = false
-		searchErrorText.text = "Nothing found on query \"\(query)\""
+		searchStubView.isHidden = false
+		searchStubLabel.isHidden = false
+		searchStubLabel.text = "Nothing found on query \"\(query)\""
 	}
 	func hideError() {
-		searchImage.isHidden = true
-		searchErrorText.isHidden = true
+		searchStubView.isHidden = true
+		searchStubLabel.isHidden = true
 	}
 }
 extension CharactersViewController: UITableViewDataSource, UITableViewDelegate

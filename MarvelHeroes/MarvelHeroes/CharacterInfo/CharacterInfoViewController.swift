@@ -15,6 +15,23 @@ final class CharacterInfoViewController: UIViewController
 	let comicsTableView = UITableView()
 	let characterDescriptionTextView = UITextView()
 	let gradient = CAGradientLayer()
+	private var gradientColor: UIColor = {
+		if #available(iOS 13, *) {
+			return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
+				if UITraitCollection.userInterfaceStyle == .dark {
+					// Return the color for Dark Mode
+					return UIColor.black
+				}
+				else {
+					// Return the color for Light Mode
+					return UIColor.white
+				}
+			}
+		}
+		else {
+			return UIColor.white
+		}
+	}()
 	private let loadIndicator = UIActivityIndicatorView(style: .gray)
 	var presenter: ICharacterInfoPresenter?
 
@@ -24,6 +41,10 @@ final class CharacterInfoViewController: UIViewController
 		addSubviews()
 		configureViews()
 		makeConstraints()
+	}
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		setGradient()
 	}
 	private func addSubviews() {
 		view.addSubview(characterImage)
@@ -48,8 +69,10 @@ final class CharacterInfoViewController: UIViewController
 		setGradient()
 	}
 	private func setGradient() {
-		let startColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5).cgColor
-		let endColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+		//let startColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5).cgColor
+		let startColor = gradientColor.withAlphaComponent(0.5).cgColor
+		//let endColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+		let endColor = gradientColor.withAlphaComponent(1).cgColor
 		gradient.colors = [startColor, endColor]
 		characterImage.layer.insertSublayer(gradient, at: 0)
 	}
