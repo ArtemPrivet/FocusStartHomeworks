@@ -27,15 +27,10 @@ struct CreatorDataContainer: Codable
 struct Creator: Codable, IItemViewModel
 {
 	let id: Int
-//    let firstName, middleName, lastName, suffix: String
+	let firstName, middleName, lastName, suffix: String
 	let fullName: String
-//    let modified: Date
+	let modified: Date
 	let thumbnail: Thumbnail
-//    let resourceURI: String
-//    let comics, series: ComicList
-//    let stories: StoryList
-//    let events: EventList
-//    let urls: [URLElement]
 
 	// MARK: Calculated properties
 	var itemType: ItemType { .creator }

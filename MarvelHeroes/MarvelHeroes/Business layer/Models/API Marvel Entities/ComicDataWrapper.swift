@@ -28,28 +28,9 @@ struct Comic: Codable, IItemViewModel
 {
 	let id, digitalId: Int
 	let title: String
-//    let issueNumber: Int
-//    let variantDescription: String
 	let description: String?
-//    let modified: Date
-//    let isbn, upc, diamondCode, ean: String
-//    let issn: String
-//    let format: Format
-//    let pageCount: Int
-//    let textObjects: [TextObject]
-//    let resourceURI: String
-////    let urls: [URLElement]
-//    let series: SeriesSummary
-//    let variants, collections: [ComicSummary]
-//    let collectedIssues: [ComicSummary]
-////    let dates: [ComicDate]
-//    let prices: [ComicPrice]
+	let modified: Date
 	let thumbnail: Thumbnail
-//    let images: [Thumbnail]
-//    let creators: CreatorList
-//    let characters: CharacterList
-////    let stories: StoryList
-//    let events: EventList
 
 	// MARK: Calculated properties
 	var itemType: ItemType { .comic }
