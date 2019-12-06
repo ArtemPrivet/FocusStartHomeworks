@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-//decoder.datedecodingstrategy.iso0901 
+
 final class CharactersViewController: UIViewController
 {
 	let tableView = UITableView()
@@ -16,6 +16,7 @@ final class CharactersViewController: UIViewController
 	private let searchStubView = UIImageView()
 	private let searchStubLabel = UILabel()
 	private let loadIndicator = UIActivityIndicatorView(style: .gray)
+	private let cdllId = "cell"
 	var presenter: ICharactersPresenter?
 
 	override func viewDidLoad() {
@@ -40,7 +41,7 @@ final class CharactersViewController: UIViewController
 		navigationItem.searchController = searchController
 		tableView.tableFooterView = UIView()
 		tableView.backgroundView = loadIndicator
-		tableView.register(CharactersTableViewCell.self, forCellReuseIdentifier: "cell")
+		tableView.register(CharactersTableViewCell.self, forCellReuseIdentifier: cdllId)
 		searchStubView.image = UIImage(named: "search_stub")
 		searchStubLabel.numberOfLines = 0
 		searchStubLabel.textAlignment = .center
@@ -60,7 +61,6 @@ final class CharactersViewController: UIViewController
 			maker.leading.equalTo(searchStubView.snp.leading)
 			maker.top.equalTo(searchStubView.snp.bottom)
 			maker.trailing.equalTo(searchStubView.snp.trailing)
-			//maker.bottom.equalToSuperview()
 		}
 	}
 	func showLoadingIndicator() {
@@ -86,7 +86,7 @@ extension CharactersViewController: UITableViewDataSource, UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cdllId,
 													   for: indexPath) as? CharactersTableViewCell
 			else { return UITableViewCell() }
 		let character = presenter?.getCharacter(by: indexPath.row)

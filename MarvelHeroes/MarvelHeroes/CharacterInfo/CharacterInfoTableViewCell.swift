@@ -12,7 +12,7 @@ import SnapKit
 final class ComicsTableViewCell: UITableViewCell
 {
 	var comicCover = UIImageView()
-	var nameLabel = UILabel()
+	var comicLabel = UILabel()
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -30,12 +30,12 @@ final class ComicsTableViewCell: UITableViewCell
 	}
 	private func addSubViews() {
 		addSubview(comicCover)
-		addSubview(nameLabel)
+		addSubview(comicLabel)
 	}
 	private func confirureViews() {
-		nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-		nameLabel.textAlignment = .left
-		nameLabel.numberOfLines = 0
+		comicLabel.font = UIFont.boldSystemFont(ofSize: 16)
+		comicLabel.textAlignment = .left
+		comicLabel.numberOfLines = 0
 		comicCover.contentMode = .scaleAspectFit
 	}
 	private func makeConstraints() {
@@ -46,7 +46,7 @@ final class ComicsTableViewCell: UITableViewCell
 			maker.bottom.equalToSuperview().offset(-8).priority(249)
 			maker.bottom.lessThanOrEqualToSuperview().offset(-8)
 		}
-		nameLabel.snp.makeConstraints { maker in
+		comicLabel.snp.makeConstraints { maker in
 			maker.leading.equalTo(comicCover.snp.trailing).offset(8)
 			maker.trailing.equalToSuperview().offset(-8)
 			maker.centerY.equalToSuperview()

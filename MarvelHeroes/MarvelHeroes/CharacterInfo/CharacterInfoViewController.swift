@@ -15,15 +15,14 @@ final class CharacterInfoViewController: UIViewController
 	let comicsTableView = UITableView()
 	let characterDescriptionTextView = UITextView()
 	let gradient = CAGradientLayer()
+	private let cdllId = "cell"
 	private var gradientColor: UIColor = {
 		if #available(iOS 13, *) {
 			return UIColor { (UITraitCollection: UITraitCollection) -> UIColor in
 				if UITraitCollection.userInterfaceStyle == .dark {
-					// Return the color for Dark Mode
 					return UIColor.black
 				}
 				else {
-					// Return the color for Light Mode
 					return UIColor.white
 				}
 			}
@@ -65,13 +64,11 @@ final class CharacterInfoViewController: UIViewController
 		characterDescriptionTextView.text = character?.description
 		comicsTableView.backgroundView = loadIndicator
 		comicsTableView.tableFooterView = UIView()
-		comicsTableView.register(ComicsTableViewCell.self, forCellReuseIdentifier: "cell")
+		comicsTableView.register(ComicsTableViewCell.self, forCellReuseIdentifier: cdllId)
 		setGradient()
 	}
 	private func setGradient() {
-		//let startColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5).cgColor
 		let startColor = gradientColor.withAlphaComponent(0.5).cgColor
-		//let endColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
 		let endColor = gradientColor.withAlphaComponent(1).cgColor
 		gradient.colors = [startColor, endColor]
 		characterImage.layer.insertSublayer(gradient, at: 0)
@@ -108,11 +105,11 @@ extension CharacterInfoViewController: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ComicsTableViewCell
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: cdllId, for: indexPath) as? ComicsTableViewCell
 		else { return UITableViewCell() }
 
 		let comics = presenter?.getComics(by: indexPath.row)
-		cell.nameLabel.text = comics?.title
+		cell.comicLabel.text = comics?.title
 		if let image = comics?.thumbnail {
 			presenter?.getComicsImage(for: image, by: indexPath)
 		}

@@ -29,10 +29,8 @@ final class CharactersTableViewCell: UITableViewCell
 	}
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
-		// Configure the view for the selected state
 	}
 	private func confirureViews() {
-		//tabBarItem = UITabBarItem(title: "Heroes", image: UIImage(named: "shield"), selectedImage: nil)
 		characterImageView.layer.cornerRadius = 30
 		characterImageView.clipsToBounds = true
 		nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
