@@ -10,6 +10,29 @@
 		85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C2B239A8CE000F8EA22 /* AppDelegate.swift */; };
 		85D28C35239A8CE200F8EA22 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85D28C34239A8CE200F8EA22 /* Assets.xcassets */; };
 		85D28C38239A8CE200F8EA22 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85D28C36239A8CE200F8EA22 /* LaunchScreen.storyboard */; };
+		85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C47239A949000F8EA22 /* ModuleFactory.swift */; };
+		85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C49239A94B000F8EA22 /* Repository.swift */; };
+		85D28C4C239A950200F8EA22 /* EntityDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C4B239A950200F8EA22 /* EntityDetailsRouter.swift */; };
+		85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C4D239A952300F8EA22 /* EntityListRouter.swift */; };
+		85D28C51239A954C00F8EA22 /* EntityListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C50239A954C00F8EA22 /* EntityListPresenter.swift */; };
+		85D28C53239A956400F8EA22 /* EntityDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C52239A956400F8EA22 /* EntityDetailsPresenter.swift */; };
+		85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C56239A95A400F8EA22 /* EntityListViewController.swift */; };
+		85D28C59239A95BC00F8EA22 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C58239A95BC00F8EA22 /* ListView.swift */; };
+		85D28C5B239A95E900F8EA22 /* EntityDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */; };
+		85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5C239A960800F8EA22 /* DetailsView.swift */; };
+		85D28C5F239A964800F8EA22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5E239A964800F8EA22 /* Constants.swift */; };
+		85D28C61239A966000F8EA22 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C60239A966000F8EA22 /* Cell.swift */; };
+		85D28C63239A967F00F8EA22 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */; };
+		85D28C65239A969500F8EA22 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */; };
+		85D28C67239A96AA00F8EA22 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */; };
+		85D28C69239A96C800F8EA22 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C68239A96C800F8EA22 /* Cache.swift */; };
+		85D28C6B239A96E300F8EA22 /* ImageURLGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */; };
+		85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C6C239A970A00F8EA22 /* ComicsResponse.swift */; };
+		85D28C6F239A972700F8EA22 /* CharacterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C6E239A972700F8EA22 /* CharacterResponse.swift */; };
+		85D28C71239A973B00F8EA22 /* AuthorResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C70239A973B00F8EA22 /* AuthorResponse.swift */; };
+		85D28C73239A974C00F8EA22 /* Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C72239A974C00F8EA22 /* Thumbnail.swift */; };
+		85D28C75239A977000F8EA22 /* IEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C74239A977000F8EA22 /* IEntity.swift */; };
+		85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C76239A978A00F8EA22 /* EntityType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +41,29 @@
 		85D28C34239A8CE200F8EA22 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		85D28C37239A8CE200F8EA22 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85D28C39239A8CE200F8EA22 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85D28C47239A949000F8EA22 /* ModuleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleFactory.swift; sourceTree = "<group>"; };
+		85D28C49239A94B000F8EA22 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		85D28C4B239A950200F8EA22 /* EntityDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDetailsRouter.swift; sourceTree = "<group>"; };
+		85D28C4D239A952300F8EA22 /* EntityListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListRouter.swift; sourceTree = "<group>"; };
+		85D28C50239A954C00F8EA22 /* EntityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListPresenter.swift; sourceTree = "<group>"; };
+		85D28C52239A956400F8EA22 /* EntityDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDetailsPresenter.swift; sourceTree = "<group>"; };
+		85D28C56239A95A400F8EA22 /* EntityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListViewController.swift; sourceTree = "<group>"; };
+		85D28C58239A95BC00F8EA22 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDetailsViewController.swift; sourceTree = "<group>"; };
+		85D28C5C239A960800F8EA22 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
+		85D28C5E239A964800F8EA22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		85D28C60239A966000F8EA22 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		85D28C68239A96C800F8EA22 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLGenerator.swift; sourceTree = "<group>"; };
+		85D28C6C239A970A00F8EA22 /* ComicsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsResponse.swift; sourceTree = "<group>"; };
+		85D28C6E239A972700F8EA22 /* CharacterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterResponse.swift; sourceTree = "<group>"; };
+		85D28C70239A973B00F8EA22 /* AuthorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorResponse.swift; sourceTree = "<group>"; };
+		85D28C72239A974C00F8EA22 /* Thumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbnail.swift; sourceTree = "<group>"; };
+		85D28C74239A977000F8EA22 /* IEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEntity.swift; sourceTree = "<group>"; };
+		85D28C76239A978A00F8EA22 /* EntityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +96,8 @@
 		85D28C2A239A8CE000F8EA22 /* MarvelHeroes */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C4F239A953600F8EA22 /* Model */,
+				85D28C46239A947E00F8EA22 /* Factory */,
 				85D28C45239A8F8300F8EA22 /* Repository */,
 				85D28C44239A8F7500F8EA22 /* Utils */,
 				85D28C43239A8F4900F8EA22 /* View */,
@@ -74,6 +122,8 @@
 		85D28C41239A8F3600F8EA22 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C4B239A950200F8EA22 /* EntityDetailsRouter.swift */,
+				85D28C4D239A952300F8EA22 /* EntityListRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -81,6 +131,8 @@
 		85D28C42239A8F3D00F8EA22 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C50239A954C00F8EA22 /* EntityListPresenter.swift */,
+				85D28C52239A956400F8EA22 /* EntityDetailsPresenter.swift */,
 			);
 			path = Presenter;
 			sourceTree = "<group>";
@@ -88,6 +140,8 @@
 		85D28C43239A8F4900F8EA22 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C55239A959400F8EA22 /* ListView */,
+				85D28C54239A958D00F8EA22 /* DetailsView */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -95,6 +149,13 @@
 		85D28C44239A8F7500F8EA22 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C5E239A964800F8EA22 /* Constants.swift */,
+				85D28C60239A966000F8EA22 /* Cell.swift */,
+				85D28C62239A967F00F8EA22 /* UITableView+Extension.swift */,
+				85D28C64239A969500F8EA22 /* UIImageView+Extension.swift */,
+				85D28C66239A96AA00F8EA22 /* UIView+Extension.swift */,
+				85D28C68239A96C800F8EA22 /* Cache.swift */,
+				85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -102,8 +163,48 @@
 		85D28C45239A8F8300F8EA22 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				85D28C49239A94B000F8EA22 /* Repository.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		85D28C46239A947E00F8EA22 /* Factory */ = {
+			isa = PBXGroup;
+			children = (
+				85D28C47239A949000F8EA22 /* ModuleFactory.swift */,
+			);
+			path = Factory;
+			sourceTree = "<group>";
+		};
+		85D28C4F239A953600F8EA22 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				85D28C6C239A970A00F8EA22 /* ComicsResponse.swift */,
+				85D28C6E239A972700F8EA22 /* CharacterResponse.swift */,
+				85D28C70239A973B00F8EA22 /* AuthorResponse.swift */,
+				85D28C72239A974C00F8EA22 /* Thumbnail.swift */,
+				85D28C74239A977000F8EA22 /* IEntity.swift */,
+				85D28C76239A978A00F8EA22 /* EntityType.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		85D28C54239A958D00F8EA22 /* DetailsView */ = {
+			isa = PBXGroup;
+			children = (
+				85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */,
+				85D28C5C239A960800F8EA22 /* DetailsView.swift */,
+			);
+			path = DetailsView;
+			sourceTree = "<group>";
+		};
+		85D28C55239A959400F8EA22 /* ListView */ = {
+			isa = PBXGroup;
+			children = (
+				85D28C56239A95A400F8EA22 /* EntityListViewController.swift */,
+				85D28C58239A95BC00F8EA22 /* ListView.swift */,
+			);
+			path = ListView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -197,7 +298,30 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85D28C65239A969500F8EA22 /* UIImageView+Extension.swift in Sources */,
+				85D28C75239A977000F8EA22 /* IEntity.swift in Sources */,
+				85D28C4C239A950200F8EA22 /* EntityDetailsRouter.swift in Sources */,
+				85D28C6F239A972700F8EA22 /* CharacterResponse.swift in Sources */,
+				85D28C67239A96AA00F8EA22 /* UIView+Extension.swift in Sources */,
+				85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */,
+				85D28C71239A973B00F8EA22 /* AuthorResponse.swift in Sources */,
+				85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */,
+				85D28C69239A96C800F8EA22 /* Cache.swift in Sources */,
+				85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */,
+				85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */,
+				85D28C73239A974C00F8EA22 /* Thumbnail.swift in Sources */,
+				85D28C5B239A95E900F8EA22 /* EntityDetailsViewController.swift in Sources */,
+				85D28C61239A966000F8EA22 /* Cell.swift in Sources */,
+				85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */,
+				85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */,
 				85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */,
+				85D28C63239A967F00F8EA22 /* UITableView+Extension.swift in Sources */,
+				85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */,
+				85D28C53239A956400F8EA22 /* EntityDetailsPresenter.swift in Sources */,
+				85D28C51239A954C00F8EA22 /* EntityListPresenter.swift in Sources */,
+				85D28C59239A95BC00F8EA22 /* ListView.swift in Sources */,
+				85D28C5F239A964800F8EA22 /* Constants.swift in Sources */,
+				85D28C6B239A96E300F8EA22 /* ImageURLGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +460,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M7X82K2M45;
 				INFOPLIST_FILE = "MarvelHeroes/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -355,7 +479,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = M7X82K2M45;
 				INFOPLIST_FILE = "MarvelHeroes/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
