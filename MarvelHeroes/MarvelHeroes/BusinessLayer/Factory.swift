@@ -24,7 +24,10 @@ final class Factory
 	//create details characters module
 	func createDetailsVC(chracter: Character) -> DetailsCharacterViewController {
 		let repository = Repository()
-		let detailsPresenter = DetailsCharacterPresenter(character: chracter, repository: repository)
+		let detailCharactersRouter = DetailsCharacterRouter(factory: self)
+		let detailsPresenter = DetailsCharacterPresenter(character: chracter,
+														 repository: repository,
+														 router: detailCharactersRouter )
 		let detailsVC = DetailsCharacterViewController(presenter: detailsPresenter)
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
@@ -61,7 +64,7 @@ final class Factory
 		return authorsView
 	}
 
-	//create details comics module
+	//create details author module
 	func createDetailsVC(author: Creator) -> DetailsAuthorViewController {
 		let repository = Repository()
 		let detailsPresenter = DetailsAuthorPresenter(author: author, repository: repository)

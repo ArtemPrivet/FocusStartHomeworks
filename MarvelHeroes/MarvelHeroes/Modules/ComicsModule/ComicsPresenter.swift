@@ -23,7 +23,7 @@ final class ComicsPresenter
 	weak var comicsView: ComicsViewController?
 	var repository: Repository
 	var router: IComicsRouter
-	let serialQueue = DispatchQueue(label: "loadComicsQueue", qos: .userInteractive)
+	let loadComicsQueue = DispatchQueue(label: "loadComicsQueue", qos: .userInteractive, attributes: .concurrent)
 	private var comicses: [Comic] = []
 
 	init(repository: Repository, router: IComicsRouter) {
@@ -48,7 +48,7 @@ extension ComicsPresenter: IComicsPresenter
 	}
 
 	func setupView(with search: String?) {
-		serialQueue.async { [weak self] in
+		loadComicsQueue.async { [weak self] in
 			guard let self = self else { return }
 			self.repository.loadComics(fromPastScreen: nil, with: nil, searchResult: search, { [weak self] comicsResult in
 				guard let self = self else { return }
@@ -71,7 +71,7 @@ extension ComicsPresenter: IComicsPresenter
 	}
 
 	func getComicsImage(index: Int) {
-		serialQueue.async { [weak self] in
+		loadComicsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]
 			self.repository.loadImage(urlString:

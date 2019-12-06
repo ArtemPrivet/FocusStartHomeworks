@@ -22,7 +22,7 @@ final class CharactersPresenter
 	weak var charactersView: CharactersViewController?
 	var repository: Repository
 	var router: ICharactersRouter
-	let serialQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive)
+	let loadCharactersQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive, attributes: .concurrent)
 
 	private var characters: [Character] = []
 
@@ -48,7 +48,7 @@ extension CharactersPresenter: ICharacterPresenter
 	}
 
 	func setupView(with search: String?) {
-		serialQueue.async { [weak self] in
+		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
 			self.repository.loadCharacters(with: nil, searchResult: search, { [weak self] charactersResult in
 				guard let self = self else { return }
@@ -71,7 +71,7 @@ extension CharactersPresenter: ICharacterPresenter
 	}
 
 	func getCharacterImage(index: Int) {
-		serialQueue.async { [weak self] in
+		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
 			let character = self.characters[index]
 			self.repository.loadImage(urlString:

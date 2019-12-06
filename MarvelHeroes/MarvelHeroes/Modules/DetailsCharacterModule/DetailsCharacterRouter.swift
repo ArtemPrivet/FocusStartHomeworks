@@ -6,4 +6,27 @@
 //  Copyright © 2019 Kirill Fedorov. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+protocol IDetailsCharacterRouter
+{
+	func showDetails(author: Creator)
+}
+
+final class DetailsCharacterRouter
+{
+	weak var detailCharactersView: DetailsCharacterViewController?
+	var factory: Factory
+
+	init(factory: Factory) {
+		self.factory = factory
+	}
+}
+
+extension DetailsCharacterRouter: IDetailsCharacterRouter
+{
+	func showDetails(author: Creator) {
+		let detailsView = factory.createDetailsVC(author: author)
+		detailCharactersView?.navigationController?.pushViewController(detailsView, animated: true)
+	}
+}

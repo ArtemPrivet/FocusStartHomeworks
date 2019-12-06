@@ -24,7 +24,7 @@ final class DetailsComicsPresenter
 	var comics: Comic
 	var repository: Repository
 	var characters: [Character] = []
-	let serialQueue = DispatchQueue(label: "loadCharactersQueue")
+	let loadCharactersQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive, attributes: .concurrent)
 
 	init(comics: Comic, repository: Repository) {
 		self.comics = comics
@@ -79,7 +79,7 @@ extension DetailsComicsPresenter: IDetailsComicsPresenter
 	}
 
 	func getCharacterImage(index: Int) {
-		serialQueue.async { [weak self] in
+		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
 			let character = self.characters[index]
 			self.repository.loadImage(urlString:

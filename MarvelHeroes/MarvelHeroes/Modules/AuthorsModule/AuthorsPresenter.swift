@@ -23,7 +23,7 @@ final class AuthorsPresenter
 	weak var authorView: AuthorsViewController?
 	var repository: Repository
 	var router: IAuthorRouter
-	let serialQueue = DispatchQueue(label: "loadAuthorsQueue", qos: .userInteractive)
+	let loadAuthorsQueue = DispatchQueue(label: "loadAuthorsQueue", qos: .userInteractive, attributes: .concurrent)
 	private var authors: [Creator] = []
 
 	init(repository: Repository, router: IAuthorRouter) {
@@ -49,7 +49,7 @@ extension AuthorsPresenter: IAuthorsPresenter
 	}
 
 	func setupView(with search: String?) {
-		serialQueue.async { [weak self] in
+		loadAuthorsQueue.async { [weak self] in
 			guard let self = self else { return }
 			self.repository.loadAuthors(with: nil, searchResult: search, { [weak self] authorsResult in
 				guard let self = self else { return }
@@ -72,7 +72,7 @@ extension AuthorsPresenter: IAuthorsPresenter
 	}
 
 	func getAuthorImage(index: Int) {
-		serialQueue.async { [weak self] in
+		loadAuthorsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let author = self.authors[index]
 			self.repository.loadImage(urlString:

@@ -16,6 +16,7 @@ protocol IDetailsCharacterPresenter
 	func getComicsImage(index: Int)
 	func setupView()
 	func setupBackgroungImage()
+	func showDetailAuthor(index: Int)
 }
 
 final class DetailsCharacterPresenter
@@ -23,12 +24,14 @@ final class DetailsCharacterPresenter
 	weak var detailsView: DetailsCharacterViewController?
 	var character: Character
 	var repository: Repository
+	var router: IDetailsCharacterRouter
 	var comicses: [Comic] = []
-	let serialQueue = DispatchQueue(label: "loadComicsQueue")
+	let loadComicsQueue = DispatchQueue(label: "loadComicsQueue", qos: .userInteractive, attributes: .concurrent)
 
-	init(character: Character, repository: Repository) {
+	init(character: Character, repository: Repository, router: IDetailsCharacterRouter) {
 		self.character = character
 		self.repository = repository
+		self.router = router
 		setupView()
 		setupBackgroungImage()
 	}
@@ -36,6 +39,10 @@ final class DetailsCharacterPresenter
 
 extension DetailsCharacterPresenter: IDetailsCharacterPresenter
 {
+	func showDetailAuthor(index: Int) {
+//		router.showDetails(author: <#T##Creator#>)
+	}
+
 	func setupBackgroungImage() {
 		self.repository.loadImage(urlString:
 			String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
@@ -80,7 +87,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter
 	}
 
 	func getComicsImage(index: Int) {
-		serialQueue.async { [weak self] in
+		loadComicsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]
 			self.repository.loadImage(urlString:
