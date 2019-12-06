@@ -69,7 +69,7 @@ final class MarvelAPIService
 	private let apiKey = "385b86e3ae22c2b0f3e18cc61579e4ea"
 	private let privateApiKey = "a01fbf7404225c0f9e07d1886ce7a9a1ee2e758e"
 	private var timestamp: TimeInterval { Date().timeIntervalSince1970 }
-	private var hash: String { MD5(String(Int(timestamp)) + privateApiKey + apiKey) }
+	private var hash: String { (String(Int(timestamp)) + privateApiKey + apiKey).MD5 }
 
 	private lazy var requiredQueryItems = [
 		URLQueryItem(name: Parameters.apikey.rawValue, value: apiKey),
