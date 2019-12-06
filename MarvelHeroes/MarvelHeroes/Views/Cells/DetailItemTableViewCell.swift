@@ -106,8 +106,8 @@ extension DetailItemTableViewCell: IItemTableViewCell
 {
 	func configure(using viewModel: IItemViewModel) {
 		titleLabel.text = viewModel.title
-		guard let description = viewModel.description else { return }
-		descriptionLabel.text = (description.isEmpty == false) ? description : "No info"
+		let text = viewModel.description?.trimmingCharacters(in: .whitespaces)
+		descriptionLabel.text = (text?.isEmpty == false) ? text : "No info"
 	}
 
 	func updateIcon(image: UIImage?) {
