@@ -16,7 +16,7 @@ import CommonCrypto
 
 extension String
 {
-	var MD5: String {
+	var md5: String {
 //		if #available(iOS 13.0, *) {
 //			return Insecure
 //				.MD5
