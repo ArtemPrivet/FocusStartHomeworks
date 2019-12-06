@@ -48,21 +48,28 @@ final class HeaderView: UIView
 		layoutMargins = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
 		addSubview(titleLabel)
 		titleLabel.text = title
-		let height = titleLabel
-			.systemLayoutSizeFitting(
-				CGSize(width: width - layoutMargins.left - layoutMargins.right,
-					   height: UIView.layoutFittingCompressedSize.height),
-				withHorizontalFittingPriority: .required,
-				verticalFittingPriority: .fittingSizeLevel)
-			.height
-		titleLabelSize = CGSize(width: width - layoutMargins.left + layoutMargins.right,
-								height: height)
+		let labelHeight = calculateHeight(titleLabel, byWidth: width)
+		titleLabelSize =
+			CGSize(width: width - layoutMargins.left + layoutMargins.right,
+				   height: labelHeight)
 
 		guard let text = description?.trimmingCharacters(in: .whitespaces), text.isEmpty == false else { return }
 		addSubview(descriptionTextView)
 		descriptionTextView.text = text
-		descriptionTextViewSize = CGSize(width: width - layoutMargins.left - layoutMargins.right,
-										 height: 200)
+
+		let textViewHeight = calculateHeight(descriptionTextView, byWidth: width)
+		descriptionTextViewSize =
+			CGSize(width: width - layoutMargins.left - layoutMargins.right,
+				   height: min(textViewHeight + 10, 200))
+	}
+
+	private func calculateHeight(_ view: UIView, byWidth width: CGFloat) -> CGFloat {
+		view.systemLayoutSizeFitting(
+			CGSize(width: width - layoutMargins.left - layoutMargins.right,
+				   height: UIView.layoutFittingCompressedSize.height),
+			withHorizontalFittingPriority: .required,
+			verticalFittingPriority: .fittingSizeLevel)
+		.height
 	}
 
 	override func layoutSubviews() {
