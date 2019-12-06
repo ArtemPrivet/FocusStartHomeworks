@@ -8,7 +8,8 @@
 
 import Foundation
 
-class ModulesFactory {
+final class ModulesFactory
+{
 
 	func getDetailModule(hero: ResultChar) -> DetailViewController {
 		let presenter = DetailPresenter(hero: hero)

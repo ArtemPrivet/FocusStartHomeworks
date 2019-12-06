@@ -8,7 +8,8 @@
 
 import Foundation
 
-class DetailPresenter {
+final class DetailPresenter
+{
 
 	private let hero: ResultChar
 
@@ -21,9 +22,13 @@ class DetailPresenter {
 	}
 }
 
-extension DetailPresenter: IDetailPresenter {
+extension DetailPresenter: IDetailPresenter
+{
+	func getHeroID(of index: Int) -> Int {
+		hero.id
+	}
+
 	func getHero() -> ResultChar {
 		hero
 	}
 }
-

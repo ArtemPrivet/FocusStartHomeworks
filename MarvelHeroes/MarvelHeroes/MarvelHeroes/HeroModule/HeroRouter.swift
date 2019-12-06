@@ -8,8 +8,8 @@
 
 import Foundation
 
-class HeroRouter {
-
+final class HeroRouter
+{
 	weak var viewController: HeroViewController?
 
 	private var factory: ModulesFactory
@@ -19,8 +19,8 @@ class HeroRouter {
 	}
 }
 
-extension HeroRouter: IHeroRouter {
-
+extension HeroRouter: IHeroRouter
+{
 	func showDetail(with hero: ResultChar) {
 		let detailViewController = factory.getDetailModule(hero: hero)
 		detailViewController.view.backgroundColor = .white

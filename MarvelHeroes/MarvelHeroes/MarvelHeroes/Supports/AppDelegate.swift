@@ -9,26 +9,30 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+
+final class AppDelegate: UIResponder, UIApplicationDelegate
+{
 
 	var window: UIWindow?
 
-	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		let tabBarController = UITabBarController()
+	func addNavigationsVC() -> [UINavigationController] {
 		let heroVC = ModulesFactory().getHeroModule()
-		let navigationHeroVC = UINavigationController(rootViewController: heroVC)
-		navigationHeroVC.tabBarItem.image = UIImage(named: "shield")
-		let navigationComicsVC = UINavigationController(rootViewController: ComicsViewController())
-		navigationComicsVC.tabBarItem.image = UIImage(named: "comic")
-		let navigationAuthorVC = UINavigationController(rootViewController: AuthorViewController())
-		navigationAuthorVC.tabBarItem.image = UIImage(named: "writer")
+		let naviHeroVC = UINavigationController(rootViewController: heroVC)
+		naviHeroVC.tabBarItem.image = UIImage(named: "shield")
+		let naviComicsVC = UINavigationController(rootViewController: ComicsViewController())
+		naviComicsVC.tabBarItem.image = UIImage(named: "comic")
+		let naviAuthorVC = UINavigationController(rootViewController: AuthorViewController())
+		naviAuthorVC.tabBarItem.image = UIImage(named: "writer")
+		return [naviHeroVC, naviComicsVC, naviAuthorVC]
+	}
+
+	func application(_ application: UIApplication,
+					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		let tabBarController = UITabBarController()
 		window = UIWindow(frame: UIScreen.main.bounds)
 		window?.rootViewController = tabBarController
-		tabBarController.viewControllers = [navigationHeroVC, navigationComicsVC, navigationAuthorVC]
+		tabBarController.viewControllers = addNavigationsVC()
 		window?.makeKeyAndVisible()
 		return true
 	}
-
-
 }
-

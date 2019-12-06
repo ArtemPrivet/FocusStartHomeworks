@@ -6,7 +6,7 @@
 //  Copyright © 2019 Igor Shelginskiy. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CommonCrypto
 
 final class NetService
@@ -21,21 +21,50 @@ final class NetService
 	private var hashString: String {
 		return ts + privateKey + publicKey
 	}
-	typealias DataResult = Result<HeroesByID, NSError>
 
-	func loadHeroes(_ text: String, completion: @escaping (DataResult) -> Void) {
+	typealias HeroResult = Result<HeroesByID, NSError>
+	typealias ComicResult = Result<ComicsByID, NSError>
+	typealias HeroImageResult = Result<UIImage, NSError>
+
+	func loadHeroes(_ text: String, completion: @escaping (HeroResult) -> Void) {
 
 		if var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters"){
-			urlComponents.query = "nameStartsWith=\(text)&ts=\(ts)&apikey=\(publicKey)&hash=\(hashString.md5)"
+			urlComponents.query = "nameStartsWith=\(text)&ts=\(ts)&limit=90&apikey=\(publicKey)&hash=\(hashString.md5)"
 			if let url = urlComponents.url {
-				dataTask = session.dataTask(with: url) { (data, _, error) in
+				dataTask = session.dataTask(with: url) { data, _, error in
 					if let data = data {
 						do {
 							let object = try self.decoder.decode(HeroesByID.self, from: data)
 							DispatchQueue.main.async {
 								completion(.success(object))
 							}
-						} catch {
+						}
+						catch {
+							DispatchQueue.main.async {
+								completion(.failure(error as NSError))
+							}
+						}
+					}
+				}
+				dataTask?.resume()
+			}
+		}
+	}
+
+	func loadComics(_ heroID: Int, completion: @escaping (ComicResult) -> Void) {
+
+		if var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters/\(heroID)/comics"){
+			urlComponents.query = "&ts=\(ts)&apikey=\(publicKey)&hash=\(hashString.md5)"
+			if let url = urlComponents.url {
+				dataTask = session.dataTask(with: url) { data, _, error in
+					if let data = data {
+						do {
+							let object = try self.decoder.decode(ComicsByID.self, from: data)
+							DispatchQueue.main.async {
+								completion(.success(object))
+							}
+						}
+						catch {
 							DispatchQueue.main.async {
 								completion(.failure(error as NSError))
 							}
@@ -48,7 +77,8 @@ final class NetService
 	}
 }
 
-extension String {
+extension String
+{
 	var md5: String {
 		let data = Data(self.utf8)
 		let hash = data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> [UInt8] in

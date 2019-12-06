@@ -8,10 +8,13 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController
+{
 
 	private var presenter: IDetailPresenter
 	private var heroName = UILabel()
+	private var heroID = Int()
+	private let gradient = CAGradientLayer()
 	private var heroDescription = UITextView()
 	private var heroComicsTableView = UITableView()
 	private var heroImage: UIImageView = {
@@ -25,16 +28,31 @@ class DetailViewController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 
+	@available(*, unavailable)
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		setupUI()
 		view.addSubview(heroName)
 		view.addSubview(heroDescription)
 		view.addSubview(heroImage)
 		view.addSubview(heroComicsTableView)
+		setGradient()
+		setConstraints()
+		heroComicsTableView.dataSource = self
+	}
+
+	private func setupUI() {
+		heroName.isOpaque = false
+		heroName.numberOfLines = 0
+		heroName.font = UIFont(name: "Helvetica", size: 34)
+		heroDescription.isOpaque = false
+		heroDescription.isEditable = false
+		heroDescription.font = UIFont(name: "Helvetica", size: 18)
+		heroImage.alpha = 0.3
 		heroName.text = presenter.getHero().name
 		heroDescription.text = presenter.getHero().resultDescription
 		heroImage.image = {
@@ -46,18 +64,13 @@ class DetailViewController: UIViewController {
 			}
 			return image.image
 		}()
-		setupUI()
-		setConstraints()
 	}
 
-	private func setupUI() {
-		heroName.isOpaque = false
-		heroName.numberOfLines = 0
-		heroName.font = UIFont(name: "Helvetica", size: 34)
-		heroDescription.isOpaque = false
-		heroDescription.isEditable = false
-		heroDescription.font = UIFont(name: "Helvetica", size: 18)
-		heroImage.alpha = 0.3
+	// не работает (
+	private func setGradient() {
+		gradient.frame = heroImage.bounds
+		gradient.colors = [#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.4869702483)]
+		heroImage.layer.insertSublayer(gradient, at: 0)
 	}
 
 	private func setConstraints() {
@@ -72,7 +85,7 @@ class DetailViewController: UIViewController {
 			heroDescription.topAnchor.constraint(equalTo: heroName.bottomAnchor, constant: 8),
 			heroDescription.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
 			heroDescription.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
-			heroDescription.heightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.heightAnchor, multiplier: 1/3),
+			heroDescription.heightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.heightAnchor, multiplier: 1 / 3),
 			heroComicsTableView.topAnchor.constraint(equalTo: heroDescription.bottomAnchor, constant: 6),
 			heroComicsTableView.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor),
 			heroComicsTableView.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor),
@@ -80,7 +93,21 @@ class DetailViewController: UIViewController {
 			heroImage.topAnchor.constraint(equalTo: self.view.topAnchor),
 			heroImage.leftAnchor.constraint(equalTo: self.view.leftAnchor),
 			heroImage.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-			heroImage.bottomAnchor.constraint(equalTo: heroDescription.bottomAnchor)
+			heroImage.bottomAnchor.constraint(equalTo: heroDescription.bottomAnchor),
 		])
+	}
+}
+
+extension DetailViewController: UITableViewDataSource
+{
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return presenter.getHero().comics.items.count
+	}
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ??
+			UITableViewCell(style: .subtitle, reuseIdentifier: "comicsCell")
+		let comic = presenter.getHero().comics.items[indexPath.row]
+		cell.textLabel?.text = comic.name
+		return cell
 	}
 }

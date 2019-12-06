@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9408C0DB239999F6007CBF8B /* ComicsByID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9408C0DA239999F6007CBF8B /* ComicsByID.swift */; };
 		94221809239440EA00634CF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94221808239440EA00634CF9 /* AppDelegate.swift */; };
-		9422180B239440EA00634CF9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9422180A239440EA00634CF9 /* SceneDelegate.swift */; };
 		94221812239440ED00634CF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94221811239440ED00634CF9 /* Assets.xcassets */; };
 		94221815239440ED00634CF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94221813239440ED00634CF9 /* LaunchScreen.storyboard */; };
 		942218202394510600634CF9 /* NetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9422181F2394510600634CF9 /* NetService.swift */; };
@@ -26,9 +26,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9408C0DA239999F6007CBF8B /* ComicsByID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsByID.swift; sourceTree = "<group>"; };
 		94221805239440EA00634CF9 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94221808239440EA00634CF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9422180A239440EA00634CF9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		94221811239440ED00634CF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		94221814239440ED00634CF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		94221816239440ED00634CF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,7 +93,6 @@
 			children = (
 				94221811239440ED00634CF9 /* Assets.xcassets */,
 				94221808239440EA00634CF9 /* AppDelegate.swift */,
-				9422180A239440EA00634CF9 /* SceneDelegate.swift */,
 				94221813239440ED00634CF9 /* LaunchScreen.storyboard */,
 				94221816239440ED00634CF9 /* Info.plist */,
 			);
@@ -112,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				9460487F23955F3A00648CD6 /* HeroesByID.swift */,
+				9408C0DA239999F6007CBF8B /* ComicsByID.swift */,
 				94E71FE42397D06E00DCAEC2 /* HeroesRepository.swift */,
 				94E71FF12398FDE200DCAEC2 /* Factory.swift */,
 			);
@@ -155,6 +155,7 @@
 				94221801239440EA00634CF9 /* Sources */,
 				94221802239440EA00634CF9 /* Frameworks */,
 				94221803239440EA00634CF9 /* Resources */,
+				942BC00E239A9A1400981028 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -210,6 +211,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		942BC00E239A9A1400981028 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		94221801239440EA00634CF9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -217,11 +238,11 @@
 			files = (
 				94E71FEB2398FC1000DCAEC2 /* HeroPresenter.swift in Sources */,
 				94221824239462DA00634CF9 /* HeroViewController.swift in Sources */,
+				9408C0DB239999F6007CBF8B /* ComicsByID.swift in Sources */,
 				94221809239440EA00634CF9 /* AppDelegate.swift in Sources */,
 				942218262394632900634CF9 /* ComicsViewController.swift in Sources */,
 				942218282394633500634CF9 /* AuthorViewController.swift in Sources */,
 				94E71FE52397D06E00DCAEC2 /* HeroesRepository.swift in Sources */,
-				9422180B239440EA00634CF9 /* SceneDelegate.swift in Sources */,
 				94E71FF4239917CD00DCAEC2 /* DetailPresenter.swift in Sources */,
 				94E71FF02398FCED00DCAEC2 /* Protocols.swift in Sources */,
 				94E71FED2398FC1C00DCAEC2 /* HeroRouter.swift in Sources */,

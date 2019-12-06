@@ -8,22 +8,27 @@
 
 import Foundation
 
-protocol IDetailPresenter {
+protocol IDetailPresenter
+{
 	func getHero() -> ResultChar
+	func getHeroID(of index: Int) -> Int
 }
 
-protocol IHeroPresenter {
-	func getHero(of index: Int) -> ResultChar
-	func getHeroes(of text: String)
+protocol IHeroPresenter
+{
 	var heroesCount: Int { get }
 
+	func getHero(of index: Int) -> ResultChar
+	func getHeroes(of text: String)
 	func showDetail(of index: Int)
 }
 
-protocol IHeroRouter {
+protocol IHeroRouter
+{
 	func showDetail(with hero: ResultChar)
 }
 
-protocol IHeroRepository {
-	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> ())
+protocol IHeroRepository
+{
+	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void )
 }

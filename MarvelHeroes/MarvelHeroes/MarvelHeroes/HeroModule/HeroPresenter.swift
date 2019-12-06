@@ -8,11 +8,12 @@
 
 import Foundation
 
-class HeroPresenter {
+final class HeroPresenter
+{
 
 	private var repository: IHeroRepository
 	private var router: IHeroRouter
-
+	let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 	private var heroes = [ResultChar]()
 
 	init(repository: IHeroRepository, router: IHeroRouter) {
@@ -21,7 +22,8 @@ class HeroPresenter {
 	}
 }
 
-extension HeroPresenter: IHeroPresenter {
+extension HeroPresenter: IHeroPresenter
+{
 	var heroesCount: Int { heroes.count }
 
 	func showDetail(of index: Int) {
@@ -33,10 +35,15 @@ extension HeroPresenter: IHeroPresenter {
 	}
 
 	func getHeroes(of text: String) {
-		repository.getHeroes(of: text, completion: { heroList in
-			self.heroes = heroList ?? []
-			return
-		})
+		loadHeroesQueue.async { [weak self] in
+			guard let self = self else { return }
+			self.repository.getHeroes(of: text, completion: { [weak self] heroList in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					self.heroes = heroList ?? []
+				}
+				return
+			})
+		}
 	}
 }
-

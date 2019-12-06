@@ -8,18 +8,20 @@
 
 import UIKit
 
-class HeroesRepository {
+final class HeroesRepository
+{
 	private let netService = NetService()
 }
 
-extension HeroesRepository: IHeroRepository {
+extension HeroesRepository: IHeroRepository
+{
 	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void){
 			self.netService.loadHeroes(text) { dataResult in
 				switch dataResult {
 				case .success(let data):
 					completion(data.data.results)
 					return
-				case .failure(_):
+				case .failure:
 					completion(nil)
 					return
 				}
