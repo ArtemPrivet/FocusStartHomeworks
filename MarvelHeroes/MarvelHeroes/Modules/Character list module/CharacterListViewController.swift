@@ -35,8 +35,8 @@ final class ItemListViewController: UIViewController
 		controller.searchBar.delegate = self
 		controller.obscuresBackgroundDuringPresentation = false
 		controller.searchBar.placeholder = "Start typing \(presenter.itemType.rawValue.lowercased())..."
-		self.navigationItem.searchController = controller
-		self.definesPresentationContext = true
+		controller.searchBar.searchBarStyle = .minimal
+		controller.searchBar.returnKeyType = .done
 		return controller
 	}()
 
@@ -48,12 +48,12 @@ final class ItemListViewController: UIViewController
 	private var activityIndicator: UIActivityIndicatorView = {
 		let indicator = UIActivityIndicatorView()
 		if #available(iOS 13.0, *) {
-			indicator.color = .label
 			indicator.style = .large
+			indicator.color = .label
 		}
 		else {
-			indicator.color = .black
 			indicator.style = .whiteLarge
+			indicator.color = .black
 		}
 		return indicator
 	}()
@@ -86,10 +86,8 @@ final class ItemListViewController: UIViewController
 		view.addSubview(alertView)
 		view.addSubview(activityIndicator)
 
-		_ = resultSearchController.searchBar
+		setup()
 		setConstraints()
-
-		tableView.register(DetailItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +104,15 @@ final class ItemListViewController: UIViewController
 	}
 
 	// MARK: ...Private methods
+	private func setup() {
+		tableView.register(DetailItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
+
+		// Search bar
+		navigationItem.searchController = resultSearchController
+		definesPresentationContext = true
+		navigationItem.hidesSearchBarWhenScrolling = false
+	}
+
 	private func setConstraints() {
 		var selfView: UILayoutGuide
 		if #available(iOS 11.0, *) {
@@ -124,7 +131,7 @@ final class ItemListViewController: UIViewController
 
 		// Alert view constraints
 		alertView.translatesAutoresizingMaskIntoConstraints = false
-		alertView.topAnchor.constraint(equalTo: view.topAnchor, constant: 250).isActive = true
+		alertView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
 		alertView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
 		alertView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
@@ -141,9 +148,9 @@ extension ItemListViewController: IItemListViewController
 	var navController: UINavigationController? { navigationController }
 
 	func showItems() {
+		activityIndicator.stopAnimating()
 		tableView.reloadData()
 		tableView.alpha = 1
-		activityIndicator.stopAnimating()
 		tableView.isHidden = false
 		alertView.isHidden = true
 	}

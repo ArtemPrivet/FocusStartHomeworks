@@ -30,8 +30,12 @@ enum ItemType: String, CaseIterable
 	}
 
 	var title: String {
+		var hero = "😎"
+		if #available(iOS 13.0, *) {
+			hero = "🦸‍♂️"
+		}
 		switch self {
-		case .charactor: return "🦸‍♂️ " + rawValue
+		case .charactor: return hero + " " + rawValue
 		case .comic: return "📰 " + rawValue
 		case .creator:	return "✍️ " + rawValue
 		}

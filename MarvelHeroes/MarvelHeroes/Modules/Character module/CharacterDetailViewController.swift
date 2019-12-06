@@ -58,12 +58,12 @@ final class ItemDetailViewController: UIViewController
 	private var activityIndicator: UIActivityIndicatorView = {
 		let indicator = UIActivityIndicatorView()
 		if #available(iOS 13.0, *) {
-			indicator.color = .label
 			indicator.style = .large
+			indicator.color = .label
 		}
 		else {
-			indicator.color = .black
 			indicator.style = .whiteLarge
+			indicator.color = .black
 		}
 		return indicator
 	}()
