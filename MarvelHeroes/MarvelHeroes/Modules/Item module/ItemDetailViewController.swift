@@ -17,7 +17,7 @@ protocol INavigationItemDetailViewController: AnyObject
 protocol IItemDetailViewController: AnyObject
 {
 	func showItems()
-	func showAlert()
+	func showStub()
 }
 
 // MARK: - Class
@@ -42,24 +42,12 @@ final class ItemDetailViewController: UIViewController
 	}()
 
 	private lazy var gradientImageView: CAGradientLayer = {
+		var color: UIColor = .white
 		if #available(iOS 13.0, *) {
-			return self.imageView.addGradientLayerInForeground(
-				colors: [
-					UIColor.systemBackground.withAlphaComponent(0.25),
-					.systemBackground,
-					.systemBackground,
-					.systemBackground,
-			])
+			color = . systemBackground
 		}
-		else {
-			return self.imageView.addGradientLayerInForeground(
-				colors: [
-					UIColor.white.withAlphaComponent(0.25),
-					.white,
-					.white,
-					.white,
-			])
-		}
+		return self.imageView.addGradientLayerInForeground(
+			colors: [color.withAlphaComponent(0.25), color, color, color])
 	}()
 
 	private var activityIndicator: UIActivityIndicatorView = {
@@ -73,6 +61,12 @@ final class ItemDetailViewController: UIViewController
 			indicator.color = .black
 		}
 		return indicator
+	}()
+
+	private var stubView: StubView = {
+		let alertView = StubView()
+		alertView.isHidden = true
+		return alertView
 	}()
 
 	private var headerView: HeaderView?
@@ -97,16 +91,13 @@ final class ItemDetailViewController: UIViewController
 	// MARK: ...Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
 		setup()
 		setConstraints()
-
 		loadData()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		navigationItem.largeTitleDisplayMode = .automatic
 		if let indexPath = indexPathForSelectedRow {
 			tableView.deselectRow(at: indexPath, animated: true)
 		}
@@ -129,6 +120,7 @@ final class ItemDetailViewController: UIViewController
 
 		gradientImageView.frame = view.bounds
 
+		view.addSubview(stubView)
 		view.addSubview(imageView)
 		view.addSubview(tableView)
 		view.addSubview(activityIndicator)
@@ -154,6 +146,7 @@ final class ItemDetailViewController: UIViewController
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		tableView.translatesAutoresizingMaskIntoConstraints = false
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+		stubView.translatesAutoresizingMaskIntoConstraints = false
 
 		var selfView: UILayoutGuide
 		if #available(iOS 11.0, *) {
@@ -168,16 +161,11 @@ final class ItemDetailViewController: UIViewController
 		imageView.leadingAnchor.constraint(equalTo: selfView.leadingAnchor).isActive = true
 		imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 		imageView.trailingAnchor.constraint(equalTo: selfView.trailingAnchor).isActive = true
-		let imageViewBottomAnchor = NSLayoutConstraint(
-			item: imageView,
-			attribute: .bottom,
-			relatedBy: .equal,
-			toItem: headerView,
-			attribute: .bottom,
-			multiplier: 1,
-			constant: 0)
-		imageViewBottomAnchor.priority = .defaultHigh
+		let imageViewBottomAnchor = imageView
+			.bottomAnchor
+			.constraint(equalTo: headerView?.bottomAnchor ?? selfView.bottomAnchor)
 		imageViewBottomAnchor.isActive = true
+		imageViewBottomAnchor.priority = .defaultHigh
 
 		// Table view constraints
 		tableView.leadingAnchor.constraint(equalTo: selfView.leadingAnchor).isActive = true
@@ -188,6 +176,11 @@ final class ItemDetailViewController: UIViewController
 		// Activity indicator constraints
 		activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 		activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+
+		// Stub view constraints
+		stubView.topAnchor.constraint(equalTo: headerView?.bottomAnchor ?? selfView.topAnchor, constant: -10).isActive = true
+		stubView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+		stubView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 	}
 
 	private func loadData() {
@@ -265,11 +258,14 @@ extension ItemDetailViewController: IItemDetailViewController
 	func showItems() {
 		activityIndicator.stopAnimating()
 		didLoaditems = true
+		stubView.isHidden = true
 		tableView.separatorStyle = .singleLine
 		tableView.reloadData()
 	}
 
-	func showAlert() {
+	func showStub() {
 		activityIndicator.stopAnimating()
+		stubView.setTitle("Error")
+		stubView.isHidden = false
 	}
 }

@@ -20,7 +20,7 @@
 		586639D523944998009EC907 /* ComicDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586639D423944998009EC907 /* ComicDate.swift */; };
 		586639D723944A0A009EC907 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586639D623944A0A009EC907 /* Format.swift */; };
 		586639D923944A26009EC907 /* ComicPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586639D823944A26009EC907 /* ComicPrice.swift */; };
-		586639DB23944A4F009EC907 /* TextObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586639DA23944A4F009EC907 /* TextObject.swift */; };
+		586639DB23944A4F009EC907 /* Text.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586639DA23944A4F009EC907 /* Text.swift */; };
 		58AD6A7F23946A22000041BF /* DecoderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD6A7E23946A22000041BF /* DecoderService.swift */; };
 		58AD6A812394855C000041BF /* ImageDownloadService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD6A802394855C000041BF /* ImageDownloadService.swift */; };
 		58AD6A8523951F58000041BF /* DetailItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD6A8423951F58000041BF /* DetailItemTableViewCell.swift */; };
@@ -31,7 +31,7 @@
 		58AD6A972395C66D000041BF /* ItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD6A962395C66D000041BF /* ItemTableViewCell.swift */; };
 		58AD6A9923970065000041BF /* IItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58AD6A9823970065000041BF /* IItemViewModel.swift */; };
 		58DA71D72397303E00498977 /* CreatorDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA71D62397303E00498977 /* CreatorDataWrapper.swift */; };
-		58DA71D92397D3FE00498977 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA71D82397D3FE00498977 /* AlertView.swift */; };
+		58DA71D92397D3FE00498977 /* StubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA71D82397D3FE00498977 /* StubView.swift */; };
 		58DA7212239861A700498977 /* IItemDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA7211239861A700498977 /* IItemDataWrapper.swift */; };
 		58DA72192399424000498977 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA72182399424000498977 /* HeaderView.swift */; };
 		58DA721B2399595500498977 /* String+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DA721A2399595500498977 /* String+Size.swift */; };
@@ -59,7 +59,7 @@
 		586639D423944998009EC907 /* ComicDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicDate.swift; sourceTree = "<group>"; };
 		586639D623944A0A009EC907 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		586639D823944A26009EC907 /* ComicPrice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicPrice.swift; sourceTree = "<group>"; };
-		586639DA23944A4F009EC907 /* TextObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextObject.swift; sourceTree = "<group>"; };
+		586639DA23944A4F009EC907 /* Text.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Text.swift; sourceTree = "<group>"; };
 		58AD6A7E23946A22000041BF /* DecoderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecoderService.swift; sourceTree = "<group>"; };
 		58AD6A802394855C000041BF /* ImageDownloadService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloadService.swift; sourceTree = "<group>"; };
 		58AD6A8423951F58000041BF /* DetailItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 		58AD6A962395C66D000041BF /* ItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTableViewCell.swift; sourceTree = "<group>"; };
 		58AD6A9823970065000041BF /* IItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IItemViewModel.swift; sourceTree = "<group>"; };
 		58DA71D62397303E00498977 /* CreatorDataWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorDataWrapper.swift; sourceTree = "<group>"; };
-		58DA71D82397D3FE00498977 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		58DA71D82397D3FE00498977 /* StubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubView.swift; sourceTree = "<group>"; };
 		58DA7211239861A700498977 /* IItemDataWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IItemDataWrapper.swift; sourceTree = "<group>"; };
 		58DA72182399424000498977 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		58DA721A2399595500498977 /* String+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Size.swift"; sourceTree = "<group>"; };
@@ -167,7 +167,7 @@
 				586639D423944998009EC907 /* ComicDate.swift */,
 				586639D623944A0A009EC907 /* Format.swift */,
 				586639D823944A26009EC907 /* ComicPrice.swift */,
-				586639DA23944A4F009EC907 /* TextObject.swift */,
+				586639DA23944A4F009EC907 /* Text.swift */,
 				58DA7213239861B000498977 /* Protocols */,
 			);
 			path = "API Marvel Entities";
@@ -177,7 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				58EB0FE22397135600BE0EE6 /* Cells */,
-				58DA71D82397D3FE00498977 /* AlertView.swift */,
+				58DA71D82397D3FE00498977 /* StubView.swift */,
 				58DA72182399424000498977 /* HeaderView.swift */,
 			);
 			path = Views;
@@ -356,9 +356,9 @@
 				5849C296239400F40046BCB3 /* AppDelegate.swift in Sources */,
 				58AD6A7F23946A22000041BF /* DecoderService.swift in Sources */,
 				5849C2B623943C0A0046BCB3 /* Thumbnail.swift in Sources */,
-				586639DB23944A4F009EC907 /* TextObject.swift in Sources */,
+				586639DB23944A4F009EC907 /* Text.swift in Sources */,
 				58E6DFA723945B0F00E52083 /* Factory.swift in Sources */,
-				58DA71D92397D3FE00498977 /* AlertView.swift in Sources */,
+				58DA71D92397D3FE00498977 /* StubView.swift in Sources */,
 				58AD6A8E23955D6C000041BF /* ItemPresenter.swift in Sources */,
 				58AD6A812394855C000041BF /* ImageDownloadService.swift in Sources */,
 				58DA7212239861A700498977 /* IItemDataWrapper.swift in Sources */,
@@ -498,6 +498,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MarvelHeroes/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -516,6 +517,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = MarvelHeroes/SupportingFiles/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

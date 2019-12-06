@@ -7,24 +7,10 @@
 
 import Foundation
 import CommonCrypto
-// Почему то на iOS < 13 приложение крашится при запуске с ошибкой
-// Library not loaded: /System/Library/Frameworks/CryptoKit.framework/CryptoKit
-// и нижеприведенный блок кода не помогает 🤷‍♂️🤷‍♂️🤷‍♂️
-//#if canImport(CryptoKit)
-//  import CryptoKit
-//#endif
 
 extension String
 {
 	var md5: String {
-//		if #available(iOS 13.0, *) {
-//			return Insecure
-//				.MD5
-//				.hash(data: data(using: .utf8) ?? Data())
-//				.map { String(format: "%02hhx", $0) }
-//				.joined()
-//		}
-//		else {
 		let str = cString(using: .utf8)
 		let strLen = CC_LONG(lengthOfBytes(using: .utf8))
 		let digestLen = Int(CC_MD5_DIGEST_LENGTH)
@@ -40,6 +26,5 @@ extension String
 		result.deinitialize(count: digestLen)
 
 		return String(format: hash as String)
-//		}
 	}
 }

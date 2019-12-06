@@ -17,7 +17,7 @@ protocol INavigationItemListViewController: AnyObject
 protocol IItemListViewController: AnyObject
 {
 	func showItems()
-	func showAlert(with message: String)
+	func showStub(with message: String)
 }
 
 // MARK: - Class
@@ -44,10 +44,7 @@ final class ItemListViewController: UIViewController
 		return controller
 	}()
 
-	private var alertView: AlertView = {
-		let alertView = AlertView()
-		return alertView
-	}()
+	private let stubView = StubView()
 
 	private var activityIndicator: UIActivityIndicatorView = {
 		let indicator = UIActivityIndicatorView()
@@ -85,11 +82,6 @@ final class ItemListViewController: UIViewController
 	// MARK: ...Life cycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
-
-		view.addSubview(tableView)
-		view.addSubview(alertView)
-		view.addSubview(activityIndicator)
-
 		setup()
 		setConstraints()
 	}
@@ -109,6 +101,11 @@ final class ItemListViewController: UIViewController
 
 	// MARK: ...Private methods
 	private func setup() {
+
+		view.addSubview(tableView)
+		view.addSubview(stubView)
+		view.addSubview(activityIndicator)
+
 		tableView.register(DetailItemTableViewCell.self, forCellReuseIdentifier: Self.cellIdentifier)
 
 		// Search bar
@@ -133,11 +130,11 @@ final class ItemListViewController: UIViewController
 		tableView.trailingAnchor.constraint(equalTo: selfView.trailingAnchor).isActive = true
 		tableView.bottomAnchor.constraint(equalTo: selfView.bottomAnchor).isActive = true
 
-		// Alert view constraints
-		alertView.translatesAutoresizingMaskIntoConstraints = false
-		alertView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
-		alertView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
-		alertView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+		// Stub view constraints
+		stubView.translatesAutoresizingMaskIntoConstraints = false
+		stubView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200).isActive = true
+		stubView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5).isActive = true
+		stubView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 
 		// Activity indicator constraints
 		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -157,14 +154,14 @@ extension ItemListViewController: IItemListViewController
 		tableView.reloadData()
 		tableView.alpha = 1
 		tableView.isHidden = false
-		alertView.isHidden = true
+		stubView.isHidden = true
 	}
 
-	func showAlert(with message: String) {
+	func showStub(with message: String) {
 		activityIndicator.stopAnimating()
 		tableView.isHidden = true
-		alertView.setTitle(message)
-		alertView.isHidden = false
+		stubView.setTitle(message)
+		stubView.isHidden = false
 	}
 }
 
@@ -174,13 +171,8 @@ extension ItemListViewController: UISearchBarDelegate
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
 		activityIndicator.startAnimating()
 		tableView.alpha = 0.5
-		alertView.isHidden = true
-		filterContentForSearchText(searchBar.text ?? "")
-	}
-
-	private func filterContentForSearchText(_ searchText: String) {
-		presenter.performLoadItems(after: 0.7,
-								   with: searchText)
+		stubView.isHidden = true
+		presenter.performLoadItems(after: 0.7, with: searchBar.text ?? "")
 	}
 }
 

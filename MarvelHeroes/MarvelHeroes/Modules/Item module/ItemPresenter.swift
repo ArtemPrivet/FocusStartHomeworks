@@ -56,7 +56,7 @@ final class ItemPresenter
 				}
 			case .failure:
 				DispatchQueue.main.async {
-					self?.view?.showAlert()
+					self?.view?.showStub()
 				}
 			}
 		}
@@ -72,7 +72,7 @@ final class ItemPresenter
 				}
 			case .failure:
 				DispatchQueue.main.async {
-					self?.view?.showAlert()
+					self?.view?.showStub()
 				}
 			}
 		}

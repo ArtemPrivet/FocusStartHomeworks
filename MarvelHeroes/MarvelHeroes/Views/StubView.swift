@@ -1,5 +1,5 @@
 //
-//  AlertView.swift
+//  StubView.swift
 //  MarvelHeroes
 //
 //  Created by Arkadiy Grigoryanc on 04.12.2019.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AlertView: UIView
+final class StubView: UIView
 {
 	// MARK: Private properties
 	private var titleLabel: UILabel = {

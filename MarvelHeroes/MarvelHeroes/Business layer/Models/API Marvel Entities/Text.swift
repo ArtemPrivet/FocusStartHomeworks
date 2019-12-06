@@ -1,13 +1,13 @@
 //
-//  TextObject.swift
+//  Text.swift
 //  MarvelHeroes
 //
 //  Created by Arkadiy Grigoryanc on 01.12.2019.
 //
 
-struct TextObject: Codable
+struct Text: Codable
 {
-	let type: TextObjectType
+	let type: `Type`
 	let language: Language
 	let text: String
 
@@ -16,7 +16,7 @@ struct TextObject: Codable
 		case enUs = "en-us"
 	}
 
-	enum TextObjectType: String, Codable
+	enum `Type`: String, Codable
 	{
 		case issueSolicitText = "issue_solicit_text"
 	}

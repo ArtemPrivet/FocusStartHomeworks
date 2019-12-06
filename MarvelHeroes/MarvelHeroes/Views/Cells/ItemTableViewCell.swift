@@ -9,7 +9,6 @@ import UIKit
 
 final class ItemTableViewCell: UITableViewCell
 {
-
 	// MARK: Private properties
 	private let titleLabel: UILabel = {
 		let label = UILabel()
@@ -53,16 +52,11 @@ final class ItemTableViewCell: UITableViewCell
 		iconImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
 		iconImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		iconImageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -8).isActive = true
-		let iconImageViewBottomAnchor = NSLayoutConstraint(
-			item: iconImageView,
-			attribute: .bottom,
-			relatedBy: .equal,
-			toItem: self,
-			attribute: .bottom,
-			multiplier: 1,
-			constant: -8)
-		iconImageViewBottomAnchor.priority = .defaultLow
+		let iconImageViewBottomAnchor = iconImageView
+			.bottomAnchor
+			.constraint(equalTo: self.bottomAnchor)
 		iconImageViewBottomAnchor.isActive = true
+		iconImageViewBottomAnchor.priority = .defaultLow
 
 		// Name label constraints
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false

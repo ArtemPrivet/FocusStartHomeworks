@@ -25,6 +25,9 @@ typealias CharacterDataWrapperCompletion = (CharacterDataWrapperResult) -> Void
 typealias ComicDataWrapperCompletion = (ComicDataWrapperResult) -> Void
 typealias CreatorDataWrapperCompletion = (CreatorDataWrapperResult) -> Void
 
+private let apiKey = "385b86e3ae22c2b0f3e18cc61579e4ea"
+private let privateApiKey = "a01fbf7404225c0f9e07d1886ce7a9a1ee2e758e"
+
 // MARK: - Protocol IMarvelAPIService
 protocol IMarvelAPIService
 {
@@ -66,8 +69,6 @@ final class MarvelAPIService
 	}
 
 	// MARK: ...Private properties
-	private let apiKey = "385b86e3ae22c2b0f3e18cc61579e4ea"
-	private let privateApiKey = "a01fbf7404225c0f9e07d1886ce7a9a1ee2e758e"
 	private var timestamp: TimeInterval { Date().timeIntervalSince1970 }
 	private var hash: String { (String(Int(timestamp)) + privateApiKey + apiKey).md5 }
 

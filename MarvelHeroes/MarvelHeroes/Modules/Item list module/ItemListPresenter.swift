@@ -64,7 +64,7 @@ final class ItemListPresenter
 			case .success(let characters):
 				DispatchQueue.main.async { [weak self] in
 					guard characters.isEmpty == false else {
-						self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+						self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 						return
 					}
 					self?.tableViewViewModels = characters
@@ -72,7 +72,7 @@ final class ItemListPresenter
 				}
 			case .failure:
 				DispatchQueue.main.async { [weak self] in
-					self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+					self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 				}
 			}
 		}
@@ -84,7 +84,7 @@ final class ItemListPresenter
 			case .success(let characters):
 				DispatchQueue.main.async { [weak self] in
 					guard characters.isEmpty == false else {
-						self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+						self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 						return
 					}
 					self?.tableViewViewModels = characters
@@ -92,7 +92,7 @@ final class ItemListPresenter
 				}
 			case .failure:
 				DispatchQueue.main.async { [weak self] in
-					self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+					self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 				}
 			}
 		}
@@ -104,7 +104,7 @@ final class ItemListPresenter
 			case .success(let characters):
 				DispatchQueue.main.async { [weak self] in
 					guard characters.isEmpty == false else {
-						self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+						self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 						return
 					}
 					self?.tableViewViewModels = characters
@@ -112,7 +112,7 @@ final class ItemListPresenter
 				}
 			case .failure:
 				DispatchQueue.main.async { [weak self] in
-					self?.view?.showAlert(with: "Nothing found on query \"\(string)\"")
+					self?.view?.showStub(with: "Nothing found on query \"\(string)\"")
 				}
 			}
 		}
@@ -125,11 +125,11 @@ extension ItemListPresenter: IItemListPresenter
 	func performLoadItems(after time: TimeInterval, with string: String) {
 
 		guard string.count > 0 else {
-			view?.showAlert(with: "Start typing text")
+			view?.showStub(with: "Start typing text")
 			return
 		}
 		guard string.count > 1 else {
-			view?.showAlert(with: "Nothing found on query \"\(string)\"")
+			view?.showStub(with: "Nothing found on query \"\(string)\"")
 			return
 		}
 
