@@ -13,14 +13,8 @@ final class Cell: UITableViewCell
 	var cellImageView = UIImageView()
 	var cellTitle = UILabel()
 	var cellDetails = UILabel()
-	var imageURL: URL? {
-		didSet {
-			cellImageView.image = nil
-			updateImageOnCell()
-		}
-	}
 
-	private var space: CGFloat = Constants.space
+	private var space: CGFloat = InterfaceConstants.space
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,10 +23,6 @@ final class Cell: UITableViewCell
 
 	@available(*, unavailable) required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
-	}
-
-	override func layoutSubviews() {
-		super.layoutSubviews()
 	}
 
 	private func setupCell() {
@@ -59,28 +49,5 @@ final class Cell: UITableViewCell
 			cellDetails.leadingAnchor.constraint(equalTo: cellImageView.trailingAnchor, constant: space),
 			cellDetails.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -space * 2),
 		])
-	}
-
-	private func updateImageOnCell() {
-		if let url = imageURL {
-			if let imageFromCache = Cache.imageCache.object(forKey: url as AnyObject) as? UIImage {
-				self.cellImageView.image = imageFromCache
-			}
-			else {
-				DispatchQueue.global(qos: .userInitiated).async {
-					let contentsOfURL = try? Data(contentsOf: url)
-					DispatchQueue.main.async {
-						//Для того чтоб картинки не мелькали изза загрузки в разынх потоках
-						//будем сранивать url и imageUrl
-						if url == self.imageURL {
-							if let imageData = contentsOfURL, let image = UIImage(data: imageData)  {
-								self.cellImageView.image = image
-								Cache.imageCache.setObject(image, forKey: url as AnyObject)
-							}
-						}
-					}
-				}
-			}
-		}
 	}
 }

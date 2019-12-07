@@ -10,22 +10,23 @@ import Foundation
 
 protocol IEntityDetailsPresenter: AnyObject
 {
+	var recordsCount: Int { get }
+
 	func inject(view: IEntityDetailsViewController, router: IEntityDetailsRouter, repository: Repository)
 	func getCurrentRecord() -> IEntity
 	func onAccessoryPressed(index: Int)
 	func triggerViewReadyEvent()
-	func getRecordsCount() -> Int
 	func getRecord(index: Int) -> IEntity
 }
 
 final class EntityDetailsPresenter
 {
+	private let currentRecord: IEntity
+	private let entityType: EntityType
 	private weak var view: IEntityDetailsViewController?
 	private var router: IEntityDetailsRouter?
-	private var currentRecord: IEntity
 	private var accesories: [IEntity] = []
 	private var repository: Repository?
-	private var entityType: EntityType
 
 	init(entity: IEntity, with entityType: EntityType) {
 		self.currentRecord = entity
@@ -35,23 +36,20 @@ final class EntityDetailsPresenter
 
 extension EntityDetailsPresenter: IEntityDetailsPresenter
 {
-	//Текущая запись
+	var recordsCount: Int {
+		return accesories.count
+	}
+
 	func getRecord(index: Int) -> IEntity {
 		return accesories[index]
 	}
-	//Количество записей
-	func getRecordsCount() -> Int {
-		return accesories.count
-	}
-	//загрузка данных при прогрузке view
 	func triggerViewReadyEvent() {
 		loadAccessoryByEntityID()
 	}
-	//Нажатие на ячейку
 	func onAccessoryPressed(index: Int) {
 		router?.routeToAccessory(accessory: accesories[index])
 	}
-	// инжект вью, роутера и репозитория
+
 	func inject(view: IEntityDetailsViewController, router: IEntityDetailsRouter, repository: Repository) {
 		self.view = view
 		self.router = router
@@ -79,26 +77,26 @@ private extension EntityDetailsPresenter
 
 	func callRequest<T: Decodable>(directory: String) -> T? {
 		guard let localRepository = repository else { return nil }
-		localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<T, ServiceError>) in
+		localRepository.loadAccessoryByEntityID(from: directory) { [weak self] (result: Result<T, ServiceError>) in
 			switch result {
 			case .success(let accessories):
 				if let data = accessories as? CharacterResponse {
-					self.accesories = data.data.results
+					self?.accesories = data.data.results
 				}
 				if let data = accessories as? ComicsResponse {
-					self.accesories = data.data.results
+					self?.accesories = data.data.results
 				}
 				if let data = accessories as? AuthorResponse {
-					self.accesories = data.data.results
+					self?.accesories = data.data.results
 				}
 			case .failure(let error):
 				error.errorHandler { errorMessage in
-					self.view?.showAlert(with: errorMessage)
+					self?.view?.showAlert(with: errorMessage)
 				}
-				self.accesories = []
+				self?.accesories = []
 			}
-			self.view?.reloadData()
-			self.view?.stopSpinnerAnimation()
+			self?.view?.reloadData()
+			self?.view?.stopSpinnerAnimation()
 		}
 		return nil
 	}

@@ -19,14 +19,16 @@ protocol IListView: AnyObject
 final class ListView: UIView
 {
 	private var presenter: IEntityListPresenter?
-	private var searchBar = UISearchBar()
-	private var table = UITableView()
+	private var repository: Repository?
+	private let searchBar = UISearchBar()
+	private let table = UITableView()
+	private let spinner = UIActivityIndicatorView()
 	private var margins = UILayoutGuide()
-	private var spinner = UIActivityIndicatorView()
 
-	init(presenter: IEntityListPresenter?) {
+	init(presenter: IEntityListPresenter?, repository: Repository?) {
 		super.init(frame: .zero)
 		self.presenter = presenter
+		self.repository = repository
 
 		setupInitialState()
 	}
@@ -49,7 +51,7 @@ extension ListView: IListView
 	}
 
 	func setEmptyImage(with text: String) {
-		self.table.setEmptyImage(messageText: "Nothing found on query \"\(text)\"")
+		self.table.backgroundView = StubImageView(messageText: "Nothing found on query \"\(text)\"")
 	}
 
 	func startSpinnerAnimation() {
@@ -70,7 +72,7 @@ extension ListView: UISearchBarDelegate
 extension ListView: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return Constants.cellHeight
+		return InterfaceConstants.cellHeight
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -82,14 +84,20 @@ extension ListView: UITableViewDelegate
 extension ListView: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.getRecordsCount() ?? 0
+		return presenter?.recordsCount ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "heroCell", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: InterfaceConstants.listViewCellIdentifier, for: indexPath)
 		if let customCell = cell as? Cell, let record = presenter?.getRecord(index: indexPath.row) {
+			customCell.tag = indexPath.row
+			customCell.cellImageView.image = nil
 			customCell.cellImageView.makeRound()
-			customCell.imageURL = record.squareImageURL
+			repository?.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
+				if customCell.tag == indexPath.row {
+					customCell.cellImageView.image = image
+				}
+			})
 			customCell.cellTitle.text = record.showingName
 			customCell.cellDetails.text = record.description
 		}
@@ -123,7 +131,7 @@ private extension ListView
 		self.addSubview(table)
 		table.dataSource = self
 		table.delegate = self
-		table.register(Cell.self, forCellReuseIdentifier: "heroCell")
+		table.register(Cell.self, forCellReuseIdentifier: InterfaceConstants.listViewCellIdentifier)
 		table.tableFooterView = UIView()
 		table.keyboardDismissMode = .onDrag
 		table.translatesAutoresizingMaskIntoConstraints = false

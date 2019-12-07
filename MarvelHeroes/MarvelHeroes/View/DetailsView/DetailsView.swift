@@ -10,7 +10,7 @@ import UIKit
 
 protocol IDetailsView: AnyObject
 {
-	func inject(presenter: IEntityDetailsPresenter)
+	func inject(presenter: IEntityDetailsPresenter, repository: Repository)
 	func reloadData()
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
@@ -21,16 +21,17 @@ protocol IDetailsView: AnyObject
 final class DetailsView: UIView
 {
 	private var presenter: IEntityDetailsPresenter?
-	private var descriptionTextView = UITextView()
-	private var table = UITableView()
-	private var backgroundImageView = UIImageView()
+	private var repository: Repository?
+	private let descriptionTextView = UITextView()
+	private let table = UITableView()
+	private let backgroundImageView = UIImageView()
+	private let spinner = UIActivityIndicatorView()
 	private var margins = UILayoutGuide()
-	private var spinner = UIActivityIndicatorView()
-	private var space = Constants.space
 
-	init(presenter: IEntityDetailsPresenter?) {
+	init(presenter: IEntityDetailsPresenter?, repository: Repository?) {
 		super.init(frame: .zero)
 		self.presenter = presenter
+		self.repository = repository
 
 		setupInitialState()
 	}
@@ -63,8 +64,9 @@ extension DetailsView: IDetailsView
 		refreshData()
 	}
 
-	func inject(presenter: IEntityDetailsPresenter) {
+	func inject(presenter: IEntityDetailsPresenter, repository: Repository) {
 		self.presenter = presenter
+		self.repository = repository
 		refreshData()
 	}
 }
@@ -72,13 +74,19 @@ extension DetailsView: IDetailsView
 extension DetailsView: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.getRecordsCount() ?? 0
+		return presenter?.recordsCount ?? 0
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell", for: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: InterfaceConstants.detailsCellIdentifier,
+												 for: indexPath)
 		if let customCell = cell as? Cell, let record = presenter?.getRecord(index: indexPath.row) {
-			customCell.imageURL = record.portraitImageURL
+			customCell.tag = indexPath.row
+			repository?.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
+				if customCell.tag == indexPath.row {
+					customCell.cellImageView.image = image
+				}
+			})
 			customCell.cellTitle.text = record.showingName
 			customCell.cellDetails.text = record.description
 		}
@@ -89,7 +97,7 @@ extension DetailsView: UITableViewDataSource
 extension DetailsView: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return Constants.cellHeight
+		return InterfaceConstants.cellHeight
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -113,7 +121,7 @@ private extension DetailsView
 	//Обновляем поля данными из презентера
 	func refreshData() {
 		descriptionTextView.text = presenter?.getCurrentRecord().description
-		loadBackgroundImage()
+		setBackgroundImage()
 		table.reloadData()
 		let beginPosition = descriptionTextView.beginningOfDocument
 		descriptionTextView.selectedTextRange = descriptionTextView.textRange(from: beginPosition,
@@ -135,7 +143,7 @@ private extension DetailsView
 	}
 	//Настройка  tableView
 	func setupTableView() {
-		table.register(Cell.self, forCellReuseIdentifier: "comicsCell")
+		table.register(Cell.self, forCellReuseIdentifier: InterfaceConstants.detailsCellIdentifier)
 		table.tableFooterView = UIView()
 		table.dataSource = self
 		table.delegate = self
@@ -144,7 +152,7 @@ private extension DetailsView
 		NSLayoutConstraint.activate([
 			table.leadingAnchor.constraint(equalTo: descriptionTextView.leadingAnchor),
 			table.trailingAnchor.constraint(equalTo: descriptionTextView.trailingAnchor),
-			table.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: space),
+			table.topAnchor.constraint(equalTo: descriptionTextView.bottomAnchor, constant: InterfaceConstants.space),
 			table.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
 		])
 	}
@@ -170,26 +178,10 @@ private extension DetailsView
 		])
 	}
 	//загружаем картинку для бэкграунда
-	func loadBackgroundImage() {
+	func setBackgroundImage() {
 		backgroundImageView.image = nil
-		let imageURL = presenter?.getCurrentRecord().bigImageURL
-		if let url = imageURL {
-			if let imageFromCache = Cache.imageCache.object(forKey: url as AnyObject) as? UIImage {
-				backgroundImageView = UIImageView(image: imageFromCache)
-			}
-			else {
-				DispatchQueue.global(qos: .userInitiated).async {
-					let contentsOfURL = try? Data(contentsOf: url)
-					DispatchQueue.main.async {
-						if url == imageURL {
-							if let imageData = contentsOfURL, let image = UIImage(data: imageData)  {
-								Cache.imageCache.setObject(image, forKey: url as AnyObject)
-								self.backgroundImageView.image = image
-							}
-						}
-					}
-				}
-			}
-		}
+		repository?.loadBackgroundImage(imageURL: presenter?.getCurrentRecord().bigImageURL, completion: { image in
+			self.backgroundImageView.image = image
+		})
 	}
 }

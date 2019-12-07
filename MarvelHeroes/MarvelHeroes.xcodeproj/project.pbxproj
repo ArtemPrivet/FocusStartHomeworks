@@ -35,6 +35,8 @@
 		85D28C73239A974C00F8EA22 /* Thumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C72239A974C00F8EA22 /* Thumbnail.swift */; };
 		85D28C75239A977000F8EA22 /* IEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C74239A977000F8EA22 /* IEntity.swift */; };
 		85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C76239A978A00F8EA22 /* EntityType.swift */; };
+		85FA11C9239C03D60068D2A0 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11C8239C03D60068D2A0 /* Alert.swift */; };
+		85FA11CB239C0A730068D2A0 /* StubImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11CA239C0A730068D2A0 /* StubImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,8 @@
 		85D28C72239A974C00F8EA22 /* Thumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thumbnail.swift; sourceTree = "<group>"; };
 		85D28C74239A977000F8EA22 /* IEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IEntity.swift; sourceTree = "<group>"; };
 		85D28C76239A978A00F8EA22 /* EntityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
+		85FA11C8239C03D60068D2A0 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		85FA11CA239C0A730068D2A0 /* StubImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +165,7 @@
 				854DA91C239A9EA1009C843D /* String+md5.swift */,
 				85D28C68239A96C800F8EA22 /* Cache.swift */,
 				85D28C6A239A96E300F8EA22 /* ImageURLGenerator.swift */,
+				85FA11C8239C03D60068D2A0 /* Alert.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -209,6 +214,7 @@
 			children = (
 				85D28C56239A95A400F8EA22 /* EntityListViewController.swift */,
 				85D28C58239A95BC00F8EA22 /* ListView.swift */,
+				85FA11CA239C0A730068D2A0 /* StubImageView.swift */,
 			);
 			path = ListView;
 			sourceTree = "<group>";
@@ -310,9 +316,11 @@
 				85D28C6F239A972700F8EA22 /* CharacterResponse.swift in Sources */,
 				85D28C67239A96AA00F8EA22 /* UIView+setWhiteGradient.swift in Sources */,
 				85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */,
+				85FA11CB239C0A730068D2A0 /* StubImageView.swift in Sources */,
 				85D28C71239A973B00F8EA22 /* AuthorResponse.swift in Sources */,
 				85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */,
 				854DA91D239A9EA1009C843D /* String+md5.swift in Sources */,
+				85FA11C9239C03D60068D2A0 /* Alert.swift in Sources */,
 				85D28C69239A96C800F8EA22 /* Cache.swift in Sources */,
 				85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */,
 				85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */,

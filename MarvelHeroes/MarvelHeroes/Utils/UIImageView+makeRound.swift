@@ -11,7 +11,7 @@ extension UIImageView
 {
 	func makeRound() {
 		self.contentMode = .scaleAspectFill
-		self.layer.cornerRadius = (Constants.cellHeight - 2 * Constants.space) / 2
+		self.layer.cornerRadius = (InterfaceConstants.cellHeight - 2 * InterfaceConstants.space) / 2
 		self.clipsToBounds = true
 	}
 }

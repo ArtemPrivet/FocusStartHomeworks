@@ -7,11 +7,52 @@
 //
 
 import Foundation
+import UIKit
 
 final class Repository
 {
 	private let session = URLSession(configuration: .default)
 	private var dataTask: URLSessionDataTask?
+//Загрузка картинок для ячеек
+	func loadImageForCell(imageURL: URL?, completion: @escaping (UIImage) -> Void) {
+		if let url = imageURL {
+			if let imageFromCache = Cache.imageCache.object(forKey: url as AnyObject) as? UIImage {
+				completion(imageFromCache)
+			}
+			else {
+				DispatchQueue.global(qos: .userInitiated).async {
+					let contentsOfURL = try? Data(contentsOf: url)
+					DispatchQueue.main.async {
+						if let imageData = contentsOfURL, let image = UIImage(data: imageData)  {
+							completion(image)
+							Cache.imageCache.setObject(image, forKey: url as AnyObject)
+						}
+					}
+				}
+			}
+		}
+	}
+// Загрузка картинки для бэкграунда
+	func loadBackgroundImage(imageURL: URL?, completion: @escaping (UIImage) -> Void) {
+		if let url = imageURL {
+			if let imageFromCache = Cache.imageCache.object(forKey: url as AnyObject) as? UIImage {
+				completion(imageFromCache)
+			}
+			else {
+				DispatchQueue.global(qos: .userInitiated).async {
+					let contentsOfURL = try? Data(contentsOf: url)
+					DispatchQueue.main.async {
+						if url == imageURL {
+							if let imageData = contentsOfURL, let image = UIImage(data: imageData)  {
+								Cache.imageCache.setObject(image, forKey: url as AnyObject)
+								completion(image)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 // MARK: - Загрузка списков
 // Загрузить список сущностей
 	func loadEntities<T: Decodable>(with nameStarts: String = "",
@@ -77,12 +118,12 @@ private extension Repository
 				   additionParameters: [URLQueryItem] = [],
 				   _ completion: @escaping (Result<Data, ServiceError>) -> Void ) {
 		dataTask?.cancel()
-		var urlComponent = URLComponents(string: Constants.marvelAPIUrl + directory)
+		var urlComponent = URLComponents(string: RequestConstants.marvelAPIUrl + directory)
 		let timestamp = String(Int64(Date().timeIntervalSince1970))
-		let hash = ("\(timestamp)\(Constants.privateKey)\(Constants.publicKey)").md5()
+		let hash = ("\(timestamp)\(RequestConstants.privateKey)\(RequestConstants.publicKey)").md5()
 		urlComponent?.queryItems = [
-			URLQueryItem(name: "limit", value: String(Constants.limit)),
-			URLQueryItem(name: "apikey", value: Constants.publicKey),
+			URLQueryItem(name: "limit", value: String(RequestConstants.limit)),
+			URLQueryItem(name: "apikey", value: RequestConstants.publicKey),
 			URLQueryItem(name: "ts", value: String(timestamp)),
 			URLQueryItem(name: "hash", value: hash),
 		]

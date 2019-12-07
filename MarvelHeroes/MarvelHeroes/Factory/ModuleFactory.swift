@@ -9,7 +9,7 @@ import UIKit
 
 struct ModuleFactory
 {
-	private var repository: Repository
+	private let repository: Repository
 
 	init() {
 		repository = Repository()
@@ -28,7 +28,7 @@ struct ModuleFactory
 		let controllers = [heroesNavigationController, comicsNavigationController, authorsNavigationController]
 		let tabBarController = UITabBarController()
 		for controller in controllers {
-			if let title = controller.title, let imageName = Constants.tabBarItemImages[title] {
+			if let title = controller.title, let imageName = InterfaceConstants.tabBarItemImages[title] {
 				let item = UITabBarItem(title: controller.title,
 										image: UIImage(named: imageName),
 										selectedImage: UIImage(named: imageName))
@@ -50,7 +50,7 @@ struct ModuleFactory
 		let presenter = EntityListPresenter(with: entityType)
 		let router = EntityListRouter(moduleFactory: self, with: entityType)
 		presenter.inject(view: view, router: router, repository: repository)
-		view.inject(presenter: presenter)
+		view.inject(presenter: presenter, repository: repository)
 		router.inject(view: view)
 		view.title = entityType.getTabTitle()
 		return view
@@ -61,7 +61,7 @@ struct ModuleFactory
 		let presenter = EntityDetailsPresenter(entity: entity, with: entityType)
 		let router = EntityDetailsRouter(moduleFactory: self, with: entityType)
 		presenter.inject(view: view, router: router, repository: repository)
-		view.inject(presenter: presenter)
+		view.inject(presenter: presenter, repository: repository)
 		router.inject(view: view)
 		return view
 	}

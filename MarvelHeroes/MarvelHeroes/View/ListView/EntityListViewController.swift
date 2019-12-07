@@ -11,7 +11,7 @@ import UIKit
 protocol IEntityListViewController: AnyObject
 {
 	func reloadData()
-	func inject(presenter: IEntityListPresenter)
+	func inject(presenter: IEntityListPresenter, repository: Repository)
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
 	func setEmptyImage(with text: String)
@@ -21,16 +21,17 @@ protocol IEntityListViewController: AnyObject
 final class EntityListViewController: UIViewController
 {
 	private var presenter: IEntityListPresenter?
+	private var repository: Repository?
+
+	override func loadView() {
+		self.view = ListView(presenter: presenter, repository: repository)
+		navigationController?.navigationBar.prefersLargeTitles = true
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		self.navigationItem.title = presenter?.getTitle()
+		self.navigationItem.title = presenter?.itemTitle
 		presenter?.triggerViewReadyEvent()
-	}
-
-	override func loadView() {
-		self.view = ListView(presenter: presenter)
-		navigationController?.navigationBar.prefersLargeTitles = true
 	}
 }
 
@@ -56,8 +57,9 @@ extension EntityListViewController: IEntityListViewController
 		}
 	}
 	//инжект
-	func inject(presenter: IEntityListPresenter) {
+	func inject(presenter: IEntityListPresenter, repository: Repository) {
 		self.presenter = presenter
+		self.repository = repository
 	}
 	//Обновление данных в таблице
 	func reloadData() {
@@ -67,8 +69,6 @@ extension EntityListViewController: IEntityListViewController
 	}
 	//Сообщение об ошибке
 	func showAlert(with text: String) {
-		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
-		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-		self.present(alert, animated: true, completion: nil)
+		Alert.simpleAlert.showAlert(with: text, title: "Error", buttonText: "Ok", viewController: self)
 	}
 }

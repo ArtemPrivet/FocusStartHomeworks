@@ -10,7 +10,7 @@ import UIKit
 
 protocol IEntityDetailsViewController: AnyObject
 {
-	func inject(presenter: IEntityDetailsPresenter)
+	func inject(presenter: IEntityDetailsPresenter, repository: Repository)
 	func reloadData()
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
@@ -20,6 +20,13 @@ protocol IEntityDetailsViewController: AnyObject
 final class EntityDetailsViewController: UIViewController
 {
 	private var presenter: IEntityDetailsPresenter?
+	private var repository: Repository?
+
+	override func loadView() {
+		self.view = DetailsView(presenter: presenter, repository: repository)
+		self.navigationItem.title = presenter?.getCurrentRecord().showingName
+		self.title = presenter?.getCurrentRecord().showingName
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -38,12 +45,6 @@ final class EntityDetailsViewController: UIViewController
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		presenter?.triggerViewReadyEvent()
-	}
-
-	override func loadView() {
-		self.view = DetailsView(presenter: presenter)
-		self.navigationItem.title = presenter?.getCurrentRecord().showingName
-		self.title = presenter?.getCurrentRecord().showingName
 	}
 }
 // MARK: - IEntityDetailsView
@@ -68,13 +69,12 @@ extension EntityDetailsViewController: IEntityDetailsViewController
 		}
 	}
 
-	func inject(presenter: IEntityDetailsPresenter) {
+	func inject(presenter: IEntityDetailsPresenter, repository: Repository) {
 		self.presenter = presenter
+		self.repository = repository
 	}
 	//Сообщение об ошибке
 	func showAlert(with text: String) {
-		let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
-		alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-		self.present(alert, animated: true, completion: nil)
+		Alert.simpleAlert.showAlert(with: text, title: "Error", buttonText: "Ok", viewController: self)
 	}
 }

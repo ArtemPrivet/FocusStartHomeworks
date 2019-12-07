@@ -7,26 +7,28 @@
 //
 
 import Foundation
+import UIKit
 
 protocol IEntityListPresenter: AnyObject
 {
+	var itemTitle: String { get }
+	var recordsCount: Int { get }
+
 	func inject(view: IEntityListViewController, router: IEntityListRouter, repository: Repository)
-	func getRecordsCount() -> Int
 	func getRecord(index: Int) -> IEntity
 	func onCellPressed(index: Int)
 	func loadRecords(with nameStarts: String)
 	func triggerViewReadyEvent()
-	func getTitle() -> String
 }
 
 final class EntityListPresenter
 {
+	private let title: String
+	private let entityType: EntityType
 	private weak var view: IEntityListViewController?
 	private var router: IEntityListRouter?
 	private var repository: Repository?
 	private var records: [IEntity] = []
-	private let title: String
-	private var entityType: EntityType
 
 	init(with entityType: EntityType) {
 		self.entityType = entityType
@@ -36,9 +38,12 @@ final class EntityListPresenter
 
 extension EntityListPresenter: IEntityListPresenter
 {
-	//Текущий заголовок
-	func getTitle() -> String {
+	var itemTitle: String {
 		return title
+	}
+
+	var recordsCount: Int {
+		return records.count
 	}
 	//загрузка данных при прогрузке view
 	func triggerViewReadyEvent() {
@@ -47,10 +52,6 @@ extension EntityListPresenter: IEntityListPresenter
 	//Нажатие на ячейку
 	func onCellPressed(index: Int) {
 		router?.routeToDetails(entity: records[index])
-	}
-	//Количество записей
-	func getRecordsCount() -> Int {
-		return records.count
 	}
 	//Вернуть запись по индексу
 	func getRecord(index: Int) -> IEntity {
@@ -83,31 +84,31 @@ private extension EntityListPresenter
 {
 	func callRequest<T: Decodable>(directory: String, parameter: String, with nameStarts: String) -> T? {
 		guard let localRepository = repository else { return nil }
-		localRepository.loadEntities(with: "",
+		localRepository.loadEntities(with: nameStarts,
 									 directory: directory,
-									 queryParameter: parameter){ (result: Result<T, ServiceError>) in
+									 queryParameter: parameter){ [weak self] (result: Result<T, ServiceError>) in
 										switch result {
 										case .success(let response):
 											if let data = response as? CharacterResponse {
-												self.records = data.data.results
+												self?.records = data.data.results
 											}
 											if let data = response as? ComicsResponse {
-												self.records = data.data.results
+												self?.records = data.data.results
 											}
 											if let data = response as? AuthorResponse {
-												self.records = data.data.results
+												self?.records = data.data.results
 											}
-											if self.records.isEmpty {
-												self.view?.setEmptyImage(with: nameStarts)
+											if let count = self?.records.count, count == 0 {
+												self?.view?.setEmptyImage(with: nameStarts)
 											}
 										case .failure(let error):
 											error.errorHandler { errorMessage in
-												self.view?.showAlert(with: errorMessage)
+												self?.view?.showAlert(with: errorMessage)
 											}
-											self.records = []
+											self?.records = []
 										}
-										self.view?.reloadData()
-										self.view?.stopSpinnerAnimation()
+										self?.view?.reloadData()
+										self?.view?.stopSpinnerAnimation()
 		}
 		return nil
 	}
