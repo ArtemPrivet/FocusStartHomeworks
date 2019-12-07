@@ -8,8 +8,8 @@
 
 import Foundation
 
-class ModulesFactory {
-	
+final class ModulesFactory
+{
 	func getHeroModule() -> HeroesViewController {
 		let repository = Repository()
 		let router = HeroesRouter(factory: self)
@@ -18,10 +18,10 @@ class ModulesFactory {
 		router.viewController = viewController
 		return viewController
 	}
-	
-//	func getDetailContactModule(contact: Contact) -> DetailContactViewController {
-//		let presenter = DetailContactPresenter(contact: contact)
-//		let viewController = DetailContactViewController(presenter: presenter)
-//		return viewController
-//	}
+
+	func getDetailCharacterModule(hero: Character) -> DetailedHeroViewController {
+		let presenter = DetailedHeroPresenter(character: hero, repository: Repository())
+		let viewController = DetailedHeroViewController(presenter: presenter)
+		return viewController
+	}
 }

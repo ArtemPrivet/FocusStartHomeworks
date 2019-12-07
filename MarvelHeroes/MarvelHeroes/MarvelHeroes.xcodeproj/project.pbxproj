@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		223EC782239BBB6300C3C857 /* ComicsDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223EC781239BBB6300C3C857 /* ComicsDataWrapper.swift */; };
 		223F9DA9239804BD00FF3B1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DA8239804BD00FF3B1C /* AppDelegate.swift */; };
 		223F9DB0239804C000FF3B1C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 223F9DAF239804C000FF3B1C /* Assets.xcassets */; };
 		223F9DB3239804C000FF3B1C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 223F9DB1239804C000FF3B1C /* LaunchScreen.storyboard */; };
@@ -25,9 +26,12 @@
 		223F9DDB239A8ED700FF3B1C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DDA239A8ED700FF3B1C /* Constants.swift */; };
 		223F9DDD239A8F6000FF3B1C /* HashGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DDC239A8F6000FF3B1C /* HashGenerator.swift */; };
 		223F9DDF239A91FD00FF3B1C /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DDE239A91FD00FF3B1C /* ServiceError.swift */; };
+		223F9DE3239B225F00FF3B1C /* DetailedHeroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DE2239B225F00FF3B1C /* DetailedHeroViewController.swift */; };
+		223F9DE6239B86FA00FF3B1C /* DetailedHeroPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223F9DE5239B86FA00FF3B1C /* DetailedHeroPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		223EC781239BBB6300C3C857 /* ComicsDataWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicsDataWrapper.swift; sourceTree = "<group>"; };
 		223F9DA5239804BD00FF3B1C /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		223F9DA8239804BD00FF3B1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		223F9DAF239804C000FF3B1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,6 +52,8 @@
 		223F9DDA239A8ED700FF3B1C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		223F9DDC239A8F6000FF3B1C /* HashGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashGenerator.swift; sourceTree = "<group>"; };
 		223F9DDE239A91FD00FF3B1C /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
+		223F9DE2239B225F00FF3B1C /* DetailedHeroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedHeroViewController.swift; sourceTree = "<group>"; };
+		223F9DE5239B86FA00FF3B1C /* DetailedHeroPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailedHeroPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +103,7 @@
 		223F9DCA2398237000FF3B1C /* Heroes */ = {
 			isa = PBXGroup;
 			children = (
+				223F9DE4239B86C900FF3B1C /* HeroDetails */,
 				223F9DC6239821CA00FF3B1C /* HeroesViewController.swift */,
 				223F9DBA23980CA600FF3B1C /* HeroesPresenter.swift */,
 				223F9DBC23980D0200FF3B1C /* HeroesRouter.swift */,
@@ -135,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				223F9DC023980DBA00FF3B1C /* CharacterDataWrapper.swift */,
+				223EC781239BBB6300C3C857 /* ComicsDataWrapper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -167,6 +175,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		223F9DE4239B86C900FF3B1C /* HeroDetails */ = {
+			isa = PBXGroup;
+			children = (
+				223F9DE2239B225F00FF3B1C /* DetailedHeroViewController.swift */,
+				223F9DE5239B86FA00FF3B1C /* DetailedHeroPresenter.swift */,
+			);
+			path = HeroDetails;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -177,6 +194,7 @@
 				223F9DA1239804BD00FF3B1C /* Sources */,
 				223F9DA2239804BD00FF3B1C /* Frameworks */,
 				223F9DA3239804BD00FF3B1C /* Resources */,
+				223EC783239BEF8300C3C857 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -233,6 +251,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		223EC783239BEF8300C3C857 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		223F9DA1239804BD00FF3B1C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -241,11 +280,14 @@
 				223F9DCF23982CEF00FF3B1C /* ComicsViewController.swift in Sources */,
 				223F9DBF23980D6F00FF3B1C /* Repository.swift in Sources */,
 				223F9DBD23980D0200FF3B1C /* HeroesRouter.swift in Sources */,
+				223EC782239BBB6300C3C857 /* ComicsDataWrapper.swift in Sources */,
+				223F9DE6239B86FA00FF3B1C /* DetailedHeroPresenter.swift in Sources */,
 				223F9DC92398236400FF3B1C /* MainTabBarController.swift in Sources */,
 				223F9DD7239A8DA200FF3B1C /* String Extension.swift in Sources */,
 				223F9DA9239804BD00FF3B1C /* AppDelegate.swift in Sources */,
 				223F9DDD239A8F6000FF3B1C /* HashGenerator.swift in Sources */,
 				223F9DDF239A91FD00FF3B1C /* ServiceError.swift in Sources */,
+				223F9DE3239B225F00FF3B1C /* DetailedHeroViewController.swift in Sources */,
 				223F9DD123982D1F00FF3B1C /* AuthorsViewController.swift in Sources */,
 				223F9DC7239821CA00FF3B1C /* HeroesViewController.swift in Sources */,
 				223F9DBB23980CA600FF3B1C /* HeroesPresenter.swift in Sources */,

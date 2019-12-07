@@ -8,27 +8,26 @@
 
 import Foundation
 
-protocol IHeroesRouter {
-	//func showDetail(with contact: Hero)
+protocol IHeroesRouter
+{
+	func showDetail(with contact: Character)
 }
 
-class HeroesRouter {
-	
+final class HeroesRouter
+{
 	weak var viewController: HeroesViewController?
-	
 	private var factory: ModulesFactory
-	
+
 	init(factory: ModulesFactory) {
 		self.factory = factory
 	}
 }
 
-extension HeroesRouter: IHeroesRouter {
-	
-//	func showDetail(with contact: Hero) {
-//		let detailViewController = factory.getDetailContactModule(contact: contact)
-//		detailViewController.view.backgroundColor = .white
-//		viewController?.navigationController?.pushViewController(detailViewController,
-//																 animated: true)
-//	}
+extension HeroesRouter: IHeroesRouter
+{
+	func showDetail(with hero: Character) {
+		let detailViewController = factory.getDetailCharacterModule(hero: hero)
+		viewController?.navigationController?.pushViewController(detailViewController,
+																 animated: true)
+	}
 }

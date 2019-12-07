@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 enum Constants
 {
 	static let publicKey = "19d8c3e01522f8fb69dd37a6923caf0f"
