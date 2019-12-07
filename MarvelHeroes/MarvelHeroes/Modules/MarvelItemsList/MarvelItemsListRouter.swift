@@ -10,7 +10,7 @@ import Foundation
 
 protocol IMarvelItemsRouter
 {
-	func showViewController(using model: IMarvelItemDetails)
+	func showViewController(using item: IMarvelItemDetails, type: MarvelItemType)
 }
 
 final class MarvelItemsListRouter
@@ -25,8 +25,8 @@ final class MarvelItemsListRouter
 }
 extension MarvelItemsListRouter: IMarvelItemsRouter
 {
-	func showViewController(using model: IMarvelItemDetails) {
-		let itemDetailsVC = modulesFactory.createItemDetailsModule(using: model, withResourceURI: nil)
+	func showViewController(using item: IMarvelItemDetails, type: MarvelItemType) {
+		let itemDetailsVC = modulesFactory.createItemDetailsModule(using: item, type: type)
 		self.viewController?.navigationController?.pushViewController(itemDetailsVC, animated: true)
 	}
 }

@@ -41,7 +41,7 @@ final class MarvelItemsListPresenter
 
 	private func fetchHeroes(type: MarvelItemType, text: String) {
 		repository.remoteDataSource.fetchMarvelItems(
-			type: type, appendingPath: nil,
+			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<HeroesServerResponse, NetworkServiceError>) in
 				switch result {
 				case .success(let heroesResponse):
@@ -54,7 +54,7 @@ final class MarvelItemsListPresenter
 
 	private func fetchComics(type: MarvelItemType, text: String) {
 		repository.remoteDataSource.fetchMarvelItems(
-			type: type, appendingPath: nil,
+			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<ComicsServerResponse, NetworkServiceError>) in
 				switch result {
 				case .success(let comicsResponse):
@@ -67,7 +67,7 @@ final class MarvelItemsListPresenter
 
 	private func fetchAuthors(type: MarvelItemType, text: String) {
 		repository.remoteDataSource.fetchMarvelItems(
-			type: type, appendingPath: nil,
+			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<AuthorsServerResponse, NetworkServiceError>) in
 				switch result {
 				case .success(let authorsResponse):
@@ -154,11 +154,11 @@ extension MarvelItemsListPresenter: IContentPresentable
 		guard let itemType = itemsList?.marvelItemType else { return }
 		switch itemType {
 		case .heroes:
-			router.showViewController(using: heroes[useIndex])
+			router.showViewController(using: heroes[useIndex], type: itemType)
 		case .comics:
-			router.showViewController(using: comics[useIndex])
+			router.showViewController(using: comics[useIndex], type: itemType)
 		case .authors:
-			router.showViewController(using: authors[useIndex])
+			router.showViewController(using: authors[useIndex], type: itemType)
 		}
 	}
 }

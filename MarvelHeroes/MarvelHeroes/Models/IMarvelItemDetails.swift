@@ -6,13 +6,12 @@
 //  Copyright © 2019 Mikhail Medvedev. All rights reserved.
 //
 
-protocol IMarvelItemDetails
+protocol IMarvelItemDetails: Decodable
 {
+	var id: Int { get }
 	var name: String?  { get }
-	var description: String? { get }
 	var title: String? { get }
-	var thumbnail: Thumbnail { get }
 	var fullName: String? { get }
-	var resourceURI: String { get }
-	var subItemsCollection: SubItemsCollection? { get }
+	var description: String? { get }
+	var thumbnail: Thumbnail { get }
 }

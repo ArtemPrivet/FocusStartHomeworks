@@ -11,6 +11,7 @@ import UIKit
 class ItemDetailsCollectionViewController: UICollectionViewController
 {
 	private let presenter: IDetailItemPresentable
+	let itemType: MarvelItemType
 
 	private let cellId = "MarvelItemCollectionCell"
 	private let headerId = "HeaderId"
@@ -18,8 +19,11 @@ class ItemDetailsCollectionViewController: UICollectionViewController
 
 	var header: HeaderCollectionView?
 
-	init(collectionViewLayout layout: UICollectionViewLayout, presenter: IDetailItemPresentable) {
+	init(collectionViewLayout layout: UICollectionViewLayout,
+		 presenter: IDetailItemPresentable,
+		 itemType: MarvelItemType) {
 		self.presenter = presenter
+		self.itemType = itemType
 		super.init(collectionViewLayout: layout)
 	}
 
@@ -35,12 +39,12 @@ class ItemDetailsCollectionViewController: UICollectionViewController
 		}
 		setupCollectionView()
 		customizeCollectionViewLayout()
+		collectionView.showActivityIndicatory(delete: false)
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		header?.animator?.stopAnimation(true)
-		header?.animator?.finishAnimation(at: .current)
 	}
 
 	private func setupCollectionView() {
@@ -85,22 +89,16 @@ class ItemDetailsCollectionViewController: UICollectionViewController
 
 		presenter.setHeaderImage()
 	}
-
-	func animateChangeItemTransition(reversed: Bool) {
-		self.collectionView.isScrollEnabled = reversed
-		UIView.animate(withDuration: 0.3) {
-			self.collectionView.transform = reversed ? .identity : CGAffineTransform(scaleX: 2, y: 2)
-			self.header?.titleLabel.alpha = reversed ? 1: 0
-			self.header?.descriptionTextView.alpha = reversed ? 1: 0
-			self.header?.animator?.fractionComplete = reversed ? 0 : 1
-		}
-	}
 }
 
 extension ItemDetailsCollectionViewController
 {
 	override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		presenter.getSubItemsCount()
+		if presenter.getSubItemsCount() == 0,
+			collectionView.isHasActivityIndicator == false {
+			collectionView.setStubView(withImage: true, animated: true)
+		}
+		return presenter.getSubItemsCount()
 	}
 
 	override func collectionView(_ collectionView: UICollectionView,
@@ -109,11 +107,22 @@ extension ItemDetailsCollectionViewController
 			withReuseIdentifier: cellId, for: indexPath) as? DetailItemCollectionViewCell
 			else { return UICollectionViewCell() }
 
-		let subitem = presenter.getSubItem(index: indexPath.item)
+		cell.setImage(Thumbnail.placeholder)
 
-		cell.configure(with: subitem.name, resourceURI: subitem.resourceURI)
+		let item = presenter.getSubItem(index: indexPath.item)
 
-		presenter.getImageURLFor(cell: cell, index: indexPath.item)
+		if let comicsItem = item as? Comics {
+			cell.thumbPath = comicsItem.thumbnail.path
+			cell.configure(with: comicsItem.title, info: comicsItem.description)
+		}
+		else if let authorItem = item as? Author {
+			cell.thumbPath = authorItem.thumbnail.path
+			cell.configure(with: authorItem.fullName, info: nil)
+		}
+
+		if cell.currentImage === Thumbnail.placeholder {
+		presenter.setImageToCell(useIndex: indexPath.item, cell: cell)
+		}
 
 		return cell
 	}
@@ -139,8 +148,6 @@ extension ItemDetailsCollectionViewController
 
 	// MARK: MAKE TRANSITION
 	override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-		animateChangeItemTransition(reversed: false)
 		presenter.onPressed(index: indexPath.item)
 	}
 }

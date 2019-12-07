@@ -10,11 +10,11 @@ import UIKit
 
 enum QueryItems
 {
-	static let timeStamp = URLQueryItem(name: "ts", value: "1")
-	static let apiKey = URLQueryItem(name: "apikey", value: "2e8e470c53cdee973eeb4f88f8dfbfdc")
+	static let timeStamp = URLQueryItem(name: "ts", value: "1234")
+	static let apiKey = URLQueryItem(name: "apikey", value: "f51eb0a25f6209fc5f6d0da181b49df8")
 	static let hash = URLQueryItem(name: "hash",
-							value: "e77f5844df010c05fbd046f31f73e858")
-	static let limit = URLQueryItem(name: "limit", value: "100")
+							value: "dc6408ee9a8b8d655a92e9e7fee968df")
+	static let limit = URLQueryItem(name: "limit", value: "50")
 	static let heroesAndAuthorsQueryName = "nameStartsWith"
 	static let comicsQueryName = "titleStartsWith"
 	static let common = [timeStamp, apiKey, hash, limit]
@@ -76,8 +76,11 @@ extension NetworkManager: IRepositoryDataSource
 {
 	func fetchMarvelItems<T: Decodable>(type: MarvelItemType,
 										appendingPath: String?,
+										withId: Int?,
 										searchText: String,
 										completion: @escaping (Result<T, NetworkServiceError>) -> Void) {
+
+		var tempUrl: URL?
 
 		var itemTypeQuery: [URLQueryItem] {
 			var queries = QueryItems.common
@@ -90,12 +93,21 @@ extension NetworkManager: IRepositoryDataSource
 			return queries
 		}
 
-		guard let url = makeApiURL(
-			addingPathToComponents: type.rawValue + (appendingPath ?? ""),
-			queryItems: itemTypeQuery, withSearchText: searchText)
-			else { return }
+		if let id = withId {
+			tempUrl = makeApiURL(addingPathToComponents: (appendingPath ?? "") + "/\(id)/" + type.rawValue,
+			queryItems: QueryItems.common, withSearchText: searchText)
+		}
+		else {
+			tempUrl = makeApiURL(addingPathToComponents: type.rawValue + (appendingPath ?? ""),
+				queryItems: itemTypeQuery, withSearchText: searchText)
+		}
+
+		guard let url = tempUrl else { return }
+
 		let jsonDataFetcher = JSONDataFetcher()
-		jsonDataFetcher.fetchJSONData(url: url, requestType: .get, headers: nil, completion: completion)
+		jsonDataFetcher.fetchJSONData(url: url, requestType: .get,
+									  headers: nil, cancelsExitingDataTask: true,
+									  completion: completion)
 	}
 
 	func fetchMarvelItem<T: Decodable>(resourceLink: String,
@@ -115,6 +127,8 @@ extension NetworkManager: IRepositoryDataSource
 		}
 
 		let jsonDataFetcher = JSONDataFetcher()
-		jsonDataFetcher.fetchJSONData(url: url, requestType: .get, headers: nil, completion: completion)
+		jsonDataFetcher.fetchJSONData(url: url, requestType: .get,
+									  headers: nil, cancelsExitingDataTask: true,
+									  completion: completion)
 	}
 }

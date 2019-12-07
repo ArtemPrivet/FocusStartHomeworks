@@ -23,23 +23,16 @@ struct AuthorsData: Decodable
 // MARK: - Result
 struct Author: Decodable
 {
+	let id: Int
 	let fullName: String?
 	let thumbnail: Thumbnail
-	let resourceURI: String
-	let comics: SubItemsCollection?
 
-	static let empty = Author(fullName: "",
-							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""),
-							  resourceURI: "",
-							  comics: SubItemsCollection(items: []))
+	static let empty = Author(id: 0, fullName: "",
+							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Author: IMarvelItemDetails
 {
-	var subItemsCollection: SubItemsCollection? {
-		return comics
-	}
-
 	var name: String? { nil }
 	var description: String? { nil }
 	var title: String? { nil }

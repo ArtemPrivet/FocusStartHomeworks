@@ -13,6 +13,7 @@ final class MarvelItemsTableViewController: UITableViewController
 	private let searchController: UISearchController
 	private let presenter: IMarvelContentPresentable
 	let marvelItemType: MarvelItemType
+	private var lastSearchText: String?
 
 	init(searchController: UISearchController, presenter: IMarvelContentPresentable, marvelItemType: MarvelItemType) {
 		self.searchController = searchController
@@ -61,19 +62,22 @@ extension MarvelItemsTableViewController: UISearchResultsUpdating
 				  text.isEmpty == false
 		else { return }
 
+		if lastSearchText == text { return }
+
 		tableView.setStubView(withImage: false, message: "", animated: false)
 
 		//Throttling request
 		NSObject.cancelPreviousPerformRequests(withTarget: self,
 											   selector: #selector(self.reload(_:)),
 											   object: searchController.searchBar)
-		perform(#selector(self.reload(_:)), with: searchController.searchBar, afterDelay: 0.5)
+		perform(#selector(self.reload(_:)), with: searchController.searchBar, afterDelay: 0.7)
 	}
 
 	@objc func reload(_ searchBar: UISearchBar) {
 		guard let query = searchBar.text,
 				  query.trimmingCharacters(in: .whitespaces) != "" else { return }
 		presenter.searchForItems(type: marvelItemType, with: query)
+		lastSearchText = query
 	}
 }
 
@@ -88,28 +92,38 @@ extension MarvelItemsTableViewController
 	}
 
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
 		guard let portraitCell = tableView.dequeueReusableCell(withIdentifier:
 		MarvelItemTableViewCell.identifier) as? MarvelItemTableViewCell else { return UITableViewCell() }
 
 		guard let roundedCell = tableView.dequeueReusableCell(withIdentifier:
 			RoundedMarvelItemTableViewCell.id) as? RoundedMarvelItemTableViewCell else { return portraitCell }
 
+		portraitCell.itemImageView.image = Thumbnail.placeholder
+		roundedCell.itemImageView.image = Thumbnail.placeholder
+
 		switch marvelItemType {
 		case .heroes:
 			let hero = presenter.getHero(ofIndex: indexPath.row)
 			roundedCell.imageUrlPath = hero.thumbnail.path
-			presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
+			if roundedCell.itemImageView.image === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
+			}
 			roundedCell.configure(with: hero)
 		case .authors:
 			let author = presenter.getAuthor(ofIndex: indexPath.row)
 			roundedCell.imageUrlPath = author.thumbnail.path
-			presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
 			roundedCell.configure(with: author)
+			if roundedCell.itemImageView.image === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
+			}
 		case .comics:
 			let comics = presenter.getComics(ofIndex: indexPath.row)
 			portraitCell.imageUrlPath = comics.thumbnail.path
 			portraitCell.configure(with: comics)
-			presenter.setImageToCell(useIndex: indexPath.row, cell: portraitCell)
+			if portraitCell.itemImageView.image === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: portraitCell)
+			}
 			return portraitCell
 		}
 
@@ -132,5 +146,13 @@ extension MarvelItemsTableViewController: UISearchBarDelegate
 
 	func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
 		tableView.restore()
+	}
+
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchController.dismiss(animated: true)
+		guard let query = searchBar.text,
+			query.trimmingCharacters(in: .whitespaces) != "" else { return }
+		if lastSearchText == query { return }
+		presenter.searchForItems(type: marvelItemType, with: query)
 	}
 }

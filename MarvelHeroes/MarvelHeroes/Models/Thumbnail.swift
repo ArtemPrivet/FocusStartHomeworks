@@ -6,7 +6,7 @@
 //  Copyright © 2019 Mikhail Medvedev. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Thumbnail: Decodable
 {
@@ -18,4 +18,6 @@ struct Thumbnail: Decodable
 		case path
 		case thumbnailExtension = "extension"
 	}
+
+	static let placeholder: UIImage = #imageLiteral(resourceName: "placeholder")
 }

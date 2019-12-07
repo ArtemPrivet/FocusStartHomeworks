@@ -12,7 +12,7 @@ class MarvelItemTableViewCell: UITableViewCell
 {
 	static let identifier = "PortraitCell"
 
-	var itemImageView = UIImageView(image: UIImage(named: "placeholder"))
+	var itemImageView = UIImageView()
 	var nameLabel = UILabel()
 	var infoLabel = UILabel()
 

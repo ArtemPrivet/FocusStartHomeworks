@@ -62,12 +62,6 @@ final class NetworkService: INetworkRequestable
 	}
 
 	/// Make request to specified URL
-	///
-	/// - Parameters:
-	///   - data: Data?
-	///   - url: URL?
-	///   - type: RequestType
-	///   - response: Result<Data, NetworkServiceError>) -> Void
 	func request(to url: URL?,
 				 type: RequestType,
 				 headers: [String: String]?,
@@ -76,7 +70,7 @@ final class NetworkService: INetworkRequestable
 				 responseHandler: @escaping (Result<Data, NetworkServiceError>) -> Void) {
 
 		if cancelsExitingDataTask {
-		dataTask?.cancel()
+			dataTask?.cancel()
 		}
 
 		guard let url = url else {

@@ -12,6 +12,7 @@ protocol IRepositoryDataSource
 {
 	func fetchMarvelItems<T: Decodable>(type: MarvelItemType,
 										appendingPath: String?,
+										withId: Int?,
 										searchText: String,
 										completion: @escaping (Result<T, NetworkServiceError>) -> Void)
 

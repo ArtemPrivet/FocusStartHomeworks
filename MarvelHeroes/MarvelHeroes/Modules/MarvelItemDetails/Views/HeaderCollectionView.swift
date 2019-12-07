@@ -49,38 +49,31 @@ final class HeaderCollectionView: UICollectionReusableView
 				NSAttributedString.Key.strokeWidth: -2.0,
 				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 34, weight: .bold),
 				] as [NSAttributedString.Key: Any]
-			titleLabel.attributedText = NSMutableAttributedString(string: "",
-																  attributes: strokeTextAttributes)
+			titleLabel.attributedText = NSMutableAttributedString(
+				string: "Some Awesome Hero", attributes: strokeTextAttributes)
+
+			let textViewTextAttributes = [
+				NSAttributedString.Key.strokeColor: UIColor.white,
+				NSAttributedString.Key.foregroundColor: UIColor.label,
+				NSAttributedString.Key.strokeWidth: -1.5,
+				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18, weight: .regular),
+				] as [NSAttributedString.Key: Any]
+			descriptionTextView.attributedText = NSMutableAttributedString(
+				string: "No description", attributes: textViewTextAttributes)
 		}
 		else {
 			titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
+			descriptionTextView.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
 		}
 
-		titleLabel.text = "Some Awesome Hero Here"
 		titleLabel.numberOfLines = 0
 		titleLabel.lineBreakMode = .byWordWrapping
 		titleLabel.minimumScaleFactor = 0.5
-
 		stackView.addArrangedSubview(titleLabel)
-
-		if #available(iOS 13.0, *) {
-			let strokeTextAttributes = [
-				NSAttributedString.Key.strokeColor: UIColor.white,
-				NSAttributedString.Key.foregroundColor: UIColor.label,
-				NSAttributedString.Key.strokeWidth: -2.0,
-				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: .regular),
-				] as [NSAttributedString.Key: Any]
-			descriptionTextView.attributedText = NSMutableAttributedString(string: "",
-																		   attributes: strokeTextAttributes)
-		}
-		else {
-			descriptionTextView.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-		}
 
 		descriptionTextView.backgroundColor = .clear
 		descriptionTextView.isScrollEnabled = true
 		descriptionTextView.isEditable = false
-		descriptionTextView.text = "No description"
 		stackView.addArrangedSubview(descriptionTextView)
 
 		stackView.spacing = 8
@@ -101,8 +94,6 @@ final class HeaderCollectionView: UICollectionReusableView
 
 		animator = UIViewPropertyAnimator(duration: 3, curve: .linear,
 										  animations: { visualEffectView.alpha = 1 })
-
-		animator?.fractionComplete = 0
 	}
 
 	private func setupGradientLayer() {

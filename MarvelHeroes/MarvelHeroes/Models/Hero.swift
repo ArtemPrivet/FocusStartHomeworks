@@ -21,22 +21,16 @@ struct HeroesData: Decodable
 
 struct Hero: Decodable
 {
+	let id: Int
 	let name, description: String?
 	let thumbnail: Thumbnail
-	let resourceURI: String
-	let comics: SubItemsCollection
 
-	static let empty = Hero(name: "Error", description: "",
-	thumbnail: Thumbnail(path: "", thumbnailExtension: ""), resourceURI: "",
-	comics: SubItemsCollection(items: []))
+	static let empty = Hero(id: 0, name: "Error", description: "",
+	thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Hero: IMarvelItemDetails
 {
-	var subItemsCollection: SubItemsCollection? {
-		return comics
-	}
-
 	var title: String? { nil }
 	var fullName: String? { nil }
 }

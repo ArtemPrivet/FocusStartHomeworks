@@ -7,99 +7,82 @@
 
 import UIKit
 
+struct MarvelSubItemPresentation
+{
+	let title: String
+	let description: String
+}
+
 protocol IDetailItemPresentable
 {
 	func getItem() -> IMarvelItemDetails
 	func getSubItemsCount() -> Int
-	func getSubItem(index: Int) -> SubItem
-	func getImageURLFor(cell: DetailItemCollectionViewCell, index: Int)
-	func setImageFor(cell: DetailItemCollectionViewCell, url: URL, index: Int)
+	func getSubItem(index: Int) -> IMarvelItemDetails
+	func setImageToCell(useIndex: Int, cell: DetailItemCollectionViewCell)
 	func setHeaderImage()
 	func onPressed(index: Int)
-	func changeItem(index: Int)
 }
 
 final class ItemDetailsPresenter
 {
+	private let router: ItemsDetailsRouter
 	private let repository: IRepository
-	private var item: IMarvelItemDetails
-	private var subItems: [SubItem] { item.subItemsCollection?.items ?? [] }
-
+	private var item: IMarvelItemDetails { didSet { fetchSubItems() } }
 	weak var detailVC: ItemDetailsCollectionViewController?
 
-	init(item: IMarvelItemDetails,
-		 repository: IRepository) {
-		self.item = item
+	private var subItems = [IMarvelItemDetails]()
+
+	init(item: IMarvelItemDetails, repository: IRepository, router: ItemsDetailsRouter) {
+		self.item = Hero.empty
 		self.repository = repository
+		self.router = router
+		self.setItem(item) // for activating didSet
 	}
+
+	private func setItem(_ item: IMarvelItemDetails) {
+		self.item = item
+	}
+
+	private func fetchSubItems() {
+		if item as? Hero != nil || item as? Author != nil  {
+			repository.remoteDataSource.fetchMarvelItems(
+				type: .comics, appendingPath: (item as? Hero != nil) ?
+				MarvelItemType.heroes.rawValue : MarvelItemType.authors.rawValue,
+				withId: item.id, searchText: "")
+			{ [weak self] (result: Result<ComicsServerResponse, NetworkServiceError>) in
+				switch result {
+				case .success(let comics):
+					self?.subItems = comics.data.results
+					self?.detailVC?.collectionView.removeActivityIndicator()
+					self?.detailVC?.collectionView.restore()
+					self?.detailVC?.collectionView.reloadSections([0])
+				case .failure: break
+				}
+			}
+		}
+		else if item as? Comics != nil {
+			repository.remoteDataSource.fetchMarvelItems(
+				type: .authors, appendingPath: MarvelItemType.comics.rawValue,
+				withId: item.id, searchText: "")
+			{ [weak self] (result: Result<AuthorsServerResponse, NetworkServiceError>) in
+				switch result {
+				case .success(let authors):
+					self?.subItems = authors.data.results
+					self?.detailVC?.collectionView.removeActivityIndicator()
+					self?.detailVC?.collectionView.restore()
+					self?.detailVC?.collectionView.reloadSections([0])
+				case .failure: break
+				}
+			}
+		}
+}
 }
 
 extension ItemDetailsPresenter: IDetailItemPresentable
 {
-	func changeItem(index: Int) {
-		 let uri = subItems[index].resourceURI
-		repository.remoteDataSource.fetchMarvelItem(resourceLink: uri)
-		{ [weak self] (result: Result<SubItemResponse, NetworkServiceError>) in
-			switch result {
-			case .success(let subItemResponse):
-				guard let subItem = subItemResponse.data.results.first else { return }
-				if subItem.fullName == nil {
-					let comics = Comics(title: subItem.title,
-										description: subItem.description,
-										resourceURI: uri,
-										thumbnail: subItem.thumbnail,
-										creators: subItem.creators)
-					self?.item = comics
-				}
-				else {
-					// it's author
-					let author = Author(fullName: subItem.fullName,
-										thumbnail: subItem.thumbnail,
-										resourceURI: uri, comics: subItem.comics)
-					self?.item = author
-				}
-				self?.detailVC?.collectionView.reloadSections([0])
-				self?.detailVC?.animateChangeItemTransition(reversed: true)
-			case .failure: break
-			}
-		}
-	}
-
-	func onPressed(index: Int) {
-		changeItem(index: index)
-	}
-
+	func getSubItem(index: Int) -> IMarvelItemDetails { subItems[index] }
 	func getItem() -> IMarvelItemDetails { item }
 	func getSubItemsCount() -> Int { subItems.count }
-	func getSubItem(index: Int) -> SubItem { subItems[index] }
-
-	func setImageFor(cell: DetailItemCollectionViewCell, url: URL, index: Int) {
-		repository.remoteDataSource.fetchImage(url: url) { result in
-			switch result {
-			case .success(let fetchedImage):
-				cell.setImage(fetchedImage)
-			case .failure: break
-			}
-		}
-	}
-
-	func getImageURLFor(cell: DetailItemCollectionViewCell, index: Int) {
-		// fetch subItem for Thumb
-		guard let subItemURI = cell.resourceURI else { return }
-
-		repository.remoteDataSource.fetchMarvelItem(resourceLink: subItemURI)
-		{ [weak self] (result: Result<SubItemResponse, NetworkServiceError>) in
-			switch result {
-			case .success(let subItemResponse):
-				guard let thumb = subItemResponse.data.results.first?.thumbnail else { return }
-				guard let url = URL(string: thumb.path + ImageType.portraitSmall + thumb.thumbnailExtension) else { return }
-				if subItemURI == self?.subItems[index].resourceURI {
-					self?.setImageFor(cell: cell, url: url, index: index)
-				}
-			case .failure: break
-			}
-		}
-	}
 
 	func setHeaderImage() {
 		guard detailVC?.header?.imageView != nil else { return }
@@ -119,5 +102,32 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 			case .failure: break
 			}
 		}
+	}
+
+	func setImageToCell(useIndex: Int, cell: DetailItemCollectionViewCell) {
+		let thumb = subItems[useIndex].thumbnail
+		guard let imageUrl = URL(string: thumb.path + ImageType.portraitSmall + thumb.thumbnailExtension) else { return }
+
+		repository.remoteDataSource.fetchImage(url: imageUrl) { result in
+			switch result {
+			case .success(let fetchedImage):
+				DispatchQueue.main.async {
+					if imageUrl.absoluteString.hasPrefix(cell.thumbPath ?? "") {
+						cell.setImage(fetchedImage)
+					}
+				}
+			case .failure: break
+			}
+		}
+	}
+
+	func onPressed(index: Int) {
+		var type: MarvelItemType = .heroes
+
+		if item as? Hero != nil { type = .heroes }
+		if item as? Author != nil { type = .authors }
+		if item as? Comics != nil { type = .comics }
+
+		router.showViewController(item: subItems[index], type: type)
 	}
 }

@@ -21,24 +21,17 @@ struct ComicsData: Decodable
 // MARK: - Comics
 struct Comics: Decodable
 {
+	let id: Int
 	let title: String?
 	let description: String?
-	let resourceURI: String
 	let thumbnail: Thumbnail
-	let creators: SubItemsCollection?
 
-	static let empty = Comics(title: "", description: nil,
-							  resourceURI: "",
-							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""),
-							  creators: SubItemsCollection(items: []))
+	static let empty = Comics(id: 0, title: "", description: nil,
+							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Comics: IMarvelItemDetails
 {
-	var subItemsCollection: SubItemsCollection? {
-		return creators
-	}
-
 	var name: String? { nil }
 	var fullName: String? { nil }
 }

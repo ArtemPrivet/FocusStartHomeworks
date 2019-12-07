@@ -23,6 +23,7 @@ protocol IJSONDataFetchable
 	func fetchJSONData<T: Decodable>(url: URL,
 									 requestType: RequestType,
 									 headers: [String: String]?,
+									 cancelsExitingDataTask: Bool,
 									 completion: @escaping (Result<T, NetworkServiceError>) -> Void)
 }
 

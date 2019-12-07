@@ -18,13 +18,10 @@ final class JSONDataFetcher: IJSONDataFetchable
 	}
 
 	/// Fetching Data of Generic Type
-	///
-	/// - Parameters:
-	///   - url: URL
-	///   - completion: (T?) -> Void
 	func fetchJSONData<T: Decodable>(url: URL,
 									 requestType: RequestType,
 									 headers: [String: String]?,
+									 cancelsExitingDataTask: Bool,
 									 completion: @escaping (Result<T, NetworkServiceError>) -> Void) {
 		DispatchQueue.main.async {
 			UIApplication.shared.isNetworkActivityIndicatorVisible = true
@@ -33,7 +30,7 @@ final class JSONDataFetcher: IJSONDataFetchable
 							   type: requestType,
 							   headers: headers,
 							   with: nil,
-							   cancelsExitingDataTask: true) { result in
+							   cancelsExitingDataTask: cancelsExitingDataTask) { result in
 			switch result {
 			case .success(let data):
 				do {

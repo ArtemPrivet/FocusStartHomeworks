@@ -10,13 +10,15 @@ import UIKit
 
 final class DetailItemCollectionViewCell: UICollectionViewCell
 {
-	private var itemImageView = UIImageView(image: UIImage(named: "placeholder"))
+	private var itemImageView = UIImageView()
 	private var nameLabel = UILabel()
 	private var infoLabel = UILabel()
 
-	var currentTitle: String? { nameLabel.text }
+	var currentImage: UIImage? {
+		return itemImageView.image
+	}
 
-	var resourceURI: String?
+	var thumbPath: String?
 
 	override var isHighlighted: Bool {
 		didSet  {
@@ -35,14 +37,9 @@ final class DetailItemCollectionViewCell: UICollectionViewCell
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	override func prepareForReuse() {
-		super.prepareForReuse()
-		itemImageView.image = UIImage(named: "placeholder")
-	}
-
-	func configure(with title: String?, resourceURI: String?) {
+	func configure(with title: String?, info: String?) {
 		nameLabel.text = title
-		self.resourceURI = resourceURI
+		infoLabel.text = info
 	}
 
 	func setImage(_ image: UIImage) {

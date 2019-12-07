@@ -1,17 +1,17 @@
 //
-//  UITableView + Extension.swift
+//  UICollectionView+StubView.swift
+//  MarvelHeroes
 //
-//
-//  Created by Михаил Медведев on 04/07/2019.
-//  Copyright © 2019 Михаил Медведев. All rights reserved.
-//
+//  Created by Mikhail Medvedev on 07.12.2019.
+//  Copyright © 2019 Mikhail Medvedev. All rights reserved.
 //
 
 import UIKit
 
-extension UITableView
+extension UICollectionView
 {
-	func setStubView(withImage: Bool, message: String = "Tap Search to find some stuff", animated: Bool) {
+	func setStubView(withImage: Bool, message: String = "There are no related items", animated: Bool) {
+
 		let stubView = UIView(frame: CGRect(x: self.center.x,
 											 y: self.center.y,
 											 width: self.bounds.size.width,
@@ -33,15 +33,15 @@ extension UITableView
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		messageLabel.translatesAutoresizingMaskIntoConstraints = false
 
-		imageView.centerYAnchor.constraint(equalTo: stubView.centerYAnchor).isActive = true
+		imageView.heightAnchor.constraint(equalTo: stubView.heightAnchor, multiplier: 0.25).isActive = true
+
+		imageView.centerYAnchor.constraint(equalTo: messageLabel.centerYAnchor, constant: -100).isActive = true
 		imageView.centerXAnchor.constraint(equalTo: stubView.centerXAnchor).isActive = true
-		messageLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20).isActive = true
+		messageLabel.topAnchor.constraint(equalTo: stubView.bottomAnchor, constant: -40).isActive = true
 		messageLabel.leftAnchor.constraint(equalTo: stubView.leftAnchor, constant: 20).isActive = true
 		messageLabel.rightAnchor.constraint(equalTo: stubView.rightAnchor, constant: -20).isActive = true
 
-		// The only tricky part is here:
 		self.backgroundView = stubView
-		self.separatorStyle = .none
 		if animated {
 			animatePulse(view: messageLabel)
 		}
@@ -49,7 +49,6 @@ extension UITableView
 
 	func restore() {
 		self.backgroundView = nil
-		self.separatorStyle = .singleLine
 	}
 
 	private func animatePulse(view: UIView) {

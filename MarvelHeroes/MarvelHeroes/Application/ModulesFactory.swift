@@ -49,12 +49,16 @@ final class ModulesFactory
 		return marvelItemsTableViewController
 	}
 
-	func createItemDetailsModule(using item: IMarvelItemDetails, withResourceURI: String?)
+	func createItemDetailsModule(using item: IMarvelItemDetails, type: MarvelItemType)
 		-> ItemDetailsCollectionViewController {
+		let router = ItemsDetailsRouter(modulesFactory: self, viewController: nil)
 		let repository = MarvelItemsRepository(remoteDataSource: NetworkManager())
-		let presenter = ItemDetailsPresenter(item: item, repository: repository)
-		let detailVC = ItemDetailsCollectionViewController(collectionViewLayout: StretchyHeaderLayout(), presenter: presenter)
+		let presenter = ItemDetailsPresenter(item: item, repository: repository, router: router)
+		let detailVC = ItemDetailsCollectionViewController(
+			collectionViewLayout: StretchyHeaderLayout(),
+			presenter: presenter, itemType: type)
 		presenter.detailVC = detailVC
+		router.viewController = detailVC
 		return detailVC
 	}
 
