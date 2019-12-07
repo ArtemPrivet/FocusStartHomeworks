@@ -105,9 +105,11 @@ final class DetailScreenViewController: UIViewController
 		self.tableView.delegate = self
 		self.view.backgroundColor = .white
 		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-		self.navigationController?.navigationBar.shadowImage = UIImage()
-		self.navigationController?.navigationBar.isTranslucent = true
-		self.navigationController?.view.backgroundColor = .clear
+	}
+
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
 	}
 
 	override func viewDidAppear(_ animated: Bool) {
