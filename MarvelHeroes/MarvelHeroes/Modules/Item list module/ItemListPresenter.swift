@@ -29,9 +29,10 @@ final class ItemListPresenter
 	private let router: IItemListRouter
 
 	private var pendingRequesrWorkItem: DispatchWorkItem?
-	let dispatchQueueImageDownload = DispatchQueue(label: "com.marvelHeroes.ImageLoad",
-												   qos: .userInitiated,
-												   attributes: .concurrent)
+	private let dispatchQueueImageDownload =
+		DispatchQueue(label: "com.marvelHeroes.ImageLoad",
+					  qos: .userInitiated,
+					  attributes: .concurrent)
 
 	private(set) var itemType: ItemType
 	private(set) var tableViewViewModels = [IItemViewModel]()

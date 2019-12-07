@@ -63,11 +63,16 @@ final class DetailItemTableViewCell: UITableViewCell
 		iconImageView.widthAnchor.constraint(equalToConstant: 50).isActive = true
 		iconImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
 		iconImageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -8).isActive = true
-		let iconImageViewBottomAnchor = iconImageView
-			.bottomAnchor
-			.constraint(equalTo: self.bottomAnchor, constant: -8)
-		iconImageViewBottomAnchor.isActive = true
+		let iconImageViewBottomAnchor = NSLayoutConstraint(
+			item: iconImageView,
+			attribute: .bottom,
+			relatedBy: .equal,
+			toItem: self,
+			attribute: .bottom,
+			multiplier: 1,
+			constant: -8)
 		iconImageViewBottomAnchor.priority = .defaultLow
+		iconImageViewBottomAnchor.isActive = true
 
 		// Name label constraints
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -83,11 +88,16 @@ final class DetailItemTableViewCell: UITableViewCell
 												   constant: -30).isActive = true
 		descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: readableContentGuide.bottomAnchor,
 												 constant: -8).isActive = true
-		let descriptionLabelBottomAnchor = iconImageView
-			.bottomAnchor
-			.constraint(equalTo: self.bottomAnchor, constant: -8)
-		descriptionLabelBottomAnchor.isActive = true
+		let descriptionLabelBottomAnchor = NSLayoutConstraint(
+			item: descriptionLabel,
+			attribute: .bottom,
+			relatedBy: .equal,
+			toItem: self,
+			attribute: .bottom,
+			multiplier: 1,
+			constant: -8)
 		descriptionLabelBottomAnchor.priority = .defaultLow
+		descriptionLabelBottomAnchor.isActive = true
 	}
 }
 

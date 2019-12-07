@@ -28,9 +28,10 @@ final class ItemPresenter
 	private let repository: IItemsRepository & IImagesRepository
 	private let router: IItemRouter
 
-	let dispatchQueueImageDownload = DispatchQueue(label: "com.marvelHeroes.ImageLoad",
-												   qos: .userInitiated,
-												   attributes: .concurrent)
+	private let dispatchQueueImageDownload =
+		DispatchQueue(label: "com.marvelHeroes.ImageLoad",
+					  qos: .userInitiated,
+					  attributes: .concurrent)
 
 	private(set) var detailViewModel: IItemViewModel
 	private(set) var tableViewViewModels = [IItemViewModel]()

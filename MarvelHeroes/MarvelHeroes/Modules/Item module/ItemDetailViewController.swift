@@ -161,11 +161,16 @@ final class ItemDetailViewController: UIViewController
 		imageView.leadingAnchor.constraint(equalTo: selfView.leadingAnchor).isActive = true
 		imageView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
 		imageView.trailingAnchor.constraint(equalTo: selfView.trailingAnchor).isActive = true
-		let imageViewBottomAnchor = imageView
-			.bottomAnchor
-			.constraint(equalTo: headerView?.bottomAnchor ?? selfView.bottomAnchor)
-		imageViewBottomAnchor.isActive = true
+		let imageViewBottomAnchor = NSLayoutConstraint(
+			item: imageView,
+			attribute: .bottom,
+			relatedBy: .equal,
+			toItem: headerView,
+			attribute: .bottom,
+			multiplier: 1,
+			constant: 0)
 		imageViewBottomAnchor.priority = .defaultHigh
+		imageViewBottomAnchor.isActive = true
 
 		// Table view constraints
 		tableView.leadingAnchor.constraint(equalTo: selfView.leadingAnchor).isActive = true
