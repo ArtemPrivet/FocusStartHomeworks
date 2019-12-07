@@ -12,7 +12,7 @@ final class HeroViewController: UIViewController
 {
 	private let presenter: IHeroPresenter
 	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-	private var group = DispatchGroup()
+	private var heroes = [ResultChar]()
 	private var searchBar = UISearchBar()
 	private var tableView = UITableView()
 	private var request = String()
@@ -93,16 +93,16 @@ final class HeroViewController: UIViewController
 
 	func checkResult(ifGot: Bool) {
 		if ifGot {
-			self.tableView.isHidden = false
-			self.stubImage.isHidden = true
-			self.stubText.isHidden = true
-			self.activityIndicator.stopAnimating()
-		}
-		else {
 			self.tableView.isHidden = true
 			self.stubImage.isHidden = false
 			self.stubText.isHidden = false
 			self.stubText.text = "Nothing found on query \(searchBar.text ?? "")"
+			self.activityIndicator.stopAnimating()
+		}
+		else {
+			self.tableView.isHidden = false
+			self.stubImage.isHidden = true
+			self.stubText.isHidden = true
 			self.activityIndicator.stopAnimating()
 		}
 	}
@@ -111,14 +111,12 @@ final class HeroViewController: UIViewController
 extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		checkResult(ifGot: presenter.heroesCount != 0)
-		return presenter.heroesCount
+		return heroes.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "heroCell") ??
 			UITableViewCell(style: .subtitle, reuseIdentifier: "heroCell")
-		let hero = presenter.getHero(of: indexPath.row)
-		print(hero.id)
+		let hero = heroes[indexPath.row]
 		cell.textLabel?.text = hero.name
 		if hero.resultDescription.isEmpty {
 			cell.detailTextLabel?.text = "No info"
@@ -136,6 +134,7 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 				DispatchQueue.main.async {
 					if let image = heroDataImage {
 						cell.imageView?.image = UIImage(data: image)
+						cell.layoutSubviews()
 					}
 				}
 			}
@@ -149,12 +148,19 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 
 extension HeroViewController: UISearchBarDelegate
 {
-// проблема с поиском: срабатывает после 2-3 нажатий на сеарчБ плюс картинки подгружаются при скролинге или нажав ячейку
-	// КАК ИСПРАВИТЬ???
+
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		guard let text = searchBar.text, text.isEmpty == false else { return }
 		self.presenter.getHeroes(of: text)
 		activityIndicator.startAnimating()
+	}
+}
+
+extension HeroViewController: IHeroView
+{
+	func show(heroes: [ResultChar]) {
+		self.heroes = heroes
+		checkResult(ifGot: heroes.isEmpty)
 		self.tableView.reloadData()
 	}
 }

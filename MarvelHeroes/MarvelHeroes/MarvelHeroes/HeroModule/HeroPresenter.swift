@@ -13,6 +13,7 @@ final class HeroPresenter
 
 	private var repository: IHeroRepository
 	private var router: IHeroRouter
+	weak var heroVC: HeroViewController?
 	let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 	private var heroes = [ResultChar]()
 
@@ -41,6 +42,7 @@ extension HeroPresenter: IHeroPresenter
 				guard let self = self else { return }
 				DispatchQueue.main.async {
 					self.heroes = heroList ?? []
+					self.heroVC?.show(heroes: self.heroes)
 				}
 				return
 			})

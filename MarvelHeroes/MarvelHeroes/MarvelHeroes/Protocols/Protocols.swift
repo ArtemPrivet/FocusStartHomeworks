@@ -16,9 +16,9 @@ protocol IDetailPresenter
 
 protocol IHeroPresenter
 {
-	var heroesCount: Int { get }
+//	var heroesCount: Int { get }
 
-	func getHero(of index: Int) -> ResultChar
+//	func getHero(of index: Int) -> ResultChar
 	func getHeroes(of text: String)
 	func showDetail(of index: Int)
 }
@@ -31,4 +31,9 @@ protocol IHeroRouter
 protocol IHeroRepository
 {
 	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void )
+}
+
+protocol IHeroView
+{
+	func show(heroes: [ResultChar])
 }

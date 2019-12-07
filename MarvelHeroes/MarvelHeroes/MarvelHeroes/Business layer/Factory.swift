@@ -23,6 +23,7 @@ final class ModulesFactory
 		let presenter = HeroPresenter(repository: repository, router: router)
 		let viewController = HeroViewController(presenter: presenter)
 		router.viewController = viewController
+		presenter.heroVC = viewController
 		return viewController
 	}
 }
