@@ -12,6 +12,7 @@ protocol ICharactersPresenter
 {
 	var characterCount: Int { get }
 
+	func loadCharacters()
 	func getCharacter(by index: Int) -> Character?
 	func showDetails(character: Character)
 	func getCharacter(by characterName: String)
@@ -32,8 +33,9 @@ final class CharactersPresenter: ICharactersPresenter
 		self.repository = repository
 		loadCharacters()
 	}
-	private func loadCharacters() {
+	func loadCharacters() {
 		self.view?.showLoadingIndicator()
+		self.view?.hideError()
 		repository.decodeCharacters { [weak self] characters in
 			switch characters {
 			case .success(let result):

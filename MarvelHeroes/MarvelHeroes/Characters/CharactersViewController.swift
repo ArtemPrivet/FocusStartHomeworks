@@ -30,10 +30,12 @@ final class CharactersViewController: UIViewController
 		super.viewDidLoad()
 		addSubviews()
 		configureViews()
+		presenter.loadCharacters()
 		tableView.dataSource = self
 		tableView.delegate = self
 		searchController.searchResultsUpdater = self
 		searchController.obscuresBackgroundDuringPresentation = false
+		searchController.searchBar.delegate = self
 		makeConstraints()
 	}
 	private func addSubviews() {
@@ -131,5 +133,11 @@ extension CharactersViewController: UISearchResultsUpdating
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let text = searchController.searchBar.text, text.isEmpty == false else { return }
 		presenter.getCharacter(by: text)
+	}
+}
+extension CharactersViewController: UISearchBarDelegate
+{
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		presenter.loadCharacters()
 	}
 }
