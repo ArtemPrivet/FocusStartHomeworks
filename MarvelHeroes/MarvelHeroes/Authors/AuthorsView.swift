@@ -10,7 +10,7 @@ import UIKit
 
 final class AuthorsView: UIViewController
 {
-	var authorsPresenter: IAuthorsPresenter
+	private var authorsPresenter: IAuthorsPresenter
 
 	init(authorsPresenter: IAuthorsPresenter) {
 		self.authorsPresenter = authorsPresenter
@@ -22,16 +22,11 @@ final class AuthorsView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("AuthorsView deinit")
-	}
-
-	let tableView = UITableView()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let imageViewAuthorsNotFound = UIImageView()
-	let labelAuthorsNotFound = UILabel()
-	let searchController = UISearchController(searchResultsController: nil)
-	let cellReuseIdentifier = "cell"
+	private let tableView = UITableView()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let imageViewAuthorsNotFound = UIImageView()
+	private let labelAuthorsNotFound = UILabel()
+	private let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -81,7 +76,8 @@ final class AuthorsView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(AuthorsTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(AuthorsTableViewCell.self,
+								forCellReuseIdentifier: AuthorsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
 		self.tableView.separatorColor = .gray
@@ -173,7 +169,8 @@ extension AuthorsView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as? AuthorsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: AuthorsTableViewCell.cellReuseIdentifier)
+			as? AuthorsTableViewCell
 		let author = self.authorsPresenter.getAuthor(at: indexPath.row)
 
 		if let fullName = author?.fullName, fullName.isEmpty == false {
@@ -183,9 +180,11 @@ extension AuthorsView: UITableViewDataSource
 			cell?.authorNameLabel.text = "Noname"
 		}
 
-		cell?.authorImageView.image = UIImage(data: self.authorsPresenter.getAuthorImageData(at: indexPath.row))
+		if let authorImageData = self.authorsPresenter.getAuthorImageData(at: indexPath.row) {
+			cell?.authorImageView.image = UIImage(data: authorImageData)
+		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: AuthorsTableViewCell.cellReuseIdentifier)
 	}
 }
 

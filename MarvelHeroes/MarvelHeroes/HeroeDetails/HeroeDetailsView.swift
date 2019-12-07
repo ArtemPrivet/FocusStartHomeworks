@@ -10,7 +10,7 @@ import UIKit
 
 final class HeroeDetailsView: UIViewController
 {
-	var heroeDetailsPresenter: IHeroeDetailsPresenter
+	private var heroeDetailsPresenter: IHeroeDetailsPresenter
 
 	init(heroeDetailsPresenter: IHeroeDetailsPresenter) {
 		self.heroeDetailsPresenter = heroeDetailsPresenter
@@ -22,19 +22,14 @@ final class HeroeDetailsView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("HeroeDetailsView deinit")
-	}
-
-	let imageView = UIImageView()
-	let heroeNameLabel = UILabel()
-	let heroeDescriptionLabel = UILabel()
-	let gradient = CAGradientLayer()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let tableView = UITableView()
-	let imageViewComicsNotFound = UIImageView()
-	let labelComicsNotFound = UILabel()
-	let cellReuseIdentifier = "cell"
+	private let imageView = UIImageView()
+	private let heroeNameLabel = UILabel()
+	private let heroeDescriptionLabel = UILabel()
+	private let gradient = CAGradientLayer()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let tableView = UITableView()
+	private let imageViewComicsNotFound = UIImageView()
+	private let labelComicsNotFound = UILabel()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -159,7 +154,8 @@ final class HeroeDetailsView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(HeroeDetailsTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(HeroeDetailsTableViewCell.self,
+								forCellReuseIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.tableHeaderView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
@@ -247,15 +243,15 @@ extension HeroeDetailsView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as?
-			HeroeDetailsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
+			as? HeroeDetailsTableViewCell
 
 		cell?.comicTitleLabel.text = self.heroeDetailsPresenter.getComicTitle(at: indexPath.row)
 		if let data = self.heroeDetailsPresenter.getComicImage(at: indexPath.row) {
 			cell?.comicImageView.image = UIImage(data: data)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
 	}
 }
 extension HeroeDetailsView: IHeroeDetailsView

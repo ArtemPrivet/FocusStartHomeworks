@@ -22,18 +22,13 @@ final class AuthorDetailsView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("AuthorDetailsView deinit")
-	}
-
-	let imageView = UIImageView()
-	let authorNameLabel = UILabel()
-	let gradient = CAGradientLayer()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let tableView = UITableView()
-	let imageViewComicsNotFound = UIImageView()
-	let labelComicsNotFound = UILabel()
-	let cellReuseIdentifier = "cell"
+	private let imageView = UIImageView()
+	private let authorNameLabel = UILabel()
+	private let gradient = CAGradientLayer()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let tableView = UITableView()
+	private let imageViewComicsNotFound = UIImageView()
+	private let labelComicsNotFound = UILabel()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -133,7 +128,8 @@ final class AuthorDetailsView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(AuthorDetailsTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(AuthorDetailsTableViewCell.self,
+								forCellReuseIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.tableHeaderView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
@@ -221,14 +217,15 @@ extension AuthorDetailsView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as? AuthorDetailsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
+			as? AuthorDetailsTableViewCell
 
 		cell?.comicTitleLabel.text = self.authorDetailsPresenter.getComicTitle(at: indexPath.row)
 		if let data = self.authorDetailsPresenter.getComicImage(at: indexPath.row) {
 			cell?.comicImageView.image = UIImage(data: data)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
 	}
 }
 extension AuthorDetailsView: IAuthorDetailsView

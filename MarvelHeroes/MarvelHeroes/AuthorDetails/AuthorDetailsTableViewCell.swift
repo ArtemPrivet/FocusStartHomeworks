@@ -23,6 +23,7 @@ final class AuthorDetailsTableViewCell: UITableViewCell
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	static let cellReuseIdentifier = "cell"
 	let comicTitleLabel = UILabel()
 	let comicImageView = UIImageView()
 

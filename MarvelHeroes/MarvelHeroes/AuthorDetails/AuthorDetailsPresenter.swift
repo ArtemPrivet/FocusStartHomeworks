@@ -10,22 +10,35 @@ import Foundation
 
 final class AuthorDetailsPresenter
 {
-	var authorDetailsRouter: IAuthorDetailsRouter
-	var repository: IRepository
+	private var authorDetailsRouter: IAuthorDetailsRouter
+	private var repository: IRepository
 	weak var authorDetailsView: IAuthorDetailsView?
 
-	var author: Author
-	var authorImageData: Data?
-	var comicsDataWrappers: [ComicsDataWrapper] = []
-	var comicsImagesData: [Data?] = []
+	private var author: Author
+	private var authorImageData: Data?
+	private var comicsDataWrappers: [ComicsDataWrapper] = []
+	private var comics: [ComicViewItem] = []
 
-	let dispatchGroup = DispatchGroup()
-	let dispatchQueue = DispatchQueue(label: "loadImages", qos: .userInteractive)
+	private let dispatchGroup = DispatchGroup()
+	private let dispatchQueue = DispatchQueue(label: "loadImages", qos: .userInteractive)
 
 	init(authorDetailsRouter: IAuthorDetailsRouter, repository: IRepository, author: Author) {
 		self.authorDetailsRouter = authorDetailsRouter
 		self.repository = repository
 		self.author = author
+	}
+
+	final private class ComicViewItem
+	{
+		let title: String?
+		let imageUrl: String?
+		var imageData: Data?
+
+		init(title: String?, imageUrl: String?, imageData: Data? = nil) {
+			self.title = title
+			self.imageUrl = imageUrl
+			self.imageData = imageData
+		}
 	}
 }
 
@@ -33,13 +46,10 @@ extension AuthorDetailsPresenter: IAuthorDetailsPresenter
 {
 	func loadData() {
 		self.dispatchQueue.async {
-			print("[---Start Details Module---]")
 			self.loadAuthorImage()
 			self.loadComicsImages()
 			self.dispatchGroup.notify(queue: .main) {
-				print("| 4.1) showData")
-				print("[----End Details Module----]")
-				self.authorDetailsView?.showData(withImageData: self.authorImageData, withComicsCount: self.comicsImagesData.count)
+				self.authorDetailsView?.showData(withImageData: self.authorImageData, withComicsCount: self.comics.count)
 			}
 		}
 	}
@@ -53,7 +63,7 @@ extension AuthorDetailsPresenter: IAuthorDetailsPresenter
 	}
 
 	func getComicsCount() -> Int {
-		return self.comicsImagesData.count
+		return self.comics.count
 	}
 
 	func getComicTitle(at index: Int) -> String? {
@@ -61,7 +71,7 @@ extension AuthorDetailsPresenter: IAuthorDetailsPresenter
 	}
 
 	func getComicImage(at index: Int) -> Data? {
-		return self.comicsImagesData[index]
+		return self.comics[index].imageData
 	}
 
 	func pressOnCell(withComic comic: Comic) {
@@ -72,7 +82,6 @@ extension AuthorDetailsPresenter: IAuthorDetailsPresenter
 extension AuthorDetailsPresenter
 {
 	private func loadAuthorImage() {
-		print("| 1.1) Loading author's image.")
 		if let path = self.author.thumbnail?.path, let thumbnailExtension = self.author.thumbnail?.thumbnailExtension
 		{
 			let urlString = path + ImageSize.portrait + thumbnailExtension
@@ -82,7 +91,6 @@ extension AuthorDetailsPresenter
 				switch dataOptionalResult {
 				case .success(let data):
 					self.authorImageData = data
-					print("| 1.2) Author's image was loaded.")
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
 				}
@@ -93,14 +101,20 @@ extension AuthorDetailsPresenter
 
 	private func loadComicsImages() {
 		self.comicsDataWrappers.removeAll()
-		print("| 2.1) Loading comics.")
-		self.author.comics?.items?.forEach { [weak self] comic in
-			guard let self = self else { return }
+		self.comics.removeAll()
+		self.author.comics?.items?.forEach { comic in
 			self.dispatchGroup.enter()
-			self.repository.getComic(withUrlString: comic.resourceURI, { comicResult in
+			self.repository.getComic(withUrlString: comic.resourceURI, { [weak self] comicResult in
+				guard let self = self else { return }
 				switch comicResult {
 				case .success(let comicDataWrapper):
 					self.comicsDataWrappers.append(comicDataWrapper)
+					let thumbnail = comicDataWrapper.data?.results?.first?.thumbnail
+					let title = comicDataWrapper.data?.results?.first?.title
+					if let imagePath = thumbnail?.path, let imageExtension = thumbnail?.thumbnailExtension {
+						self.comics.append(ComicViewItem(title: title,
+														 imageUrl: imagePath + ImageSize.portraitSmall + imageExtension))
+					}
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
 				}
@@ -108,28 +122,20 @@ extension AuthorDetailsPresenter
 			})
 		}
 		self.dispatchGroup.wait()
-		print("| 2.2) Comics were loaded.")
 
-		self.comicsImagesData.removeAll()
-		print("| 3.1) Loading comics' images.")
-		self.comicsDataWrappers.forEach { comicDataWrapper in
-			let thumbnail = comicDataWrapper.data?.results?.first?.thumbnail
-			if let imagePath = thumbnail?.path, let imageExtension = thumbnail?.thumbnailExtension {
-				let imageUrlString = imagePath + ImageSize.portraitSmall + imageExtension
-				self.dispatchGroup.enter()
-				self.repository.getImage(urlString: imageUrlString, { [weak self] dataOptionalResult in
-					guard let self = self else { return }
-					switch dataOptionalResult {
-					case .success(let data):
-						self.comicsImagesData.append(data)
-					case .failure(let error):
-						assertionFailure(error.localizedDescription)
-					}
-					self.dispatchGroup.leave()
-				})
-			}
+		self.comics.forEach { comic in
+			self.dispatchGroup.enter()
+			self.repository.getImage(urlString: comic.imageUrl ?? "", { [weak self] dataOptionalResult in
+				guard let self = self else { return }
+				switch dataOptionalResult {
+				case .success(let data):
+					comic.imageData = data
+				case .failure(let error):
+					assertionFailure(error.localizedDescription)
+				}
+				self.dispatchGroup.leave()
+			})
 		}
 		self.dispatchGroup.wait()
-		print("| 3.2) Comics' images were loaded.")
 	}
 }

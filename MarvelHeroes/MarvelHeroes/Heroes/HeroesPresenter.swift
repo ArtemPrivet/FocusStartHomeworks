@@ -10,8 +10,8 @@ import Foundation
 
 final class HeroesPresenter
 {
-	var heroesRouter: IHeroesRouter
-	var repository: IRepository
+	private var heroesRouter: IHeroesRouter
+	private var repository: IRepository
 	weak var heroesView: IHeroesView?
 
 	init(heroesRouter: IHeroesRouter, repository: IRepository) {
@@ -19,22 +19,29 @@ final class HeroesPresenter
 		self.repository = repository
 	}
 
-	var heroesDataWrapper: HeroesDataWrapper?
-	var imagesStringURL: [String] = []
-	var imagesData: [Data] = []
-	let dispatchGroup = DispatchGroup()
-	let dispatchQueue = DispatchQueue(label: "loadHeroes", qos: .userInitiated)
+	private var heroesDataWrapper: HeroesDataWrapper?
+	private var heroes: [HeroeViewItem] = []
+	private let dispatchGroup = DispatchGroup()
+	private let dispatchQueue = DispatchQueue(label: "loadHeroes", qos: .userInitiated)
+
+	final private class HeroeViewItem
+	{
+		let imageUrl: String?
+		var imageData: Data?
+
+		init(imageUrl: String?, imageData: Data? = nil) {
+			self.imageUrl = imageUrl
+			self.imageData = imageData
+		}
+	}
 }
 
 extension HeroesPresenter: IHeroesPresenter
 {
 	func getHeroes(withHeroeName name: String?) {
 		self.dispatchQueue.async {
-			print("[---Start Heroes Module---]")
 			self.loadHeroesImages(withHeroeName: name)
 			self.dispatchGroup.notify(queue: .main) {
-				print("| 3.1) Reload")
-				print("[----End Heroes Module----]")
 				self.heroesView?.reloadData(withHeroesCount: self.getHeroesCount())
 			}
 		}
@@ -49,8 +56,8 @@ extension HeroesPresenter: IHeroesPresenter
 		return character
 	}
 
-	func getHeroeImageData(at index: Int) -> Data {
-		return self.imagesData[index]
+	func getHeroeImageData(at index: Int) -> Data? {
+		return self.heroes[index].imageData
 	}
 
 	func onCellPressed(heroe: Heroe) {
@@ -62,36 +69,31 @@ extension HeroesPresenter
 {
 	private func loadHeroesImages(withHeroeName name: String?) {
 		self.dispatchGroup.enter()
-		print("| 1.1) Loading heroes.")
 		self.repository.getHeroes(withHeroeName: name) { [weak self] heroesResult in
 			guard let self = self else { return }
 			switch heroesResult {
 			case .success(let heroesDataWrapper):
 				self.heroesDataWrapper = heroesDataWrapper
-				print("| 1.2) Heroes were loaded.")
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.imagesStringURL.removeAll()
-			self.imagesData.removeAll()
+			self.heroes.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
-		print("| 2.1) Loading images.")
-		self.heroesDataWrapper?.data?.results?.forEach { [weak self] heroe in
-			guard let self = self else { return }
+		self.heroesDataWrapper?.data?.results?.forEach { heroe in
 			if let path = heroe.thumbnail?.path, let thumbnailExtension = heroe.thumbnail?.thumbnailExtension {
-				self.imagesStringURL.append( path + ImageSize.medium + thumbnailExtension)
+				self.heroes.append(HeroeViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
 			}
 		}
-		self.imagesStringURL.forEach { [weak self] imageURLString in
-			guard let self = self else { return }
+		self.heroes.forEach { heroe in
 			self.dispatchGroup.enter()
-			self.repository.getImage(urlString: imageURLString, { dataResult in
+			self.repository.getImage(urlString: heroe.imageUrl ?? "", { [weak self] dataResult in
+				guard let self = self else { return }
 				switch dataResult {
 				case .success(let data):
 					if let data = data {
-						self.imagesData.append(data)
+						heroe.imageData = data
 					}
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
@@ -100,6 +102,5 @@ extension HeroesPresenter
 			})
 		}
 		self.dispatchGroup.wait()
-		print("| 2.2) Images were loaded.")
 	}
 }

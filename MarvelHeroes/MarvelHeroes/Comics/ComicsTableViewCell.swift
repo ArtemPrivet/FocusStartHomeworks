@@ -30,6 +30,7 @@ final class ComicsTableViewCell: UITableViewCell
 		self.comicImageView.layer.cornerRadius = self.comicImageView.bounds.width / 2
 	}
 
+	static let cellReuseIdentifier = "cell"
 	let comicNameLabel = UILabel()
 	let comicDescriptionLabel = UILabel()
 	let comicImageView = UIImageView()

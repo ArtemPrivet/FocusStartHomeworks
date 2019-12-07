@@ -13,6 +13,6 @@ protocol IHeroesPresenter
 	func getHeroes(withHeroeName name: String?)
 	func getHeroesCount() -> Int
 	func getHeroe(at index: Int) -> Heroe?
-	func getHeroeImageData(at index: Int) -> Data
+	func getHeroeImageData(at index: Int) -> Data?
 	func onCellPressed(heroe: Heroe)
 }

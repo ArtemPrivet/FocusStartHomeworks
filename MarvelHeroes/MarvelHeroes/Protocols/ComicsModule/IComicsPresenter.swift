@@ -13,6 +13,6 @@ protocol IComicsPresenter
 	func getComics(withComicName name: String?)
 	func getComicsCount() -> Int
 	func getComic(at index: Int) -> Comic?
-	func getComicImageData(at index: Int) -> Data
+	func getComicImageData(at index: Int) -> Data?
 	func onCellPressed(comic: Comic)
 }

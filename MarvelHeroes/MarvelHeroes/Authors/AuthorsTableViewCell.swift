@@ -29,6 +29,7 @@ final class AuthorsTableViewCell: UITableViewCell
 		self.authorImageView.layer.cornerRadius = self.authorImageView.bounds.width / 2
 	}
 
+	static let cellReuseIdentifier = "cell"
 	let authorNameLabel = UILabel()
 	let authorImageView = UIImageView()
 

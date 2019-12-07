@@ -10,7 +10,7 @@ import UIKit
 
 final class ComicDetailsView: UIViewController
 {
-	var comicDetailsPresenter: IComicDetailsPresenter
+	private var comicDetailsPresenter: IComicDetailsPresenter
 
 	init(comicDetailsPresenter: IComicDetailsPresenter) {
 		self.comicDetailsPresenter = comicDetailsPresenter
@@ -22,19 +22,14 @@ final class ComicDetailsView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("ComicDetailsView deinit")
-	}
-
-	let imageView = UIImageView()
-	let comicTitleLabel = UILabel()
-	let comicDescriptionLabel = UILabel()
-	let gradient = CAGradientLayer()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let tableView = UITableView()
-	let imageViewAuthorsNotFound = UIImageView()
-	let labelAuthorsNotFound = UILabel()
-	let cellReuseIdentifier = "cell"
+	private let imageView = UIImageView()
+	private let comicTitleLabel = UILabel()
+	private let comicDescriptionLabel = UILabel()
+	private let gradient = CAGradientLayer()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let tableView = UITableView()
+	private let imageViewAuthorsNotFound = UIImageView()
+	private let labelAuthorsNotFound = UILabel()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -159,7 +154,8 @@ final class ComicDetailsView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(ComicDetailsTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(ComicDetailsTableViewCell.self,
+								forCellReuseIdentifier: ComicDetailsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.tableHeaderView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
@@ -247,14 +243,15 @@ extension ComicDetailsView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as? ComicDetailsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: ComicDetailsTableViewCell.cellReuseIdentifier)
+			as? ComicDetailsTableViewCell
 
 		cell?.authorNameLabel.text = self.comicDetailsPresenter.getAuthorName(at: indexPath.row)
 		if let data = self.comicDetailsPresenter.getAuthorImage(at: indexPath.row) {
 			cell?.authorImageView.image = UIImage(data: data)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: ComicDetailsTableViewCell.cellReuseIdentifier)
 	}
 }
 extension ComicDetailsView: IComicDetailsView

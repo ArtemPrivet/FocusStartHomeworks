@@ -10,7 +10,7 @@ import UIKit
 
 final class HeroesView: UIViewController
 {
-	var heroesPresenter: IHeroesPresenter
+	private var heroesPresenter: IHeroesPresenter
 
 	init(heroesPresenter: IHeroesPresenter) {
 		self.heroesPresenter = heroesPresenter
@@ -22,16 +22,11 @@ final class HeroesView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("HeroesView deinit")
-	}
-
-	let tableView = UITableView()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let imageViewHeroesNotFound = UIImageView()
-	let labelHeroesNotFound = UILabel()
-	let searchController = UISearchController(searchResultsController: nil)
-	let cellReuseIdentifier = "cell"
+	private let tableView = UITableView()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let imageViewHeroesNotFound = UIImageView()
+	private let labelHeroesNotFound = UILabel()
+	private let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -82,7 +77,8 @@ final class HeroesView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(HeroesTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(HeroesTableViewCell.self,
+								forCellReuseIdentifier: HeroesTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
 		self.tableView.separatorColor = .gray
@@ -177,7 +173,8 @@ extension HeroesView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as? HeroesTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: HeroesTableViewCell.cellReuseIdentifier)
+			as? HeroesTableViewCell
 		let character = self.heroesPresenter.getHeroe(at: indexPath.row)
 
 		if let name = character?.name, name.isEmpty == false {
@@ -194,9 +191,11 @@ extension HeroesView: UITableViewDataSource
 			cell?.heroeDescriptionLabel.text = "No info"
 		}
 
-		cell?.heroeImageView.image = UIImage(data: self.heroesPresenter.getHeroeImageData(at: indexPath.row))
+		if let heroeImageData = self.heroesPresenter.getHeroeImageData(at: indexPath.row) {
+			cell?.heroeImageView.image = UIImage(data: heroeImageData)
+		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: HeroesTableViewCell.cellReuseIdentifier)
 	}
 }
 

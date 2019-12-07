@@ -30,6 +30,7 @@ final class HeroesTableViewCell: UITableViewCell
 		self.heroeImageView.layer.cornerRadius = self.heroeImageView.bounds.width / 2
 	}
 
+	static let cellReuseIdentifier = "cell"
 	let heroeNameLabel = UILabel()
 	let heroeDescriptionLabel = UILabel()
 	let heroeImageView = UIImageView()

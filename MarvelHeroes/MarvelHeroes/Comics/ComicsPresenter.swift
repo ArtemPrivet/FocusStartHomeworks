@@ -10,8 +10,8 @@ import Foundation
 
 final class ComicsPresenter
 {
-	var comicsRouter: IComicsRouter
-	var repository: IRepository
+	private var comicsRouter: IComicsRouter
+	private var repository: IRepository
 	weak var comicsView: IComicsView?
 
 	init(comicsRouter: IComicsRouter, repository: IRepository) {
@@ -19,22 +19,29 @@ final class ComicsPresenter
 		self.repository = repository
 	}
 
-	var comicsDataWrapper: ComicsDataWrapper?
-	var imagesStringURL: [String] = []
-	var imagesData: [Data] = []
-	let dispatchGroup = DispatchGroup()
-	let dispatchQueue = DispatchQueue(label: "loadComics", qos: .userInitiated)
+	private var comicsDataWrapper: ComicsDataWrapper?
+	private var comics: [ComicViewItem] = []
+	private let dispatchGroup = DispatchGroup()
+	private let dispatchQueue = DispatchQueue(label: "loadComics", qos: .userInitiated)
+
+	final private class ComicViewItem
+	{
+		let imageUrl: String?
+		var imageData: Data?
+
+		init(imageUrl: String?, imageData: Data? = nil) {
+			self.imageUrl = imageUrl
+			self.imageData = imageData
+		}
+	}
 }
 
 extension ComicsPresenter: IComicsPresenter
 {
 	func getComics(withComicName name: String?) {
 		self.dispatchQueue.async {
-			print("[---Start Comics Module---]")
 			self.loadComicsImages(withComicName: name)
 			self.dispatchGroup.notify(queue: .main) {
-				print("| 3.1) Reload")
-				print("[----End Comics Module----]")
 				self.comicsView?.reloadData(withComicsCount: self.getComicsCount())
 			}
 		}
@@ -46,8 +53,8 @@ extension ComicsPresenter: IComicsPresenter
 		let comic = self.comicsDataWrapper?.data?.results?[index]
 		return comic
 	}
-	func getComicImageData(at index: Int) -> Data {
-		return self.imagesData[index]
+	func getComicImageData(at index: Int) -> Data? {
+		return self.comics[index].imageData
 	}
 	func onCellPressed(comic: Comic) {
 		self.comicsRouter.pushModuleWithComicInfo(comic: comic)
@@ -58,36 +65,31 @@ extension ComicsPresenter
 {
 	private func loadComicsImages(withComicName name: String?) {
 		self.dispatchGroup.enter()
-		print("| 1.1) Loading comics.")
 		self.repository.getComics(withComicName: name) { [weak self] comicsResult in
 			guard let self = self else { return }
 			switch comicsResult {
 			case .success(let comicsDataWrapper):
 				self.comicsDataWrapper = comicsDataWrapper
-				print("| 1.2) Comics were loaded.")
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.imagesStringURL.removeAll()
-			self.imagesData.removeAll()
+			self.comics.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
-		print("| 2.1) Loading images.")
-		self.comicsDataWrapper?.data?.results?.forEach { [weak self] comic in
-			guard let self = self else { return }
+		self.comicsDataWrapper?.data?.results?.forEach { comic in
 			if let path = comic.thumbnail?.path, let thumbnailExtension = comic.thumbnail?.thumbnailExtension {
-				self.imagesStringURL.append( path + ImageSize.medium + thumbnailExtension)
+				self.comics.append(ComicViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
 			}
 		}
-		self.imagesStringURL.forEach { [weak self] imageURLString in
-			guard let self = self else { return }
+		self.comics.forEach { comic in
 			self.dispatchGroup.enter()
-			self.repository.getImage(urlString: imageURLString, { dataResult in
+			self.repository.getImage(urlString: comic.imageUrl ?? "", { [weak self] dataResult in
+				guard let self = self else { return }
 				switch dataResult {
 				case .success(let data):
 					if let data = data {
-						self.imagesData.append(data)
+						comic.imageData = data
 					}
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
@@ -96,6 +98,5 @@ extension ComicsPresenter
 			})
 		}
 		self.dispatchGroup.wait()
-		print("| 2.2) Images were loaded.")
 	}
 }

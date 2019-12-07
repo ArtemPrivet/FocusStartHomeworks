@@ -10,7 +10,7 @@ import UIKit
 
 final class ComicsView: UIViewController
 {
-	var comicsPresenter: IComicsPresenter
+	private var comicsPresenter: IComicsPresenter
 
 	init(comicsPresenter: IComicsPresenter) {
 		self.comicsPresenter = comicsPresenter
@@ -22,16 +22,11 @@ final class ComicsView: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 
-	deinit {
-		print("ComicsView deinit")
-	}
-
-	let tableView = UITableView()
-	let activityIndicator = UIActivityIndicatorView(style: .gray)
-	let imageViewComicsNotFound = UIImageView()
-	let labelComicsNotFound = UILabel()
-	let searchController = UISearchController(searchResultsController: nil)
-	let cellReuseIdentifier = "cell"
+	private let tableView = UITableView()
+	private let activityIndicator = UIActivityIndicatorView(style: .gray)
+	private let imageViewComicsNotFound = UIImageView()
+	private let labelComicsNotFound = UILabel()
+	private let searchController = UISearchController(searchResultsController: nil)
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -82,7 +77,8 @@ final class ComicsView: UIViewController
 	}
 
 	func settingsForTableView() {
-		self.tableView.register(ComicsTableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+		self.tableView.register(ComicsTableViewCell.self,
+								forCellReuseIdentifier: ComicsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
 		self.tableView.separatorColor = .gray
@@ -177,7 +173,8 @@ extension ComicsView: UITableViewDataSource
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier) as? ComicsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: ComicsTableViewCell.cellReuseIdentifier)
+			as? ComicsTableViewCell
 		let comic = self.comicsPresenter.getComic(at: indexPath.row)
 
 		if let title = comic?.title, title.isEmpty == false {
@@ -194,9 +191,11 @@ extension ComicsView: UITableViewDataSource
 			cell?.comicDescriptionLabel.text = "No info"
 		}
 
-		cell?.comicImageView.image = UIImage(data: self.comicsPresenter.getComicImageData(at: indexPath.row))
+		if let comicImageData = self.comicsPresenter.getComicImageData(at: indexPath.row) {
+			cell?.comicImageView.image = UIImage(data: comicImageData)
+		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: self.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: ComicsTableViewCell.cellReuseIdentifier)
 	}
 }
 

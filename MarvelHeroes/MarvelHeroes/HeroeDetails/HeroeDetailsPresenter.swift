@@ -10,22 +10,35 @@ import Foundation
 
 final class HeroeDetailsPresenter
 {
-	var heroeDetailsRouter: IHeroeDetailsRouter
-	var repository: IRepository
+	private var heroeDetailsRouter: IHeroeDetailsRouter
+	private var repository: IRepository
 	weak var heroeDetailsView: IHeroeDetailsView?
 
-	var heroe: Heroe
-	var heroeImageData: Data?
-	var comicsDataWrappers: [ComicsDataWrapper] = []
-	var comicsImagesData: [Data?] = []
+	private var heroe: Heroe
+	private var heroeImageData: Data?
+	private var comicsDataWrappers: [ComicsDataWrapper] = []
+	private var comics: [ComicViewItem] = []
 
-	let dispatchGroup = DispatchGroup()
-	let dispatchQueue = DispatchQueue(label: "loadImages", qos: .userInteractive)
+	private let dispatchGroup = DispatchGroup()
+	private let dispatchQueue = DispatchQueue(label: "loadImages", qos: .userInteractive)
 
 	init(heroeDetailsRouter: IHeroeDetailsRouter, repository: IRepository, heroe: Heroe) {
 		self.heroeDetailsRouter = heroeDetailsRouter
 		self.repository = repository
 		self.heroe = heroe
+	}
+
+	final private class ComicViewItem
+	{
+		let title: String?
+		let imageUrl: String?
+		var imageData: Data?
+
+		init(title: String?, imageUrl: String?, imageData: Data? = nil) {
+			self.title = title
+			self.imageUrl = imageUrl
+			self.imageData = imageData
+		}
 	}
 }
 
@@ -33,13 +46,10 @@ extension HeroeDetailsPresenter: IHeroeDetailsPresenter
 {
 	func loadData() {
 		self.dispatchQueue.async {
-			print("[---Start Details Module---]")
 			self.loadHeroeImage()
 			self.loadComicsImages()
 			self.dispatchGroup.notify(queue: .main) {
-				print("| 4.1) showData")
-				print("[----End Details Module----]")
-				self.heroeDetailsView?.showData(withImageData: self.heroeImageData, withComicsCount: self.comicsImagesData.count)
+				self.heroeDetailsView?.showData(withImageData: self.heroeImageData, withComicsCount: self.comics.count)
 			}
 		}
 	}
@@ -53,7 +63,7 @@ extension HeroeDetailsPresenter: IHeroeDetailsPresenter
 	}
 
 	func getComicsCount() -> Int {
-		return self.comicsImagesData.count
+		return self.comics.count
 	}
 
 	func getComic(at index: Int) -> Comic? {
@@ -65,7 +75,7 @@ extension HeroeDetailsPresenter: IHeroeDetailsPresenter
 	}
 
 	func getComicImage(at index: Int) -> Data? {
-		return self.comicsImagesData[index]
+		return self.comics[index].imageData
 	}
 
 	func pressOnCell(withComic comic: Comic) {
@@ -76,7 +86,6 @@ extension HeroeDetailsPresenter: IHeroeDetailsPresenter
 extension HeroeDetailsPresenter
 {
 	private func loadHeroeImage() {
-		print("| 1.1) Loading heroe's image.")
 		if let path = self.heroe.thumbnail?.path, let thumbnailExtension = self.heroe.thumbnail?.thumbnailExtension
 		{
 			let urlString = path + ImageSize.portrait + thumbnailExtension
@@ -86,7 +95,6 @@ extension HeroeDetailsPresenter
 				switch dataOptionalResult {
 				case .success(let data):
 					self.heroeImageData = data
-					print("| 1.2) Heroe's image was loaded.")
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
 				}
@@ -97,14 +105,20 @@ extension HeroeDetailsPresenter
 
 	private func loadComicsImages() {
 		self.comicsDataWrappers.removeAll()
-		print("| 2.1) Loading comics.")
-		self.heroe.comics?.items?.forEach { [weak self] comic in
-			guard let self = self else { return }
+		self.comics.removeAll()
+		self.heroe.comics?.items?.forEach { comic in
 			self.dispatchGroup.enter()
-			self.repository.getComic(withUrlString: comic.resourceURI, { comicResult in
+			self.repository.getComic(withUrlString: comic.resourceURI, { [weak self] comicResult in
+				guard let self = self else { return }
 				switch comicResult {
 				case .success(let comicDataWrapper):
 					self.comicsDataWrappers.append(comicDataWrapper)
+					let thumbnail = comicDataWrapper.data?.results?.first?.thumbnail
+					let title = comicDataWrapper.data?.results?.first?.title
+					if let imagePath = thumbnail?.path, let imageExtension = thumbnail?.thumbnailExtension {
+						self.comics.append(ComicViewItem(title: title,
+														 imageUrl: imagePath + ImageSize.portraitSmall + imageExtension))
+					}
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
 				}
@@ -112,28 +126,20 @@ extension HeroeDetailsPresenter
 			})
 		}
 		self.dispatchGroup.wait()
-		print("| 2.2) Comics were loaded.")
 
-		self.comicsImagesData.removeAll()
-		print("| 3.1) Loading comics' images.")
-		self.comicsDataWrappers.forEach { comicDataWrapper in
-			let thumbnail = comicDataWrapper.data?.results?.first?.thumbnail
-			if let imagePath = thumbnail?.path, let imageExtension = thumbnail?.thumbnailExtension {
-				let imageUrlString = imagePath + ImageSize.portraitSmall + imageExtension
-				self.dispatchGroup.enter()
-				self.repository.getImage(urlString: imageUrlString, { [weak self] dataOptionalResult in
-					guard let self = self else { return }
-					switch dataOptionalResult {
-					case .success(let data):
-						self.comicsImagesData.append(data)
-					case .failure(let error):
-						assertionFailure(error.localizedDescription)
-					}
-					self.dispatchGroup.leave()
-				})
-			}
+		self.comics.forEach { comic in
+			self.dispatchGroup.enter()
+			self.repository.getImage(urlString: comic.imageUrl ?? "", { [weak self] dataOptionalResult in
+				guard let self = self else { return }
+				switch dataOptionalResult {
+				case .success(let data):
+					comic.imageData = data
+				case .failure(let error):
+					assertionFailure(error.localizedDescription)
+				}
+				self.dispatchGroup.leave()
+			})
 		}
 		self.dispatchGroup.wait()
-		print("| 3.2) Comics' images were loaded.")
 	}
 }

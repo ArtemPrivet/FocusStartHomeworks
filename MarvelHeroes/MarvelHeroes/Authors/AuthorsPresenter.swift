@@ -10,8 +10,8 @@ import Foundation
 
 final class AuthorsPresenter
 {
-	var authorsRouter: IAuthorsRouter
-	var repository: IRepository
+	private var authorsRouter: IAuthorsRouter
+	private var repository: IRepository
 	weak var authorsView: IAuthorsView?
 
 	init(authorsRouter: IAuthorsRouter, repository: IRepository) {
@@ -19,22 +19,29 @@ final class AuthorsPresenter
 		self.repository = repository
 	}
 
-	var authorsDataWrapper: AuthorsDataWrapper?
-	var imagesStringURL: [String] = []
-	var imagesData: [Data] = []
-	let dispatchGroup = DispatchGroup()
-	let dispatchQueue = DispatchQueue(label: "loadAuthors", qos: .userInitiated)
+	private var authorsDataWrapper: AuthorsDataWrapper?
+	private var authors: [AuthorViewItem] = []
+	private let dispatchGroup = DispatchGroup()
+	private let dispatchQueue = DispatchQueue(label: "loadAuthors", qos: .userInitiated)
+
+	final private class AuthorViewItem
+	{
+		let imageUrl: String?
+		var imageData: Data?
+
+		init(imageUrl: String?, imageData: Data? = nil) {
+			self.imageUrl = imageUrl
+			self.imageData = imageData
+		}
+	}
 }
 
 extension AuthorsPresenter: IAuthorsPresenter
 {
 	func getAuthors(withAuthorName name: String?) {
 		self.dispatchQueue.async {
-			print("[---Start Authors Module---]")
 			self.loadAuthorsImages(withAuthorName: name)
 			self.dispatchGroup.notify(queue: .main) {
-				print("| 3.1) Reload")
-				print("[----End Authors Module----]")
 				self.authorsView?.reloadData(withAuthorsCount: self.getAuthorsCount())
 			}
 		}
@@ -46,8 +53,8 @@ extension AuthorsPresenter: IAuthorsPresenter
 		let author = self.authorsDataWrapper?.data?.results?[index]
 		return author
 	}
-	func getAuthorImageData(at index: Int) -> Data {
-		return self.imagesData[index]
+	func getAuthorImageData(at index: Int) -> Data? {
+		return self.authors[index].imageData
 	}
 	func onCellPressed(author: Author) {
 		self.authorsRouter.pushModuleWithAuthorInfo(author: author)
@@ -58,36 +65,31 @@ extension AuthorsPresenter
 {
 	private func loadAuthorsImages(withAuthorName name: String?) {
 		self.dispatchGroup.enter()
-		print("| 1.1) Loading authors.")
 		self.repository.getAuthors(withAuthorName: name) { [weak self] authorsResult in
 			guard let self = self else { return }
 			switch authorsResult {
 			case .success(let authorsDataWrapper):
 				self.authorsDataWrapper = authorsDataWrapper
-				print("| 1.2) Authors were loaded.")
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.imagesStringURL.removeAll()
-			self.imagesData.removeAll()
+			self.authors.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
-		print("| 2.1) Loading images.")
-		self.authorsDataWrapper?.data?.results?.forEach { [weak self] author in
-			guard let self = self else { return }
+		self.authorsDataWrapper?.data?.results?.forEach { author in
 			if let path = author.thumbnail?.path, let thumbnailExtension = author.thumbnail?.thumbnailExtension {
-				self.imagesStringURL.append( path + ImageSize.medium + thumbnailExtension)
+				self.authors.append(AuthorViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
 			}
 		}
-		self.imagesStringURL.forEach { [weak self] imageURLString in
-			guard let self = self else { return }
+		self.authors.forEach { author in
 			self.dispatchGroup.enter()
-			self.repository.getImage(urlString: imageURLString, { dataResult in
+			self.repository.getImage(urlString: author.imageUrl ?? "", { [weak self] dataResult in
+				guard let self = self else { return }
 				switch dataResult {
 				case .success(let data):
 					if let data = data {
-						self.imagesData.append(data)
+						author.imageData = data
 					}
 				case .failure(let error):
 					assertionFailure(error.localizedDescription)
@@ -96,6 +98,5 @@ extension AuthorsPresenter
 			})
 		}
 		self.dispatchGroup.wait()
-		print("| 2.2) Images were loaded.")
 	}
 }

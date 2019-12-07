@@ -13,6 +13,6 @@ protocol IAuthorsPresenter
 	func getAuthors(withAuthorName name: String?)
 	func getAuthorsCount() -> Int
 	func getAuthor(at index: Int) -> Author?
-	func getAuthorImageData(at index: Int) -> Data
+	func getAuthorImageData(at index: Int) -> Data?
 	func onCellPressed(author: Author)
 }
