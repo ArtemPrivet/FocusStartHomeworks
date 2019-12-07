@@ -11,8 +11,9 @@ protocol ICharacterInfoPresenter
 {
 	var comicsCount: Int { get }
 
+	func loadComics()
 	func getCharacter() -> Character
-	func getImage()
+	func loadCharacterImage()
 	func getComics(by index: Int) -> Comic?
 	func getComicsImage(for characterImage: Image, by index: Int)
 }
@@ -39,7 +40,7 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 	func getCharacter() -> Character {
 		return character
 	}
-	func getImage() {
+	func loadCharacterImage() {
 		guard let thumbnail = character.thumbnail else { return }
 		repository.loadCharacterImage(for: thumbnail, size: ImageSize.large) { result in
 			switch result {
@@ -52,7 +53,7 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 			}
 		}
 	}
-	private func loadComics() {
+	func loadComics() {
 		guard let id = character.id else { return }
 		self.view?.showLoadingIndicator()
 		repository.decodeComics(by: id) { [weak self] result in

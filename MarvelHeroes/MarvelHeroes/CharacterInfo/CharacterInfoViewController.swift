@@ -44,6 +44,7 @@ final class CharacterInfoViewController: UIViewController
 	}
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		presenter.loadComics()
 		comicsTableView.dataSource = self
 		addSubviews()
 		configureViews()
@@ -65,7 +66,7 @@ final class CharacterInfoViewController: UIViewController
 		view.backgroundColor = UIColor.white
 		characterDescriptionTextView.backgroundColor = .none
 		let character = presenter.getCharacter()
-		presenter.getImage()
+		presenter.loadCharacterImage()
 		characterDescriptionTextView.font = .systemFont(ofSize: 21)
 		title = character.name
 		characterDescriptionTextView.isEditable = false
