@@ -35,9 +35,9 @@ final class DetailViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
+		view.addSubview(heroImage)
 		view.addSubview(heroName)
 		view.addSubview(heroDescription)
-		view.addSubview(heroImage)
 		view.addSubview(heroComicsTableView)
 		setGradient()
 		setConstraints()
@@ -48,11 +48,11 @@ final class DetailViewController: UIViewController
 		heroName.isOpaque = false
 		heroName.numberOfLines = 0
 		heroName.font = UIFont(name: "Helvetica", size: 34)
-		heroDescription.isOpaque = false
+		heroDescription.backgroundColor = .clear
 		heroDescription.isEditable = false
 		heroDescription.font = UIFont(name: "Helvetica", size: 18)
-		heroImage.alpha = 0.3
 		heroName.text = presenter.getHero().name
+		heroName.backgroundColor = .clear
 		heroDescription.text = presenter.getHero().resultDescription
 		heroImage.image = {
 			let image = UIImageView()
@@ -65,11 +65,14 @@ final class DetailViewController: UIViewController
 		}()
 	}
 
-	// не работает (
 	private func setGradient() {
-		gradient.frame = heroImage.bounds
-		gradient.colors = [#colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.4869702483)]
-		heroImage.layer.insertSublayer(gradient, at: 0)
+		gradient.colors = [ #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.4869702483).cgColor, #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 1).cgColor]
+		heroImage.layer.addSublayer(gradient)
+	}
+
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		gradient.frame = CGRect(x: 0, y: 0, width: heroImage.frame.width, height: heroImage.frame.height + 6)
 	}
 
 	private func setConstraints() {

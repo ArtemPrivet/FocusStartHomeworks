@@ -43,12 +43,8 @@ final class HeroViewController: UIViewController
 		setConstraints()
 		tableView.delegate = self
 		tableView.dataSource = self
+		tableView.keyboardDismissMode = .onDrag
 		searchBar.delegate = self
-	}
-
-	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		super.touchesBegan(touches, with: event)
-		view.endEditing(true)
 	}
 
 	private func setupUI() {
@@ -142,6 +138,7 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 		return cell
 	}
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		searchBar.resignFirstResponder()
 		presenter.showDetail(of: indexPath.row)
 	}
 }
