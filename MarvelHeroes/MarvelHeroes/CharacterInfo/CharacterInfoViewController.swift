@@ -11,10 +11,10 @@ import SnapKit
 
 final class CharacterInfoViewController: UIViewController
 {
-	let characterImage = UIImageView()
-	let comicsTableView = UITableView()
-	let characterDescriptionTextView = UITextView()
-	let gradient = CAGradientLayer()
+	private let characterImage = UIImageView()
+	private let comicsTableView = UITableView()
+	private let characterDescriptionTextView = UITextView()
+	private let gradient = CAGradientLayer()
 	private let cdllId = "cell"
 	private var gradientColor: UIColor = {
 		if #available(iOS 13, *) {
@@ -32,8 +32,16 @@ final class CharacterInfoViewController: UIViewController
 		}
 	}()
 	private let loadIndicator = UIActivityIndicatorView(style: .whiteLarge)
-	var presenter: ICharacterInfoPresenter?
+	private let presenter: ICharacterInfoPresenter
 
+	init(presenter: CharacterInfoPresenter) {
+		self.presenter = presenter
+		super.init(nibName: nil, bundle: nil)
+	}
+	@available(*, unavailable)
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		comicsTableView.dataSource = self
@@ -56,12 +64,12 @@ final class CharacterInfoViewController: UIViewController
 	private func configureViews() {
 		view.backgroundColor = UIColor.white
 		characterDescriptionTextView.backgroundColor = .none
-		let character = presenter?.getCharacter()
-		presenter?.getImage()
+		let character = presenter.getCharacter()
+		presenter.getImage()
 		characterDescriptionTextView.font = .systemFont(ofSize: 21)
-		title = character?.name
+		title = character.name
 		characterDescriptionTextView.isEditable = false
-		characterDescriptionTextView.text = character?.description
+		characterDescriptionTextView.text = character.description
 		comicsTableView.backgroundView = loadIndicator
 		comicsTableView.tableFooterView = UIView()
 		comicsTableView.register(ComicsTableViewCell.self, forCellReuseIdentifier: cdllId)
@@ -97,21 +105,33 @@ final class CharacterInfoViewController: UIViewController
 	func hideLoadingIndicator() {
 		self.loadIndicator.stopAnimating()
 	}
+	func setComicsImage(image: UIImage, for index: Int) {
+		guard let cell = comicsTableView.cellForRow(at: IndexPath(row: index, section: 0))
+			as? ComicsTableViewCell else { return }
+		cell.set(comicCover: image)
+		cell.layoutSubviews()
+	}
+	func setCharacterImage(image: UIImage) {
+		characterImage.image = image
+	}
+	func updateComicsTableView() {
+		comicsTableView.reloadData()
+	}
 }
 extension CharacterInfoViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.getComicsCount() ?? 0
+		return presenter.comicsCount
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		guard let cell = tableView.dequeueReusableCell(withIdentifier: cdllId, for: indexPath) as? ComicsTableViewCell
 		else { return UITableViewCell() }
 
-		let comics = presenter?.getComics(by: indexPath.row)
-		cell.comicLabel.text = comics?.title
+		let comics = presenter.getComics(by: indexPath.row)
+		cell.set(text: comics?.title)
 		if let image = comics?.thumbnail {
-			presenter?.getComicsImage(for: image, by: indexPath)
+			presenter.getComicsImage(for: image, by: indexPath.row)
 		}
 		return cell
 	}

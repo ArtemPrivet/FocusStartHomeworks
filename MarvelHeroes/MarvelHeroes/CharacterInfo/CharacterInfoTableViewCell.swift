@@ -11,8 +11,9 @@ import SnapKit
 
 final class ComicsTableViewCell: UITableViewCell
 {
-	var comicCover = UIImageView()
-	var comicLabel = UILabel()
+	private var comicCover = UIImageView()
+	private var comicLabel = UILabel()
+	static let cellId = "cell"
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -52,5 +53,11 @@ final class ComicsTableViewCell: UITableViewCell
 			maker.centerY.equalToSuperview()
 			maker.bottom.equalToSuperview().offset(-8)
 		}
+	}
+	func set(comicCover: UIImage) {
+		self.comicCover.image = comicCover
+	}
+	func set(text: String?) {
+		comicLabel.text = text
 	}
 }

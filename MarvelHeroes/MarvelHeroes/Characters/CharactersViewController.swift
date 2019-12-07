@@ -16,9 +16,16 @@ final class CharactersViewController: UIViewController
 	private let searchStubView = UIImageView()
 	private let searchStubLabel = UILabel()
 	private let loadIndicator = UIActivityIndicatorView(style: .whiteLarge)
-	private let cdllId = "cell"
-	var presenter: ICharactersPresenter?
+	private let presenter: ICharactersPresenter
 
+	init(presenter: CharactersPresenter) {
+		self.presenter = presenter
+		super.init(nibName: nil, bundle: nil)
+	}
+	@available(*, unavailable)
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		addSubviews()
@@ -41,7 +48,8 @@ final class CharactersViewController: UIViewController
 		navigationItem.searchController = searchController
 		tableView.tableFooterView = UIView()
 		tableView.backgroundView = loadIndicator
-		tableView.register(CharactersTableViewCell.self, forCellReuseIdentifier: cdllId)
+		tableView.register(CharactersTableViewCell.self,
+						   forCellReuseIdentifier: CharactersTableViewCell.cellId)
 		searchStubView.image = UIImage(named: "search_stub")
 		searchStubLabel.numberOfLines = 0
 		searchStubLabel.textAlignment = .center
@@ -78,18 +86,27 @@ final class CharactersViewController: UIViewController
 		searchStubView.isHidden = true
 		searchStubLabel.isHidden = true
 	}
+	func setImage(image: UIImage, for index: Int) {
+		guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0))
+			as? CharactersTableViewCell else { return }
+		cell.characterImageView.image = image
+		cell.layoutSubviews()
+	}
+	func updateTableView() {
+		tableView.reloadData()
+	}
 }
 extension CharactersViewController: UITableViewDataSource, UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.getCharacterCount() ?? 0
+		return presenter.characterCount
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: cdllId,
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: CharactersTableViewCell.cellId,
 													   for: indexPath) as? CharactersTableViewCell
 			else { return UITableViewCell() }
-		let character = presenter?.getCharacter(by: indexPath.row)
+		let character = presenter.getCharacter(by: indexPath.row)
 		cell.nameLabel.text = character?.name
 		if let description = character?.description {
 			if description.isEmpty {
@@ -100,19 +117,19 @@ extension CharactersViewController: UITableViewDataSource, UITableViewDelegate
 			}
 		}
 		if let image = character?.thumbnail {
-			presenter?.getCharacterImage(for: image, by: indexPath)
+			presenter.getCharacterImage(for: image, by: indexPath.row)
 		}
 		return cell
 	}
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let character = presenter?.getCharacter(by: indexPath.row) else { return }
-		presenter?.showDetails(character: character)
+		guard let character = presenter.getCharacter(by: indexPath.row) else { return }
+		presenter.showDetails(character: character)
 	}
 }
 extension CharactersViewController: UISearchResultsUpdating
 {
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let text = searchController.searchBar.text, text.isEmpty == false else { return }
-		presenter?.getCharacter(by: text)
+		presenter.getCharacter(by: text)
 	}
 }

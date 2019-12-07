@@ -14,15 +14,14 @@ protocol ICharactersRouter
 }
 final class CharactersRouter: ICharactersRouter
 {
-	weak var charactersView: CharactersViewController?
+	weak var view: CharactersViewController?
 	private let builder: IBuilder
 
-	init(builder: IBuilder, view: CharactersViewController) {
+	init(builder: IBuilder) {
 		self.builder = builder
-		charactersView = view
 	}
 	func showCharacterInfoViewController(character: Character) {
-		let view = builder.createCharacterInfoViewController(character: character)
-		charactersView?.navigationController?.pushViewController(view, animated: true)
+		let nextView = builder.createCharacterInfoViewController(character: character)
+		view?.navigationController?.pushViewController(nextView, animated: true)
 	}
 }

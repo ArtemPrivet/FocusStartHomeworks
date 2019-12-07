@@ -10,17 +10,14 @@ import Foundation
 import UIKit
 
 typealias DataResult = Result<Data, ServiceError>
-typealias CharacterResult = Result<[Character]?, ServiceError>
-typealias CharacterImageResult = Result<UIImage, ServiceError>
-typealias ComicResult = Result<[Comic]?, ServiceError>
 protocol IRemoteDataService
 {
-	func loadCharacters(_ completion: @escaping (CharacterResult) -> Void)
+	func loadCharacters(_ completion: @escaping (DataResult) -> Void)
 	func loadCharacterImage(for characterImage: Image,
 							size: String,
-							_ completion: @escaping (CharacterImageResult) -> Void)
-	func loadCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void)
-	func loadComics(by characterID: Int, _ completion: @escaping (ComicResult) -> Void)
+							_ completion: @escaping (DataResult) -> Void)
+	func loadCharacter(by characterName: String, _ completion: @escaping (DataResult) -> Void)
+	func loadComics(by characterID: Int, _ completion: @escaping (DataResult) -> Void)
 }
 final class RemoteDataService
 {
@@ -74,7 +71,7 @@ final class RemoteDataService
 }
 extension RemoteDataService: IRemoteDataService
 {
-	func loadCharacters(_ completion: @escaping (CharacterResult) -> Void) {
+	func loadCharacters(_ completion: @escaping (DataResult) -> Void) {
 		let resultStringURL = defaultURL + URLPoints.characters
 		var urlComponents = URLComponents(string: resultStringURL)
 		urlComponents?.queryItems = [limitQueryItem, apiKeyQueryItem, tsQueryItem, hashQueryItem]
@@ -85,14 +82,7 @@ extension RemoteDataService: IRemoteDataService
 		fetchData(from: url) { result in
 			switch result{
 			case .success(let data):
-				do {
-					let object = try JSONDecoder().decode(CharacterDataWrapper.self, from: data)
-					let characters = object.data?.results
-					completion(.success(characters))
-				}
-				catch {
-					completion(.failure(.decodingError(error)))
-				}
+				completion(.success(data))
 			case .failure(let message):
 				print(message)
 			}
@@ -100,7 +90,7 @@ extension RemoteDataService: IRemoteDataService
 	}
 	func loadCharacterImage(for characterImage: Image,
 							size: String,
-							_ completion: @escaping (CharacterImageResult) -> Void) {
+							_ completion: @escaping (DataResult) -> Void) {
 		guard let path = characterImage.path,
 			let imageExtension = characterImage.imageExtension else { return }
 		let urlString = "\(path)\(size).\(imageExtension)"
@@ -108,17 +98,13 @@ extension RemoteDataService: IRemoteDataService
 		fetchData(from: url) { result in
 			switch result {
 			case .success(let data):
-				guard let image = UIImage(data: data) else {
-					completion(.failure(.convertionImageError))
-					return
-				}
-				completion(.success(image))
+				completion(.success(data))
 			case .failure(let message):
 				print(message)
 			}
 		}
 	}
-	func loadCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void) {
+	func loadCharacter(by characterName: String, _ completion: @escaping (DataResult) -> Void) {
 		dataTask?.cancel()
 		let resultStringURL = defaultURL + URLPoints.characters
 		var urlComponents = URLComponents(string: resultStringURL)
@@ -131,20 +117,13 @@ extension RemoteDataService: IRemoteDataService
 		fetchData(from: url) { result in
 			switch result{
 			case .success(let data):
-				do {
-					let object = try JSONDecoder().decode(CharacterDataWrapper.self, from: data)
-					let characters = object.data?.results
-					completion(.success(characters))
-				}
-				catch {
-					completion(.failure(.decodingError(error)))
-				}
+				completion(.success(data))
 			case .failure(let message):
 				print(message)
 			}
 		}
 	}
-	func loadComics(by characterID: Int, _ completion: @escaping (ComicResult) -> Void) {
+	func loadComics(by characterID: Int, _ completion: @escaping (DataResult) -> Void) {
 		let resultStringURL = "\(defaultURL)\(URLPoints.characters)/\(characterID)/comics"
 		var urlComponents = URLComponents(string: resultStringURL)
 		urlComponents?.queryItems = [limitQueryItem, apiKeyQueryItem, tsQueryItem, hashQueryItem]
@@ -155,14 +134,7 @@ extension RemoteDataService: IRemoteDataService
 		fetchData(from: url) { result in
 			switch result{
 			case .success(let data):
-				do {
-					let object = try JSONDecoder().decode(ComicDataWrapper.self, from: data)
-					let comics = object.data?.results
-					completion(.success(comics))
-				}
-				catch {
-					completion(.failure(.decodingError(error)))
-				}
+				completion(.success(data))
 			case .failure(let message):
 				print(message)
 			}

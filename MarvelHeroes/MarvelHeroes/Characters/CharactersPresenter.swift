@@ -10,39 +10,37 @@ import Foundation
 
 protocol ICharactersPresenter
 {
+	var characterCount: Int { get }
+
 	func getCharacter(by index: Int) -> Character?
 	func showDetails(character: Character)
 	func getCharacter(by characterName: String)
-	func getCharacterImage(for characterImage: Image, by indexPath: IndexPath)
-	func getCharacterCount() -> Int
+	func getCharacterImage(for characterImage: Image, by index: Int)
 }
 final class CharactersPresenter: ICharactersPresenter
 {
 	private let router: ICharactersRouter
 	private let repository: IRepository
-	private weak var view: CharactersViewController?
+	internal weak var view: CharactersViewController?
 	private var characters = [Character]()
+	var characterCount: Int {
+		return characters.count
+	}
 
-	init(router: ICharactersRouter, repository: IRepository, view: CharactersViewController) {
+	init(router: ICharactersRouter, repository: IRepository) {
 		self.router = router
 		self.repository = repository
-		self.view = view
-
 		loadCharacters()
 	}
 	private func loadCharacters() {
-		DispatchQueue.main.async {
-			self.view?.showLoadingIndicator()
-		}
-		repository.loadCharacters { characters in
-			DispatchQueue.main.async {
-				self.view?.hideLoadingIndicator()
-			}
+		self.view?.showLoadingIndicator()
+		repository.decodeCharacters { [weak self] characters in
 			switch characters {
 			case .success(let result):
-				self.characters = result ?? []
+				self?.characters = result ?? []
 				DispatchQueue.main.async {
-					self.view?.tableView.reloadData()
+					self?.view?.hideLoadingIndicator()
+					self?.view?.updateTableView()
 				}
 			case .failure(let message):
 				print(message)
@@ -53,17 +51,12 @@ final class CharactersPresenter: ICharactersPresenter
 		guard index < characters.count else { return nil }
 		return characters[index]
 	}
-	func getCharacterCount() -> Int {
-		return characters.count
-	}
-	func getCharacterImage(for characterImage: Image, by indexPath: IndexPath) {
+	func getCharacterImage(for characterImage: Image, by index: Int) {
 		repository.loadCharacterImage(for: characterImage, size: ImageSize.small) { characters in
 			switch characters {
 			case .success(let result):
 				DispatchQueue.main.async {
-					guard let cell = self.view?.tableView.cellForRow(at: indexPath) as? CharactersTableViewCell else { return }
-					cell.characterImageView.image = result
-					cell.layoutSubviews()
+					self.view?.setImage(image: result, for: index)
 				}
 			case .failure(let message):
 				print(message)
@@ -74,30 +67,24 @@ final class CharactersPresenter: ICharactersPresenter
 		loadCharacter(by: characterName)
 	}
 	private func loadCharacter(by characterName: String) {
-		DispatchQueue.main.async {
-			self.view?.showLoadingIndicator()
-			self.view?.hideError()
-		}
-		repository.loadCharacter(by: characterName) { character in
+		self.view?.showLoadingIndicator()
+		self.view?.hideError()
+		repository.decodeCharacter(by: characterName) { character in
 			DispatchQueue.main.async {
 				self.view?.hideLoadingIndicator()
 			}
 			switch character {
 			case .success(let result):
-				if result?.isEmpty == true {
-					DispatchQueue.main.async {
+				self.characters = result ?? []
+				DispatchQueue.main.async {
+					if result?.isEmpty == true {
 						self.view?.showError(with: characterName)
 					}
-				}
-				else {
-					DispatchQueue.main.async {
+					else {
 						self.view?.hideError()
 					}
+					self.view?.updateTableView()
 				}
-				DispatchQueue.main.async {
-					self.view?.tableView.reloadData()
-				}
-				self.characters = result ?? []
 			case .failure(let message):
 				print(message)
 			}

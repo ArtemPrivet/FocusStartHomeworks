@@ -13,10 +13,9 @@ protocol ICharacterInfoRouter
 final class CharacterInfoRouter: ICharacterInfoRouter
 {
 	private let builder: IBuilder
-	private let view: CharacterInfoViewController
+	weak var view: CharacterInfoViewController?
 
-	init(builder: Builder, view: CharacterInfoViewController) {
+	init(builder: Builder) {
 		self.builder = builder
-		self.view = view
 	}
 }

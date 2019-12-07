@@ -14,6 +14,7 @@ final class CharactersTableViewCell: UITableViewCell
 	var characterImageView = UIImageView()
 	var nameLabel = UILabel()
 	var descriptionLabel = UILabel()
+	static let cellId = "cell"
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
