@@ -17,7 +17,7 @@ final class AuthorRouter
 {
 
 	weak var authorView: AuthorsViewController?
-	var factory: Factory
+	private var factory: Factory
 
 	init(factory: Factory) {
 		self.factory = factory

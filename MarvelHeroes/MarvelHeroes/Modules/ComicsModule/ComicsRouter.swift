@@ -16,7 +16,7 @@ protocol IComicsRouter
 final class ComicsRouter
 {
 	weak var comicsView: ComicsViewController?
-	var factory: Factory
+	private var factory: Factory
 
 	init(factory: Factory) {
 		self.factory = factory

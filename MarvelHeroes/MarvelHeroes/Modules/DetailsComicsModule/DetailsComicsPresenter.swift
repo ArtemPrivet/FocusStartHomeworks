@@ -6,7 +6,7 @@
 //  Copyright © 2019 Kirill Fedorov. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 protocol IDetailsComicsPresenter
 {

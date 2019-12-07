@@ -6,7 +6,7 @@
 //  Copyright © 2019 Kirill Fedorov. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 protocol IAuthorsPresenter
 {
@@ -35,7 +35,6 @@ final class AuthorsPresenter
 
 extension AuthorsPresenter: IAuthorsPresenter
 {
-
 	func getAuthorsCount() -> Int {
 		return authors.count
 	}

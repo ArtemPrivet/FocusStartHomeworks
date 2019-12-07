@@ -17,7 +17,7 @@ final class CharactersRouter
 {
 
 	weak var charactersView: CharactersViewController?
-	var factory: Factory
+	private var factory: Factory
 
 	init(factory: Factory) {
 		self.factory = factory
