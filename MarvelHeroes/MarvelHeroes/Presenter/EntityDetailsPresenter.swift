@@ -67,38 +67,39 @@ private extension EntityDetailsPresenter
 {
 	//Загрузка дополнительных данных для текущей записи
 	func loadAccessoryByEntityID() {
-		guard let localRepository = repository else { return }
 		view?.startSpinnerAnimation()
 		let directory = entityType.directoryOfAccessories(id: currentRecord.id)
 		switch entityType {
 		case .character, .author:
-			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<ComicsResponse, ServiceError>) in
-				switch result {
-				case .success(let accessories):
-					self.accesories = accessories.data.results
-				case .failure(let error):
-					error.errorHandler { errorMessage in
-						self.view?.showAlert(with: errorMessage)
-					}
-					self.accesories = []
-				}
-				self.view?.reloadData()
-				self.view?.stopSpinnerAnimation()
-			}
+			var _: ComicsResponse? = callRequest(directory: directory)
 		case .comics:
-			localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<AuthorResponse, ServiceError>) in
-				switch result {
-				case .success(let accessories):
-					self.accesories = accessories.data.results
-				case .failure(let error):
-					error.errorHandler { errorMessage in
-						self.view?.showAlert(with: errorMessage)
-					}
-					self.accesories = []
-				}
-				self.view?.reloadData()
-				self.view?.stopSpinnerAnimation()
-			}
+			var _: AuthorResponse? = callRequest(directory: directory)
 		}
+	}
+
+	func callRequest<T: Decodable>(directory: String) -> T? {
+		guard let localRepository = repository else { return nil }
+		localRepository.loadAccessoryByEntityID(from: directory) {(result: Result<T, ServiceError>) in
+			switch result {
+			case .success(let accessories):
+				if let data = accessories as? CharacterResponse {
+					self.accesories = data.data.results
+				}
+				if let data = accessories as? ComicsResponse {
+					self.accesories = data.data.results
+				}
+				if let data = accessories as? AuthorResponse {
+					self.accesories = data.data.results
+				}
+			case .failure(let error):
+				error.errorHandler { errorMessage in
+					self.view?.showAlert(with: errorMessage)
+				}
+				self.accesories = []
+			}
+			self.view?.reloadData()
+			self.view?.stopSpinnerAnimation()
+		}
+		return nil
 	}
 }

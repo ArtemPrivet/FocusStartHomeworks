@@ -5,7 +5,6 @@
 //  Created by Stanislav on 06/12/2019.
 //  Copyright © 2019 Stanislav Kozlov. All rights reserved.
 //
-//swiftlint:disable function_body_length
 
 import Foundation
 
@@ -65,69 +64,51 @@ extension EntityListPresenter: IEntityListPresenter
 	}
 	//загрузка данных
 	func loadRecords(with nameStarts: String = "") {
-		guard let localRepository = repository else { return }
 		self.view?.startSpinnerAnimation()
 		let directory = entityType.getEntityDirectory()
 		let parameter = entityType.getEntityQueryParameter()
 
 		switch entityType {
 		case .character:
-			localRepository.loadEntities(with: nameStarts,
-										 directory: directory,
-										 queryParameter: parameter){ (result: Result<CharacterResponse, ServiceError>) in
-											switch result {
-											case .success(let responseCharacters):
-												self.records = responseCharacters.data.results
-												if self.records.isEmpty {
-													self.view?.setEmptyImage(with: nameStarts)
-												}
-											case .failure(let error):
-												error.errorHandler { errorMessage in
-													self.view?.showAlert(with: errorMessage)
-												}
-												self.records = []
-											}
-											self.view?.reloadData()
-											self.view?.stopSpinnerAnimation()
-			}
+			var _: CharacterResponse? = callRequest(directory: directory, parameter: parameter, with: nameStarts)
 		case .comics:
-			localRepository.loadEntities(with: nameStarts,
-										 directory: directory,
-										 queryParameter: parameter){ (result: Result<ComicsResponse, ServiceError>) in
-											switch result {
-											case .success(let responseCharacters):
-												self.records = responseCharacters.data.results
-												if self.records.isEmpty {
-													self.view?.setEmptyImage(with: nameStarts)
-												}
-											case .failure(let error):
-												error.errorHandler { errorMessage in
-													self.view?.showAlert(with: errorMessage)
-												}
-												self.records = []
-											}
-											self.view?.reloadData()
-											self.view?.stopSpinnerAnimation()
-			}
+			var _: ComicsResponse? = callRequest(directory: directory, parameter: parameter, with: nameStarts)
 		case .author:
-			localRepository.loadEntities(with: nameStarts,
-										 directory: directory,
-										 queryParameter: parameter){ (result: Result<AuthorResponse, ServiceError>) in
-											switch result {
-											case .success(let responseCharacters):
-												self.records = responseCharacters.data.results
-												if self.records.isEmpty {
-													self.view?.setEmptyImage(with: nameStarts)
-												}
-											case .failure(let error):
-												error.errorHandler { errorMessage in
-													self.view?.showAlert(with: errorMessage)
-												}
-												self.records = []
-											}
-											self.view?.reloadData()
-											self.view?.stopSpinnerAnimation()
-			}
+			var _: AuthorResponse? = callRequest(directory: directory, parameter: parameter, with: nameStarts)
 		}
+	}
+}
+
+private extension EntityListPresenter
+{
+	func callRequest<T: Decodable>(directory: String, parameter: String, with nameStarts: String) -> T? {
+		guard let localRepository = repository else { return nil }
+		localRepository.loadEntities(with: "",
+									 directory: directory,
+									 queryParameter: parameter){ (result: Result<T, ServiceError>) in
+										switch result {
+										case .success(let response):
+											if let data = response as? CharacterResponse {
+												self.records = data.data.results
+											}
+											if let data = response as? ComicsResponse {
+												self.records = data.data.results
+											}
+											if let data = response as? AuthorResponse {
+												self.records = data.data.results
+											}
+											if self.records.isEmpty {
+												self.view?.setEmptyImage(with: nameStarts)
+											}
+										case .failure(let error):
+											error.errorHandler { errorMessage in
+												self.view?.showAlert(with: errorMessage)
+											}
+											self.records = []
+										}
+										self.view?.reloadData()
+										self.view?.stopSpinnerAnimation()
+		}
+		return nil
 	}
 }
