@@ -13,7 +13,6 @@ final class DetailViewController: UIViewController
 
 	private var presenter: IDetailPresenter
 	private var heroName = UILabel()
-	private var heroID = Int()
 	private let gradient = CAGradientLayer()
 	private var heroDescription = UITextView()
 	private var heroComicsTableView = UITableView()
