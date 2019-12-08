@@ -11,7 +11,6 @@ import CommonCrypto
 
 final class NetService
 {
-
 	private let decoder = JSONDecoder()
 	private let session = URLSession(configuration: .default)
 	private var dataTask: URLSessionDataTask?
@@ -22,16 +21,19 @@ final class NetService
 		return ts + privateKey + publicKey
 	}
 
-	typealias HeroResult = Result<HeroesByID, NSError>
-	typealias ComicResult = Result<ComicsByID, NSError>
-	typealias HeroImageResult = Result<UIImage, NSError>
+	typealias HeroResult = Result<HeroesByID, ServiceError>
+	typealias ComicResult = Result<ComicsByID, ServiceError>
+	typealias HeroImageResult = Result<UIImage, ServiceError>
 
 	func loadHeroes(_ text: String, completion: @escaping (HeroResult) -> Void) {
-
 		if var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters"){
 			urlComponents.query = "nameStartsWith=\(text)&ts=\(ts)&limit=90&apikey=\(publicKey)&hash=\(hashString.md5)"
 			if let url = urlComponents.url {
 				dataTask = session.dataTask(with: url) { data, _, error in
+					if let error = error {
+						completion(.failure(.invalidURL(error)))
+						return
+					}
 					if let data = data {
 						do {
 							let object = try self.decoder.decode(HeroesByID.self, from: data)
@@ -41,9 +43,12 @@ final class NetService
 						}
 						catch {
 							DispatchQueue.main.async {
-								completion(.failure(error as NSError))
+								completion(.failure(.noData))
 							}
 						}
+					}
+					else {
+						completion(.failure(.noResponse))
 					}
 				}
 				dataTask?.resume()
@@ -57,6 +62,10 @@ final class NetService
 			urlComponents.query = "&ts=\(ts)&apikey=\(publicKey)&hash=\(hashString.md5)"
 			if let url = urlComponents.url {
 				dataTask = session.dataTask(with: url) { data, _, error in
+					if let error = error {
+						completion(.failure(.invalidURL(error)))
+						return
+					}
 					if let data = data {
 						do {
 							let object = try self.decoder.decode(ComicsByID.self, from: data)
@@ -66,9 +75,12 @@ final class NetService
 						}
 						catch {
 							DispatchQueue.main.async {
-								completion(.failure(error as NSError))
+								completion(.failure(.noData))
 							}
 						}
+					}
+					else {
+						completion(.failure(.noResponse))
 					}
 				}
 				dataTask?.resume()

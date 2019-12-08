@@ -11,12 +11,13 @@ import UIKit
 final class DetailViewController: UIViewController
 {
 
-	private var presenter: IDetailPresenter
+	private let presenter: IDetailPresenter
 	private var comics = [ResultBook]()
-	private var heroName = UILabel()
+	private let cellIdentifier = "comicsCell"
+	private let heroName = UILabel()
 	private let gradient = CAGradientLayer()
-	private var heroDescription = UITextView()
-	private var heroComicsTableView = UITableView()
+	private let heroDescription = UITextView()
+	private let heroComicsTableView = UITableView()
 	private var heroImage: UIImageView = {
 		let view = UIImageView()
 		view.contentMode = .scaleAspectFill
@@ -55,15 +56,7 @@ final class DetailViewController: UIViewController
 		heroName.text = presenter.getHero().name
 		heroName.backgroundColor = .clear
 		heroDescription.text = presenter.getHero().resultDescription
-		heroImage.image = {
-			let image = UIImageView()
-			let imagePath = presenter.getHero().thumbnail
-			if let url = URL(string: "\(imagePath.path)/standard_xlarge.\(imagePath.thumbnailExtension)"),
-				let heroDataImage = try? Data(contentsOf: url){
-				image.image = UIImage(data: heroDataImage)
-			}
-			return image.image
-		}()
+		heroImage.image = presenter.getImage()
 	}
 
 	private func setGradient() {
@@ -107,8 +100,8 @@ extension DetailViewController: UITableViewDataSource
 		return presenter.countComics()
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ??
-			UITableViewCell(style: .subtitle, reuseIdentifier: "comicsCell")
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
+			UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
 		let comic = comics[indexPath.row]
 		cell.textLabel?.text = comic.title
 		cell.imageView?.clipsToBounds = true

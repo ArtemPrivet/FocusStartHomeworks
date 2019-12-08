@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol IDetailPresenter
 {
@@ -14,6 +15,7 @@ protocol IDetailPresenter
 	func getComics()
 	func countComics() -> Int
 	func getComic(of index: Int) -> ResultBook
+	func getImage() -> UIImage
 }
 
 protocol IHeroPresenter
@@ -29,12 +31,12 @@ protocol IHeroRouter
 
 protocol IHeroRepository
 {
-	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void )
+	func getHeroes(of text: String, completion: @escaping(CharactersResult) -> Void )
 }
 
-protocol IComicsrepository
+protocol IComicsRepository
 {
-	func getComics(of heroID: Int, completion: @escaping([ResultBook]?) -> Void)
+	func getComics(of heroID: Int, completion: @escaping(ComicsResult) -> Void)
 }
 
 protocol IHeroView

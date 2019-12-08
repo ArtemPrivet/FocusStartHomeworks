@@ -8,23 +8,23 @@
 
 import Foundation
 
-import UIKit
-
+typealias ComicsResult = Result<[ResultBook]?, ServiceError>
 final class ComicsRepository
 {
 	private let netService = NetService()
 }
 
-extension ComicsRepository: IComicsrepository
+extension ComicsRepository: IComicsRepository
 {
-	func getComics(of heroID: Int, completion: @escaping([ResultBook]?) -> Void){
+	func getComics(of heroID: Int, completion: @escaping(ComicsResult) -> Void){
 			self.netService.loadComics(heroID) { dataResult in
 				switch dataResult {
 				case .success(let data):
-					completion(data.data.results)
+					completion(.success(data.data.results))
 					return
-				case .failure:
-					completion(nil)
+				case .failure(let error):
+					completion(.failure(.noData))
+					print(error)
 					return
 				}
 			}

@@ -41,7 +41,19 @@ extension HeroPresenter: IHeroPresenter
 			self.repository.getHeroes(of: text, completion: { [weak self] heroList in
 				guard let self = self else { return }
 				DispatchQueue.main.async {
-					self.heroes = heroList ?? []
+					switch heroList {
+					case .success(let data):
+						if let heroes = data {
+							self.heroes = heroes
+						}
+					case .failure(.noData):
+						self.heroes = []
+					case .failure(.invalidURL(let error)):
+						self.heroes = []
+						print(error)
+					case .failure(.noResponse):
+						self.heroes = []
+					}
 					self.heroVC?.show(heroes: self.heroes)
 				}
 				return

@@ -11,7 +11,7 @@ import Foundation
 final class HeroRouter
 {
 	weak var viewController: HeroViewController?
-	private var factory: ModulesFactory
+	private let factory: ModulesFactory
 
 	init(factory: ModulesFactory) {
 		self.factory = factory

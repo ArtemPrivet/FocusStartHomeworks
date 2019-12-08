@@ -15,7 +15,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 
 	var window: UIWindow?
 
-	func addNavigationsVC() -> [UINavigationController] {
+	private func addNavigationsVC() -> [UINavigationController] {
 		let heroVC = ModulesFactory().getHeroModule()
 		let naviHeroVC = UINavigationController(rootViewController: heroVC)
 		naviHeroVC.tabBarItem.image = UIImage(named: "shield")
