@@ -11,9 +11,9 @@ import Foundation
 protocol IEntityDetailsPresenter: AnyObject
 {
 	var recordsCount: Int { get }
+	var currentRecord: IEntity { get }
 
 	func inject(router: IEntityDetailsRouter, repository: Repository, view: IDetailsView)
-	func getCurrentRecord() -> IEntity
 	func onAccessoryPressed(index: Int)
 	func triggerViewReadyEvent()
 	func getRecord(index: Int) -> IEntity
@@ -21,7 +21,7 @@ protocol IEntityDetailsPresenter: AnyObject
 
 final class EntityDetailsPresenter
 {
-	private let currentRecord: IEntity
+	private let entity: IEntity
 	private let entityType: EntityType
 	private weak var view: IDetailsView?
 	private var router: IEntityDetailsRouter?
@@ -29,13 +29,17 @@ final class EntityDetailsPresenter
 	private var repository: Repository?
 
 	init(entity: IEntity, with entityType: EntityType) {
-		self.currentRecord = entity
+		self.entity = entity
 		self.entityType = entityType
 	}
 }
 
 extension EntityDetailsPresenter: IEntityDetailsPresenter
 {
+	var currentRecord: IEntity {
+		return entity
+	}
+
 	var recordsCount: Int {
 		return accesories.count
 	}
@@ -55,10 +59,6 @@ extension EntityDetailsPresenter: IEntityDetailsPresenter
 		self.router = router
 		self.repository = repository
 	}
-	//вернуть текущю запись
-	func getCurrentRecord() -> IEntity {
-		return currentRecord
-	}
 }
 
 private extension EntityDetailsPresenter
@@ -66,7 +66,7 @@ private extension EntityDetailsPresenter
 	//Загрузка дополнительных данных для текущей записи
 	func loadAccessoryByEntityID() {
 		view?.startSpinnerAnimation()
-		let directory = entityType.directoryOfAccessories(id: currentRecord.id)
+		let directory = entityType.directoryOfAccessories(id: entity.id)
 		switch entityType {
 		case .character, .author:
 			var _: ComicsResponse? = callRequest(directory: directory)

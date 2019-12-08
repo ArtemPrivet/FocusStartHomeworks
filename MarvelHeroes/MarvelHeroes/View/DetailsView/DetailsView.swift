@@ -10,7 +10,6 @@ import UIKit
 
 protocol IDetailsView: AnyObject
 {
-	func inject(presenter: IEntityDetailsPresenter, repository: Repository)
 	func reloadData()
 	func startSpinnerAnimation()
 	func stopSpinnerAnimation()
@@ -30,10 +29,9 @@ final class DetailsView: UIView
 	private var loaded = false
 
 	init(presenter: IEntityDetailsPresenter?, repository: Repository?) {
-		super.init(frame: .zero)
 		self.presenter = presenter
 		self.repository = repository
-
+		super.init(frame: .zero)
 		setupInitialState()
 	}
 
@@ -73,12 +71,6 @@ extension DetailsView: IDetailsView
 	func refreshView() {
 		refreshData()
 	}
-
-	func inject(presenter: IEntityDetailsPresenter, repository: Repository) {
-		self.presenter = presenter
-		self.repository = repository
-		refreshData()
-	}
 }
 // MARK: - TableView dataSource
 extension DetailsView: UITableViewDataSource
@@ -90,8 +82,8 @@ extension DetailsView: UITableViewDataSource
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: InterfaceConstants.detailsCellIdentifier,
 												 for: indexPath)
+		cell.tag = indexPath.row
 		if let customCell = cell as? Cell, let record = presenter?.getRecord(index: indexPath.row) {
-			customCell.tag = indexPath.row
 			repository?.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
 				if customCell.tag == indexPath.row {
 					customCell.cellImageView.image = image
@@ -130,7 +122,7 @@ private extension DetailsView
 	}
 	//Обновляем поля данными из презентера
 	func refreshData() {
-		descriptionTextView.text = presenter?.getCurrentRecord().description
+		descriptionTextView.text = presenter?.currentRecord.description
 		setBackgroundImage()
 		table.reloadData()
 		let beginPosition = descriptionTextView.beginningOfDocument
@@ -190,7 +182,7 @@ private extension DetailsView
 	//загружаем картинку для бэкграунда
 	func setBackgroundImage() {
 		backgroundImageView.image = nil
-		repository?.loadBackgroundImage(imageURL: presenter?.getCurrentRecord().bigImageURL, completion: { image in
+		repository?.loadBackgroundImage(imageURL: presenter?.currentRecord.bigImageURL, completion: { image in
 			self.backgroundImageView.image = image
 		})
 	}

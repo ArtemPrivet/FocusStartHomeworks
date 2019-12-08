@@ -13,6 +13,7 @@ protocol IEntityListPresenter: AnyObject
 {
 	var itemTitle: String { get }
 	var recordsCount: Int { get }
+	var tabTitle: String { get }
 
 	func inject(router: IEntityListRouter, repository: Repository, view: IListView)
 	func getRecord(index: Int) -> IEntity
@@ -44,6 +45,10 @@ extension EntityListPresenter: IEntityListPresenter
 
 	var recordsCount: Int {
 		return records.count
+	}
+
+	var tabTitle: String {
+		return entityType.getTabTitle()
 	}
 	//загрузка данных при прогрузке view
 	func triggerViewReadyEvent() {

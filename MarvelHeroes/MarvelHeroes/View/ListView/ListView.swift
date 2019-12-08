@@ -18,8 +18,8 @@ protocol IListView: AnyObject
 
 final class ListView: UIView
 {
-	private var presenter: IEntityListPresenter?
-	private var repository: Repository?
+	private let presenter: IEntityListPresenter?
+	private let repository: Repository?
 	private let searchBar = UISearchBar()
 	private let table = UITableView()
 	private let spinner = UIActivityIndicatorView()
@@ -27,10 +27,9 @@ final class ListView: UIView
 	private var loaded = false
 
 	init(presenter: IEntityListPresenter?, repository: Repository?) {
-		super.init(frame: .zero)
 		self.presenter = presenter
 		self.repository = repository
-
+		super.init(frame: .zero)
 		setupInitialState()
 	}
 

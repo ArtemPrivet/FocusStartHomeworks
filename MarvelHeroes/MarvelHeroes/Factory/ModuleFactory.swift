@@ -48,26 +48,26 @@ struct ModuleFactory
 	}
 	//Создание модуля списка
 	func createList(with entityType: EntityType) -> UIViewController {
-		let viewController = UIViewController()
+		let viewController = ListViewController()
 		let presenter = EntityListPresenter(with: entityType)
 		let router = EntityListRouter(moduleFactory: self, with: entityType)
 		let view = ListView(presenter: presenter, repository: repository)
 		presenter.inject(router: router, repository: repository, view: view)
 		router.inject(viewController: viewController)
+		viewController.inject(presenter: presenter)
 		viewController.view = view
-		viewController.title = entityType.getTabTitle()
 		return viewController
 	}
 	//Создание модуля деталей
 	func createEntityDetails(entity: IEntity, with entityType: EntityType) -> UIViewController {
-		let viewController = UIViewController()
+		let viewController = DetailsViewController()
 		let presenter = EntityDetailsPresenter(entity: entity, with: entityType)
 		let router = EntityDetailsRouter(moduleFactory: self, with: entityType)
 		let view = DetailsView(presenter: presenter, repository: repository)
 		presenter.inject(router: router, repository: repository, view: view)
 		router.inject(viewController: viewController)
+		viewController.inject(presenter: presenter)
 		viewController.view = view
-		viewController.title = presenter.getCurrentRecord().showingName
 		return viewController
 	}
 }

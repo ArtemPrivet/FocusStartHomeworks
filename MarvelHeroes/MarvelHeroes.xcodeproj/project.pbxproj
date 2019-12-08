@@ -22,7 +22,6 @@
 		85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5C239A960800F8EA22 /* DetailsView.swift */; };
 		85D28C5F239A964800F8EA22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5E239A964800F8EA22 /* Constants.swift */; };
 		85D28C61239A966000F8EA22 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C60239A966000F8EA22 /* Cell.swift */; };
-		85D28C63239A967F00F8EA22 /* UITableView+EmptyImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */; };
 		85D28C65239A969500F8EA22 /* UIImageView+makeRound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */; };
 		85D28C67239A96AA00F8EA22 /* UIView+setWhiteGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */; };
 		85D28C69239A96C800F8EA22 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C68239A96C800F8EA22 /* Cache.swift */; };
@@ -35,6 +34,8 @@
 		85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C76239A978A00F8EA22 /* EntityType.swift */; };
 		85FA11C9239C03D60068D2A0 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11C8239C03D60068D2A0 /* Alert.swift */; };
 		85FA11CB239C0A730068D2A0 /* StubImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11CA239C0A730068D2A0 /* StubImageView.swift */; };
+		85FA11CD239D66770068D2A0 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11CC239D66770068D2A0 /* ListViewController.swift */; };
+		85FA11CF239D67450068D2A0 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FA11CE239D67450068D2A0 /* DetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +56,6 @@
 		85D28C5C239A960800F8EA22 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		85D28C5E239A964800F8EA22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		85D28C60239A966000F8EA22 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
-		85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+EmptyImage.swift"; sourceTree = "<group>"; };
 		85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+makeRound.swift"; sourceTree = "<group>"; };
 		85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+setWhiteGradient.swift"; sourceTree = "<group>"; };
 		85D28C68239A96C800F8EA22 /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -68,6 +68,8 @@
 		85D28C76239A978A00F8EA22 /* EntityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
 		85FA11C8239C03D60068D2A0 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
 		85FA11CA239C0A730068D2A0 /* StubImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubImageView.swift; sourceTree = "<group>"; };
+		85FA11CC239D66770068D2A0 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		85FA11CE239D67450068D2A0 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +157,6 @@
 			children = (
 				85D28C5E239A964800F8EA22 /* Constants.swift */,
 				85D28C60239A966000F8EA22 /* Cell.swift */,
-				85D28C62239A967F00F8EA22 /* UITableView+EmptyImage.swift */,
 				85D28C64239A969500F8EA22 /* UIImageView+makeRound.swift */,
 				85D28C66239A96AA00F8EA22 /* UIView+setWhiteGradient.swift */,
 				854DA91C239A9EA1009C843D /* String+md5.swift */,
@@ -200,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				85D28C5C239A960800F8EA22 /* DetailsView.swift */,
+				85FA11CE239D67450068D2A0 /* DetailsViewController.swift */,
 			);
 			path = DetailsView;
 			sourceTree = "<group>";
@@ -209,6 +211,7 @@
 			children = (
 				85D28C58239A95BC00F8EA22 /* ListView.swift */,
 				85FA11CA239C0A730068D2A0 /* StubImageView.swift */,
+				85FA11CC239D66770068D2A0 /* ListViewController.swift */,
 			);
 			path = ListView;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 			files = (
 				85D28C65239A969500F8EA22 /* UIImageView+makeRound.swift in Sources */,
 				85D28C75239A977000F8EA22 /* IEntity.swift in Sources */,
+				85FA11CF239D67450068D2A0 /* DetailsViewController.swift in Sources */,
 				85D28C4C239A950200F8EA22 /* EntityDetailsRouter.swift in Sources */,
 				85D28C6F239A972700F8EA22 /* CharacterResponse.swift in Sources */,
 				85D28C67239A96AA00F8EA22 /* UIView+setWhiteGradient.swift in Sources */,
@@ -323,12 +327,12 @@
 				85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */,
 				85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */,
 				85D28C2C239A8CE000F8EA22 /* AppDelegate.swift in Sources */,
-				85D28C63239A967F00F8EA22 /* UITableView+EmptyImage.swift in Sources */,
 				85D28C77239A978A00F8EA22 /* EntityType.swift in Sources */,
 				85D28C53239A956400F8EA22 /* EntityDetailsPresenter.swift in Sources */,
 				85D28C51239A954C00F8EA22 /* EntityListPresenter.swift in Sources */,
 				85D28C59239A95BC00F8EA22 /* ListView.swift in Sources */,
 				85D28C5F239A964800F8EA22 /* Constants.swift in Sources */,
+				85FA11CD239D66770068D2A0 /* ListViewController.swift in Sources */,
 				85D28C6B239A96E300F8EA22 /* ImageURLGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
