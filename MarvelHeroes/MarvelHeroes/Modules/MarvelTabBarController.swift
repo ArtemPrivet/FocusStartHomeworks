@@ -11,9 +11,9 @@ import UIKit
 final class MarvelTabBarController: UITabBarController
 {
 
-	let comicsVC = Factory().createComicsModule()
-	let authorVC = Factory().createAuthorsModule()
-	let charactersVC = Factory().createCharactersModule()
+	private let comicsVC = Factory().createComicsModule()
+	private let authorVC = Factory().createAuthorsModule()
+	private let charactersVC = Factory().createCharactersModule()
 
 	override func viewDidLoad() {
 		super.viewDidLoad()

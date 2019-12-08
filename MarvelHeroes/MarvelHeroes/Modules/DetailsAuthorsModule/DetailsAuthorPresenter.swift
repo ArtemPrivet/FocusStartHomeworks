@@ -21,12 +21,14 @@ protocol IDetailsAuthorPresenter
 final class DetailsAuthorPresenter
 {
 	weak var detailsView: DetailsAuthorViewController?
-	var author: Creator
-	var repository: Repository
-	var comicses: [Comic] = []
-	let loadComicsesQueue = DispatchQueue(label: "loadComicsesQueue", qos: .userInteractive, attributes: .concurrent)
+	private let author: Creator
+	private let repository: IComicsRepository
+	private var comicses: [Comic] = []
+	private let loadComicsesQueue = DispatchQueue(label: "loadComicsesQueue",
+												  qos: .userInteractive,
+												  attributes: .concurrent)
 
-	init(author: Creator, repository: Repository) {
+	init(author: Creator, repository: IComicsRepository) {
 		self.author = author
 		self.repository = repository
 		setupView()
@@ -37,13 +39,13 @@ final class DetailsAuthorPresenter
 extension DetailsAuthorPresenter: IDetailsAuthorPresenter
 {
 	func setupBackgroungImage() {
-		self.repository.loadImage(urlString:
+		self.repository.dataRepository.loadImage(urlString:
 			String.getUrlString(image: author.thumbnail, variant: ThumbnailVarians.standardFantastic))
 		{ imageResult in
 			switch imageResult {
 			case .success(let image):
 				DispatchQueue.main.async {
-					self.detailsView?.backgroundImageView.image = image
+					self.detailsView?.setBackgroundImageView(image: image)
 				}
 			case .failure(let error):
 				print(error.localizedDescription)
@@ -60,21 +62,21 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter
 	}
 
 	func setupView() {
-		repository.loadComics(fromPastScreen: PastScreen.authors, with: author.id, searchResult: nil)
+		repository.loadComics(fromPastScreen: UrlPath.authors, with: author.id, searchResult: nil)
 		{ [weak self] comicsesResult in
 			guard let self = self else { return }
 			switch comicsesResult {
 			case .success(let loadedData):
 				self.comicses = loadedData.data.results
 				DispatchQueue.main.async {
-					self.detailsView?.activityIndicator.stopAnimating()
+					self.detailsView?.stopActivityIndicator()
 					self.detailsView?.updateData()
 				}
 			case .failure(let error):
 				DispatchQueue.main.async {
-					self.detailsView?.activityIndicator.stopAnimating()
+					self.detailsView?.stopActivityIndicator()
+					self.detailsView?.showAlert(error: error)
 				}
-				print(error.localizedDescription)
 			}
 		}
 	}
@@ -83,16 +85,13 @@ extension DetailsAuthorPresenter: IDetailsAuthorPresenter
 		loadComicsesQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]
-			self.repository.loadImage(urlString:
+			self.repository.dataRepository.loadImage(urlString:
 				String.getUrlString(image: comics.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.detailsView?.comicsesTableView.cellForRow(at: IndexPath(row: index, section: 0))
-							else { return }
-						cell.imageView?.image = image
-						cell.layoutSubviews()
+						self.detailsView?.updateTableViewCell(index: index, image: image)
 					}
 				case .failure(let error):
 					print(error.localizedDescription)

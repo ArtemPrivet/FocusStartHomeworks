@@ -8,8 +8,10 @@
 
 import Foundation
 
-enum PastScreen
+enum UrlPath
 {
-	static let characters = "characters"
-	static let authors  = "authors"
+	case authors
+	case characters
+	case comics
+	case none
 }

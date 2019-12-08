@@ -15,9 +15,8 @@ protocol IAuthorRouter
 
 final class AuthorRouter
 {
-
 	weak var authorView: AuthorsViewController?
-	private var factory: Factory
+	private let factory: Factory
 
 	init(factory: Factory) {
 		self.factory = factory

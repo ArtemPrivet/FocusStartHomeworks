@@ -20,13 +20,14 @@ protocol ICharacterPresenter
 final class CharactersPresenter
 {
 	weak var charactersView: CharactersViewController?
-	var repository: Repository
-	var router: ICharactersRouter
-	let loadCharactersQueue = DispatchQueue(label: "loadCharactersQueue", qos: .userInteractive, attributes: .concurrent)
-
+	private let repository: ICharactersRepository
+	private let router: ICharactersRouter
 	private var characters: [Character] = []
+	private let loadCharactersQueue = DispatchQueue(label: "loadCharactersQueue",
+													qos: .userInteractive,
+													attributes: .concurrent)
 
-	init(repository: Repository, router: ICharactersRouter) {
+	init(repository: ICharactersRepository, router: ICharactersRouter) {
 		self.repository = repository
 		self.router = router
 		setupView(with: nil)
@@ -50,19 +51,23 @@ extension CharactersPresenter: ICharacterPresenter
 	func setupView(with search: String?) {
 		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadCharacters(with: nil, searchResult: search, { [weak self] charactersResult in
+			self.repository.loadCharacters(fromPastScree: .none,
+										   with: nil,
+										   searchResult: search,
+										   { [weak self] charactersResult in
 				guard let self = self else { return }
 				switch charactersResult {
 				case .success(let loadedData):
 					self.characters = loadedData.data.results
 					DispatchQueue.main.async {
 						self.charactersView?.updateData()
-						self.charactersView?.activityIndicator.stopAnimating()
+						self.charactersView?.stopActivityIndicator()
 						self.charactersView?.checkRequestResult(isEmpty: loadedData.data.results.isEmpty)
 					}
 				case .failure(let error):
 					DispatchQueue.main.async {
-						self.charactersView?.activityIndicator.stopAnimating()
+						self.charactersView?.stopActivityIndicator()
+						self.charactersView?.showAlert(error: error)
 					}
 					print(error.localizedDescription)
 				}
@@ -74,18 +79,13 @@ extension CharactersPresenter: ICharacterPresenter
 		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
 			let character = self.characters[index]
-			self.repository.loadImage(urlString:
+			self.repository.dataRepository.loadImage(urlString:
 				String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.charactersView?.tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
-						cell.imageView?.image = image
-						cell.layoutSubviews()
-						cell.imageView?.clipsToBounds = true
-						guard let imageView = cell.imageView else { return }
-						cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
+						self.charactersView?.updateTableViewCell(index: index, image: image)
 					}
 				case .failure(let error):
 					print(error.localizedDescription)

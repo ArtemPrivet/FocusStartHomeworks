@@ -16,7 +16,7 @@ protocol IDetailsCharacterRouter
 final class DetailsCharacterRouter
 {
 	weak var detailCharactersView: DetailsCharacterViewController?
-	private var factory: Factory
+	private let factory: Factory
 
 	init(factory: Factory) {
 		self.factory = factory

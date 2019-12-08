@@ -19,14 +19,15 @@ protocol IAuthorsPresenter
 
 final class AuthorsPresenter
 {
-
 	weak var authorView: AuthorsViewController?
-	var repository: Repository
-	var router: IAuthorRouter
-	let loadAuthorsQueue = DispatchQueue(label: "loadAuthorsQueue", qos: .userInteractive, attributes: .concurrent)
+	private let repository: IAuthorsRepository
+	private let router: IAuthorRouter
 	private var authors: [Creator] = []
+	private let loadAuthorsQueue = DispatchQueue(label: "loadAuthorsQueue",
+												 qos: .userInteractive,
+												 attributes: .concurrent)
 
-	init(repository: Repository, router: IAuthorRouter) {
+	init(repository: IAuthorsRepository, router: IAuthorRouter) {
 		self.repository = repository
 		self.router = router
 		setupView(with: nil)
@@ -50,21 +51,21 @@ extension AuthorsPresenter: IAuthorsPresenter
 	func setupView(with search: String?) {
 		loadAuthorsQueue.async { [weak self] in
 			guard let self = self else { return }
-			self.repository.loadAuthors(with: nil, searchResult: search, { [weak self] authorsResult in
+			self.repository.loadAuthors(fromPastScreen: .none, with: nil, searchResult: search, { [weak self] authorsResult in
 				guard let self = self else { return }
 				switch authorsResult {
 				case .success(let loadedData):
 					self.authors = loadedData.data.results
 					DispatchQueue.main.async {
 						self.authorView?.updateData()
-						self.authorView?.activityIndicator.stopAnimating()
+						self.authorView?.stopActivityIndicator()
 						self.authorView?.checkRequestResult(isEmpty: loadedData.data.results.isEmpty)
 					}
 				case .failure(let error):
 					DispatchQueue.main.async {
-						self.authorView?.activityIndicator.stopAnimating()
+						self.authorView?.stopActivityIndicator()
+						self.authorView?.showAlert(error: error)
 					}
-					print(error.localizedDescription)
 				}
 			})
 		}
@@ -74,18 +75,13 @@ extension AuthorsPresenter: IAuthorsPresenter
 		loadAuthorsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let author = self.authors[index]
-			self.repository.loadImage(urlString:
+			self.repository.dataRepository.loadImage(urlString:
 				String.getUrlString(image: author.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {
 				case .success(let image):
 					DispatchQueue.main.async {
-						guard let cell = self.authorView?.tableView.cellForRow(at: IndexPath(row: index, section: 0)) else { return }
-						cell.imageView?.image = image
-						cell.layoutSubviews()
-						cell.imageView?.clipsToBounds = true
-						guard let imageView = cell.imageView else { return }
-						cell.imageView?.layer.cornerRadius = imageView.bounds.width / 2
+						self.authorView?.updateTableViewCell(index: index, image: image)
 					}
 				case .failure(let error):
 					print(error.localizedDescription)

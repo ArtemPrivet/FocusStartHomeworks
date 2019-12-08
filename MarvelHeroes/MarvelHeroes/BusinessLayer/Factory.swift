@@ -12,7 +12,7 @@ final class Factory
 {
 	//create characters module
 	func createCharactersModule() -> CharactersViewController {
-		let repository = Repository()
+		let repository = CharactersRepository(dataRepository: DataRepository())
 		let charactersRouter = CharactersRouter(factory: self)
 		let charactersPresenter = CharactersPresenter(repository: repository, router: charactersRouter)
 		let charactersView = CharactersViewController(presenter: charactersPresenter)
@@ -23,11 +23,11 @@ final class Factory
 
 	//create details characters module
 	func createDetailsVC(chracter: Character) -> DetailsCharacterViewController {
-		let repository = Repository()
+		let repository = ComicsRepository(dataRepository: DataRepository())
 		let detailCharactersRouter = DetailsCharacterRouter(factory: self)
 		let detailsPresenter = DetailsCharacterPresenter(character: chracter,
 														 repository: repository,
-														 router: detailCharactersRouter )
+														 router: detailCharactersRouter)
 		let detailsVC = DetailsCharacterViewController(presenter: detailsPresenter)
 		detailsPresenter.detailsView = detailsVC
 		return detailsVC
@@ -35,7 +35,7 @@ final class Factory
 
 	//create comics module
 	func createComicsModule() -> ComicsViewController {
-		let repository = Repository()
+		let repository = ComicsRepository(dataRepository: DataRepository())
 		let comicsRouter = ComicsRouter(factory: self)
 		let comicsPresenter = ComicsPresenter(repository: repository, router: comicsRouter)
 		let comicsView = ComicsViewController(presenter: comicsPresenter)
@@ -46,7 +46,7 @@ final class Factory
 
 	//create details comics module
 	func createDetailsVC(comics: Comic) -> DetailsComicsViewController {
-		let repository = Repository()
+		let repository = CharactersRepository(dataRepository: DataRepository())
 		let detailsPresenter = DetailsComicsPresenter(comics: comics, repository: repository)
 		let detailsVC = DetailsComicsViewController(presenter: detailsPresenter)
 		detailsPresenter.detailsView = detailsVC
@@ -55,7 +55,7 @@ final class Factory
 
 	//create authors module
 	func createAuthorsModule() -> AuthorsViewController {
-		let repository = Repository()
+		let repository = AuthorsRepository(dataRepository: DataRepository())
 		let authorsRouter = AuthorRouter(factory: self)
 		let authorsPresenter = AuthorsPresenter(repository: repository, router: authorsRouter)
 		let authorsView = AuthorsViewController(presenter: authorsPresenter)
@@ -66,7 +66,7 @@ final class Factory
 
 	//create details author module
 	func createDetailsVC(author: Creator) -> DetailsAuthorViewController {
-		let repository = Repository()
+		let repository = ComicsRepository(dataRepository: DataRepository())
 		let detailsPresenter = DetailsAuthorPresenter(author: author, repository: repository)
 		let detailsVC = DetailsAuthorViewController(presenter: detailsPresenter)
 		detailsPresenter.detailsView = detailsVC
