@@ -19,8 +19,8 @@ protocol IDetailsView: AnyObject
 
 final class DetailsView: UIView
 {
-	private var presenter: IEntityDetailsPresenter?
-	private var repository: Repository?
+	private var presenter: IEntityDetailsPresenter
+	private var repository: Repository
 	private let descriptionTextView = UITextView()
 	private let table = UITableView()
 	private let backgroundImageView = UIImageView()
@@ -28,7 +28,7 @@ final class DetailsView: UIView
 	private var margins = UILayoutGuide()
 	private var loaded = false
 
-	init(presenter: IEntityDetailsPresenter?, repository: Repository?) {
+	init(presenter: IEntityDetailsPresenter, repository: Repository) {
 		self.presenter = presenter
 		self.repository = repository
 		super.init(frame: .zero)
@@ -38,7 +38,7 @@ final class DetailsView: UIView
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		if loaded == false {
-			presenter?.triggerViewReadyEvent()
+			presenter.triggerViewReadyEvent()
 			backgroundImageView.setWhiteGradientAbove()
 		}
 		loaded = true
@@ -76,15 +76,16 @@ extension DetailsView: IDetailsView
 extension DetailsView: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.recordsCount ?? 0
+		return presenter.recordsCount
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: InterfaceConstants.detailsCellIdentifier,
 												 for: indexPath)
 		cell.tag = indexPath.row
-		if let customCell = cell as? Cell, let record = presenter?.getRecord(index: indexPath.row) {
-			repository?.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
+		if let customCell = cell as? Cell {
+			let record = presenter.getRecord(index: indexPath.row)
+			repository.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
 				if customCell.tag == indexPath.row {
 					customCell.cellImageView.image = image
 				}
@@ -103,7 +104,7 @@ extension DetailsView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		presenter?.onAccessoryPressed(index: indexPath.row)
+		presenter.onAccessoryPressed(index: indexPath.row)
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }
@@ -122,7 +123,7 @@ private extension DetailsView
 	}
 	//Обновляем поля данными из презентера
 	func refreshData() {
-		descriptionTextView.text = presenter?.currentRecord.description
+		descriptionTextView.text = presenter.currentRecord.description
 		setBackgroundImage()
 		table.reloadData()
 		let beginPosition = descriptionTextView.beginningOfDocument
@@ -182,7 +183,7 @@ private extension DetailsView
 	//загружаем картинку для бэкграунда
 	func setBackgroundImage() {
 		backgroundImageView.image = nil
-		repository?.loadBackgroundImage(imageURL: presenter?.currentRecord.bigImageURL, completion: { image in
+		repository.loadBackgroundImage(imageURL: presenter.currentRecord.bigImageURL, completion: { image in
 			self.backgroundImageView.image = image
 		})
 	}

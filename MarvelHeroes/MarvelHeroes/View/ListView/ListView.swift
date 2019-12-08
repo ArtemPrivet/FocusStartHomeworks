@@ -18,15 +18,15 @@ protocol IListView: AnyObject
 
 final class ListView: UIView
 {
-	private let presenter: IEntityListPresenter?
-	private let repository: Repository?
+	private let presenter: IEntityListPresenter
+	private let repository: Repository
 	private let searchBar = UISearchBar()
 	private let table = UITableView()
 	private let spinner = UIActivityIndicatorView()
 	private var margins = UILayoutGuide()
 	private var loaded = false
 
-	init(presenter: IEntityListPresenter?, repository: Repository?) {
+	init(presenter: IEntityListPresenter, repository: Repository) {
 		self.presenter = presenter
 		self.repository = repository
 		super.init(frame: .zero)
@@ -36,7 +36,7 @@ final class ListView: UIView
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		if loaded == false {
-			presenter?.triggerViewReadyEvent()
+			presenter.triggerViewReadyEvent()
 		}
 		loaded = true
 	}
@@ -72,7 +72,7 @@ extension ListView: UISearchBarDelegate
 {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		guard let searchedText = searchBar.text  else { return }
-		presenter?.loadRecords(with: searchedText)
+		presenter.loadRecords(with: searchedText)
 		self.endEditing(true)
 	}
 }
@@ -84,7 +84,7 @@ extension ListView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		presenter?.onCellPressed(index: indexPath.row)
+		presenter.onCellPressed(index: indexPath.row)
 		tableView.deselectRow(at: indexPath, animated: true)
 	}
 }
@@ -92,16 +92,17 @@ extension ListView: UITableViewDelegate
 extension ListView: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter?.recordsCount ?? 0
+		return presenter.recordsCount
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: InterfaceConstants.listViewCellIdentifier, for: indexPath)
-		if let customCell = cell as? Cell, let record = presenter?.getRecord(index: indexPath.row) {
-			customCell.tag = indexPath.row
+		cell.tag = indexPath.row
+		if let customCell = cell as? Cell {
+			let record = presenter.getRecord(index: indexPath.row)
 			customCell.cellImageView.image = nil
 			customCell.cellImageView.makeRound()
-			repository?.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
+			repository.loadImageForCell(imageURL: record.portraitImageURL, completion: { image in
 				if customCell.tag == indexPath.row {
 					customCell.cellImageView.image = image
 				}
