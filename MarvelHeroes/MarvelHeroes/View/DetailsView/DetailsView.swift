@@ -27,6 +27,7 @@ final class DetailsView: UIView
 	private let backgroundImageView = UIImageView()
 	private let spinner = UIActivityIndicatorView()
 	private var margins = UILayoutGuide()
+	private var loaded = false
 
 	init(presenter: IEntityDetailsPresenter?, repository: Repository?) {
 		super.init(frame: .zero)
@@ -34,6 +35,15 @@ final class DetailsView: UIView
 		self.repository = repository
 
 		setupInitialState()
+	}
+
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		if loaded == false {
+			presenter?.triggerViewReadyEvent()
+			backgroundImageView.setWhiteGradientAbove()
+		}
+		loaded = true
 	}
 
 	@available(*, unavailable)
@@ -111,12 +121,12 @@ private extension DetailsView
 	//Настройка первоначального состояния view
 	func setupInitialState() {
 		margins = self.layoutMarginsGuide
-		self.backgroundColor = .white
+		backgroundColor = .white
 		setupTextView()
 		setupTableView()
 		setupBackground()
-		self.addSubview(spinner)
 		setupSpinner()
+		refreshData()
 	}
 	//Обновляем поля данными из презентера
 	func refreshData() {

@@ -12,7 +12,7 @@ protocol IEntityDetailsPresenter: AnyObject
 {
 	var recordsCount: Int { get }
 
-	func inject(view: IEntityDetailsViewController, router: IEntityDetailsRouter, repository: Repository)
+	func inject(router: IEntityDetailsRouter, repository: Repository, view: IDetailsView)
 	func getCurrentRecord() -> IEntity
 	func onAccessoryPressed(index: Int)
 	func triggerViewReadyEvent()
@@ -23,7 +23,7 @@ final class EntityDetailsPresenter
 {
 	private let currentRecord: IEntity
 	private let entityType: EntityType
-	private weak var view: IEntityDetailsViewController?
+	private weak var view: IDetailsView?
 	private var router: IEntityDetailsRouter?
 	private var accesories: [IEntity] = []
 	private var repository: Repository?
@@ -50,7 +50,7 @@ extension EntityDetailsPresenter: IEntityDetailsPresenter
 		router?.routeToAccessory(accessory: accesories[index])
 	}
 
-	func inject(view: IEntityDetailsViewController, router: IEntityDetailsRouter, repository: Repository) {
+	func inject(router: IEntityDetailsRouter, repository: Repository, view: IDetailsView) {
 		self.view = view
 		self.router = router
 		self.repository = repository
@@ -91,7 +91,7 @@ private extension EntityDetailsPresenter
 				}
 			case .failure(let error):
 				error.errorHandler { errorMessage in
-					self?.view?.showAlert(with: errorMessage)
+					self?.router?.showAlert(with: errorMessage)
 				}
 				self?.accesories = []
 			}

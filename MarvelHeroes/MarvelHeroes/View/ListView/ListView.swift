@@ -24,6 +24,7 @@ final class ListView: UIView
 	private let table = UITableView()
 	private let spinner = UIActivityIndicatorView()
 	private var margins = UILayoutGuide()
+	private var loaded = false
 
 	init(presenter: IEntityListPresenter?, repository: Repository?) {
 		super.init(frame: .zero)
@@ -31,6 +32,14 @@ final class ListView: UIView
 		self.repository = repository
 
 		setupInitialState()
+	}
+
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		if loaded == false {
+			presenter?.triggerViewReadyEvent()
+		}
+		loaded = true
 	}
 
 	@available(*, unavailable)

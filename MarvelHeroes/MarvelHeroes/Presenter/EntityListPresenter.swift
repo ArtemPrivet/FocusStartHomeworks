@@ -14,7 +14,7 @@ protocol IEntityListPresenter: AnyObject
 	var itemTitle: String { get }
 	var recordsCount: Int { get }
 
-	func inject(view: IEntityListViewController, router: IEntityListRouter, repository: Repository)
+	func inject(router: IEntityListRouter, repository: Repository, view: IListView)
 	func getRecord(index: Int) -> IEntity
 	func onCellPressed(index: Int)
 	func loadRecords(with nameStarts: String)
@@ -25,7 +25,7 @@ final class EntityListPresenter
 {
 	private let title: String
 	private let entityType: EntityType
-	private weak var view: IEntityListViewController?
+	private weak var view: IListView?
 	private var router: IEntityListRouter?
 	private var repository: Repository?
 	private var records: [IEntity] = []
@@ -58,7 +58,7 @@ extension EntityListPresenter: IEntityListPresenter
 		return records[index]
 	}
 	// инжект вью, роутера и репозитория
-	func inject(view: IEntityListViewController, router: IEntityListRouter, repository: Repository) {
+	func inject(router: IEntityListRouter, repository: Repository, view: IListView) {
 		self.view = view
 		self.router = router
 		self.repository = repository
@@ -103,7 +103,7 @@ private extension EntityListPresenter
 											}
 										case .failure(let error):
 											error.errorHandler { errorMessage in
-												self?.view?.showAlert(with: errorMessage)
+												self?.router?.showAlert(with: errorMessage)
 											}
 											self?.records = []
 										}

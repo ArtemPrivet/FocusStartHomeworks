@@ -18,9 +18,7 @@
 		85D28C4E239A952300F8EA22 /* EntityListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C4D239A952300F8EA22 /* EntityListRouter.swift */; };
 		85D28C51239A954C00F8EA22 /* EntityListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C50239A954C00F8EA22 /* EntityListPresenter.swift */; };
 		85D28C53239A956400F8EA22 /* EntityDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C52239A956400F8EA22 /* EntityDetailsPresenter.swift */; };
-		85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C56239A95A400F8EA22 /* EntityListViewController.swift */; };
 		85D28C59239A95BC00F8EA22 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C58239A95BC00F8EA22 /* ListView.swift */; };
-		85D28C5B239A95E900F8EA22 /* EntityDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */; };
 		85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5C239A960800F8EA22 /* DetailsView.swift */; };
 		85D28C5F239A964800F8EA22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C5E239A964800F8EA22 /* Constants.swift */; };
 		85D28C61239A966000F8EA22 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85D28C60239A966000F8EA22 /* Cell.swift */; };
@@ -53,9 +51,7 @@
 		85D28C4D239A952300F8EA22 /* EntityListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListRouter.swift; sourceTree = "<group>"; };
 		85D28C50239A954C00F8EA22 /* EntityListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListPresenter.swift; sourceTree = "<group>"; };
 		85D28C52239A956400F8EA22 /* EntityDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDetailsPresenter.swift; sourceTree = "<group>"; };
-		85D28C56239A95A400F8EA22 /* EntityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityListViewController.swift; sourceTree = "<group>"; };
 		85D28C58239A95BC00F8EA22 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
-		85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDetailsViewController.swift; sourceTree = "<group>"; };
 		85D28C5C239A960800F8EA22 /* DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsView.swift; sourceTree = "<group>"; };
 		85D28C5E239A964800F8EA22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		85D28C60239A966000F8EA22 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -130,8 +126,8 @@
 		85D28C41239A8F3600F8EA22 /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				85D28C4B239A950200F8EA22 /* EntityDetailsRouter.swift */,
 				85D28C4D239A952300F8EA22 /* EntityListRouter.swift */,
+				85D28C4B239A950200F8EA22 /* EntityDetailsRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -203,7 +199,6 @@
 		85D28C54239A958D00F8EA22 /* DetailsView */ = {
 			isa = PBXGroup;
 			children = (
-				85D28C5A239A95E900F8EA22 /* EntityDetailsViewController.swift */,
 				85D28C5C239A960800F8EA22 /* DetailsView.swift */,
 			);
 			path = DetailsView;
@@ -212,7 +207,6 @@
 		85D28C55239A959400F8EA22 /* ListView */ = {
 			isa = PBXGroup;
 			children = (
-				85D28C56239A95A400F8EA22 /* EntityListViewController.swift */,
 				85D28C58239A95BC00F8EA22 /* ListView.swift */,
 				85FA11CA239C0A730068D2A0 /* StubImageView.swift */,
 			);
@@ -318,7 +312,6 @@
 				85D28C6D239A970A00F8EA22 /* ComicsResponse.swift in Sources */,
 				85FA11CB239C0A730068D2A0 /* StubImageView.swift in Sources */,
 				85D28C71239A973B00F8EA22 /* AuthorResponse.swift in Sources */,
-				85D28C57239A95A400F8EA22 /* EntityListViewController.swift in Sources */,
 				854DA91D239A9EA1009C843D /* String+md5.swift in Sources */,
 				85FA11C9239C03D60068D2A0 /* Alert.swift in Sources */,
 				85D28C69239A96C800F8EA22 /* Cache.swift in Sources */,
@@ -326,7 +319,6 @@
 				85D28C4A239A94B000F8EA22 /* Repository.swift in Sources */,
 				85D28C73239A974C00F8EA22 /* Thumbnail.swift in Sources */,
 				854DA91F239ABA36009C843D /* SeviceError.swift in Sources */,
-				85D28C5B239A95E900F8EA22 /* EntityDetailsViewController.swift in Sources */,
 				85D28C61239A966000F8EA22 /* Cell.swift in Sources */,
 				85D28C48239A949000F8EA22 /* ModuleFactory.swift in Sources */,
 				85D28C5D239A960800F8EA22 /* DetailsView.swift in Sources */,

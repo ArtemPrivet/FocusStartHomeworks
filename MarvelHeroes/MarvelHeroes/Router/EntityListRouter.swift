@@ -10,15 +10,16 @@ import UIKit
 
 protocol IEntityListRouter
 {
-	func inject(view: UIViewController)
+	func inject(viewController: UIViewController)
 	func routeToDetails(entity: IEntity?)
+	func showAlert(with text: String)
 }
 
 final class EntityListRouter
 {
 	private let moduleFactory: ModuleFactory
 	private let entityType: EntityType
-	private weak var view: UIViewController?
+	private weak var viewController: UIViewController?
 
 	init(moduleFactory: ModuleFactory, with entityType: EntityType) {
 		self.moduleFactory = moduleFactory
@@ -28,14 +29,20 @@ final class EntityListRouter
 
 extension EntityListRouter: IEntityListRouter
 {
-	func inject(view: UIViewController) {
-		self.view = view
+	func inject(viewController: UIViewController) {
+		self.viewController = viewController
 	}
 	//Переход к деталям
 	func routeToDetails(entity: IEntity?) {
 		if let currentEntity = entity {
 			let detailsViewController = moduleFactory.createEntityDetails(entity: currentEntity, with: entityType)
-			view?.navigationController?.pushViewController(detailsViewController, animated: true)
+			viewController?.navigationController?.pushViewController(detailsViewController, animated: true)
+		}
+	}
+	//Сообщение об ошибке
+	func showAlert(with text: String) {
+		if let vc = viewController {
+			Alert.simpleAlert.showAlert(with: text, title: "Error", buttonText: "Ok", viewController: vc)
 		}
 	}
 }

@@ -140,17 +140,19 @@ private extension Repository
 					completion( .failure(.networkError))
 				}
 			}
-			if let response = response as? HTTPURLResponse, response.statusCode != 200 {
-				DispatchQueue.main.async {
-					completion( .failure(.httpError(response.statusCode)))
-				}
-			}
-			if let data = data {
-				completion( .success(data))
-			}
 			else {
-				DispatchQueue.main.async {
-					completion( .failure(.dataError))
+				if let response = response as? HTTPURLResponse, response.statusCode != 200 {
+					DispatchQueue.main.async {
+						completion( .failure(.httpError(response.statusCode)))
+					}
+				}
+				if let data = data {
+					completion( .success(data))
+				}
+				else {
+					DispatchQueue.main.async {
+						completion( .failure(.dataError))
+					}
 				}
 			}
 		}

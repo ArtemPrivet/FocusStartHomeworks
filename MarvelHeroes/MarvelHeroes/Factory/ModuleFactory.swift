@@ -18,6 +18,7 @@ struct ModuleFactory
 	func createTabBarViewController() -> UIViewController {
 		let heroesListController = createList(with: .character)
 		let heroesNavigationController = createNavigationBarController(with: heroesListController)
+		heroesListController.navigationItem.title = "🦸‍♂️Heroes"
 
 		let comicsListController = createList(with: .comics)
 		let comicsNavigationController = createNavigationBarController(with: comicsListController)
@@ -42,27 +43,31 @@ struct ModuleFactory
 
 	private func createNavigationBarController(with rootController: UIViewController) -> UIViewController {
 		let navigationController = UINavigationController(rootViewController: rootController)
+		navigationController.navigationBar.prefersLargeTitles = true
 		return  navigationController
 	}
 	//Создание модуля списка
 	func createList(with entityType: EntityType) -> UIViewController {
-		let view = EntityListViewController()
+		let viewController = UIViewController()
 		let presenter = EntityListPresenter(with: entityType)
 		let router = EntityListRouter(moduleFactory: self, with: entityType)
-		presenter.inject(view: view, router: router, repository: repository)
-		view.inject(presenter: presenter, repository: repository)
-		router.inject(view: view)
-		view.title = entityType.getTabTitle()
-		return view
+		let view = ListView(presenter: presenter, repository: repository)
+		presenter.inject(router: router, repository: repository, view: view)
+		router.inject(viewController: viewController)
+		viewController.view = view
+		viewController.title = entityType.getTabTitle()
+		return viewController
 	}
 	//Создание модуля деталей
 	func createEntityDetails(entity: IEntity, with entityType: EntityType) -> UIViewController {
-		let view = EntityDetailsViewController()
+		let viewController = UIViewController()
 		let presenter = EntityDetailsPresenter(entity: entity, with: entityType)
 		let router = EntityDetailsRouter(moduleFactory: self, with: entityType)
-		presenter.inject(view: view, router: router, repository: repository)
-		view.inject(presenter: presenter, repository: repository)
-		router.inject(view: view)
-		return view
+		let view = DetailsView(presenter: presenter, repository: repository)
+		presenter.inject(router: router, repository: repository, view: view)
+		router.inject(viewController: viewController)
+		viewController.view = view
+		viewController.title = presenter.getCurrentRecord().showingName
+		return viewController
 	}
 }

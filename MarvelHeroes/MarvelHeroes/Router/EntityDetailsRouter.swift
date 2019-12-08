@@ -9,13 +9,14 @@ import UIKit
 
 protocol IEntityDetailsRouter: AnyObject
 {
-	func inject(view: UIViewController)
+	func inject(viewController: UIViewController)
 	func routeToAccessory(accessory: IEntity?)
+	func showAlert(with text: String)
 }
 
 final class EntityDetailsRouter
 {
-	private weak var view: UIViewController?
+	private weak var viewController: UIViewController?
 	private let entityType: EntityType
 	private var moduleFactory: ModuleFactory
 
@@ -37,11 +38,18 @@ extension EntityDetailsRouter: IEntityDetailsRouter
 			case .comics:
 				detailsViewController = moduleFactory.createEntityDetails(entity: currentAccessory, with: .author)
 			}
-			view?.navigationController?.pushViewController(detailsViewController, animated: true)
+			viewController?.navigationController?.pushViewController(detailsViewController, animated: true)
 		}
 	}
 
-	func inject(view: UIViewController) {
-		self.view = view
+	func inject(viewController: UIViewController) {
+		self.viewController = viewController
+	}
+
+	//Сообщение об ошибке
+	func showAlert(with text: String) {
+		if let vc = viewController {
+			Alert.simpleAlert.showAlert(with: text, title: "Error", buttonText: "Ok", viewController: vc)
+		}
 	}
 }
