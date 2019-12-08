@@ -11,14 +11,13 @@ import Foundation
 protocol IDetailPresenter
 {
 	func getHero() -> ResultChar
-	func getHeroID(of index: Int) -> Int
+	func getComics()
+	func countComics() -> Int
+	func getComic(of index: Int) -> ResultBook
 }
 
 protocol IHeroPresenter
 {
-//	var heroesCount: Int { get }
-
-//	func getHero(of index: Int) -> ResultChar
 	func getHeroes(of text: String)
 	func showDetail(of index: Int)
 }
@@ -33,7 +32,17 @@ protocol IHeroRepository
 	func getHeroes(of text: String, completion: @escaping([ResultChar]?) -> Void )
 }
 
+protocol IComicsrepository
+{
+	func getComics(of heroID: Int, completion: @escaping([ResultBook]?) -> Void)
+}
+
 protocol IHeroView
 {
 	func show(heroes: [ResultChar])
+}
+
+protocol IComicView
+{
+	func show(comics: [ResultBook])
 }

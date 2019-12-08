@@ -12,6 +12,7 @@ final class DetailViewController: UIViewController
 {
 
 	private var presenter: IDetailPresenter
+	private var comics = [ResultBook]()
 	private var heroName = UILabel()
 	private let gradient = CAGradientLayer()
 	private var heroDescription = UITextView()
@@ -103,13 +104,33 @@ final class DetailViewController: UIViewController
 extension DetailViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return presenter.getHero().comics.items.count
+		return presenter.countComics()
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "comicsCell") ??
 			UITableViewCell(style: .subtitle, reuseIdentifier: "comicsCell")
-		let comic = presenter.getHero().comics.items[indexPath.row]
-		cell.textLabel?.text = comic.name
+		let comic = comics[indexPath.row]
+		cell.textLabel?.text = comic.title
+		cell.imageView?.clipsToBounds = true
+		DispatchQueue(label: "loadImage", qos: .userInitiated, attributes: .concurrent).async {
+			if let url = URL(string: "\(comic.thumbnail.path)/portrait_small.\(comic.thumbnail.thumbnailExtension)"){
+				let heroDataImage = try? Data(contentsOf: url)
+				DispatchQueue.main.async {
+					if let image = heroDataImage {
+						cell.imageView?.image = UIImage(data: image)
+						cell.layoutSubviews()
+					}
+				}
+			}
+		}
 		return cell
+	}
+}
+
+extension DetailViewController: IComicView
+{
+	func show(comics: [ResultBook]) {
+		self.comics = comics
+		self.heroComicsTableView.reloadData()
 	}
 }

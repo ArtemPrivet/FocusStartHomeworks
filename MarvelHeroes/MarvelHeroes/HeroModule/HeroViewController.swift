@@ -126,6 +126,7 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 		cell.imageView?.layer.masksToBounds = true
 		DispatchQueue(label: "loadImage", qos: .userInitiated, attributes: .concurrent).async {
 			if let url = URL(string: "\(hero.thumbnail.path)/standard_medium.\(hero.thumbnail.thumbnailExtension)"){
+				print(url)
 				let heroDataImage = try? Data(contentsOf: url)
 				DispatchQueue.main.async {
 					if let image = heroDataImage {

@@ -12,9 +12,14 @@ final class DetailPresenter
 {
 
 	private let hero: ResultChar
+	var comics = [ResultBook]()
+	weak var detailVC: DetailViewController?
+	private let repository: IComicsrepository
+	let loadComicsQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 
-	init(hero: ResultChar) {
+	init(hero: ResultChar, repository: IComicsrepository) {
 		self.hero = hero
+		self.repository = repository
 	}
 
 	deinit {
@@ -24,11 +29,29 @@ final class DetailPresenter
 
 extension DetailPresenter: IDetailPresenter
 {
-	func getHeroID(of index: Int) -> Int {
-		hero.id
+	func countComics() -> Int {
+		comics.count
+	}
+
+	func getComic(of index: Int) -> ResultBook {
+		comics[index]
 	}
 
 	func getHero() -> ResultChar {
 		hero
+	}
+
+	func getComics() {
+		loadComicsQueue.async { [weak self] in
+			guard let self = self else { return }
+			self.repository.getComics(of: self.hero.id, completion: { [weak self] comicList in
+				guard let self = self else { return }
+				DispatchQueue.main.async {
+					self.comics = comicList ?? []
+					self.detailVC?.show(comics: self.comics)
+				}
+				return
+			})
+		}
 	}
 }

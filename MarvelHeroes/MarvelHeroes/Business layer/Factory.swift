@@ -12,8 +12,11 @@ final class ModulesFactory
 {
 
 	func getDetailModule(hero: ResultChar) -> DetailViewController {
-		let presenter = DetailPresenter(hero: hero)
+		let repository = ComicsRepository()
+		let presenter = DetailPresenter(hero: hero, repository: repository)
 		let viewController = DetailViewController(presenter: presenter)
+		presenter.detailVC = viewController
+		presenter.getComics()
 		return viewController
 	}
 
