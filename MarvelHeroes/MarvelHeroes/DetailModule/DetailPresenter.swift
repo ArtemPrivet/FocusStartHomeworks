@@ -12,10 +12,10 @@ final class DetailPresenter
 {
 
 	private let hero: ResultChar
-	var comics = [ResultBook]()
+	private var comics = [ResultBook]()
 	weak var detailVC: DetailViewController?
 	private let repository: IComicsrepository
-	let loadComicsQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
+	private let loadComicsQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 
 	init(hero: ResultChar, repository: IComicsrepository) {
 		self.hero = hero

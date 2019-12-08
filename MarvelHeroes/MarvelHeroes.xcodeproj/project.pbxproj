@@ -83,6 +83,7 @@
 				94E71FE72397D1E300DCAEC2 /* DetailModule */,
 				94E71FE62397D1D100DCAEC2 /* HeroModule */,
 				9422181E239450E000634CF9 /* Business layer */,
+				94231B5C239D903000A75AA4 /* Wrappers */,
 				9422181D239450D300634CF9 /* Net */,
 				94E71FEE2398FCA600DCAEC2 /* Protocols */,
 				9422181C239450B100634CF9 /* Supports */,
@@ -112,13 +113,20 @@
 		9422181E239450E000634CF9 /* Business layer */ = {
 			isa = PBXGroup;
 			children = (
-				9408C0DA239999F6007CBF8B /* ComicsByID.swift */,
 				94231B5A239D633B00A75AA4 /* ComicsRepository.swift */,
-				9460487F23955F3A00648CD6 /* HeroesByID.swift */,
 				94E71FE42397D06E00DCAEC2 /* HeroesRepository.swift */,
 				94E71FF12398FDE200DCAEC2 /* Factory.swift */,
 			);
 			path = "Business layer";
+			sourceTree = "<group>";
+		};
+		94231B5C239D903000A75AA4 /* Wrappers */ = {
+			isa = PBXGroup;
+			children = (
+				9408C0DA239999F6007CBF8B /* ComicsByID.swift */,
+				9460487F23955F3A00648CD6 /* HeroesByID.swift */,
+			);
+			path = Wrappers;
 			sourceTree = "<group>";
 		};
 		94E71FE62397D1D100DCAEC2 /* HeroModule */ = {

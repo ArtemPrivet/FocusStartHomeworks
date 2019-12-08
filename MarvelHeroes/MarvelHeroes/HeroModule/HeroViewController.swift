@@ -11,17 +11,17 @@ import UIKit
 final class HeroViewController: UIViewController
 {
 	private let presenter: IHeroPresenter
-	var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+	private var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	private var heroes = [ResultChar]()
 	private var searchBar = UISearchBar()
 	private var tableView = UITableView()
 	private var request = String()
+	private var stubText = UITextView()
 	private var stubImage: UIImageView = {
 		let view = UIImageView()
 		view.contentMode = .scaleAspectFit
 		return view
 	}()
-	private var stubText = UITextView()
 
 	init(presenter: IHeroPresenter) {
 		self.presenter = presenter
