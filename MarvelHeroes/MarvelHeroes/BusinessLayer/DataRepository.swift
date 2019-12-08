@@ -16,8 +16,8 @@ protocol IDataRepository
 	func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void)
 	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void)
 }
-
-final class DataRepository: IDataRepository
+// swiftlint:disable:next required_final
+class DataRepository: IDataRepository
 {
 	func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void) {
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in

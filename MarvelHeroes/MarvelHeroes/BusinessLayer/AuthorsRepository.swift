@@ -12,22 +12,17 @@ typealias AuthorResult = Result<CreatorDataWrapper, ServiceError>
 
 protocol IAuthorsRepository
 {
-	var dataRepository: IDataRepository { get }
-
 	func getAuthorRequest(fromPastScreen: UrlPath, comicsId: String?, searchResult: String?) -> URL?
 	func loadAuthors(fromPastScreen: UrlPath,
 					 with id: Int?,
 					 searchResult: String?,
 					 _ completion: @escaping (AuthorResult) -> Void)
+	func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void)
+	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void)
 }
 
-final class AuthorsRepository
+final class AuthorsRepository: DataRepository
 {
-	let dataRepository: IDataRepository
-
-	init(dataRepository: IDataRepository) {
-		self.dataRepository = dataRepository
-	}
 }
 
 extension AuthorsRepository: IAuthorsRepository
@@ -62,7 +57,7 @@ extension AuthorsRepository: IAuthorsRepository
 										 searchResult: searchResult) else {
 			completion(.failure(ServiceError.dataError(NSError())))
 			return }
-		dataRepository.fetchData(from: url) { authorResult in
+		fetchData(from: url) { authorResult in
 			switch authorResult {
 			case .success(let data):
 				do {

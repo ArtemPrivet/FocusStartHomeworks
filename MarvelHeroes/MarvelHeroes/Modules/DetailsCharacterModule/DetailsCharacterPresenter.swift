@@ -30,7 +30,7 @@ final class DetailsCharacterPresenter
 												qos: .userInteractive,
 												attributes: .concurrent)
 
-	init(character: Character, repository: IComicsRepository, router: IDetailsCharacterRouter) {
+	init(character: Character, repository: IComicsRepository & IDataRepository, router: IDetailsCharacterRouter) {
 		self.character = character
 		self.repository = repository
 		self.router = router
@@ -46,7 +46,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter
 	}
 
 	func setupBackgroungImage() {
-		self.repository.dataRepository.loadImage(urlString:
+		self.repository.loadImage(urlString:
 			String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardFantastic))
 		{ imageResult in
 			switch imageResult {
@@ -92,7 +92,7 @@ extension DetailsCharacterPresenter: IDetailsCharacterPresenter
 		loadComicsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let comics = self.comicses[index]
-			self.repository.dataRepository.loadImage(urlString:
+			self.repository.loadImage(urlString:
 				String.getUrlString(image: comics.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {

@@ -27,7 +27,7 @@ final class CharactersPresenter
 													qos: .userInteractive,
 													attributes: .concurrent)
 
-	init(repository: ICharactersRepository, router: ICharactersRouter) {
+	init(repository: ICharactersRepository & IDataRepository, router: ICharactersRouter) {
 		self.repository = repository
 		self.router = router
 		setupView(with: nil)
@@ -79,7 +79,7 @@ extension CharactersPresenter: ICharacterPresenter
 		loadCharactersQueue.async { [weak self] in
 			guard let self = self else { return }
 			let character = self.characters[index]
-			self.repository.dataRepository.loadImage(urlString:
+			self.repository.loadImage(urlString:
 				String.getUrlString(image: character.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {

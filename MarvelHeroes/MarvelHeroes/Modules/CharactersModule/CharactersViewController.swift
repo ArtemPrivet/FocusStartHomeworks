@@ -10,7 +10,7 @@ import UIKit
 
 final class CharactersViewController: ObjectsListViewController
 {
-	let presenter: ICharacterPresenter
+	private let presenter: ICharacterPresenter
 
 	init(presenter: ICharacterPresenter) {
 		self.presenter = presenter
@@ -23,7 +23,6 @@ final class CharactersViewController: ObjectsListViewController
 		tableView.delegate = self
 		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
-		tableView.delegate = self
 		view.backgroundColor = .white
 		title = "🦸‍♂️Heroes"
 		tabBarItem = UITabBarItem(title: "Heroes", image: #imageLiteral(resourceName: "shield"), tag: 1)

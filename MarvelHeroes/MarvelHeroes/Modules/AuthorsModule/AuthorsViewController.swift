@@ -10,7 +10,7 @@ import UIKit
 
 final class AuthorsViewController: ObjectsListViewController
 {
-	let presenter: IAuthorsPresenter
+	private let presenter: IAuthorsPresenter
 
 	init(presenter: IAuthorsPresenter) {
 		self.presenter = presenter
@@ -24,7 +24,6 @@ final class AuthorsViewController: ObjectsListViewController
 		tableView.delegate = self
 		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
-		tableView.delegate = self
 		view.backgroundColor = .white
 		title = "👨‍🏫Authors"
 		tabBarItem = UITabBarItem(title: "Authors", image: #imageLiteral(resourceName: "writer"), tag: 3)

@@ -27,7 +27,7 @@ final class AuthorsPresenter
 												 qos: .userInteractive,
 												 attributes: .concurrent)
 
-	init(repository: IAuthorsRepository, router: IAuthorRouter) {
+	init(repository: IAuthorsRepository & IDataRepository, router: IAuthorRouter) {
 		self.repository = repository
 		self.router = router
 		setupView(with: nil)
@@ -75,7 +75,7 @@ extension AuthorsPresenter: IAuthorsPresenter
 		loadAuthorsQueue.async { [weak self] in
 			guard let self = self else { return }
 			let author = self.authors[index]
-			self.repository.dataRepository.loadImage(urlString:
+			self.repository.loadImage(urlString:
 				String.getUrlString(image: author.thumbnail, variant: ThumbnailVarians.standardMedium))
 			{ imageResult in
 				switch imageResult {

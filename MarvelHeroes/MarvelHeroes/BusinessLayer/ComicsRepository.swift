@@ -12,22 +12,17 @@ typealias ComicsResult = Result<ComicDataWrapper, ServiceError>
 
 protocol IComicsRepository
 {
-	var dataRepository: IDataRepository { get }
-
 	func getComicsRequest(fromPastScreen: UrlPath, objectId: String?, searchResult: String?) -> URL?
 	func loadComics(fromPastScreen: UrlPath,
 					with id: Int?,
 					searchResult: String?,
 					_ completion: @escaping (ComicsResult) -> Void)
+	func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void)
+	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void)
 }
 
-final class ComicsRepository
+final class ComicsRepository: DataRepository
 {
-	var dataRepository: IDataRepository
-
-	init(dataRepository: IDataRepository) {
-		self.dataRepository = dataRepository
-	}
 }
 
 extension ComicsRepository: IComicsRepository
@@ -60,7 +55,7 @@ extension ComicsRepository: IComicsRepository
 		guard let url = getComicsRequest(fromPastScreen: fromPastScreen,
 										 objectId: objectId,
 										 searchResult: searchResult) else { return }
-		dataRepository.fetchData(from: url) { comicsResult in
+		fetchData(from: url) { comicsResult in
 			switch comicsResult {
 			case .success(let data):
 				do {

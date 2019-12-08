@@ -17,7 +17,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 	func application(_ application: UIApplication,
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
-		let tabBarController = MarvelTabBarController(nibName: nil, bundle: nil)
+		let tabBarController = MarvelTabBarController()
 		window?.rootViewController = tabBarController
 		window?.makeKeyAndVisible()
 		return true

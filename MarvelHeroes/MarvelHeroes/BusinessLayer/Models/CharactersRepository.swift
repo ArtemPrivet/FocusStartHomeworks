@@ -12,21 +12,17 @@ typealias CharactersResult = Result<CharacterDataWrapper, ServiceError>
 
 protocol ICharactersRepository
 {
-	var dataRepository: IDataRepository { get }
-
 	func getCharactersRequest(fromPastScree: UrlPath, comicsId: String?, searchResult: String?) -> URL?
 	func loadCharacters(fromPastScree: UrlPath,
 						with id: Int?,
 						searchResult: String?,
-						_ completion: @escaping (CharactersResult) -> Void)}
+						_ completion: @escaping (CharactersResult) -> Void)
+	func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void)
+	func loadImage(urlString: String, _ completion: @escaping (ImageResult) -> Void)
+}
 
-final class CharactersRepository
+final class CharactersRepository: DataRepository
 {
-	let dataRepository: IDataRepository
-
-	init(dataRepository: IDataRepository) {
-		self.dataRepository = dataRepository
-	}
 }
 
 extension CharactersRepository: ICharactersRepository
@@ -62,7 +58,7 @@ extension CharactersRepository: ICharactersRepository
 											 searchResult: searchResult) else {
 			completion(.failure(ServiceError.dataError(NSError())))
 			return }
-		dataRepository.fetchData(from: url) { dataResult in
+		fetchData(from: url) { dataResult in
 			switch dataResult {
 			case .success(let data):
 				do {

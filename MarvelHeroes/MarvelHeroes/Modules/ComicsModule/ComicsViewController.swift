@@ -10,7 +10,7 @@ import UIKit
 
 final class ComicsViewController: ObjectsListViewController
 {
-	let presenter: IComicsPresenter
+	private let presenter: IComicsPresenter
 
 	init(presenter: IComicsPresenter) {
 		self.presenter = presenter
@@ -24,7 +24,6 @@ final class ComicsViewController: ObjectsListViewController
 		tableView.delegate = self
 		searchController.searchResultsUpdater = self
 		searchController.searchBar.delegate = self
-		tableView.delegate = self
 		view.backgroundColor = .white
 		title = "📕Comics"
 		tabBarItem = UITabBarItem(title: "Comics", image: #imageLiteral(resourceName: "comic"), tag: 2)
