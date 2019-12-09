@@ -34,9 +34,7 @@ class ItemDetailsCollectionViewController: UICollectionViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		if navigationController?.restorationIdentifier == ModulesFactory.secondaryId {
-			title = titleText
-		}
+		if isModallyPresented { title = titleText }
 		setupCollectionView()
 		customizeCollectionViewLayout()
 		collectionView.showActivityIndicatory(delete: false)
@@ -168,7 +166,7 @@ extension ItemDetailsCollectionViewController
 	override func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let offset = scrollView.contentOffset.y
 		header?.animator?.fractionComplete = offset < 0 ? abs(offset) / 100 : 0
-		if navigationController?.restorationIdentifier == ModulesFactory.primaryId {
+		if isModallyPresented == false {
 		title = offset > 200 ? titleText : nil
 		}
 	}

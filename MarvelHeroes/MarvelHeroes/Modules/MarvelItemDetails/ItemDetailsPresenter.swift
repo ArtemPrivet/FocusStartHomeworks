@@ -128,6 +128,11 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 		if item as? Author != nil { type = .authors }
 		if item as? Comics != nil { type = .comics }
 
-		router.showViewController(item: subItems[index], type: type)
+		guard let detailVC = detailVC else { return }
+
+		router.showViewController(
+			item: subItems[index],
+			type: type,
+			isModallyPresented: detailVC.isModallyPresented)
 	}
 }

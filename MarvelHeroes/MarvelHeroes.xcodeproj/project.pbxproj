@@ -19,6 +19,7 @@
 		E94D173023976EA50070B56F /* UITableView+StubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94D172F23976EA50070B56F /* UITableView+StubView.swift */; };
 		E96C855C23954789001D9F13 /* ModulesFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96C855B23954789001D9F13 /* ModulesFactory.swift */; };
 		E99245522397FAB60032ED77 /* IMarvelItemDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99245512397FAB60032ED77 /* IMarvelItemDetails.swift */; };
+		E9ACFC8D239E3C590091CA2E /* UIViewController+isModallyPresented.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ACFC8C239E3C590091CA2E /* UIViewController+isModallyPresented.swift */; };
 		E9DD2BDC2396D92300DD1F33 /* MarvelItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DD2BDB2396D92300DD1F33 /* MarvelItemTableViewCell.swift */; };
 		E9EFC639239A4E3C00C87F04 /* ImageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EFC638239A4E3C00C87F04 /* ImageType.swift */; };
 		E9F6968D2393B9E600190117 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F6968C2393B9E600190117 /* AppDelegate.swift */; };
@@ -58,6 +59,7 @@
 		E96C855B23954789001D9F13 /* ModulesFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulesFactory.swift; sourceTree = "<group>"; };
 		E96C855E23965D71001D9F13 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		E99245512397FAB60032ED77 /* IMarvelItemDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMarvelItemDetails.swift; sourceTree = "<group>"; };
+		E9ACFC8C239E3C590091CA2E /* UIViewController+isModallyPresented.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+isModallyPresented.swift"; sourceTree = "<group>"; };
 		E9DD2BDB2396D92300DD1F33 /* MarvelItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelItemTableViewCell.swift; sourceTree = "<group>"; };
 		E9EFC638239A4E3C00C87F04 /* ImageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageType.swift; sourceTree = "<group>"; };
 		E9F696892393B9E600190117 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 				E9445DB5239BB669008C24DB /* UICollectionView+StubView.swift */,
 				E9445DB7239C1EF5008C24DB /* UIView+ActivityIndicator.swift */,
 				E943AD8F23992B52001EA119 /* UIView+AnchorsExtension.swift */,
+				E9ACFC8C239E3C590091CA2E /* UIViewController+isModallyPresented.swift */,
 			);
 			path = UIExtensions;
 			sourceTree = "<group>";
@@ -380,6 +383,7 @@
 				E9F696C72393CF4F00190117 /* JSONDataFetcher.swift in Sources */,
 				E9F696B52393C24E00190117 /* Comics.swift in Sources */,
 				E943AD9223993B8E001EA119 /* StretchyHeaderLayout.swift in Sources */,
+				E9ACFC8D239E3C590091CA2E /* UIViewController+isModallyPresented.swift in Sources */,
 				E943AD9023992B52001EA119 /* UIView+AnchorsExtension.swift in Sources */,
 				E9F696B02393BD7D00190117 /* ItemDetailsPresenter.swift in Sources */,
 				E9DD2BDC2396D92300DD1F33 /* MarvelItemTableViewCell.swift in Sources */,

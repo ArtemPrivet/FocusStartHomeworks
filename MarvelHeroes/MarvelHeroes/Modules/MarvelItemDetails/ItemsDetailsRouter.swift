@@ -10,7 +10,7 @@ import UIKit
 
 protocol IMarvelDetailsItemsRouter
 {
-	func showViewController(item: IMarvelItemDetails, type: MarvelItemType)
+	func showViewController(item: IMarvelItemDetails, type: MarvelItemType, isModallyPresented: Bool)
 }
 
 final class ItemsDetailsRouter
@@ -25,11 +25,10 @@ final class ItemsDetailsRouter
 }
 extension ItemsDetailsRouter: IMarvelDetailsItemsRouter
 {
-	func showViewController(item: IMarvelItemDetails, type: MarvelItemType) {
+	func showViewController(item: IMarvelItemDetails, type: MarvelItemType, isModallyPresented: Bool) {
 		let nextItemDetailsVC = modulesFactory.createItemDetailsModule(using: item, type: type)
-		let navController = UINavigationController(rootViewController: nextItemDetailsVC)
-		navController.restorationIdentifier = ModulesFactory.secondaryId
-		if viewController?.navigationController?.restorationIdentifier == ModulesFactory.primaryId {
+		if isModallyPresented == false {
+			let navController = UINavigationController(rootViewController: nextItemDetailsVC)
 			viewController?.present(navController, animated: true)
 		}
 		else {
