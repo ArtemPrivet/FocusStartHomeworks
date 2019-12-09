@@ -28,8 +28,8 @@ private enum TabsTitles
 
 	func createItemsListModule(with type: MarvelItemType) -> MarvelItemsTableViewController {
 		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
-		let router = MarvelItemsListRouter(modulesFactory: self, viewController: nil)
-		let presenter = MarvelItemsListPresenter(repository: repository, router: router, heroesListVC: nil)
+		let router = MarvelItemsListRouter(modulesFactory: self)
+		let presenter = MarvelItemsListPresenter(repository: repository, router: router)
 		let marvelItemsTableViewController = MarvelItemsTableViewController(
 			searchController: UISearchController(),
 			presenter: presenter,
@@ -66,7 +66,7 @@ private enum TabsTitles
 
 	func createItemDetailsModule(using item: IMarvelItemDetails, type: MarvelItemType)
 		-> ItemDetailsCollectionViewController {
-		let router = ItemsDetailsRouter(modulesFactory: self, viewController: nil)
+			let router = ItemsDetailsRouter(modulesFactory: self)
 		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
 		let presenter = ItemDetailsPresenter(item: item, repository: repository, router: router)
 		let detailVC = ItemDetailsCollectionViewController(

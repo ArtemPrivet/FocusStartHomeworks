@@ -18,9 +18,8 @@ final class MarvelItemsListRouter
 	private var modulesFactory: ModulesFactory
 	weak var viewController: MarvelItemsTableViewController?
 
-	init(modulesFactory: ModulesFactory, viewController: MarvelItemsTableViewController?) {
+	init(modulesFactory: ModulesFactory) {
 		self.modulesFactory = modulesFactory
-		self.viewController = viewController
 	}
 }
 extension MarvelItemsListRouter: IMarvelItemsRouter

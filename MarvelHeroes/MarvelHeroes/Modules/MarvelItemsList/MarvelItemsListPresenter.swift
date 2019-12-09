@@ -33,10 +33,9 @@ final class MarvelItemsListPresenter
 	private var comics = [Comics]()
 	private var authors = [Author]()
 
-	init(repository: IRepository, router: IMarvelItemsRouter, heroesListVC: MarvelItemsTableViewController?) {
+	init(repository: IRepository, router: IMarvelItemsRouter) {
 		self.repository = repository
 		self.router = router
-		self.itemsList = heroesListVC
 	}
 
 	private func fetchHeroes(type: MarvelItemType, text: String) {

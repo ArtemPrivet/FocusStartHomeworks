@@ -18,9 +18,8 @@ final class ItemsDetailsRouter
 	private var modulesFactory: ModulesFactory
 	weak var viewController: ItemDetailsCollectionViewController?
 
-	init(modulesFactory: ModulesFactory, viewController: ItemDetailsCollectionViewController?) {
+	init(modulesFactory: ModulesFactory) {
 		self.modulesFactory = modulesFactory
-		self.viewController = viewController
 	}
 }
 extension ItemsDetailsRouter: IMarvelDetailsItemsRouter
