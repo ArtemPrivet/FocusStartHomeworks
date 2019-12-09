@@ -10,6 +10,13 @@ import UIKit
 
 final class ModulesFactory
 {
+	private enum Titles
+	{
+		static let heroes = "🦸🏻‍♂️ Heroes"
+		static let comics = "🗺 Comics"
+		static let authors = "👨🏻‍🎨 Authors"
+	}
+
 	static let primaryId = "primary"
 	static let secondaryId = "secondary"
 
@@ -27,18 +34,18 @@ final class ModulesFactory
 
 		switch marvelItemsTableViewController.marvelItemType {
 		case .heroes:
-			marvelItemsTableViewController.title = "🦸🏻‍♂️ Heroes"
+			marvelItemsTableViewController.title = Titles.heroes
 			marvelItemsTableViewController.tabBarItem = UITabBarItem(
 				title: "Heroes",
 				image: UIImage(named: "shield")?.withRenderingMode(.alwaysOriginal),
 				tag: 0)
 		case .comics:
-			marvelItemsTableViewController.title = "🗺 Comics"
+			marvelItemsTableViewController.title = Titles.comics
 			marvelItemsTableViewController.tabBarItem = UITabBarItem(title: "Comics",
 																	 image: UIImage(named: "comic")?.withRenderingMode(.alwaysOriginal),
 																	 tag: 1)
 		case .authors:
-			marvelItemsTableViewController.title = "👨🏻‍🎨 Authors"
+			marvelItemsTableViewController.title = Titles.authors
 			marvelItemsTableViewController.tabBarItem = UITabBarItem(title: "Authors",
 																	 image: UIImage(named: "writer")?.withRenderingMode(.alwaysOriginal),
 																	 tag: 2)
