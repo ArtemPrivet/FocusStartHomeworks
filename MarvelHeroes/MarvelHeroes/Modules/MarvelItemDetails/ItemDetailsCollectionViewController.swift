@@ -4,26 +4,38 @@
 //
 //  Created by Mikhail Medvedev on 05.12.2019.
 //  Copyright © 2019 Mikhail Medvedev. All rights reserved.
-//  swiftlint:disable required_final
+//
 
 import UIKit
 
-class ItemDetailsCollectionViewController: UICollectionViewController
+protocol IItemDetailsList
+{
+	var marvelItemType: MarvelItemType { get }
+	var isModallyPresented: Bool { get }
+
+	func setHeaderImage(image: UIImage)
+	func setStubView(withImage: Bool, message: String, animated: Bool)
+	func reloadSection()
+	func removeStubView()
+	func removeActivityIndicator()
+}
+
+final class ItemDetailsCollectionViewController: UICollectionViewController
 {
 	private let presenter: IDetailItemPresentable
-	let itemType: MarvelItemType
+	let marvelItemType: MarvelItemType
 
 	private let cellId = "MarvelItemCollectionCell"
 	private let headerId = "HeaderId"
 	private let titleText = "Related Items"
 
-	var header: HeaderCollectionView?
+	private var header: HeaderCollectionView?
 
 	init(collectionViewLayout layout: UICollectionViewLayout,
 		 presenter: IDetailItemPresentable,
-		 itemType: MarvelItemType) {
+		 marvelItemType: MarvelItemType) {
 		self.presenter = presenter
-		self.itemType = itemType
+		self.marvelItemType = marvelItemType
 		super.init(collectionViewLayout: layout)
 	}
 
@@ -86,6 +98,32 @@ class ItemDetailsCollectionViewController: UICollectionViewController
 		}
 
 		presenter.setHeaderImage()
+	}
+}
+
+extension ItemDetailsCollectionViewController: IItemDetailsList
+{
+	func removeActivityIndicator() {
+		collectionView.removeActivityIndicator()
+	}
+
+	func reloadSection() {
+		collectionView.reloadSections([0])
+	}
+
+	func setStubView(withImage: Bool, message: String, animated: Bool) {
+		collectionView.setStubView(withImage: withImage, message: message, animated: animated)
+	}
+
+	func removeStubView() {
+		collectionView.restore()
+	}
+
+	func setHeaderImage(image: UIImage) {
+		header?.imageView.image = image
+		UIView.animate(withDuration: 1) {
+			self.header?.imageView.alpha = 1
+		}
 	}
 }
 

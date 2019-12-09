@@ -13,7 +13,7 @@ final class JSONDataFetcher: IJSONDataFetchable
 	private let networkService: INetworkRequestable
 	private let decoder = JSONDecoder()
 
-	init(networkService: INetworkRequestable = NetworkService()) {
+	init(networkService: INetworkRequestable) {
 		self.networkService = networkService
 	}
 

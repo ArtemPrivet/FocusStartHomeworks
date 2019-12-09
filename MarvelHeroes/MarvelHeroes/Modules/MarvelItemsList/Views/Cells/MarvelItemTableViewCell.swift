@@ -17,6 +17,7 @@ class MarvelItemTableViewCell: UITableViewCell
 	var infoLabel = UILabel()
 
 	var imageUrlPath: String?
+	var currentImage: UIImage? { itemImageView.image }
 
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,6 +44,10 @@ class MarvelItemTableViewCell: UITableViewCell
 
 	func configure(with author: Author) {
 		nameLabel.text = author.fullName
+	}
+
+	func setImage(image: UIImage) {
+		itemImageView.image = image
 	}
 
 	func setConstraints() {

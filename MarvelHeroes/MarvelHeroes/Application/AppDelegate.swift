@@ -18,7 +18,14 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 
 		window = UIWindow(frame: UIScreen.main.bounds)
 
-		let modulesFactory = ModulesFactory()
+		let networkService = NetworkService()
+		let jsonDataFetcher = JSONDataFetcher(networkService: networkService)
+		let networkManager = NetworkManager(networkService: networkService, jsonDataFetcher: jsonDataFetcher)
+
+		let modulesFactory = ModulesFactory(
+			networkService: networkService,
+			jsonDataFetcher: jsonDataFetcher,
+			networkManager: networkManager)
 
 		window?.rootViewController = modulesFactory.createTabBarControllerModule()
 		window?.makeKeyAndVisible()

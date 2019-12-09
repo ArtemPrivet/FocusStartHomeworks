@@ -28,7 +28,7 @@ final class ItemDetailsPresenter
 	private let router: ItemsDetailsRouter
 	private let repository: IRepository
 	private var item: IMarvelItemDetails { didSet { fetchSubItems() } }
-	weak var detailVC: ItemDetailsCollectionViewController?
+	var itemsDetailList: IItemDetailsList?
 
 	private var subItems = [IMarvelItemDetails]()
 
@@ -53,9 +53,9 @@ final class ItemDetailsPresenter
 				switch result {
 				case .success(let comics):
 					self?.subItems = comics.data.results
-					self?.detailVC?.collectionView.removeActivityIndicator()
-					self?.detailVC?.collectionView.restore()
-					self?.detailVC?.collectionView.reloadSections([0])
+					self?.itemsDetailList?.removeActivityIndicator()
+					self?.itemsDetailList?.removeStubView()
+					self?.itemsDetailList?.reloadSection()
 				case .failure: break
 				}
 			}
@@ -68,9 +68,9 @@ final class ItemDetailsPresenter
 				switch result {
 				case .success(let authors):
 					self?.subItems = authors.data.results
-					self?.detailVC?.collectionView.removeActivityIndicator()
-					self?.detailVC?.collectionView.restore()
-					self?.detailVC?.collectionView.reloadSections([0])
+					self?.itemsDetailList?.removeActivityIndicator()
+					self?.itemsDetailList?.removeStubView()
+					self?.itemsDetailList?.reloadSection()
 				case .failure: break
 				}
 			}
@@ -85,7 +85,6 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 	func getSubItemsCount() -> Int { subItems.count }
 
 	func setHeaderImage() {
-		guard detailVC?.header?.imageView != nil else { return }
 		let thumb = item.thumbnail
 		let urlString = thumb.path + ImageType.detail + thumb.thumbnailExtension
 		guard let url = URL(string: urlString) else { return }
@@ -94,10 +93,7 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 			switch result {
 			case .success(let fetchedImage):
 				DispatchQueue.main.async { [weak self] in
-					self?.detailVC?.header?.imageView.image = fetchedImage
-					UIView.animate(withDuration: 1) {
-						self?.detailVC?.header?.imageView.alpha = 1
-					}
+					self?.itemsDetailList?.setHeaderImage(image: fetchedImage)
 				}
 			case .failure: break
 			}
@@ -128,7 +124,7 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 		if item as? Author != nil { type = .authors }
 		if item as? Comics != nil { type = .comics }
 
-		guard let detailVC = detailVC else { return }
+		guard let detailVC = itemsDetailList else { return }
 
 		router.showViewController(
 			item: subItems[index],

@@ -8,6 +8,15 @@
 
 import UIKit
 
+protocol IMarvelItemsList
+{
+	var marvelItemType: MarvelItemType { get }
+
+	func setStubView(withImage: Bool, message: String, animated: Bool)
+	func reloadSection()
+	func removeStubView()
+}
+
 final class MarvelItemsTableViewController: UITableViewController
 {
 	private let searchController: UISearchController
@@ -99,14 +108,14 @@ extension MarvelItemsTableViewController
 		guard let roundedCell = tableView.dequeueReusableCell(withIdentifier:
 			RoundedMarvelItemTableViewCell.id) as? RoundedMarvelItemTableViewCell else { return portraitCell }
 
-		portraitCell.itemImageView.image = Thumbnail.placeholder
-		roundedCell.itemImageView.image = Thumbnail.placeholder
+		portraitCell.setImage(image: Thumbnail.placeholder)
+		roundedCell.setImage(image: Thumbnail.placeholder)
 
 		switch marvelItemType {
 		case .heroes:
 			let hero = presenter.getHero(ofIndex: indexPath.row)
 			roundedCell.imageUrlPath = hero.thumbnail.path
-			if roundedCell.itemImageView.image === Thumbnail.placeholder {
+			if roundedCell.currentImage === Thumbnail.placeholder {
 				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
 			}
 			roundedCell.configure(with: hero)
@@ -114,14 +123,14 @@ extension MarvelItemsTableViewController
 			let author = presenter.getAuthor(ofIndex: indexPath.row)
 			roundedCell.imageUrlPath = author.thumbnail.path
 			roundedCell.configure(with: author)
-			if roundedCell.itemImageView.image === Thumbnail.placeholder {
+			if roundedCell.currentImage === Thumbnail.placeholder {
 				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
 			}
 		case .comics:
 			let comics = presenter.getComics(ofIndex: indexPath.row)
 			portraitCell.imageUrlPath = comics.thumbnail.path
 			portraitCell.configure(with: comics)
-			if portraitCell.itemImageView.image === Thumbnail.placeholder {
+			if portraitCell.currentImage === Thumbnail.placeholder {
 				presenter.setImageToCell(useIndex: indexPath.row, cell: portraitCell)
 			}
 			return portraitCell
@@ -154,5 +163,20 @@ extension MarvelItemsTableViewController: UISearchBarDelegate
 			query.trimmingCharacters(in: .whitespaces) != "" else { return }
 		if lastSearchText == query { return }
 		presenter.searchForItems(type: marvelItemType, with: query)
+	}
+}
+
+extension MarvelItemsTableViewController: IMarvelItemsList
+{
+	func reloadSection() {
+		tableView.reloadSections([0], with: .fade)
+	}
+
+	func setStubView(withImage: Bool, message: String, animated: Bool) {
+		tableView.setStubView(withImage: withImage, message: message, animated: animated)
+	}
+
+	func removeStubView() {
+		tableView.restore()
 	}
 }

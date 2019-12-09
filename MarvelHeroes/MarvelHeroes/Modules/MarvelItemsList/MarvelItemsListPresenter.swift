@@ -27,7 +27,7 @@ final class MarvelItemsListPresenter
 {
 	private let repository: IRepository
 	private let router: IMarvelItemsRouter
-	weak var itemsList: MarvelItemsTableViewController?
+	var itemsList: IMarvelItemsList?
 
 	private var heroes = [Hero]()
 	private var comics = [Comics]()
@@ -79,21 +79,21 @@ final class MarvelItemsListPresenter
 
 	private func updateUI(items: [Decodable], text: String) {
 		DispatchQueue.main.async { [weak self] in
-			self?.itemsList?.tableView.reloadSections([0], with: .fade)
+			self?.itemsList?.reloadSection()
 			if items.isEmpty {
-				self?.itemsList?.tableView.setStubView(withImage: true,
-													   message: "Nothing found on query \"\(text)\"", animated: false)
+				self?.itemsList?.setStubView(withImage: true, message: "Nothing found on query \"\(text)\"", animated: false)
 			}
 		}
 	}
 
 	private func setTooManyRequestsStub(error: NetworkServiceError) {
 		if error.localizedDescription == NetworkServiceError.tooManyRequests.localizedDescription{
-					DispatchQueue.main.async { [weak self] in
-					self?.itemsList?.tableView.setStubView(
-						withImage: true, message: "You have exceeded your rate limit.  Please try again later.", animated: true)
-					}
-				}
+			DispatchQueue.main.async { [weak self] in
+				self?.itemsList?.setStubView(withImage: true,
+											 message: "You have exceeded your rate limit.  Please try again later.",
+											 animated: true)
+			}
+		}
 	}
 
 	private func makeImageURLString(with index: Int) -> String {
@@ -128,7 +128,7 @@ extension MarvelItemsListPresenter: IContentPresentable
 			case .success(let fetchedImage):
 				DispatchQueue.main.async {
 					if imageUrl.absoluteString.hasPrefix(cell.imageUrlPath ?? "") {
-					cell.itemImageView.image = fetchedImage
+						cell.setImage(image: fetchedImage)
 					}
 				}
 			case .failure: break

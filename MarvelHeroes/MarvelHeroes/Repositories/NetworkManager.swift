@@ -28,9 +28,7 @@ final class NetworkManager
 
 	private let cache = NSCache<NSString, UIImage>()
 
-	init(networkService: INetworkRequestable = NetworkService(),
-		 jsonDataFetcher: IJSONDataFetchable = JSONDataFetcher()
-	) {
+	init(networkService: INetworkRequestable, jsonDataFetcher: IJSONDataFetchable) {
 		self.networkService = networkService
 		self.jsonDataFetcher = jsonDataFetcher
 	}
@@ -59,7 +57,7 @@ final class NetworkManager
 		}
 	}
 
-	func makeApiURL(addingPathToComponents: String, queryItems: [URLQueryItem], withSearchText: String) -> URL? {
+	private func makeApiURL(addingPathToComponents: String, queryItems: [URLQueryItem], withSearchText: String) -> URL? {
 
 		var components = URLComponents()
 		components.scheme = "http"
@@ -104,7 +102,7 @@ extension NetworkManager: IRepositoryDataSource
 
 		guard let url = tempUrl else { return }
 
-		let jsonDataFetcher = JSONDataFetcher()
+		let jsonDataFetcher = JSONDataFetcher(networkService: networkService)
 		jsonDataFetcher.fetchJSONData(url: url, requestType: .get,
 									  headers: nil, cancelsExitingDataTask: true,
 									  completion: completion)
@@ -126,7 +124,7 @@ extension NetworkManager: IRepositoryDataSource
 			return
 		}
 
-		let jsonDataFetcher = JSONDataFetcher()
+		let jsonDataFetcher = JSONDataFetcher(networkService: networkService)
 		jsonDataFetcher.fetchJSONData(url: url, requestType: .get,
 									  headers: nil, cancelsExitingDataTask: true,
 									  completion: completion)
