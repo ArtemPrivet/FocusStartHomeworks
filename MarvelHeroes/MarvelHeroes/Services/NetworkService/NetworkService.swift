@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class NetworkService: INetworkRequestable
+final class NetworkService: NetworkRequestable
 {
 	private var dataTask: URLSessionDataTask?
 	/// Creates Data Task with request

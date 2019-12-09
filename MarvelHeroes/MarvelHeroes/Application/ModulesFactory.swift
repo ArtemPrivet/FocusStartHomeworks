@@ -24,12 +24,12 @@ private enum TabsTitles
 		static let authors = "Authors"
 	}
 
-	private let networkService: INetworkRequestable
-	private let jsonDataFetcher: IJSONDataFetchable
+	private let networkService: NetworkRequestable
+	private let jsonDataFetcher: JSONDataFetchable
 	private let networkManager: IRepositoryDataSource
 
-	init(networkService: INetworkRequestable,
-		 jsonDataFetcher: IJSONDataFetchable,
+	init(networkService: NetworkRequestable,
+		 jsonDataFetcher: JSONDataFetchable,
 		 networkManager: IRepositoryDataSource
 		 ) {
 		self.networkService = networkService

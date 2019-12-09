@@ -8,12 +8,12 @@
 
 import UIKit
 
-final class JSONDataFetcher: IJSONDataFetchable
+final class JSONDataFetcher: JSONDataFetchable
 {
-	private let networkService: INetworkRequestable
+	private let networkService: NetworkRequestable
 	private let decoder = JSONDecoder()
 
-	init(networkService: INetworkRequestable) {
+	init(networkService: NetworkRequestable) {
 		self.networkService = networkService
 	}
 

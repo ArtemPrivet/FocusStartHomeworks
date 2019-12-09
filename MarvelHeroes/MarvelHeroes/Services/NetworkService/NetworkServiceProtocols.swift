@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol INetworkRequestable
+protocol NetworkRequestable
 {
 	func request(to url: URL?,
 				 type: RequestType,
@@ -18,26 +18,11 @@ protocol INetworkRequestable
 				 responseHandler: @escaping (Result<Data, NetworkServiceError>) -> Void)
 }
 
-protocol IJSONDataFetchable
+protocol JSONDataFetchable
 {
 	func fetchJSONData<T: Decodable>(url: URL,
 									 requestType: RequestType,
 									 headers: [String: String]?,
 									 cancelsExitingDataTask: Bool,
 									 completion: @escaping (Result<T, NetworkServiceError>) -> Void)
-}
-
-protocol IJSONDataSendable
-{
-	func sendJSONData<T: Codable>(url: URL,
-								  with requestType: RequestType,
-								  headers: [String: String]?,
-								  using model: T,
-								  response: @escaping (Result<[String: Any], NetworkServiceError>) -> Void)
-
-	func sendJSONDataWithModelAsResponse<T: Codable, R: Decodable>(url: URL,
-				   with requestType: RequestType,
-				   headers: [String: String]?,
-				   using model: T,
-				   response: @escaping (Result<R, NetworkServiceError>) -> Void)
 }

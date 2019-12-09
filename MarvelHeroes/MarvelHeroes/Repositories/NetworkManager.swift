@@ -23,12 +23,12 @@ enum QueryItems
 final class NetworkManager
 {
 
-	private let networkService: INetworkRequestable
-	private let jsonDataFetcher: IJSONDataFetchable
+	private let networkService: NetworkRequestable
+	private let jsonDataFetcher: JSONDataFetchable
 
 	private let cache = NSCache<NSString, UIImage>()
 
-	init(networkService: INetworkRequestable, jsonDataFetcher: IJSONDataFetchable) {
+	init(networkService: NetworkRequestable, jsonDataFetcher: JSONDataFetchable) {
 		self.networkService = networkService
 		self.jsonDataFetcher = jsonDataFetcher
 	}

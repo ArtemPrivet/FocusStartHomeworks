@@ -19,6 +19,5 @@ enum NetworkServiceError: Error
 	case noHTTPResponse
 	case clientError
 	case serverResponseError
-	case failJSONSerialization
 	case tooManyRequests
 }
