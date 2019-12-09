@@ -120,9 +120,12 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 	func onPressed(index: Int) {
 		var type: MarvelItemType = .heroes
 
-		if item as? Hero != nil { type = .heroes }
-		if item as? Author != nil { type = .authors }
-		if item as? Comics != nil { type = .comics }
+		switch item {
+		case is Hero:   type = .heroes
+		case is Author: type = .authors
+		case is Comics: type = .comics
+		default:        assertionFailure("Неизвестный тип")
+		}
 
 		guard let detailVC = itemsDetailList else { return }
 
