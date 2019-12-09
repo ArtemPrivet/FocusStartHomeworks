@@ -26,19 +26,18 @@ private enum TabsTitles
 
 	private let networkService: NetworkRequestable
 	private let jsonDataFetcher: JSONDataFetchable
-	private let networkManager: IRepositoryDataSource
+	private let repository: IRepository
 
 	init(networkService: NetworkRequestable,
 		 jsonDataFetcher: JSONDataFetchable,
-		 networkManager: IRepositoryDataSource
-		 ) {
+		 repository: IRepository
+	) {
 		self.networkService = networkService
 		self.jsonDataFetcher = jsonDataFetcher
-		self.networkManager = networkManager
+		self.repository = repository
 	}
 
 	func createItemsListModule(with type: MarvelItemType) -> MarvelItemsTableViewController {
-		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
 		let router = MarvelItemsListRouter(modulesFactory: self)
 		let presenter = MarvelItemsListPresenter(repository: repository, router: router)
 		let marvelItemsTableViewController = MarvelItemsTableViewController(
@@ -78,7 +77,7 @@ private enum TabsTitles
 	func createItemDetailsModule(using item: IMarvelItemDetails, type: MarvelItemType)
 		-> ItemDetailsCollectionViewController {
 			let router = ItemsDetailsRouter(modulesFactory: self)
-		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
+		let repository = MarvelItemsRepository(networkService: networkService, jsonDataFetcher: jsonDataFetcher)
 		let presenter = ItemDetailsPresenter(item: item, repository: repository, router: router)
 		let detailVC = ItemDetailsCollectionViewController(
 			collectionViewLayout: StretchyHeaderLayout(),

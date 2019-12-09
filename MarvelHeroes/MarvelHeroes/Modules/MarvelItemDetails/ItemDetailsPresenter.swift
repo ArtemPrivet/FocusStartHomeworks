@@ -45,7 +45,7 @@ final class ItemDetailsPresenter
 
 	private func fetchSubItems() {
 		if item as? Hero != nil || item as? Author != nil  {
-			repository.remoteDataSource.fetchMarvelItems(
+			repository.fetchMarvelItems(
 				type: .comics, appendingPath: (item as? Hero != nil) ?
 				MarvelItemType.heroes.rawValue : MarvelItemType.authors.rawValue,
 				withId: item.id, searchText: "")
@@ -61,7 +61,7 @@ final class ItemDetailsPresenter
 			}
 		}
 		else if item as? Comics != nil {
-			repository.remoteDataSource.fetchMarvelItems(
+			repository.fetchMarvelItems(
 				type: .authors, appendingPath: MarvelItemType.comics.rawValue,
 				withId: item.id, searchText: "")
 			{ [weak self] (result: Result<AuthorsServerResponse, NetworkServiceError>) in
@@ -89,7 +89,7 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 		let urlString = thumb.path + ImageType.detail + thumb.thumbnailExtension
 		guard let url = URL(string: urlString) else { return }
 
-		repository.remoteDataSource.fetchImage(url: url) { result in
+		repository.fetchImage(url: url) { result in
 			switch result {
 			case .success(let fetchedImage):
 				DispatchQueue.main.async { [weak self] in
@@ -104,7 +104,7 @@ extension ItemDetailsPresenter: IDetailItemPresentable
 		let thumb = subItems[useIndex].thumbnail
 		guard let imageUrl = URL(string: thumb.path + ImageType.portraitSmall + thumb.thumbnailExtension) else { return }
 
-		repository.remoteDataSource.fetchImage(url: imageUrl) { result in
+		repository.fetchImage(url: imageUrl) { result in
 			switch result {
 			case .success(let fetchedImage):
 				DispatchQueue.main.async {

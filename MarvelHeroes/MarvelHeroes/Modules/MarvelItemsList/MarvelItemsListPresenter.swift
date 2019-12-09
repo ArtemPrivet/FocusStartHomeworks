@@ -39,7 +39,7 @@ final class MarvelItemsListPresenter
 	}
 
 	private func fetchHeroes(type: MarvelItemType, text: String) {
-		repository.remoteDataSource.fetchMarvelItems(
+		repository.fetchMarvelItems(
 			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<HeroesServerResponse, NetworkServiceError>) in
 				switch result {
@@ -52,7 +52,7 @@ final class MarvelItemsListPresenter
 	}
 
 	private func fetchComics(type: MarvelItemType, text: String) {
-		repository.remoteDataSource.fetchMarvelItems(
+		repository.fetchMarvelItems(
 			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<ComicsServerResponse, NetworkServiceError>) in
 				switch result {
@@ -65,7 +65,7 @@ final class MarvelItemsListPresenter
 	}
 
 	private func fetchAuthors(type: MarvelItemType, text: String) {
-		repository.remoteDataSource.fetchMarvelItems(
+		repository.fetchMarvelItems(
 			type: type, appendingPath: nil, withId: nil,
 			searchText: text) { [weak self] (result: Result<AuthorsServerResponse, NetworkServiceError>) in
 				switch result {
@@ -121,7 +121,7 @@ extension MarvelItemsListPresenter: IContentPresentable
 {
 	func setImageToCell(useIndex: Int, cell: MarvelItemTableViewCell) {
 		guard let imageUrl = URL(string: makeImageURLString(with: useIndex)) else { return }
-		repository.remoteDataSource.fetchImage(url: imageUrl) { result in
+		repository.fetchImage(url: imageUrl) { result in
 			switch result {
 			case .success(let fetchedImage):
 				DispatchQueue.main.async {

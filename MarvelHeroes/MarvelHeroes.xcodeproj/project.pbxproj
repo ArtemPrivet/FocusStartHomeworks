@@ -35,7 +35,6 @@
 		E9F696C52393CF4F00190117 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696BF2393CF4F00190117 /* NetworkService.swift */; };
 		E9F696C72393CF4F00190117 /* JSONDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696C12393CF4F00190117 /* JSONDataFetcher.swift */; };
 		E9F696C82393CF4F00190117 /* NetworkServiceProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696C22393CF4F00190117 /* NetworkServiceProtocols.swift */; };
-		E9F696C92393CF4F00190117 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696C32393CF4F00190117 /* NetworkManager.swift */; };
 		E9F696CB2393D35C00190117 /* MarvelItemsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696CA2393D35C00190117 /* MarvelItemsRepository.swift */; };
 		E9F696D12393D3F900190117 /* IRepository+IRepositoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696D02393D3F900190117 /* IRepository+IRepositoryDataSource.swift */; };
 		E9F696D82393F86A00190117 /* NetworkServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F696D72393F86A00190117 /* NetworkServiceError.swift */; };
@@ -76,7 +75,6 @@
 		E9F696BF2393CF4F00190117 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		E9F696C12393CF4F00190117 /* JSONDataFetcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDataFetcher.swift; sourceTree = "<group>"; };
 		E9F696C22393CF4F00190117 /* NetworkServiceProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkServiceProtocols.swift; sourceTree = "<group>"; };
-		E9F696C32393CF4F00190117 /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E9F696CA2393D35C00190117 /* MarvelItemsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelItemsRepository.swift; sourceTree = "<group>"; };
 		E9F696D02393D3F900190117 /* IRepository+IRepositoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IRepository+IRepositoryDataSource.swift"; sourceTree = "<group>"; };
 		E9F696D72393F86A00190117 /* NetworkServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceError.swift; sourceTree = "<group>"; };
@@ -231,7 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				E9F696D02393D3F900190117 /* IRepository+IRepositoryDataSource.swift */,
-				E9F696C32393CF4F00190117 /* NetworkManager.swift */,
 				E9F696CA2393D35C00190117 /* MarvelItemsRepository.swift */,
 			);
 			path = Repositories;
@@ -359,7 +356,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9F696C92393CF4F00190117 /* NetworkManager.swift in Sources */,
 				E9F696D82393F86A00190117 /* NetworkServiceError.swift in Sources */,
 				E9FBE7B123991D0E00CAC813 /* ItemDetailsCollectionViewController.swift in Sources */,
 				E99245522397FAB60032ED77 /* IMarvelItemDetails.swift in Sources */,

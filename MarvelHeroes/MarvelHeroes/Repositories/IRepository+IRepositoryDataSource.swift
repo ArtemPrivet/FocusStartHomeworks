@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol IRepositoryDataSource
+protocol IRepository
 {
 	func fetchMarvelItems<T: Decodable>(type: MarvelItemType,
 										appendingPath: String?,
@@ -20,9 +20,4 @@ protocol IRepositoryDataSource
 									   completion: @escaping (Result<T, NetworkServiceError>) -> Void)
 
 	func fetchImage(url: URL, completion: @escaping (Result<UIImage, NetworkServiceError>) -> Void)
-}
-
-protocol IRepository: AnyObject
-{
-	var remoteDataSource: IRepositoryDataSource { get }
 }
