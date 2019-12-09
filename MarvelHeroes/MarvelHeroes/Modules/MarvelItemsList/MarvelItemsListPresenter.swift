@@ -120,9 +120,7 @@ final class MarvelItemsListPresenter
 extension MarvelItemsListPresenter: IContentPresentable
 {
 	func setImageToCell(useIndex: Int, cell: MarvelItemTableViewCell) {
-		guard cell.imageView != nil else { return }
 		guard let imageUrl = URL(string: makeImageURLString(with: useIndex)) else { return }
-
 		repository.remoteDataSource.fetchImage(url: imageUrl) { result in
 			switch result {
 			case .success(let fetchedImage):

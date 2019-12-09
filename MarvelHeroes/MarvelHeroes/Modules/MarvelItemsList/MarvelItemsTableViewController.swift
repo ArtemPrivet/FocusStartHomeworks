@@ -58,7 +58,6 @@ final class MarvelItemsTableViewController: UITableViewController
 
 	private func configureTableView() {
 		tableView.register(MarvelItemTableViewCell.self, forCellReuseIdentifier: MarvelItemTableViewCell.identifier)
-		tableView.register(RoundedMarvelItemTableViewCell.self, forCellReuseIdentifier: RoundedMarvelItemTableViewCell.id)
 		tableView.tableFooterView = UIView()
 		tableView.setStubView(withImage: false, animated: true)
 	}
@@ -102,41 +101,37 @@ extension MarvelItemsTableViewController
 
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-		guard let portraitCell = tableView.dequeueReusableCell(withIdentifier:
+		guard let marvelItemCell = tableView.dequeueReusableCell(withIdentifier:
 		MarvelItemTableViewCell.identifier) as? MarvelItemTableViewCell else { return UITableViewCell() }
 
-		guard let roundedCell = tableView.dequeueReusableCell(withIdentifier:
-			RoundedMarvelItemTableViewCell.id) as? RoundedMarvelItemTableViewCell else { return portraitCell }
-
-		portraitCell.setImage(image: Thumbnail.placeholder)
-		roundedCell.setImage(image: Thumbnail.placeholder)
+		marvelItemCell.setImage(image: Thumbnail.placeholder)
 
 		switch marvelItemType {
 		case .heroes:
 			let hero = presenter.getHero(ofIndex: indexPath.row)
-			roundedCell.imageUrlPath = hero.thumbnail.path
-			if roundedCell.currentImage === Thumbnail.placeholder {
-				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
+			marvelItemCell.setCircleImageView()
+			marvelItemCell.imageUrlPath = hero.thumbnail.path
+			if marvelItemCell.currentImage === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: marvelItemCell)
 			}
-			roundedCell.configure(with: hero)
+			marvelItemCell.configure(with: hero)
 		case .authors:
 			let author = presenter.getAuthor(ofIndex: indexPath.row)
-			roundedCell.imageUrlPath = author.thumbnail.path
-			roundedCell.configure(with: author)
-			if roundedCell.currentImage === Thumbnail.placeholder {
-				presenter.setImageToCell(useIndex: indexPath.row, cell: roundedCell)
+			marvelItemCell.imageUrlPath = author.thumbnail.path
+			marvelItemCell.configure(with: author)
+			if marvelItemCell.currentImage === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: marvelItemCell)
 			}
 		case .comics:
 			let comics = presenter.getComics(ofIndex: indexPath.row)
-			portraitCell.imageUrlPath = comics.thumbnail.path
-			portraitCell.configure(with: comics)
-			if portraitCell.currentImage === Thumbnail.placeholder {
-				presenter.setImageToCell(useIndex: indexPath.row, cell: portraitCell)
+			marvelItemCell.imageUrlPath = comics.thumbnail.path
+			marvelItemCell.configure(with: comics)
+			if marvelItemCell.currentImage === Thumbnail.placeholder {
+				presenter.setImageToCell(useIndex: indexPath.row, cell: marvelItemCell)
 			}
-			return portraitCell
 		}
 
-		return roundedCell
+		return marvelItemCell
 	}
 
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E942309C2397C0E400A36AD4 /* RoundedMarvelItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E942309B2397C0E400A36AD4 /* RoundedMarvelItemTableViewCell.swift */; };
 		E942309E2397E33800A36AD4 /* MarvelItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E942309D2397E33800A36AD4 /* MarvelItemType.swift */; };
 		E943AD8E23992297001EA119 /* HeaderCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E943AD8D23992297001EA119 /* HeaderCollectionView.swift */; };
 		E943AD9023992B52001EA119 /* UIView+AnchorsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E943AD8F23992B52001EA119 /* UIView+AnchorsExtension.swift */; };
@@ -46,7 +45,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E942309B2397C0E400A36AD4 /* RoundedMarvelItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedMarvelItemTableViewCell.swift; sourceTree = "<group>"; };
 		E942309D2397E33800A36AD4 /* MarvelItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelItemType.swift; sourceTree = "<group>"; };
 		E943AD8D23992297001EA119 /* HeaderCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionView.swift; sourceTree = "<group>"; };
 		E943AD8F23992B52001EA119 /* UIView+AnchorsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorsExtension.swift"; sourceTree = "<group>"; };
@@ -102,7 +100,6 @@
 			isa = PBXGroup;
 			children = (
 				E9DD2BDB2396D92300DD1F33 /* MarvelItemTableViewCell.swift */,
-				E942309B2397C0E400A36AD4 /* RoundedMarvelItemTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -362,7 +359,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E942309C2397C0E400A36AD4 /* RoundedMarvelItemTableViewCell.swift in Sources */,
 				E9F696C92393CF4F00190117 /* NetworkManager.swift in Sources */,
 				E9F696D82393F86A00190117 /* NetworkServiceError.swift in Sources */,
 				E9FBE7B123991D0E00CAC813 /* ItemDetailsCollectionViewController.swift in Sources */,

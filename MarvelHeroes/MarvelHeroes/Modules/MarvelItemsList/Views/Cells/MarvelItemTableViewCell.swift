@@ -4,17 +4,19 @@
 //
 //  Created by Mikhail Medvedev on 03.12.2019.
 //  Copyright © 2019 Mikhail Medvedev. All rights reserved.
-//  swiftlint:disable required_final
+//  
 
 import UIKit
 
-class MarvelItemTableViewCell: UITableViewCell
+final class MarvelItemTableViewCell: UITableViewCell
 {
-	static let identifier = "PortraitCell"
+	static let identifier = "MarvelItemCell"
 
 	var itemImageView = UIImageView()
 	var nameLabel = UILabel()
 	var infoLabel = UILabel()
+
+	private var imagePortraitWidthConstraint: NSLayoutConstraint?
 
 	var imageUrlPath: String?
 	var currentImage: UIImage? { itemImageView.image }
@@ -23,7 +25,7 @@ class MarvelItemTableViewCell: UITableViewCell
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		accessoryType = .disclosureIndicator
 		setConstraints()
-	}
+	  }
 
 	@available(*, unavailable)
 	required init?(coder: NSCoder) {
@@ -50,9 +52,23 @@ class MarvelItemTableViewCell: UITableViewCell
 		itemImageView.image = image
 	}
 
+	func setCircleImageView() {
+		imagePortraitWidthConstraint?.isActive = false
+
+		NSLayoutConstraint.activate([
+			itemImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, constant: -Metrics.imageViewMargin),
+			])
+
+		itemImageView.layer.cornerRadius = (Metrics.rowHeight - Metrics.imageViewMargin) / 2
+		itemImageView.clipsToBounds = true
+	}
+
 	func setConstraints() {
 
 		itemImageView.translatesAutoresizingMaskIntoConstraints = false
+		imagePortraitWidthConstraint = itemImageView.widthAnchor.constraint(
+			equalTo: contentView.heightAnchor,
+			multiplier: 0.75)
 		nameLabel.translatesAutoresizingMaskIntoConstraints = false
 		infoLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -65,11 +81,12 @@ class MarvelItemTableViewCell: UITableViewCell
 		contentView.addSubview(nameLabel)
 		contentView.addSubview(infoLabel)
 
+		imagePortraitWidthConstraint?.isActive = true
+
 		NSLayoutConstraint.activate([
 			itemImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2),
 			itemImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -2),
 			itemImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-			itemImageView.widthAnchor.constraint(equalTo: contentView.heightAnchor, constant: -Metrics.imageViewMargin * 4),
 			itemImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, constant: -Metrics.imageViewMargin),
 
 			nameLabel.leadingAnchor.constraint(equalTo: itemImageView.trailingAnchor, constant: 16),
