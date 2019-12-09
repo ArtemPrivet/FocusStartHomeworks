@@ -63,7 +63,7 @@ final class HeaderCollectionView: UICollectionReusableView
 		}
 		else {
 			titleLabel.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
-			descriptionTextView.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+			descriptionTextView.font = UIFont.systemFont(ofSize: 20, weight: .bold)
 		}
 
 		titleLabel.numberOfLines = 0
