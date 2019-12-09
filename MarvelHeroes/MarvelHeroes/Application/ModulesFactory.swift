@@ -17,11 +17,17 @@ final class ModulesFactory
 		static let authors = "👨🏻‍🎨 Authors"
 	}
 
-	static let primaryId = "primary"
-	static let secondaryId = "secondary"
+private enum TabsTitles
+	{
+		static let heroes = "Heroes"
+		static let comics = "Comics"
+		static let authors = "Authors"
+	}
+
+	private let networkManager = NetworkManager()
 
 	func createItemsListModule(with type: MarvelItemType) -> MarvelItemsTableViewController {
-		let repository = MarvelItemsRepository(remoteDataSource: NetworkManager())
+		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
 		let router = MarvelItemsListRouter(modulesFactory: self, viewController: nil)
 		let presenter = MarvelItemsListPresenter(repository: repository, router: router, heroesListVC: nil)
 		let marvelItemsTableViewController = MarvelItemsTableViewController(
@@ -36,19 +42,21 @@ final class ModulesFactory
 		case .heroes:
 			marvelItemsTableViewController.title = Titles.heroes
 			marvelItemsTableViewController.tabBarItem = UITabBarItem(
-				title: "Heroes",
+				title: TabsTitles.heroes,
 				image: UIImage(named: "shield")?.withRenderingMode(.alwaysOriginal),
 				tag: 0)
 		case .comics:
 			marvelItemsTableViewController.title = Titles.comics
-			marvelItemsTableViewController.tabBarItem = UITabBarItem(title: "Comics",
-																	 image: UIImage(named: "comic")?.withRenderingMode(.alwaysOriginal),
-																	 tag: 1)
+			marvelItemsTableViewController.tabBarItem = UITabBarItem(
+				title: TabsTitles.comics,
+				image: UIImage(named: "comic")?.withRenderingMode(.alwaysOriginal),
+				tag: 1)
 		case .authors:
 			marvelItemsTableViewController.title = Titles.authors
-			marvelItemsTableViewController.tabBarItem = UITabBarItem(title: "Authors",
-																	 image: UIImage(named: "writer")?.withRenderingMode(.alwaysOriginal),
-																	 tag: 2)
+			marvelItemsTableViewController.tabBarItem = UITabBarItem(
+				title: TabsTitles.authors,
+				image: UIImage(named: "writer")?.withRenderingMode(.alwaysOriginal),
+				tag: 2)
 		}
 
 		marvelItemsTableViewController.definesPresentationContext = true
@@ -59,7 +67,7 @@ final class ModulesFactory
 	func createItemDetailsModule(using item: IMarvelItemDetails, type: MarvelItemType)
 		-> ItemDetailsCollectionViewController {
 		let router = ItemsDetailsRouter(modulesFactory: self, viewController: nil)
-		let repository = MarvelItemsRepository(remoteDataSource: NetworkManager())
+		let repository = MarvelItemsRepository(remoteDataSource: networkManager)
 		let presenter = ItemDetailsPresenter(item: item, repository: repository, router: router)
 		let detailVC = ItemDetailsCollectionViewController(
 			collectionViewLayout: StretchyHeaderLayout(),
@@ -93,7 +101,6 @@ final class ModulesFactory
 
 		tabBarController.viewControllers = controllers.map {
 			let navController = UINavigationController(rootViewController: $0)
-			navController.restorationIdentifier = ModulesFactory.primaryId
 			return navController
 		}
 
