@@ -27,8 +27,10 @@ struct Author: Decodable
 	let fullName: String?
 	let thumbnail: Thumbnail
 
-	static let empty = Author(id: 0, fullName: "",
-							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
+	static let empty = Author(
+		id: 0,
+		fullName: "",
+		thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Author: IMarvelItemDetails

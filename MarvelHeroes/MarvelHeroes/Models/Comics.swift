@@ -26,8 +26,11 @@ struct Comics: Decodable
 	let description: String?
 	let thumbnail: Thumbnail
 
-	static let empty = Comics(id: 0, title: "", description: nil,
-							  thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
+	static let empty = Comics(
+		id: 0,
+		title: "",
+		description: nil,
+		thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Comics: IMarvelItemDetails

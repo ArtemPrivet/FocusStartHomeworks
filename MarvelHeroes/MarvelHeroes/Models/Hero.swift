@@ -25,8 +25,11 @@ struct Hero: Decodable
 	let name, description: String?
 	let thumbnail: Thumbnail
 
-	static let empty = Hero(id: 0, name: "Error", description: "",
-	thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
+	static let empty = Hero(
+		id: 0,
+		name: "Error",
+		description: "",
+		thumbnail: Thumbnail(path: "", thumbnailExtension: ""))
 }
 
 extension Hero: IMarvelItemDetails
