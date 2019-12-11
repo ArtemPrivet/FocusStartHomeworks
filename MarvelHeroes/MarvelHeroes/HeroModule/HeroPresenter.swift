@@ -6,7 +6,7 @@
 //  Copyright © 2019 Igor Shelginskiy. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class HeroPresenter
 {
@@ -15,6 +15,7 @@ final class HeroPresenter
 	weak var heroVC: HeroViewController?
 	private let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 	private var heroes = [ResultChar]()
+	private var heroImage = UIImage()
 
 	init(repository: IHeroRepository, router: IHeroRouter) {
 		self.repository = repository
@@ -34,6 +35,11 @@ extension HeroPresenter: IHeroPresenter
 		heroes[index]
 	}
 
+	func showAlert(with title: String, text: String) {
+		let alert = UIAlertController(title: title, message: text, preferredStyle: .alert)
+		alert.addAction(.init(title: title, style: .default, handler: nil))
+	}
+
 	func getHeroes(of text: String) {
 		loadHeroesQueue.async { [weak self] in
 			guard let self = self else { return }
@@ -42,19 +48,32 @@ extension HeroPresenter: IHeroPresenter
 				DispatchQueue.main.async {
 					switch heroList {
 					case .success(let data):
-							self.heroes = data
+						self.heroes = data
 					case .failure(.noData):
 						self.heroes = []
 					case .failure(.invalidURL(let error)):
 						self.heroes = []
-						print(error)
+						self.showAlert(with: text, text: "\(error)")
 					case .failure(.noResponse):
 						self.heroes = []
 					}
 					self.heroVC?.show(heroes: self.heroes)
 				}
-				return
 			})
 		}
+	}
+	func getImage(of index: Int) -> UIImage {
+		let hero = self.heroes[index]
+		loadHeroesQueue.async { [weak self] in
+			if let url = URL(string: "\(hero.thumbnail.path)/standard_medium.\(hero.thumbnail.thumbnailExtension)"),
+				let heroDataImage = try? Data(contentsOf: url) {
+				DispatchQueue.main.async {
+					if let image = UIImage(data: heroDataImage) {
+						self?.heroImage = image
+					}
+				}
+			}
+		}
+		return self.heroImage
 	}
 }

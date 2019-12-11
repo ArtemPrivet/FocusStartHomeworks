@@ -12,25 +12,13 @@ import UIKit
 
 final class AppDelegate: UIResponder, UIApplicationDelegate
 {
-
 	var window: UIWindow?
-
-	private func addNavigationsVC() -> [UINavigationController] {
-		let naviHeroVC = UINavigationController(rootViewController: ModulesFactory().getHeroModule())
-		naviHeroVC.tabBarItem.image = UIImage(named: "shield")
-		let naviComicsVC = UINavigationController(rootViewController: ComicsViewController())
-		naviComicsVC.tabBarItem.image = UIImage(named: "comic")
-		let naviAuthorVC = UINavigationController(rootViewController: AuthorViewController())
-		naviAuthorVC.tabBarItem.image = UIImage(named: "writer")
-		return [naviHeroVC, naviComicsVC, naviAuthorVC]
-	}
 
 	func application(_ application: UIApplication,
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		let tabBarController = UITabBarController()
 		window = UIWindow(frame: UIScreen.main.bounds)
-		window?.rootViewController = tabBarController
-		tabBarController.viewControllers = addNavigationsVC()
+		let factory = ModulesFactory()
+		window?.rootViewController = factory.addTabBarViewController()
 		window?.makeKeyAndVisible()
 		return true
 	}

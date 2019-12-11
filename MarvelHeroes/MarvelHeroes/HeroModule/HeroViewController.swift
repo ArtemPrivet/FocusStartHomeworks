@@ -13,6 +13,7 @@ final class HeroViewController: UIViewController
 	private let presenter: IHeroPresenter
 	private var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	private var heroes = [ResultChar]()
+	private let cellIdentifier = "heroCell"
 	private let searchBar = UISearchBar()
 	private let tableView = UITableView()
 	private let request = String()
@@ -56,7 +57,7 @@ final class HeroViewController: UIViewController
 		title = "🦸‍♂️ Heroes"
 		stubImage.image = UIImage(named: "search_stub")
 		stubImage.contentMode = .scaleAspectFit
-		stubText.text = "Nothing found on query "
+		stubText.text = Constant.stub
 		tableView.isHidden = true
 		stubText.isHidden = true
 		stubText.textAlignment = .center
@@ -90,8 +91,20 @@ final class HeroViewController: UIViewController
 		])
 	}
 
-	func checkResult(ifGot: Bool) {
-		if ifGot {
+	private func updateCell(_ cell: UITableViewCell, index: Int) {
+		let hero = heroes[index]
+		cell.imageView?.image = presenter.getImage(of: index)
+		cell.imageView?.contentMode = .scaleAspectFit
+		cell.imageView?.clipsToBounds = true
+		cell.textLabel?.text = hero.name
+		cell.detailTextLabel?.text = hero.resultDescription.isEmpty ? "No info" : hero.resultDescription
+		cell.imageView?.layer.masksToBounds = true
+		cell.imageView?.layer.cornerRadius = cell.frame.size.height / 2
+		cell.layoutSubviews()
+	}
+
+	private func checkResult(didRecieved: Bool) {
+		if didRecieved {
 			self.tableView.isHidden = true
 			self.stubImage.isHidden = false
 			self.stubText.isHidden = false
@@ -113,31 +126,9 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 		return heroes.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "heroCell") ??
-			UITableViewCell(style: .subtitle, reuseIdentifier: "heroCell")
-		let hero = heroes[indexPath.row]
-		cell.textLabel?.text = hero.name
-		if hero.resultDescription.isEmpty {
-			cell.detailTextLabel?.text = "No info"
-		}
-		else {
-			cell.detailTextLabel?.text = hero.resultDescription
-		}
-		cell.imageView?.contentMode = .scaleAspectFit
-		cell.imageView?.clipsToBounds = true
-		cell.imageView?.layer.cornerRadius = cell.frame.size.height / 2
-		cell.imageView?.layer.masksToBounds = true
-		DispatchQueue(label: "loadImage", qos: .userInitiated, attributes: .concurrent).async {
-			if let url = URL(string: "\(hero.thumbnail.path)/standard_medium.\(hero.thumbnail.thumbnailExtension)"){
-				let heroDataImage = try? Data(contentsOf: url)
-				DispatchQueue.main.async {
-					if let image = heroDataImage {
-						cell.imageView?.image = UIImage(data: image)
-						cell.layoutSubviews()
-					}
-				}
-			}
-		}
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
+			UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+		updateCell(cell, index: indexPath.row)
 		return cell
 	}
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -159,7 +150,7 @@ extension HeroViewController: IHeroView
 {
 	func show(heroes: [ResultChar]) {
 		self.heroes = heroes
-		checkResult(ifGot: heroes.isEmpty)
+		checkResult(didRecieved: heroes.isEmpty)
 		self.tableView.reloadData()
 	}
 }

@@ -9,25 +9,30 @@
 import UIKit
 import CommonCrypto
 
+typealias HeroResult = Result<HeroesByID, ServiceError>
+typealias ComicResult = Result<ComicsByID, ServiceError>
+typealias HeroImageResult = Result<UIImage, ServiceError>
 final class NetService
 {
 	private let decoder = JSONDecoder()
 	private let session = URLSession(configuration: .default)
 	private var dataTask: URLSessionDataTask?
-	private let privateKey = "9e68d35d9836c3fb0bc2da77194dd8b87397b242"
-	private let publicKey = "caf6bca75564581b07d4dd518cb4626c"
-	private let ts = "1"
-	private var hashString: String {
-		return ts + privateKey + publicKey
+	private var hashString: String
+	private let tsItem: URLQueryItem
+	private let apiKeiItem: URLQueryItem
+	private let hashItem: URLQueryItem
+
+	init() {
+		hashString = Constant.ts + Constant.privateKey + Constant.publicKey
+		tsItem = URLQueryItem(name: "ts", value: Constant.ts)
+		apiKeiItem = URLQueryItem(name: "apikey", value: Constant.publicKey)
+		hashItem = URLQueryItem(name: "hash", value: hashString.md5)
 	}
 
-	typealias HeroResult = Result<HeroesByID, ServiceError>
-	typealias ComicResult = Result<ComicsByID, ServiceError>
-	typealias HeroImageResult = Result<UIImage, ServiceError>
-
 	func loadHeroes(_ text: String, completion: @escaping (HeroResult) -> Void) {
-		if var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters"){
-			urlComponents.query = "nameStartsWith=\(text)&ts=\(ts)&limit=90&apikey=\(publicKey)&hash=\(hashString.md5)"
+		if var urlComponents = URLComponents(string: Constant.starttURL + Constant.characters){
+			let textQuery = URLQueryItem(name: "nameStartsWith", value: text)
+			urlComponents.queryItems = [textQuery, apiKeiItem, tsItem, hashItem]
 			if let url = urlComponents.url {
 				dataTask = session.dataTask(with: url) { data, _, error in
 					if let error = error {
@@ -59,7 +64,7 @@ final class NetService
 	func loadComics(_ heroID: Int, completion: @escaping (ComicResult) -> Void) {
 
 		if var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters/\(heroID)/comics"){
-			urlComponents.query = "&ts=\(ts)&apikey=\(publicKey)&hash=\(hashString.md5)"
+			urlComponents.query = "&ts=\(Constant.ts)&apikey=\(Constant.publicKey)&hash=\(hashString.md5)"
 			if let url = urlComponents.url {
 				dataTask = session.dataTask(with: url) { data, _, error in
 					if let error = error {

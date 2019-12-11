@@ -6,10 +6,21 @@
 //  Copyright © 2019 Igor Shelginskiy. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 final class ModulesFactory
 {
+	func addTabBarViewController() -> UIViewController {
+		let naviHeroVC = UINavigationController(rootViewController: getHeroModule())
+		naviHeroVC.tabBarItem.image = UIImage(named: "shield")
+		let naviComicsVC = UINavigationController(rootViewController: ComicsViewController())
+		naviComicsVC.tabBarItem.image = UIImage(named: "comic")
+		let naviAuthorVC = UINavigationController(rootViewController: AuthorViewController())
+		naviAuthorVC.tabBarItem.image = UIImage(named: "writer")
+		let tabBarController = UITabBarController()
+		tabBarController.viewControllers = [naviHeroVC, naviComicsVC, naviAuthorVC]
+		return tabBarController
+	}
 
 	func getDetailModule(hero: ResultChar) -> DetailViewController {
 		let repository = ComicsRepository()

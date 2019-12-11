@@ -22,6 +22,7 @@ protocol IHeroPresenter
 {
 	func getHeroes(of text: String)
 	func showDetail(of index: Int)
+	func getImage(of index: Int) -> UIImage
 }
 
 protocol IHeroRouter
