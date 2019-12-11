@@ -29,7 +29,7 @@ final class NetworkService
 											   timestamp: String,
 											   presenterType: PresenterType,
 											   placeholderText: String) -> URLComponents? {
-		var urlComponents = URLComponents(string: beginnerURLFromDownloadHero)
+		var urlComponents = URLComponents(string: characterURL)
 		urlComponents?.queryItems = [
 			URLQueryItem(name: "nameStartsWith", value: placeholderText),
 			URLQueryItem(name: "orderBy", value: "name"),
@@ -75,7 +75,7 @@ final class NetworkService
 													 timestamp: String,
 													 presenterType: PresenterType,
 													 placeholderText: String) -> URLComponents? {
-		var urlComponents = URLComponents(string: beginnerURLFromDownloadHero + "/\(placeholderText)/" + "comics")
+		var urlComponents = URLComponents(string: characterURL + "/\(placeholderText)/" + "comics")
 		urlComponents?.queryItems = [
 			URLQueryItem(name: "limit", value: "100"),
 			URLQueryItem(name: "ts", value: timestamp),
@@ -156,9 +156,6 @@ final class NetworkService
 		}
 	}
 
-	private let beginnerURLFromDownloadHero = "https://gateway.marvel.com/v1/public/characters"
-	//private var urlComponents = URLComponents(string: "https://gateway.marvel.com/v1/public/characters")
-	//https://gateway.marvel.com:443/v1/public/characters/1009609/comics?apikey=0868a1cf9476b6000657f58609a76967
 	private func fetchData(presenterType: PresenterType,
 								 placeholderText: String,
 								 callBack: @escaping (DataResult) -> Void) {
