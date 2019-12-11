@@ -43,9 +43,7 @@ extension HeroPresenter: IHeroPresenter
 				DispatchQueue.main.async {
 					switch heroList {
 					case .success(let data):
-						if let heroes = data {
-							self.heroes = heroes
-						}
+							self.heroes = data
 					case .failure(.noData):
 						self.heroes = []
 					case .failure(.invalidURL(let error)):

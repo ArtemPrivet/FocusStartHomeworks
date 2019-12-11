@@ -18,11 +18,7 @@ final class DetailViewController: UIViewController
 	private let gradient = CAGradientLayer()
 	private let heroDescription = UITextView()
 	private let heroComicsTableView = UITableView()
-	private var heroImage: UIImageView = {
-		let view = UIImageView()
-		view.contentMode = .scaleAspectFill
-		return view
-	}()
+	private var heroImage = UIImageView()
 
 	init(presenter: IDetailPresenter) {
 		self.presenter = presenter
@@ -37,6 +33,7 @@ final class DetailViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
+		view.backgroundColor = .white
 		view.addSubview(heroImage)
 		view.addSubview(heroName)
 		view.addSubview(heroDescription)
@@ -57,6 +54,7 @@ final class DetailViewController: UIViewController
 		heroName.backgroundColor = .clear
 		heroDescription.text = presenter.getHero().resultDescription
 		heroImage.image = presenter.getImage()
+		heroImage.contentMode = .scaleAspectFit
 	}
 
 	private func setGradient() {

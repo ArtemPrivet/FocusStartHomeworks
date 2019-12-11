@@ -50,9 +50,7 @@ extension DetailPresenter: IDetailPresenter
 				DispatchQueue.main.async {
 					switch comicList {
 					case .success(let data):
-						if let comics = data {
-							self.comics = comics
-						}
+							self.comics = data
 					case .failure(.noData):
 						self.comics = []
 					case .failure(.invalidURL(let error)):

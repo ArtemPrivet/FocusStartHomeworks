@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias ComicsResult = Result<[ResultBook]?, ServiceError>
+typealias ComicsResult = Result<[ResultBook], ServiceError>
 final class ComicsRepository
 {
 	private let netService = NetService()
@@ -21,11 +21,9 @@ extension ComicsRepository: IComicsRepository
 				switch dataResult {
 				case .success(let data):
 					completion(.success(data.data.results))
-					return
 				case .failure(let error):
 					completion(.failure(.noData))
 					print(error)
-					return
 				}
 			}
 	}

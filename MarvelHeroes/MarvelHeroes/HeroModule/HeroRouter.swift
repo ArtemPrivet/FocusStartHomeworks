@@ -22,7 +22,6 @@ extension HeroRouter: IHeroRouter
 {
 	func showDetail(with hero: ResultChar) {
 		let detailViewController = factory.getDetailModule(hero: hero)
-		detailViewController.view.backgroundColor = .white
 		viewController?.navigationController?.pushViewController(detailViewController, animated: true)
 	}
 }

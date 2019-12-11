@@ -13,15 +13,11 @@ final class HeroViewController: UIViewController
 	private let presenter: IHeroPresenter
 	private var activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
 	private var heroes = [ResultChar]()
-	private var searchBar = UISearchBar()
-	private var tableView = UITableView()
-	private var request = String()
-	private var stubText = UITextView()
-	private var stubImage: UIImageView = {
-		let view = UIImageView()
-		view.contentMode = .scaleAspectFit
-		return view
-	}()
+	private let searchBar = UISearchBar()
+	private let tableView = UITableView()
+	private let request = String()
+	private let stubText = UITextView()
+	private let stubImage = UIImageView()
 
 	init(presenter: IHeroPresenter) {
 		self.presenter = presenter
@@ -51,8 +47,9 @@ final class HeroViewController: UIViewController
 		self.title = "Heroes"
 		view.backgroundColor = .white
 		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationItem.title = "🦸‍♂️ Heroes"
+		title = "🦸‍♂️ Heroes"
 		stubImage.image = UIImage(named: "search_stub")
+		stubImage.contentMode = .scaleAspectFit
 		stubText.text = "Nothing found on query "
 		tableView.isHidden = true
 		stubText.isHidden = true

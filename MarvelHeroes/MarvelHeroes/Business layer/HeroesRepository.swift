@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias CharactersResult = Result<[ResultChar]?, ServiceError>
+typealias CharactersResult = Result<[ResultChar], ServiceError>
 final class HeroesRepository
 {
 	private let netService = NetService()
@@ -21,11 +21,9 @@ extension HeroesRepository: IHeroRepository
 				switch dataResult {
 				case .success(let data):
 					completion(.success(data.data.results))
-					return
 				case .failure(let error):
 					completion(.failure(.noData))
 					print(error)
-					return
 				}
 			}
 	}
