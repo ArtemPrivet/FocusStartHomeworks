@@ -37,39 +37,35 @@ final class DetailViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		self.detailPresenter.attachViewController(viewController: self)
-		self.tableView.dataSource = self
-		self.tableView.delegate = self
 		self.view.backgroundColor = .white
+		setupNavigationBarToDetailScreen()
+		setupImageView()
+		setupNameLabel()
+		setupTableView()
+		setupDescriptionLabel()
+		detailPresenter.getDataForTableView()
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {
-		self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-		self.navigationController?.navigationBar.shadowImage = nil
-		self.navigationController?.view.backgroundColor = .white
-		self.navigationController?.navigationBar.isTranslucent = false
 		super.viewWillDisappear(animated)
+		setupNavigationBarToMainScreen()
 	}
 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
+	private func setupNavigationBarToDetailScreen() {
 		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
 		self.navigationController?.navigationBar.shadowImage = UIImage()
 		self.navigationController?.navigationBar.isTranslucent = true
 	}
 
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		setupTableView()
-		setupImageView()
-		setupNameLabel()
-		setupDescriptionLabel()
-		imageView.addGradientLayerInBackground(colors: [UIColor.white.withAlphaComponent(0.6), .white])
-		detailPresenter.getDataForTableView()
+	private func setupNavigationBarToMainScreen() {
+		self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+		self.navigationController?.navigationBar.shadowImage = nil
+		self.navigationController?.view.backgroundColor = .white
+		self.navigationController?.navigationBar.isTranslucent = false
 	}
 
 	private func setupTableView() {
 		self.view.addSubview(tableView)
-		self.tableView.translatesAutoresizingMaskIntoConstraints = false
 		var height: CGFloat = 0
 		if let tabBarHeight = self.tabBarController?.tabBar.frame.height {
 			height = tabBarHeight
@@ -82,16 +78,19 @@ final class DetailViewController: UIViewController
 		else {
 			automaticallyAdjustsScrollViewInsets = false
 		}
+		self.tableView.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
 			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-			self.tableView.heightAnchor.constraint(equalToConstant: self.view.frame.height - height),
+			self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -height),
 		])
 		self.tableView.tableHeaderView = imageView
 		self.tableView.tableFooterView = UIView()
 		self.tableView.rowHeight = UITableView.automaticDimension
 		self.tableView.estimatedRowHeight = 44
+		self.tableView.delegate = self
+		self.tableView.dataSource = self
 	}
 
 	private func setupImageView() {
@@ -99,13 +98,17 @@ final class DetailViewController: UIViewController
 		let screenWidth = screenSize.size.width
 		let screenHeight = screenSize.size.height
 		imageView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight / 1.8)
+		imageView.addGradientLayerInForeground(colors: [UIColor.white.withAlphaComponent(0.6), .white])
+		self.imageView.translatesAutoresizingMaskIntoConstraints = false
+		NSLayoutConstraint.activate([
+			self.imageView.heightAnchor.constraint(equalToConstant: screenHeight / 1.8),
+			self.imageView.widthAnchor.constraint(equalToConstant: screenWidth),
+		])
 		self.imageView.backgroundColor = .blue
-		self.imageView.layoutSubviews()
 		if let imageData = detailPresenter.imageData {
 			self.imageView.image = UIImage(data: imageData)
 			self.imageView.clipsToBounds = true
-			self.imageView.contentMode = .scaleToFill
-			self.imageView.layoutSubviews()
+			self.imageView.contentMode = .scaleAspectFill
 		}
 	}
 

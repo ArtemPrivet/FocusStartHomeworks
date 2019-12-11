@@ -140,8 +140,7 @@ extension MainScreenViewController: IMainScreen
 	func startLoading() {
 		self.notFoundImageView.hideImageView()
 		UIApplication.shared.isNetworkActivityIndicatorVisible = true
-		self.tableView.isHidden = true
-		self.view.showActivityIndicatory(containerAcitivtyIndicator: containerView,
+		self.tableView.showActivityIndicatory(containerAcitivtyIndicator: containerView,
 										 loadingView: loadingView,
 										 activityIndicator: activityIndicator)
 	}
