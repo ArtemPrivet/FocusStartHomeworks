@@ -32,3 +32,6 @@ struct Image: Decodable
 		case enlargement = "extension"
 	}
 }
+
+typealias DataResult = Result<Data, ServiceError>
+typealias CharacterResult = Result<CharacterDataWrapper, ServiceError>

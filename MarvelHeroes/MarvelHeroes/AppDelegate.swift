@@ -17,12 +17,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate
 	func application(_ application: UIApplication,
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		window = UIWindow(frame: UIScreen.main.bounds)
-		let mainScreen = MainScreen()
-		let navigationController = UINavigationController(rootViewController: mainScreen)
-		if #available(iOS 11.0, *) {
-			navigationController.navigationBar.prefersLargeTitles = true
-		}
-		window?.rootViewController = navigationController
+		let tabBar = TabBarViewController()
+		window?.rootViewController = tabBar
 		window?.makeKeyAndVisible()
 		return true
 	}

@@ -26,3 +26,5 @@ struct Series: Decodable
 	let startYear: String?
 	let thumbnail: Image?
 }
+
+typealias SeriesResult = Result<SeriesDataWrapper, ServiceError>

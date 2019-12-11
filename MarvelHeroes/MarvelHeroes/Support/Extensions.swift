@@ -56,4 +56,26 @@ extension UIView
 		gradient.colors = colors.map{ $0.cgColor }
 		self.layer.insertSublayer(gradient, at: 0)
 	}
+
+	func showActivityIndicatory(containerAcitivtyIndicator: UIView,
+								loadingView: UIView,
+								activityIndicator: UIActivityIndicatorView) {
+		containerAcitivtyIndicator.frame = self.frame
+		containerAcitivtyIndicator.center = self.center
+		containerAcitivtyIndicator.backgroundColor = self.backgroundColor
+
+		loadingView.frame = CGRect(x: 0, y: 0, width: 80, height: 80)
+		loadingView.center = self.center
+		loadingView.backgroundColor = UIColor.gray.withAlphaComponent(0.7)
+		loadingView.clipsToBounds = true
+		loadingView.layer.cornerRadius = 10
+
+		activityIndicator.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+		activityIndicator.style = .whiteLarge
+		activityIndicator.center = CGPoint(x: loadingView.frame.size.width / 2, y: loadingView.frame.size.height / 2)
+		loadingView.addSubview(activityIndicator)
+		containerAcitivtyIndicator.addSubview(loadingView)
+		self.addSubview(containerAcitivtyIndicator)
+		activityIndicator.startAnimating()
+	}
 }

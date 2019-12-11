@@ -7,35 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A1096A3239985F000FC636F /* DetailScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1096A2239985F000FC636F /* DetailScreen.swift */; };
-		3A1096A5239985F800FC636F /* DetailScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */; };
-		3A4DC4CD23969F1000264B93 /* HeroesScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */; };
 		3A5F591923940D08003FCA74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F591823940D08003FCA74 /* AppDelegate.swift */; };
 		3A5F592223940D0E003FCA74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F592123940D0E003FCA74 /* Assets.xcassets */; };
 		3A5F592523940D0E003FCA74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3A5F592323940D0E003FCA74 /* LaunchScreen.storyboard */; };
-		3A5F592E23940E77003FCA74 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F592D23940E77003FCA74 /* MainScreen.swift */; };
 		3A5F593023941483003FCA74 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F592F23941483003FCA74 /* NetworkService.swift */; };
 		3A5F593223941895003FCA74 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F593123941895003FCA74 /* Extensions.swift */; };
 		3A5F593423941ECB003FCA74 /* NetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */; };
 		3A5F59362394512C003FCA74 /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A5F59352394512C003FCA74 /* Hero.swift */; };
+		3A6CFCB5239FA1310084D12F /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A6CFCB4239FA1310084D12F /* Router.swift */; };
 		3A8DD52E239AB95700AC61C0 /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A8DD52D239AB95700AC61C0 /* Series.swift */; };
+		3AB7C575239C19930059C41E /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C574239C19930059C41E /* MainScreenViewController.swift */; };
+		3AB7C577239C1A640059C41E /* MainScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C576239C1A640059C41E /* MainScreenPresenter.swift */; };
+		3AB7C579239C2F0E0059C41E /* StructForPresenterArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C578239C2F0E0059C41E /* StructForPresenterArray.swift */; };
+		3AB7C57B239C35F30059C41E /* PresenterType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C57A239C35F30059C41E /* PresenterType.swift */; };
+		3AB7C57D239C3ABC0059C41E /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C57C239C3ABC0059C41E /* DetailViewController.swift */; };
+		3AB7C57F239C3AC60059C41E /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C57E239C3AC60059C41E /* DetailPresenter.swift */; };
+		3AB7C581239C41430059C41E /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AB7C580239C41430059C41E /* ServiceError.swift */; };
+		3ABDFBE1239BA4A90051EC02 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ABDFBE0239BA4A90051EC02 /* TabBarViewController.swift */; };
+		3AC20BC423A0395C003E45B2 /* Creator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC20BC323A0395B003E45B2 /* Creator.swift */; };
+		3AD5F04623A132BC0079B660 /* NotFoundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AD5F04523A132BC0079B660 /* NotFoundImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3A1096A2239985F000FC636F /* DetailScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailScreen.swift; sourceTree = "<group>"; };
-		3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailScreenPresenter.swift; sourceTree = "<group>"; };
-		3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroesScreenPresenter.swift; sourceTree = "<group>"; };
 		3A5F591523940D08003FCA74 /* MarvelHeroes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarvelHeroes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A5F591823940D08003FCA74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3A5F592123940D0E003FCA74 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A5F592423940D0E003FCA74 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3A5F592623940D0E003FCA74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A5F592D23940E77003FCA74 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		3A5F592F23941483003FCA74 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		3A5F593123941895003FCA74 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3A5F593323941ECB003FCA74 /* NetworkProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkProtocol.swift; sourceTree = "<group>"; };
 		3A5F59352394512C003FCA74 /* Hero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
+		3A6CFCB4239FA1310084D12F /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		3A8DD52D239AB95700AC61C0 /* Series.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
+		3AB7C574239C19930059C41E /* MainScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewController.swift; sourceTree = "<group>"; };
+		3AB7C576239C1A640059C41E /* MainScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenPresenter.swift; sourceTree = "<group>"; };
+		3AB7C578239C2F0E0059C41E /* StructForPresenterArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructForPresenterArray.swift; sourceTree = "<group>"; };
+		3AB7C57A239C35F30059C41E /* PresenterType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterType.swift; sourceTree = "<group>"; };
+		3AB7C57C239C3ABC0059C41E /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		3AB7C57E239C3AC60059C41E /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		3AB7C580239C41430059C41E /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
+		3ABDFBE0239BA4A90051EC02 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		3AC20BC323A0395B003E45B2 /* Creator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Creator.swift; sourceTree = "<group>"; };
+		3AD5F04523A132BC0079B660 /* NotFoundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotFoundImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,20 +63,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3A1096A6239985FF00FC636F /* DetailScreen */ = {
-			isa = PBXGroup;
-			children = (
-				3A1096A2239985F000FC636F /* DetailScreen.swift */,
-				3A1096A4239985F800FC636F /* DetailScreenPresenter.swift */,
-			);
-			path = DetailScreen;
-			sourceTree = "<group>";
-		};
 		3A2065D7239B1B3A00059322 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3AB7C57A239C35F30059C41E /* PresenterType.swift */,
 				3A5F59352394512C003FCA74 /* Hero.swift */,
+				3AC20BC323A0395B003E45B2 /* Creator.swift */,
 				3A8DD52D239AB95700AC61C0 /* Series.swift */,
+				3AB7C578239C2F0E0059C41E /* StructForPresenterArray.swift */,
+				3AB7C580239C41430059C41E /* ServiceError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -79,19 +88,10 @@
 		3A2065D9239B1B5900059322 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				3A6CFCB4239FA1310084D12F /* Router.swift */,
 				3A5F593123941895003FCA74 /* Extensions.swift */,
 			);
 			path = Support;
-			sourceTree = "<group>";
-		};
-		3A4DC4CB23969ECF00264B93 /* HeroesSearchScreen */ = {
-			isa = PBXGroup;
-			children = (
-				3A5F592D23940E77003FCA74 /* MainScreen.swift */,
-				3A4DC4CC23969F1000264B93 /* HeroesScreenPresenter.swift */,
-				3A1096A6239985FF00FC636F /* DetailScreen */,
-			);
-			path = HeroesSearchScreen;
 			sourceTree = "<group>";
 		};
 		3A5F590C23940D08003FCA74 = {
@@ -114,15 +114,36 @@
 			isa = PBXGroup;
 			children = (
 				3A5F591823940D08003FCA74 /* AppDelegate.swift */,
+				3ABDFBE0239BA4A90051EC02 /* TabBarViewController.swift */,
+				3AD5F04523A132BC0079B660 /* NotFoundImage.swift */,
+				3AD5F04323A131E30079B660 /* MainScreen */,
+				3A2065D8239B1B4700059322 /* Network */,
 				3A2065D7239B1B3A00059322 /* Model */,
-				3A4DC4CB23969ECF00264B93 /* HeroesSearchScreen */,
-				3A5F592123940D0E003FCA74 /* Assets.xcassets */,
 				3A5F592323940D0E003FCA74 /* LaunchScreen.storyboard */,
 				3A5F592623940D0E003FCA74 /* Info.plist */,
-				3A2065D8239B1B4700059322 /* Network */,
+				3A5F592123940D0E003FCA74 /* Assets.xcassets */,
 				3A2065D9239B1B5900059322 /* Support */,
 			);
 			path = MarvelHeroes;
+			sourceTree = "<group>";
+		};
+		3AD5F04323A131E30079B660 /* MainScreen */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7C574239C19930059C41E /* MainScreenViewController.swift */,
+				3AB7C576239C1A640059C41E /* MainScreenPresenter.swift */,
+				3AD5F04423A131F60079B660 /* DetailScreen */,
+			);
+			path = MainScreen;
+			sourceTree = "<group>";
+		};
+		3AD5F04423A131F60079B660 /* DetailScreen */ = {
+			isa = PBXGroup;
+			children = (
+				3AB7C57C239C3ABC0059C41E /* DetailViewController.swift */,
+				3AB7C57E239C3AC60059C41E /* DetailPresenter.swift */,
+			);
+			path = DetailScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -217,15 +238,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A1096A3239985F000FC636F /* DetailScreen.swift in Sources */,
-				3A5F592E23940E77003FCA74 /* MainScreen.swift in Sources */,
+				3ABDFBE1239BA4A90051EC02 /* TabBarViewController.swift in Sources */,
+				3AB7C577239C1A640059C41E /* MainScreenPresenter.swift in Sources */,
 				3A5F593023941483003FCA74 /* NetworkService.swift in Sources */,
 				3A5F593423941ECB003FCA74 /* NetworkProtocol.swift in Sources */,
+				3A6CFCB5239FA1310084D12F /* Router.swift in Sources */,
+				3AB7C581239C41430059C41E /* ServiceError.swift in Sources */,
+				3AD5F04623A132BC0079B660 /* NotFoundImage.swift in Sources */,
 				3A5F59362394512C003FCA74 /* Hero.swift in Sources */,
 				3A8DD52E239AB95700AC61C0 /* Series.swift in Sources */,
-				3A1096A5239985F800FC636F /* DetailScreenPresenter.swift in Sources */,
 				3A5F591923940D08003FCA74 /* AppDelegate.swift in Sources */,
-				3A4DC4CD23969F1000264B93 /* HeroesScreenPresenter.swift in Sources */,
+				3AC20BC423A0395C003E45B2 /* Creator.swift in Sources */,
+				3AB7C57B239C35F30059C41E /* PresenterType.swift in Sources */,
+				3AB7C57D239C3ABC0059C41E /* DetailViewController.swift in Sources */,
+				3AB7C575239C19930059C41E /* MainScreenViewController.swift in Sources */,
+				3AB7C579239C2F0E0059C41E /* StructForPresenterArray.swift in Sources */,
+				3AB7C57F239C3AC60059C41E /* DetailPresenter.swift in Sources */,
 				3A5F593223941895003FCA74 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
