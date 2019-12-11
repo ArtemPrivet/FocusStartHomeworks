@@ -9,12 +9,12 @@
 import UIKit
 protocol IRepository
 {
-	func decodeCharacters(_ completion: @escaping (CharacterResult) -> Void)
+	func loadCharacters(_ completion: @escaping (CharacterResult) -> Void)
 	func loadCharacterImage(for characterImage: Image,
 							size: String,
 							_ completion: @escaping (CharacterImageResult) -> Void)
-	func decodeCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void)
-	func decodeComics(by characterId: Int, _ completion: @escaping (ComicResult) -> Void)
+	func loadCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void)
+	func loadComics(by characterId: Int, _ completion: @escaping (ComicResult) -> Void)
 }
 typealias CharacterResult = Result<[Character]?, ServiceError>
 typealias CharacterImageResult = Result<UIImage, ServiceError>
@@ -26,7 +26,7 @@ final class Repository: IRepository
 	init(remoteDataService: IRemoteDataService) {
 		self.remoteDataService = remoteDataService
 	}
-	func decodeCharacters(_ completion: @escaping (CharacterResult) -> Void){
+	func loadCharacters(_ completion: @escaping (CharacterResult) -> Void){
 		remoteDataService.loadCharacters { result in
 			switch result {
 			case .success(let data):
@@ -63,7 +63,7 @@ final class Repository: IRepository
 			}
 		}
 	}
-	func decodeCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void) {
+	func loadCharacter(by characterName: String, _ completion: @escaping (CharacterResult) -> Void) {
 		remoteDataService.loadCharacter(by: characterName) { result in
 			switch result {
 			case .success(let result):
@@ -82,7 +82,7 @@ final class Repository: IRepository
 			}
 		}
 	}
-	func decodeComics(by characterId: Int, _ completion: @escaping (ComicResult) -> Void) {
+	func loadComics(by characterId: Int, _ completion: @escaping (ComicResult) -> Void) {
 		remoteDataService.loadComics(by: characterId) { result in
 			switch result {
 			case .success(let result):

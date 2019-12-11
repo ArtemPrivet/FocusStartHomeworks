@@ -12,12 +12,12 @@ import UIKit
 typealias DataResult = Result<Data, ServiceError>
 protocol IRemoteDataService
 {
-	func loadCharacters(_ completion: @escaping (DataResult) -> Void)
+	func loadCharacters(completion: @escaping (DataResult) -> Void)
 	func loadCharacterImage(for characterImage: Image,
 							size: String,
-							_ completion: @escaping (DataResult) -> Void)
-	func loadCharacter(by characterName: String, _ completion: @escaping (DataResult) -> Void)
-	func loadComics(by characterID: Int, _ completion: @escaping (DataResult) -> Void)
+							completion: @escaping (DataResult) -> Void)
+	func loadCharacter(by characterName: String, completion: @escaping (DataResult) -> Void)
+	func loadComics(by characterID: Int, completion: @escaping (DataResult) -> Void)
 }
 final class RemoteDataService
 {
@@ -42,7 +42,7 @@ final class RemoteDataService
 		apiKeyQueryItem = URLQueryItem(name: "apikey", value: publicApiKey)
 		limitQueryItem = URLQueryItem(name: "limit", value: "\(limit)")
 	}
-	private func fetchData(from url: URL, _ completion: @escaping (DataResult) -> Void) {
+	private func fetchData(from url: URL, completion: @escaping (DataResult) -> Void) {
 		dataTask = session.dataTask(with: url) { data, response, error in
 			if let error = error {
 				completion(.failure(.invalidURL(error)))
@@ -71,7 +71,7 @@ final class RemoteDataService
 }
 extension RemoteDataService: IRemoteDataService
 {
-	func loadCharacters(_ completion: @escaping (DataResult) -> Void) {
+	func loadCharacters(completion: @escaping (DataResult) -> Void) {
 		let resultStringURL = defaultURL + URLPoints.characters
 		var urlComponents = URLComponents(string: resultStringURL)
 		urlComponents?.queryItems = [limitQueryItem, apiKeyQueryItem, tsQueryItem, hashQueryItem]
@@ -90,7 +90,7 @@ extension RemoteDataService: IRemoteDataService
 	}
 	func loadCharacterImage(for characterImage: Image,
 							size: String,
-							_ completion: @escaping (DataResult) -> Void) {
+							completion: @escaping (DataResult) -> Void) {
 		guard let path = characterImage.path,
 			let imageExtension = characterImage.imageExtension else { return }
 		let urlString = "\(path)\(size).\(imageExtension)"
@@ -104,7 +104,7 @@ extension RemoteDataService: IRemoteDataService
 			}
 		}
 	}
-	func loadCharacter(by characterName: String, _ completion: @escaping (DataResult) -> Void) {
+	func loadCharacter(by characterName: String, completion: @escaping (DataResult) -> Void) {
 		dataTask?.cancel()
 		let resultStringURL = defaultURL + URLPoints.characters
 		var urlComponents = URLComponents(string: resultStringURL)
@@ -123,7 +123,7 @@ extension RemoteDataService: IRemoteDataService
 			}
 		}
 	}
-	func loadComics(by characterID: Int, _ completion: @escaping (DataResult) -> Void) {
+	func loadComics(by characterID: Int, completion: @escaping (DataResult) -> Void) {
 		let resultStringURL = "\(defaultURL)\(URLPoints.characters)/\(characterID)/comics"
 		var urlComponents = URLComponents(string: resultStringURL)
 		urlComponents?.queryItems = [limitQueryItem, apiKeyQueryItem, tsQueryItem, hashQueryItem]

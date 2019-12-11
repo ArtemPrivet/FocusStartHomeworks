@@ -15,7 +15,7 @@ final class CharacterInfoRouter: ICharacterInfoRouter
 	private let builder: IBuilder
 	weak var view: CharacterInfoViewController?
 
-	init(builder: Builder) {
+	init(builder: ControllerBuilder) {
 		self.builder = builder
 	}
 }

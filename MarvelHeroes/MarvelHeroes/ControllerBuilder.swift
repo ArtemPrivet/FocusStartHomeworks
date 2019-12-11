@@ -13,7 +13,7 @@ protocol IBuilder
 	func createCharactersViewController() -> CharactersViewController
 	func createCharacterInfoViewController(character: Character) -> CharacterInfoViewController
 }
-final class Builder: IBuilder
+final class ControllerBuilder: IBuilder
 {
 	private let remoteDataService = RemoteDataService()
 

@@ -56,7 +56,7 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 	func loadComics() {
 		guard let id = character.id else { return }
 		self.view?.showLoadingIndicator()
-		repository.decodeComics(by: id) { [weak self] result in
+		repository.loadComics(by: id) { [weak self] result in
 			DispatchQueue.main.async {
 				self?.view?.hideLoadingIndicator()
 			}

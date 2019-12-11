@@ -22,7 +22,7 @@ final class CharactersPresenter: ICharactersPresenter
 {
 	private let router: ICharactersRouter
 	private let repository: IRepository
-	internal weak var view: CharactersViewController?
+	weak var view: CharactersViewController?
 	private var characters = [Character]()
 	var characterCount: Int {
 		return characters.count
@@ -36,7 +36,7 @@ final class CharactersPresenter: ICharactersPresenter
 	func loadCharacters() {
 		self.view?.showLoadingIndicator()
 		self.view?.hideError()
-		repository.decodeCharacters { [weak self] characters in
+		repository.loadCharacters { [weak self] characters in
 			switch characters {
 			case .success(let result):
 				self?.characters = result ?? []
@@ -71,7 +71,7 @@ final class CharactersPresenter: ICharactersPresenter
 	private func loadCharacter(by characterName: String) {
 		self.view?.showLoadingIndicator()
 		self.view?.hideError()
-		repository.decodeCharacter(by: characterName) { character in
+		repository.loadCharacter(by: characterName) { character in
 			DispatchQueue.main.async {
 				self.view?.hideLoadingIndicator()
 			}
