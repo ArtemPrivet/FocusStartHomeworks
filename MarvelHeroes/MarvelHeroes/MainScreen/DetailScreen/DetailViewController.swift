@@ -86,19 +86,12 @@ final class DetailViewController: UIViewController
 			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-			self.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -height),
+			self.tableView.heightAnchor.constraint(equalToConstant: self.view.frame.height - height),
 		])
 		self.tableView.tableHeaderView = imageView
 		self.tableView.tableFooterView = UIView()
 		self.tableView.rowHeight = UITableView.automaticDimension
 		self.tableView.estimatedRowHeight = 44
-		self.tableView.translatesAutoresizingMaskIntoConstraints = false
-		NSLayoutConstraint.activate([
-			self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
-			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-			self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-		])
 	}
 
 	private func setupImageView() {
