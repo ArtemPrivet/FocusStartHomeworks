@@ -88,8 +88,8 @@ final class MainScreenViewController: UIViewController
 		presenter.attachViewController(viewController: self)
 	}
 }
-// MARK: - UITableViewDelegate, UITableViewDataSource
-extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource
+// MARK: UITableViewDataSource
+extension MainScreenViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return presenter.getRowsCount()
@@ -112,14 +112,16 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource
 		})
 		return cell
 	}
+}
+extension MainScreenViewController: UITableViewDelegate
+{
+	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		tableView.keyboardDismissMode = .onDrag
+	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		presenter.showDetail(at: indexPath)
-	}
-
-	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-		tableView.keyboardDismissMode = .onDrag
 	}
 }
 // MARK: - UISearchBarDelegate
