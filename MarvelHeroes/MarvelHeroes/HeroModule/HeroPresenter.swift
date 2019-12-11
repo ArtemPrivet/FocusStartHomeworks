@@ -10,11 +10,10 @@ import Foundation
 
 final class HeroPresenter
 {
-
 	private var repository: IHeroRepository
 	private var router: IHeroRouter
 	weak var heroVC: HeroViewController?
-	let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
+	private let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
 	private var heroes = [ResultChar]()
 
 	init(repository: IHeroRepository, router: IHeroRouter) {

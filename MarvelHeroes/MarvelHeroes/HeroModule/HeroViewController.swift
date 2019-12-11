@@ -31,18 +31,24 @@ final class HeroViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
-		view.addSubview(searchBar)
-		view.addSubview(tableView)
-		view.addSubview(stubImage)
-		view.addSubview(stubText)
-		view.addSubview(activityIndicator)
+		addSubviews()
 		setConstraints()
+		addDelegate()
+	}
+
+	private func addDelegate() {
 		tableView.delegate = self
 		tableView.dataSource = self
 		tableView.keyboardDismissMode = .onDrag
 		searchBar.delegate = self
 	}
-
+	private func addSubviews() {
+		view.addSubview(searchBar)
+		view.addSubview(tableView)
+		view.addSubview(stubImage)
+		view.addSubview(stubText)
+		view.addSubview(activityIndicator)
+	}
 	private func setupUI() {
 		self.title = "Heroes"
 		view.backgroundColor = .white

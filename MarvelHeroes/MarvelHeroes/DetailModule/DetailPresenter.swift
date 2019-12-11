@@ -10,7 +10,6 @@ import UIKit
 
 final class DetailPresenter
 {
-
 	private let hero: ResultChar
 	private var comics = [ResultBook]()
 	private var comicImage = UIImage()
