@@ -6,9 +6,10 @@
 //  Copyright © 2019 Максим Шалашников. All rights reserved.
 //
 
-import Foundation
+import UIKit
 protocol ICharacterInfoRouter
 {
+	func showAlert(title: String?, message: String, style: UIAlertController.Style)
 }
 final class CharacterInfoRouter: ICharacterInfoRouter
 {
@@ -17,5 +18,11 @@ final class CharacterInfoRouter: ICharacterInfoRouter
 
 	init(builder: ControllerBuilder) {
 		self.builder = builder
+	}
+	func showAlert(title: String?, message: String, style: UIAlertController.Style) {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: style)
+		let actionOK = UIAlertAction(title: "Ok", style: .default)
+		alert.addAction(actionOK)
+		view?.navigationController?.pushViewController(alert, animated: true)
 	}
 }

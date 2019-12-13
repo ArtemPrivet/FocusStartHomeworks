@@ -21,7 +21,7 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 {
 	private let router: ICharacterInfoRouter
 	private let repository: IRepository
-	internal var view: CharacterInfoViewController?
+	var view: CharacterInfoViewController?
 	private let character: Character
 	private var comics = [Comic]()
 	var comicsCount: Int {
@@ -49,8 +49,22 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 					self.view?.setCharacterImage(image: result)
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self.showAlert(error: message)
+				}
 			}
+		}
+	}
+	private func showAlert(error: ServiceError) {
+		switch error {
+		case .browserError:
+			router.showAlert(title: "Error", message: "Client error", style: .alert)
+		case .decodingError(let error):
+			router.showAlert(title: "Error!", message: error.localizedDescription, style: .alert)
+		case .invalidURL(let error):
+			router.showAlert(title: "Error!", message: error.localizedDescription, style: .alert)
+		default:
+			break
 		}
 	}
 	func loadComics() {
@@ -62,12 +76,14 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 			}
 			switch result {
 			case .success(let result):
-				self?.comics = result ?? []
+				self?.comics = result
 				DispatchQueue.main.async {
 					self?.view?.updateComicsTableView()
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self?.showAlert(error: message)
+				}
 			}
 		}
 	}
@@ -83,7 +99,9 @@ final class CharacterInfoPresenter: ICharacterInfoPresenter
 					self?.view?.setComicsImage(image: result, for: index)
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self?.showAlert(error: message)
+				}
 			}
 		}
 	}

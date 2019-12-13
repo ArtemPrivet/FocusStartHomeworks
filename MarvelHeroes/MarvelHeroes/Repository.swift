@@ -18,7 +18,7 @@ protocol IRepository
 }
 typealias CharacterResult = Result<[Character]?, ServiceError>
 typealias CharacterImageResult = Result<UIImage, ServiceError>
-typealias ComicResult = Result<[Comic]?, ServiceError>
+typealias ComicResult = Result<[Comic], ServiceError>
 final class Repository: IRepository
 {
 	private let remoteDataService: IRemoteDataService
@@ -39,7 +39,7 @@ final class Repository: IRepository
 					completion(.failure(.decodingError(error)))
 				}
 			case .failure(.browserError):
-				break
+				completion(.failure(.browserError))
 			default:
 				break
 			}
@@ -57,7 +57,7 @@ final class Repository: IRepository
 				}
 				completion(.success(image))
 			case .failure(.browserError):
-				break
+				completion(.failure(.browserError))
 			default:
 				break
 			}
@@ -76,7 +76,7 @@ final class Repository: IRepository
 					completion(.failure(.decodingError(error)))
 				}
 			case .failure(.browserError):
-				break
+				completion(.failure(.browserError))
 			default:
 				break
 			}
@@ -88,14 +88,17 @@ final class Repository: IRepository
 			case .success(let result):
 				do {
 					let object = try JSONDecoder().decode(ComicDataWrapper.self, from: result)
-					let comics = object.data?.results
+					guard let comics = object.data?.results else {
+						completion(.failure(.unvrapError))
+						return
+					}
 					completion(.success(comics))
 				}
 				catch {
 					completion(.failure(.decodingError(error)))
 				}
 			case .failure(.browserError):
-				break
+				completion(.failure(.browserError))
 			default:
 				break
 			}

@@ -6,11 +6,12 @@
 //  Copyright © 2019 Максим Шалашников. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 protocol ICharactersRouter
 {
 	func showCharacterInfoViewController(character: Character)
+	func showAlert(title: String?, message: String, style: UIAlertController.Style)
 }
 final class CharactersRouter: ICharactersRouter
 {
@@ -23,5 +24,11 @@ final class CharactersRouter: ICharactersRouter
 	func showCharacterInfoViewController(character: Character) {
 		let nextView = builder.createCharacterInfoViewController(character: character)
 		view?.navigationController?.pushViewController(nextView, animated: true)
+	}
+	func showAlert(title: String?, message: String, style: UIAlertController.Style) {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: style)
+		let actionOK = UIAlertAction(title: "Ok", style: .default)
+		alert.addAction(actionOK)
+		view?.present(alert, animated: true, completion: nil)
 	}
 }

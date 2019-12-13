@@ -22,6 +22,7 @@ enum ServiceError: Error
 	case serverError
 	case noHTTPResponse
 	case convertionImageError
+	case unvrapError
 }
 enum ImageSize
 {

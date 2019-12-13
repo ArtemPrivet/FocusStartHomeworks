@@ -25,7 +25,7 @@ final class RemoteDataService
 	private let session = URLSession(configuration: .default)
 	private var dataTask: URLSessionDataTask?
 	private let defaultURL = "https://gateway.marvel.com/"
-	private let publicApiKey = "e3181c7b1f125abdc0e6259f0be11722"
+	private let publicApiKey = "e3181cb1f125abdc0e6259f0be11722"
 	private let privateApiKey = "bc048b9e2276f32e49d0b762b6d93555f9e7d8cb"
 	private let hash: String
 	private var timestamp = Int(Date().timeIntervalSince1970)
@@ -84,7 +84,7 @@ extension RemoteDataService: IRemoteDataService
 			case .success(let data):
 				completion(.success(data))
 			case .failure(let message):
-				print(message)
+				completion(.failure(.browserError))
 			}
 		}
 	}

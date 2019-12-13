@@ -22,7 +22,7 @@ final class CharactersPresenter: ICharactersPresenter
 {
 	private let router: ICharactersRouter
 	private let repository: IRepository
-	weak var view: CharactersViewController?
+	var view: CharactersViewController?
 	private var characters = [Character]()
 	var characterCount: Int {
 		return characters.count
@@ -45,7 +45,9 @@ final class CharactersPresenter: ICharactersPresenter
 					self?.view?.updateTableView()
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self?.showAlert(error: message)
+				}
 			}
 		}
 	}
@@ -61,8 +63,22 @@ final class CharactersPresenter: ICharactersPresenter
 					self.view?.setImage(image: result, for: index)
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self.showAlert(error: message)
+				}
 			}
+		}
+	}
+	private func showAlert(error: ServiceError) {
+		switch error {
+		case .browserError:
+			router.showAlert(title: "Error", message: "Client error", style: .alert)
+		case .decodingError(let error):
+			router.showAlert(title: "Error!", message: error.localizedDescription, style: .alert)
+		case .invalidURL(let error):
+			router.showAlert(title: "Error!", message: error.localizedDescription, style: .alert)
+		default:
+			break
 		}
 	}
 	func getCharacter(by characterName: String) {
@@ -88,7 +104,9 @@ final class CharactersPresenter: ICharactersPresenter
 					self.view?.updateTableView()
 				}
 			case .failure(let message):
-				print(message)
+				DispatchQueue.main.async {
+					self.showAlert(error: message)
+				}
 			}
 		}
 	}

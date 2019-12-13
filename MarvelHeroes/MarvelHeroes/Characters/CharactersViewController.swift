@@ -12,7 +12,7 @@ import SnapKit
 final class CharactersViewController: UIViewController
 {
 	private lazy var searchController = UISearchController()
-	let tableView = UITableView()
+	private let tableView = UITableView()
 	private let searchStubView = UIImageView()
 	private let searchStubLabel = UILabel()
 	private let loadIndicator = UIActivityIndicatorView(style: .whiteLarge)
