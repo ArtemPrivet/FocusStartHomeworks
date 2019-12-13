@@ -42,6 +42,25 @@ final class DetailViewController: UIViewController
 		setConstraints()
 		heroComicsTableView.dataSource = self
 	}
+	private func setCell(of index: Int) -> UITableViewCell {
+		let cell = UITableView().dequeueReusableCell(withIdentifier: cellIdentifier) ??
+			UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
+		let comic = comics[index]
+		cell.textLabel?.text = comic.title
+		cell.imageView?.clipsToBounds = true
+		DispatchQueue(label: "loadImage", qos: .userInitiated, attributes: .concurrent).async {
+			if let url = URL(string: "\(comic.thumbnail.path)/portrait_small.\(comic.thumbnail.thumbnailExtension)"){
+				let heroDataImage = try? Data(contentsOf: url)
+				DispatchQueue.main.async {
+					if let image = heroDataImage {
+						cell.imageView?.image = UIImage(data: image)
+						cell.layoutSubviews()
+					}
+				}
+			}
+		}
+		return cell
+	}
 
 	private func setupUI() {
 		heroName.isOpaque = false
@@ -97,22 +116,8 @@ extension DetailViewController: UITableViewDataSource
 		return presenter.countComics()
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
-			UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-		let comic = comics[indexPath.row]
-		cell.textLabel?.text = comic.title
-		cell.imageView?.clipsToBounds = true
-		DispatchQueue(label: "loadImage", qos: .userInitiated, attributes: .concurrent).async {
-			if let url = URL(string: "\(comic.thumbnail.path)/portrait_small.\(comic.thumbnail.thumbnailExtension)"){
-				let heroDataImage = try? Data(contentsOf: url)
-				DispatchQueue.main.async {
-					if let image = heroDataImage {
-						cell.imageView?.image = UIImage(data: image)
-						cell.layoutSubviews()
-					}
-				}
-			}
-		}
+		let cell = setCell(of: indexPath.row)
+		cell.layoutSubviews()
 		return cell
 	}
 }

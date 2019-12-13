@@ -91,7 +91,7 @@ final class HeroViewController: UIViewController
 		])
 	}
 
-	private func updateCell(index: Int) -> UITableViewCell {
+	private func setCell(index: Int) -> UITableViewCell {
 		let hero = heroes[index]
 		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
 		UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
@@ -128,7 +128,7 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 		return heroes.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = updateCell(index: indexPath.row)
+		let cell = setCell(index: indexPath.row)
 		cell.layoutSubviews()
 		return cell
 	}
