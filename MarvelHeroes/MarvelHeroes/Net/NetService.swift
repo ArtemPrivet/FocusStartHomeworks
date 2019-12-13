@@ -17,7 +17,7 @@ final class NetService
 	private let decoder = JSONDecoder()
 	private let session = URLSession(configuration: .default)
 	private var dataTask: URLSessionDataTask?
-	private var hashString: String
+	private let hashString: String
 	private let tsItem: URLQueryItem
 	private let apiKeiItem: URLQueryItem
 	private let hashItem: URLQueryItem

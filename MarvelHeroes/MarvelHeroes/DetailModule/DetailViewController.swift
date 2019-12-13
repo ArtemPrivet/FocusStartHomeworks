@@ -54,7 +54,6 @@ final class DetailViewController: UIViewController
 		heroName.backgroundColor = .clear
 		heroDescription.text = presenter.getHero().resultDescription
 		heroImage.image = presenter.getImage()
-		heroImage.contentMode = .scaleAspectFit
 	}
 
 	private func setGradient() {

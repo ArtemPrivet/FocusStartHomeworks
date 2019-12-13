@@ -91,8 +91,10 @@ final class HeroViewController: UIViewController
 		])
 	}
 
-	private func updateCell(_ cell: UITableViewCell, index: Int) {
+	private func updateCell(index: Int) -> UITableViewCell {
 		let hero = heroes[index]
+		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
+		UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
 		cell.imageView?.image = presenter.getImage(of: index)
 		cell.imageView?.contentMode = .scaleAspectFit
 		cell.imageView?.clipsToBounds = true
@@ -100,7 +102,7 @@ final class HeroViewController: UIViewController
 		cell.detailTextLabel?.text = hero.resultDescription.isEmpty ? "No info" : hero.resultDescription
 		cell.imageView?.layer.masksToBounds = true
 		cell.imageView?.layer.cornerRadius = cell.frame.size.height / 2
-		cell.layoutSubviews()
+		return cell
 	}
 
 	private func checkResult(didRecieved: Bool) {
@@ -126,9 +128,8 @@ extension HeroViewController: UITableViewDataSource, UITableViewDelegate
 		return heroes.count
 	}
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) ??
-			UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
-		updateCell(cell, index: indexPath.row)
+		let cell = updateCell(index: indexPath.row)
+		cell.layoutSubviews()
 		return cell
 	}
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

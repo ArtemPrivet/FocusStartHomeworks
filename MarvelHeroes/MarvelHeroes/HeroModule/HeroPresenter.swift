@@ -13,7 +13,7 @@ final class HeroPresenter
 	private var repository: IHeroRepository
 	private var router: IHeroRouter
 	weak var heroVC: HeroViewController?
-	private let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInteractive, attributes: .concurrent)
+	private let loadHeroesQueue = DispatchQueue(label: "loadHeroesQueue", qos: .userInitiated, attributes: .concurrent)
 	private var heroes = [ResultChar]()
 	private var heroImage = UIImage()
 
