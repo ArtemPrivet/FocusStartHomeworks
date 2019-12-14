@@ -10,67 +10,95 @@ import UIKit
 
 final class Factory
 {
+	private let repository: IRepository
+
+	init(repository: IRepository) {
+		self.repository = repository
+	}
+
+	func createTabBarController() -> UITabBarController {
+		let tabBarController = UITabBarController(nibName: nil, bundle: nil)
+		return tabBarController
+	}
+
+	func createHeroesNavigationController() -> UINavigationController {
+		let heroesNavigationController = UINavigationController(rootViewController: self.createHeroesModule())
+		heroesNavigationController.navigationBar.prefersLargeTitles = true
+		heroesNavigationController.tabBarItem = UITabBarItem(title: "Heroes", image: UIImage(named: "shield"), tag: 0)
+		return heroesNavigationController
+	}
+
+	func createComicsNavigationController() -> UINavigationController {
+		let comicsNavigationController = UINavigationController(rootViewController: self.createComicsModule())
+		comicsNavigationController.tabBarItem = UITabBarItem(title: "Comics", image: UIImage(named: "comic"), tag: 1)
+		comicsNavigationController.navigationBar.prefersLargeTitles = true
+		return comicsNavigationController
+	}
+
+	func createAuthorsNavigationController() -> UINavigationController {
+		let authorsNavigationController = UINavigationController(rootViewController: self.createAuthorsModule())
+		authorsNavigationController.tabBarItem = UITabBarItem(title: "Authors",
+															  image: UIImage(named: "writer"),
+															  tag: 2)
+		authorsNavigationController.navigationBar.prefersLargeTitles = true
+		return authorsNavigationController
+	}
+
 	func createHeroesModule() -> UIViewController {
-		let repository = Repository()
 		let heroesRouter = HeroesRouter(factory: self)
-		let heroesPresenter = HeroesPresenter(heroesRouter: heroesRouter, repository: repository)
-		let heroesView = HeroesView(heroesPresenter: heroesPresenter)
+		let heroesPresenter = HeroesPresenter(heroesRouter: heroesRouter, repository: self.repository)
+		let heroesView = HeroesViewController(heroesPresenter: heroesPresenter)
 		heroesRouter.heroesView = heroesView
 		heroesPresenter.heroesView = heroesView
 		return heroesView
 	}
 
 	func createHeroeDetailsModule(withHeroe heroe: Heroe) -> UIViewController {
-		let repository = Repository()
 		let heroeDetailsRouter = HeroeDetailsRouter(factory: self)
 		let heroeDetailsPresenter = HeroeDetailsPresenter(heroeDetailsRouter: heroeDetailsRouter,
-														  repository: repository,
+														  repository: self.repository,
 														  heroe: heroe)
-		let heroeDetailsView = HeroeDetailsView(heroeDetailsPresenter: heroeDetailsPresenter)
+		let heroeDetailsView = HeroeDetailsViewController(heroeDetailsPresenter: heroeDetailsPresenter)
 		heroeDetailsRouter.heroeDetailsView = heroeDetailsView
 		heroeDetailsPresenter.heroeDetailsView = heroeDetailsView
 		return heroeDetailsView
 	}
 
 	func createComicsModule() -> UIViewController {
-		let repository = Repository()
 		let comicsRouter = ComicsRouter(factory: self)
-		let comicsPresenter = ComicsPresenter(comicsRouter: comicsRouter, repository: repository)
-		let comicsView = ComicsView(comicsPresenter: comicsPresenter)
+		let comicsPresenter = ComicsPresenter(comicsRouter: comicsRouter, repository: self.repository)
+		let comicsView = ComicsViewController(comicsPresenter: comicsPresenter)
 		comicsRouter.comicsView = comicsView
 		comicsPresenter.comicsView = comicsView
 		return comicsView
 	}
 
 	func createComicDetailsModule(withComic comic: Comic) -> UIViewController {
-		let repository = Repository()
 		let comicDetailsRouter = ComicDetailsRouter(factory: self)
 		let comicDetailsPresenter = ComicDetailsPresenter(comicDetailsRouter: comicDetailsRouter,
-														  repository: repository,
+														  repository: self.repository,
 														  comic: comic)
-		let comicDetailsView = ComicDetailsView(comicDetailsPresenter: comicDetailsPresenter)
+		let comicDetailsView = ComicDetailsViewController(comicDetailsPresenter: comicDetailsPresenter)
 		comicDetailsRouter.comicDetailsView = comicDetailsView
 		comicDetailsPresenter.comicDetailsView = comicDetailsView
 		return comicDetailsView
 	}
 
 	func createAuthorsModule() -> UIViewController {
-		let repository = Repository()
 		let authorsRouter = AuthorsRouter(factory: self)
-		let authorsPresenter = AuthorsPresenter(authorsRouter: authorsRouter, repository: repository)
-		let authorsView = AuthorsView(authorsPresenter: authorsPresenter)
+		let authorsPresenter = AuthorsPresenter(authorsRouter: authorsRouter, repository: self.repository)
+		let authorsView = AuthorsViewController(authorsPresenter: authorsPresenter)
 		authorsRouter.authorsView = authorsView
 		authorsPresenter.authorsView = authorsView
 		return authorsView
 	}
 
 	func createAuthorDetailsModule(withAuthor author: Author) -> UIViewController {
-		let repository = Repository()
 		let authorDetailsRouter = AuthorDetailsRouter(factory: self)
 		let authorDetailsPresenter = AuthorDetailsPresenter(authorDetailsRouter: authorDetailsRouter,
-														  repository: repository,
+														  repository: self.repository,
 														  author: author)
-		let authorDetailsView = AuthorDetailsView(authorDetailsPresenter: authorDetailsPresenter)
+		let authorDetailsView = AuthorDetailsViewController(authorDetailsPresenter: authorDetailsPresenter)
 		authorDetailsRouter.authorDetailsView = authorDetailsView
 		authorDetailsPresenter.authorDetailsView = authorDetailsView
 		return authorDetailsView

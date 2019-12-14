@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class HeroeDetailsView: UIViewController
+final class HeroeDetailsViewController: UIViewController
 {
 	private var heroeDetailsPresenter: IHeroeDetailsPresenter
 
@@ -39,7 +39,6 @@ final class HeroeDetailsView: UIViewController
 		self.setupNameLabel()
 		self.setupDescriptionLabel()
 		self.setupTableView()
-		self.settingsForTableView()
 		self.setupActivityInticator()
 		self.setupImageViewComicsNotFound()
 		self.setupLabelComicsNotFound()
@@ -48,9 +47,13 @@ final class HeroeDetailsView: UIViewController
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let indexPath = self.tableView.indexPathForSelectedRow{
-			let selectedCell = self.tableView.cellForRow(at: indexPath) as? HeroeDetailsTableViewCell
-			selectedCell?.comicTitleLabel.textColor = .black
+		self.removeSelectionFromCells()
+	}
+
+	func removeSelectionFromCells() {
+		if let indexPath = self.tableView.indexPathForSelectedRow {
+			let selectedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+			selectedCell?.customNameLabel.textColor = .black
 			selectedCell?.backgroundColor = .white
 		}
 	}
@@ -105,7 +108,7 @@ final class HeroeDetailsView: UIViewController
 			self.heroeNameLabel.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor,
 													 constant: Insets.topInset),
 		])
-		self.heroeNameLabel.font = UIFont(name: "Helvetica-Bold", size: 36)
+		self.heroeNameLabel.font = Fonts.helveticaBold36
 		self.heroeNameLabel.numberOfLines = 0
 		self.heroeNameLabel.isHidden = true
 		if let heroeName = self.heroeDetailsPresenter.getHeroeName(), heroeName.isEmpty == false {
@@ -129,7 +132,7 @@ final class HeroeDetailsView: UIViewController
 			self.heroeDescriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.imageView.bottomAnchor,
 															constant: Insets.bottomInset),
 			])
-		self.heroeDescriptionLabel.font = UIFont(name: "Helvetica", size: 22)
+		self.heroeDescriptionLabel.font = Fonts.helvetica22
 		self.heroeDescriptionLabel.numberOfLines = 0
 		self.heroeDescriptionLabel.isHidden = true
 		if let heroeDescription = self.heroeDetailsPresenter.getHeroeDescription(), heroeDescription.isEmpty == false {
@@ -150,12 +153,9 @@ final class HeroeDetailsView: UIViewController
 			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			self.tableView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
-			])
-	}
-
-	func settingsForTableView() {
-		self.tableView.register(HeroeDetailsTableViewCell.self,
-								forCellReuseIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
+		])
+		self.tableView.register(DetailsTableViewCell.self,
+								forCellReuseIdentifier: DetailsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.tableHeaderView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
@@ -199,13 +199,13 @@ final class HeroeDetailsView: UIViewController
 		self.labelComicsNotFound.text = "Comics not found"
 		self.labelComicsNotFound.numberOfLines = 0
 		self.labelComicsNotFound.textAlignment = .center
-		self.labelComicsNotFound.font = UIFont(name: "Helvetica", size: 18)
+		self.labelComicsNotFound.font = Fonts.helvetica18
 		self.labelComicsNotFound.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 		self.labelComicsNotFound.isHidden = true
 	}
 }
 
-extension HeroeDetailsView: UITableViewDelegate
+extension HeroeDetailsViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return TableViewConstants.tableViewCellHeight
@@ -216,45 +216,45 @@ extension HeroeDetailsView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedCell = self.tableView.cellForRow(at: indexPath) as? HeroeDetailsTableViewCell
-		selectedCell?.comicTitleLabel.textColor = .white
+		let selectedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		selectedCell?.customNameLabel.textColor = .white
 		selectedCell?.backgroundColor = #colorLiteral(red: 0.846742928, green: 0.1176741496, blue: 0, alpha: 1)
 		guard let comic = self.heroeDetailsPresenter.getComic(at: indexPath.row) else { return }
 		self.heroeDetailsPresenter.pressOnCell(withComic: comic)
 	}
 
 	func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? HeroeDetailsTableViewCell
-		highlightedCell?.comicTitleLabel.textColor = .white
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		highlightedCell?.customNameLabel.textColor = .white
 		highlightedCell?.backgroundColor = #colorLiteral(red: 1, green: 0.3005838394, blue: 0.2565174997, alpha: 1)
 	}
 
 	func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? HeroeDetailsTableViewCell
-		highlightedCell?.comicTitleLabel.textColor = .black
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		highlightedCell?.customNameLabel.textColor = .black
 		highlightedCell?.backgroundColor = .white
 	}
 }
 
-extension HeroeDetailsView: UITableViewDataSource
+extension HeroeDetailsViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.heroeDetailsPresenter.getComicsCount()
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
-			as? HeroeDetailsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: DetailsTableViewCell.cellReuseIdentifier)
+			as? DetailsTableViewCell
 
-		cell?.comicTitleLabel.text = self.heroeDetailsPresenter.getComicTitle(at: indexPath.row)
+		cell?.customNameLabel.text = self.heroeDetailsPresenter.getComicTitle(at: indexPath.row)
 		if let data = self.heroeDetailsPresenter.getComicImage(at: indexPath.row) {
-			cell?.comicImageView.image = UIImage(data: data)
+			cell?.customImageView.image = UIImage(data: data)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: HeroeDetailsTableViewCell.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: DetailsTableViewCell.cellReuseIdentifier)
 	}
 }
-extension HeroeDetailsView: IHeroeDetailsView
+extension HeroeDetailsViewController: IHeroeDetailsView
 {
 	func showData(withImageData data: Data?, withComicsCount count: Int) {
 		self.heroeNameLabel.isHidden = false

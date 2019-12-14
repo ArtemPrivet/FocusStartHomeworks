@@ -10,7 +10,7 @@ import Foundation
 
 final class AuthorsRouter
 {
-	weak var authorsView: AuthorsView?
+	weak var authorsView: AuthorsViewController?
 	private var factory: Factory
 
 	init(factory: Factory) {

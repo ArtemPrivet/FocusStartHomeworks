@@ -21,12 +21,13 @@ final class NetworkService
 		decoder.dateDecodingStrategy = .iso8601
 		return decoder
 	}()
+	private let urlBuilder = URLBuilder()
 }
 
 extension NetworkService: INetworkService
 {
 	func getHeroes(heroeName: String?, _ completion: @escaping (HeroesResult) -> Void) {
-		guard let url = self.createURL(withHeroeName: heroeName) else {
+		guard let url = self.urlBuilder.createURL(withHeroeName: heroeName) else {
 			assertionFailure("Wrong url")
 			return
 		}
@@ -63,7 +64,7 @@ extension NetworkService: INetworkService
 	}
 
 	func getComic(withUrlString urlString: String?, _ completion: @escaping (ComicsResult) -> Void) {
-		guard let urlString = urlString, let url = self.createURL(withUrlString: urlString) else {
+		guard let urlString = urlString, let url = self.urlBuilder.createURL(withUrlString: urlString) else {
 			assertionFailure("Wrong URL")
 			return
 		}
@@ -85,7 +86,7 @@ extension NetworkService: INetworkService
 	}
 
 	func getComics(withComicName name: String?, _ completion: @escaping (ComicsResult) -> Void) {
-		guard let url = self.createURL(withComicName: name) else {
+		guard let url = self.urlBuilder.createURL(withComicName: name) else {
 			assertionFailure("Wrong url")
 			return
 		}
@@ -107,7 +108,7 @@ extension NetworkService: INetworkService
 	}
 
 	func getAuthor(withUrlString urlString: String?, _ completion: @escaping (AuthorsResult) -> Void) {
-		guard let urlString = urlString, let url = self.createURL(withUrlString: urlString) else {
+		guard let urlString = urlString, let url = self.urlBuilder.createURL(withUrlString: urlString) else {
 			assertionFailure("Wrong URL")
 			return
 		}
@@ -131,7 +132,7 @@ extension NetworkService: INetworkService
 	}
 
 	func getAuthors(withAuthorName name: String?, _ completion: @escaping (AuthorsResult) -> Void) {
-		guard let url = self.createURL(withAuthorName: name) else {
+		guard let url = self.urlBuilder.createURL(withAuthorName: name) else {
 			assertionFailure("Wrong url")
 			return
 		}
@@ -155,123 +156,6 @@ extension NetworkService: INetworkService
 
 extension NetworkService
 {
-	private func createURL(withHeroeName heroeName: String?) -> URL? {
-
-		var urlComponents = URLComponents()
-		urlComponents.scheme = URLConstants.scheme
-		urlComponents.host = URLConstants.marvelURL
-		urlComponents.path = URLConstants.charactersURL
-
-		let timestamp = String(Int(Date().timeIntervalSince1970))
-		guard let hash = HashFunctions.MD5(timestamp + APIKeys.privateKey + APIKeys.publicKey) else { return nil }
-
-		if let heroeName = heroeName {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "nameStartsWith", value: heroeName),
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-			]
-		}
-		else {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-				URLQueryItem(name: "limit", value: "100"),
-			]
-		}
-
-		guard let url = urlComponents.url else {
-			assertionFailure("Wrong URL")
-			return nil
-		}
-		return url
-	}
-
-	private func createURL(withComicName comicName: String?) -> URL? {
-		var urlComponents = URLComponents()
-		urlComponents.scheme = URLConstants.scheme
-		urlComponents.host = URLConstants.marvelURL
-		urlComponents.path = URLConstants.comicsURL
-
-		let timestamp = String(Int(Date().timeIntervalSince1970))
-		guard let hash = HashFunctions.MD5(timestamp + APIKeys.privateKey + APIKeys.publicKey) else { return nil }
-
-		if let comicName = comicName {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "titleStartsWith", value: comicName),
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-			]
-		}
-		else {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-				URLQueryItem(name: "limit", value: "100"),
-			]
-		}
-
-		guard let url = urlComponents.url else {
-			assertionFailure("Wrong URL")
-			return nil
-		}
-		return url
-	}
-
-	private func createURL(withAuthorName authorName: String?) -> URL? {
-		var urlComponents = URLComponents()
-		urlComponents.scheme = URLConstants.scheme
-		urlComponents.host = URLConstants.marvelURL
-		urlComponents.path = URLConstants.authorsURL
-
-		let timestamp = String(Int(Date().timeIntervalSince1970))
-		guard let hash = HashFunctions.MD5(timestamp + APIKeys.privateKey + APIKeys.publicKey) else { return nil }
-
-		if let authorName = authorName {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "nameStartsWith", value: authorName),
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-			]
-		}
-		else {
-			urlComponents.queryItems = [
-				URLQueryItem(name: "ts", value: timestamp),
-				URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-				URLQueryItem(name: "hash", value: hash),
-				URLQueryItem(name: "limit", value: "100"),
-			]
-		}
-
-		guard let url = urlComponents.url else {
-			assertionFailure("Wrong URL")
-			return nil
-		}
-		return url
-	}
-
-	private func createURL(withUrlString urlString: String) -> URL? {
-		var urlComponents = URLComponents(string: urlString)
-
-		let timestamp = String(Int(Date().timeIntervalSince1970))
-		guard let hash = HashFunctions.MD5(timestamp + APIKeys.privateKey + APIKeys.publicKey) else { return nil }
-		urlComponents?.queryItems = [
-			URLQueryItem(name: "ts", value: timestamp),
-			URLQueryItem(name: "apikey", value: APIKeys.publicKey),
-			URLQueryItem(name: "hash", value: hash),
-		]
-		guard let url = urlComponents?.url else {
-			assertionFailure("Wrong URL")
-			return nil
-		}
-		return url
-	}
-
 	private func fetchData(fromURL url: URL, _ completion: @escaping (DataResult) -> Void) {
 
 		let session = URLSession.shared

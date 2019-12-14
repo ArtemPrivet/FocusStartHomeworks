@@ -1,16 +1,16 @@
 //
-//  HeroeDetailsRouter.swift
+//  ComicsRouter.swift
 //  MarvelHeroes
 //
-//  Created by Иван Медведев on 03/12/2019.
+//  Created by Иван Медведев on 02/12/2019.
 //  Copyright © 2019 Medvedev. All rights reserved.
 //
 
 import Foundation
 
-final class HeroeDetailsRouter
+final class ComicsRouter
 {
-	weak var heroeDetailsView: HeroeDetailsView?
+	weak var comicsView: ComicsViewController?
 	private var factory: Factory
 
 	init(factory: Factory) {
@@ -18,11 +18,11 @@ final class HeroeDetailsRouter
 	}
 }
 
-extension HeroeDetailsRouter: IHeroeDetailsRouter
+extension ComicsRouter: IComicsRouter
 {
 	func pushModuleWithComicInfo(comic: Comic) {
 		let comicDetailsVC = self.factory.createComicDetailsModule(withComic: comic)
-		self.heroeDetailsView?.navigationController?.pushViewController(comicDetailsVC,
+		self.comicsView?.navigationController?.pushViewController(comicDetailsVC,
 																  animated: true)
 	}
 }

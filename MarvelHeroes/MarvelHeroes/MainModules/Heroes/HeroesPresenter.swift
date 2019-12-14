@@ -65,22 +65,26 @@ extension HeroesPresenter: IHeroesPresenter
 	}
 }
 
-extension HeroesPresenter
+private extension HeroesPresenter
 {
-	private func loadHeroesImages(withHeroeName name: String?) {
+	func loadHeroesImages(withHeroeName name: String?) {
 		self.dispatchGroup.enter()
 		self.repository.getHeroes(withHeroeName: name) { [weak self] heroesResult in
 			guard let self = self else { return }
 			switch heroesResult {
 			case .success(let heroesDataWrapper):
 				self.heroesDataWrapper = heroesDataWrapper
+				self.getImages()
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.heroes.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
+	}
+
+	func getImages() {
+		self.heroes.removeAll()
 		self.heroesDataWrapper?.data?.results?.forEach { heroe in
 			if let path = heroe.thumbnail?.path, let thumbnailExtension = heroe.thumbnail?.thumbnailExtension {
 				self.heroes.append(HeroeViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
@@ -101,6 +105,5 @@ extension HeroesPresenter
 				self.dispatchGroup.leave()
 			})
 		}
-		self.dispatchGroup.wait()
 	}
 }

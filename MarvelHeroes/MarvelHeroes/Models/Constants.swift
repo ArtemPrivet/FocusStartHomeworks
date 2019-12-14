@@ -57,3 +57,29 @@ enum ImageSize
 	static let portrait = "/portrait_uncanny."
 	static let portraitSmall = "/portrait_small."
 }
+
+enum URLKeysConstants
+{
+	static let titleStartsWith = "titleStartsWith"
+	static let nameStartsWith = "nameStartsWith"
+	static let timestamp = "ts"
+	static let apikey = "apikey"
+	static let hash = "hash"
+	static let limit = "limit"
+}
+
+enum Fonts
+{
+	static let helvetica16 = UIFont(name: "Helvetica", size: 16)
+	static let helvetica18 = UIFont(name: "Helvetica", size: 18)
+	static let helvetica20 = UIFont(name: "Helvetica", size: 20)
+	static let helvetica22 = UIFont(name: "Helvetica", size: 22)
+	static let helveticaBold36 = UIFont(name: "Helvetica-Bold", size: 36)
+}
+
+enum Titles
+{
+	static let heroesTitle = "🦸🏼‍♂️Heroes"
+	static let comicsTitle = "📚Comics"
+	static let authorsTitle = "👨🏼‍🏫Authors"
+}

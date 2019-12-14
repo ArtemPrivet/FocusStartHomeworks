@@ -10,8 +10,11 @@ import Foundation
 
 final class Repository: IRepository
 {
+	private let networkService: INetworkService
 
-	let networkService = NetworkService()
+	init(networkService: INetworkService) {
+		self.networkService = networkService
+	}
 
 	func getHeroes(withHeroeName name: String?, _ completion: @escaping (HeroesResult) -> Void) {
 		self.networkService.getHeroes(heroeName: name) { heroesResult in

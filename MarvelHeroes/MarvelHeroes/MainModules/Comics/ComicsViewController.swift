@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ComicsView: UIViewController
+final class ComicsViewController: UIViewController
 {
 	private var comicsPresenter: IComicsPresenter
 
@@ -34,27 +34,30 @@ final class ComicsView: UIViewController
 		self.settingsForNavigationBar()
 		self.settingsForSearchController()
 		self.setupTableView()
-		self.settingsForTableView()
 		self.setupActivityInticator()
 		self.setupImageViewHeroesNotFound()
 		self.setupLabelHeroesNotFound()
-		self.loadComics(withComicName: nil)
+		self.loadComics()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.prefersLargeTitles = true
+		self.removeSelectionFromCells()
+	}
+
+	func removeSelectionFromCells() {
 		if let indexPath = self.tableView.indexPathForSelectedRow{
-			let selectedCell = self.tableView.cellForRow(at: indexPath) as? ComicsTableViewCell
-			selectedCell?.comicNameLabel.textColor = .black
-			selectedCell?.comicDescriptionLabel.textColor = .lightGray
+			let selectedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+			selectedCell?.customNameLabel.textColor = .black
+			selectedCell?.customDescriptionLabel.textColor = .lightGray
 			selectedCell?.backgroundColor = .white
 		}
 	}
 
 	func settingsForNavigationBar() {
 		self.navigationItem.searchController = searchController
-		self.navigationController?.navigationBar.topItem?.title = "📚Comics"
+		self.navigationController?.navigationBar.topItem?.title = Titles.comicsTitle
 	}
 
 	func settingsForSearchController() {
@@ -73,12 +76,9 @@ final class ComicsView: UIViewController
 			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			self.tableView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
-			])
-	}
-
-	func settingsForTableView() {
-		self.tableView.register(ComicsTableViewCell.self,
-								forCellReuseIdentifier: ComicsTableViewCell.cellReuseIdentifier)
+		])
+		self.tableView.register(CustomTableViewCell.self,
+								forCellReuseIdentifier: CustomTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
 		self.tableView.separatorColor = .gray
@@ -117,12 +117,12 @@ final class ComicsView: UIViewController
 			])
 		self.labelComicsNotFound.numberOfLines = 0
 		self.labelComicsNotFound.textAlignment = .center
-		self.labelComicsNotFound.font = UIFont(name: "Helvetica", size: 20)
+		self.labelComicsNotFound.font = Fonts.helvetica20
 		self.labelComicsNotFound.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 		self.labelComicsNotFound.isHidden = true
 	}
 
-	func loadComics(withComicName name: String?) {
+	func loadComics(withComicName name: String? = nil) {
 		self.comicsPresenter.getComics(withComicName: name)
 		self.imageViewComicsNotFound.isHidden = true
 		self.labelComicsNotFound.isHidden = true
@@ -132,7 +132,7 @@ final class ComicsView: UIViewController
 	}
 }
 
-extension ComicsView: UITableViewDelegate
+extension ComicsViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return TableViewConstants.tableViewCellHeight
@@ -143,63 +143,63 @@ extension ComicsView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedCell = self.tableView.cellForRow(at: indexPath) as? ComicsTableViewCell
-		selectedCell?.comicNameLabel.textColor = .white
-		selectedCell?.comicDescriptionLabel.textColor = .white
+		let selectedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		selectedCell?.customNameLabel.textColor = .white
+		selectedCell?.customDescriptionLabel.textColor = .white
 		selectedCell?.backgroundColor = #colorLiteral(red: 0.846742928, green: 0.1176741496, blue: 0, alpha: 1)
 		guard let comic = self.comicsPresenter.getComic(at: indexPath.row) else { return }
 		self.comicsPresenter.onCellPressed(comic: comic)
 	}
 
 	func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? ComicsTableViewCell
-		highlightedCell?.comicNameLabel.textColor = .white
-		highlightedCell?.comicDescriptionLabel.textColor = .white
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		highlightedCell?.customNameLabel.textColor = .white
+		highlightedCell?.customDescriptionLabel.textColor = .white
 		highlightedCell?.backgroundColor = #colorLiteral(red: 1, green: 0.3005838394, blue: 0.2565174997, alpha: 1)
 	}
 
 	func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? ComicsTableViewCell
-		highlightedCell?.comicNameLabel.textColor = .black
-		highlightedCell?.comicDescriptionLabel.textColor = .lightGray
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		highlightedCell?.customNameLabel.textColor = .black
+		highlightedCell?.customDescriptionLabel.textColor = .lightGray
 		highlightedCell?.backgroundColor = .white
 	}
 }
 
-extension ComicsView: UITableViewDataSource
+extension ComicsViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.comicsPresenter.getComicsCount()
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: ComicsTableViewCell.cellReuseIdentifier)
-			as? ComicsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.cellReuseIdentifier)
+			as? CustomTableViewCell
 		let comic = self.comicsPresenter.getComic(at: indexPath.row)
 
 		if let title = comic?.title, title.isEmpty == false {
-			cell?.comicNameLabel.text = title
+			cell?.customNameLabel.text = title
 		}
 		else {
-			cell?.comicNameLabel.text = "Noname"
+			cell?.customNameLabel.text = "Noname"
 		}
 
 		if let description = comic?.comicDescription, description.isEmpty == false {
-			cell?.comicDescriptionLabel.text = description
+			cell?.customDescriptionLabel.text = description
 		}
 		else {
-			cell?.comicDescriptionLabel.text = "No info"
+			cell?.customDescriptionLabel.text = "No info"
 		}
 
 		if let comicImageData = self.comicsPresenter.getComicImageData(at: indexPath.row) {
-			cell?.comicImageView.image = UIImage(data: comicImageData)
+			cell?.customImageView.image = UIImage(data: comicImageData)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: ComicsTableViewCell.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: CustomTableViewCell.cellReuseIdentifier)
 	}
 }
 
-extension ComicsView: UISearchBarDelegate
+extension ComicsViewController: UISearchBarDelegate
 {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		if self.searchController.searchBar.text?.isEmpty == false {
@@ -207,16 +207,16 @@ extension ComicsView: UISearchBarDelegate
 			self.loadComics(withComicName: heroeName)
 		}
 		else {
-			self.loadComics(withComicName: nil)
+			self.loadComics()
 		}
 	}
 
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		self.loadComics(withComicName: nil)
+		self.loadComics()
 	}
 }
 
-extension ComicsView: IComicsView
+extension ComicsViewController: IComicsView
 {
 	func reloadData(withComicsCount count: Int) {
 		self.activityIndicator.stopAnimating()

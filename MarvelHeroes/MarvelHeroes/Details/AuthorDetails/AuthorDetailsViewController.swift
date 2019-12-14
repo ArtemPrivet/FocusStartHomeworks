@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AuthorDetailsView: UIViewController
+final class AuthorDetailsViewController: UIViewController
 {
 	var authorDetailsPresenter: IAuthorDetailsPresenter
 
@@ -37,7 +37,6 @@ final class AuthorDetailsView: UIViewController
 		self.setupImageView()
 		self.setupNameLabel()
 		self.setupTableView()
-		self.settingsForTableView()
 		self.setupActivityInticator()
 		self.setupImageViewComicsNotFound()
 		self.setupLabelComicsNotFound()
@@ -46,13 +45,16 @@ final class AuthorDetailsView: UIViewController
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if let indexPath = self.tableView.indexPathForSelectedRow{
-			let selectedCell = self.tableView.cellForRow(at: indexPath) as? AuthorDetailsTableViewCell
-			selectedCell?.comicTitleLabel.textColor = .black
+		self.removeSelectionFromCells()
+	}
+
+	func removeSelectionFromCells() {
+		if let indexPath = self.tableView.indexPathForSelectedRow {
+			let selectedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+			selectedCell?.customNameLabel.textColor = .black
 			selectedCell?.backgroundColor = .white
 		}
 	}
-
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		gradient.frame = CGRect(x: 0.0, y: 0.0, width: self.imageView.frame.size.width,
@@ -103,7 +105,7 @@ final class AuthorDetailsView: UIViewController
 			self.authorNameLabel.topAnchor.constraint(equalTo: self.view.layoutMarginsGuide.topAnchor,
 													  constant: Insets.topInset),
 			])
-		self.authorNameLabel.font = UIFont(name: "Helvetica-Bold", size: 36)
+		self.authorNameLabel.font = Fonts.helveticaBold36
 		self.authorNameLabel.numberOfLines = 0
 		self.authorNameLabel.isHidden = true
 		if let authorName = self.authorDetailsPresenter.getAuthorName(), authorName.isEmpty == false {
@@ -125,11 +127,8 @@ final class AuthorDetailsView: UIViewController
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			self.tableView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
 		])
-	}
-
-	func settingsForTableView() {
-		self.tableView.register(AuthorDetailsTableViewCell.self,
-								forCellReuseIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
+		self.tableView.register(DetailsTableViewCell.self,
+								forCellReuseIdentifier: DetailsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.tableHeaderView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
@@ -173,13 +172,13 @@ final class AuthorDetailsView: UIViewController
 		self.labelComicsNotFound.text = "Comics not found"
 		self.labelComicsNotFound.numberOfLines = 0
 		self.labelComicsNotFound.textAlignment = .center
-		self.labelComicsNotFound.font = UIFont(name: "Helvetica", size: 18)
+		self.labelComicsNotFound.font = Fonts.helvetica18
 		self.labelComicsNotFound.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 		self.labelComicsNotFound.isHidden = true
 	}
 }
 
-extension AuthorDetailsView: UITableViewDelegate
+extension AuthorDetailsViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return TableViewConstants.tableViewCellHeight
@@ -190,45 +189,45 @@ extension AuthorDetailsView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedCell = self.tableView.cellForRow(at: indexPath) as? AuthorDetailsTableViewCell
-		selectedCell?.comicTitleLabel.textColor = .white
+		let selectedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		selectedCell?.customNameLabel.textColor = .white
 		selectedCell?.backgroundColor = #colorLiteral(red: 0.846742928, green: 0.1176741496, blue: 0, alpha: 1)
 		guard let comic = self.authorDetailsPresenter.getComic(at: indexPath.row) else { return }
 		self.authorDetailsPresenter.pressOnCell(withComic: comic)
 	}
 
 	func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? AuthorDetailsTableViewCell
-		highlightedCell?.comicTitleLabel.textColor = .white
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		highlightedCell?.customNameLabel.textColor = .white
 		highlightedCell?.backgroundColor = #colorLiteral(red: 1, green: 0.3005838394, blue: 0.2565174997, alpha: 1)
 	}
 
 	func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? AuthorDetailsTableViewCell
-		highlightedCell?.comicTitleLabel.textColor = .black
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? DetailsTableViewCell
+		highlightedCell?.customNameLabel.textColor = .black
 		highlightedCell?.backgroundColor = .white
 	}
 }
 
-extension AuthorDetailsView: UITableViewDataSource
+extension AuthorDetailsViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.authorDetailsPresenter.getComicsCount()
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
-			as? AuthorDetailsTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: DetailsTableViewCell.cellReuseIdentifier)
+			as? DetailsTableViewCell
 
-		cell?.comicTitleLabel.text = self.authorDetailsPresenter.getComicTitle(at: indexPath.row)
+		cell?.customNameLabel.text = self.authorDetailsPresenter.getComicTitle(at: indexPath.row)
 		if let data = self.authorDetailsPresenter.getComicImage(at: indexPath.row) {
-			cell?.comicImageView.image = UIImage(data: data)
+			cell?.customImageView.image = UIImage(data: data)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: AuthorDetailsTableViewCell.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: DetailsTableViewCell.cellReuseIdentifier)
 	}
 }
-extension AuthorDetailsView: IAuthorDetailsView
+extension AuthorDetailsViewController: IAuthorDetailsView
 {
 	func showData(withImageData data: Data?, withComicsCount count: Int) {
 		self.authorNameLabel.isHidden = false

@@ -10,7 +10,7 @@ import Foundation
 
 final class HeroesRouter
 {
-	weak var heroesView: HeroesView?
+	weak var heroesView: HeroesViewController?
 	private var factory: Factory
 
 	init(factory: Factory) {

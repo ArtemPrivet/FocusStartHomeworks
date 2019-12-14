@@ -1,5 +1,5 @@
 //
-//  ComicDetailsTableViewCell.swift
+//  AuthorsTableViewCell.swift
 //  MarvelHeroes
 //
 //  Created by Иван Медведев on 06/12/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class ComicDetailsTableViewCell: UITableViewCell
+final class AuthorsTableViewCell: UITableViewCell
 {
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,22 +23,30 @@ final class ComicDetailsTableViewCell: UITableViewCell
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		self.authorImageView.clipsToBounds = true
+		self.authorImageView.layer.cornerRadius = self.authorImageView.bounds.width / 2
+	}
+
 	static let cellReuseIdentifier = "cell"
 	let authorNameLabel = UILabel()
 	let authorImageView = UIImageView()
+}
 
+private extension AuthorsTableViewCell
+{
 	func settingsForImageView() {
 		self.addSubview(self.authorImageView)
 		self.authorImageView.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate([
 			self.authorImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor,
-														 constant: TableViewConstants.tableViewCellLeftInset),
+														  constant: TableViewConstants.tableViewCellLeftInset),
 			self.authorImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-			self.authorImageView.heightAnchor.constraint(equalToConstant: TableViewConstants.tableViewCellImageHeight),
-			self.authorImageView.widthAnchor.constraint(equalToConstant: TableViewConstants.tableViewCellImageWidth),
+			self.authorImageView.heightAnchor.constraint(equalToConstant: TableViewConstants.tableViewCellImageSize),
+			self.authorImageView.widthAnchor.constraint(equalToConstant: TableViewConstants.tableViewCellImageSize),
 			])
-		self.authorImageView.clipsToBounds = true
-		self.authorImageView.contentMode = .scaleAspectFit
+		self.authorImageView.contentMode = .scaleAspectFill
 	}
 
 	func settingsForNameLabel() {
@@ -51,6 +59,6 @@ final class ComicDetailsTableViewCell: UITableViewCell
 														   constant: TableViewConstants.tableViewCellRightInset),
 			self.authorNameLabel.centerYAnchor.constraint(equalTo: self.authorImageView.centerYAnchor),
 			])
-		self.authorNameLabel.font = UIFont(name: "Helvetica", size: 20)
+		self.authorNameLabel.font = Fonts.helvetica20
 	}
 }

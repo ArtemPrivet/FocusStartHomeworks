@@ -61,22 +61,26 @@ extension ComicsPresenter: IComicsPresenter
 	}
 }
 
-extension ComicsPresenter
+private extension ComicsPresenter
 {
-	private func loadComicsImages(withComicName name: String?) {
+	func loadComicsImages(withComicName name: String?) {
 		self.dispatchGroup.enter()
 		self.repository.getComics(withComicName: name) { [weak self] comicsResult in
 			guard let self = self else { return }
 			switch comicsResult {
 			case .success(let comicsDataWrapper):
 				self.comicsDataWrapper = comicsDataWrapper
+				self.getImages()
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.comics.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
+	}
+
+	func getImages() {
+		self.comics.removeAll()
 		self.comicsDataWrapper?.data?.results?.forEach { comic in
 			if let path = comic.thumbnail?.path, let thumbnailExtension = comic.thumbnail?.thumbnailExtension {
 				self.comics.append(ComicViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
@@ -97,6 +101,5 @@ extension ComicsPresenter
 				self.dispatchGroup.leave()
 			})
 		}
-		self.dispatchGroup.wait()
 	}
 }

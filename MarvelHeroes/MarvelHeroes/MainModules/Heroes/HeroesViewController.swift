@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class HeroesView: UIViewController
+final class HeroesViewController: UIViewController
 {
 	private var heroesPresenter: IHeroesPresenter
 
@@ -34,27 +34,30 @@ final class HeroesView: UIViewController
 		self.settingsForNavigationBar()
 		self.settingsForSearchController()
 		self.setupTableView()
-		self.settingsForTableView()
 		self.setupActivityInticator()
 		self.setupImageViewHeroesNotFound()
 		self.setupLabelHeroesNotFound()
-		self.loadHeroes(withHeroeName: nil)
+		self.loadHeroes()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.prefersLargeTitles = true
-		if let indexPath = self.tableView.indexPathForSelectedRow{
-			let selectedCell = self.tableView.cellForRow(at: indexPath) as? HeroesTableViewCell
-			selectedCell?.heroeNameLabel.textColor = .black
-			selectedCell?.heroeDescriptionLabel.textColor = .lightGray
+		self.removeSelectionFromCells()
+	}
+
+	func removeSelectionFromCells() {
+		if let indexPath = self.tableView.indexPathForSelectedRow {
+			let selectedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+			selectedCell?.customNameLabel.textColor = .black
+			selectedCell?.customDescriptionLabel.textColor = .lightGray
 			selectedCell?.backgroundColor = .white
 		}
 	}
 
 	func settingsForNavigationBar() {
 		self.navigationItem.searchController = searchController
-		self.navigationController?.navigationBar.topItem?.title = "🦸🏼‍♂️Heroes"
+		self.navigationController?.navigationBar.topItem?.title = Titles.heroesTitle
 	}
 
 	func settingsForSearchController() {
@@ -74,11 +77,8 @@ final class HeroesView: UIViewController
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			self.tableView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
 		])
-	}
-
-	func settingsForTableView() {
-		self.tableView.register(HeroesTableViewCell.self,
-								forCellReuseIdentifier: HeroesTableViewCell.cellReuseIdentifier)
+		self.tableView.register(CustomTableViewCell.self,
+								forCellReuseIdentifier: CustomTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
 		self.tableView.separatorInset.left = 0
 		self.tableView.separatorColor = .gray
@@ -117,12 +117,12 @@ final class HeroesView: UIViewController
 		])
 		self.labelHeroesNotFound.numberOfLines = 0
 		self.labelHeroesNotFound.textAlignment = .center
-		self.labelHeroesNotFound.font = UIFont(name: "Helvetica", size: 20)
+		self.labelHeroesNotFound.font = Fonts.helvetica20
 		self.labelHeroesNotFound.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 		self.labelHeroesNotFound.isHidden = true
 	}
 
-	func loadHeroes(withHeroeName name: String?) {
+	func loadHeroes(withHeroeName name: String? = nil) {
 		self.heroesPresenter.getHeroes(withHeroeName: name)
 		self.imageViewHeroesNotFound.isHidden = true
 		self.labelHeroesNotFound.isHidden = true
@@ -132,7 +132,7 @@ final class HeroesView: UIViewController
 	}
 }
 
-extension HeroesView: UITableViewDelegate
+extension HeroesViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return TableViewConstants.tableViewCellHeight
@@ -143,63 +143,63 @@ extension HeroesView: UITableViewDelegate
 	}
 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedCell = self.tableView.cellForRow(at: indexPath) as? HeroesTableViewCell
-		selectedCell?.heroeNameLabel.textColor = .white
-		selectedCell?.heroeDescriptionLabel.textColor = .white
+		let selectedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		selectedCell?.customNameLabel.textColor = .white
+		selectedCell?.customDescriptionLabel.textColor = .white
 		selectedCell?.backgroundColor = #colorLiteral(red: 0.846742928, green: 0.1176741496, blue: 0, alpha: 1)
 		guard let heroe = self.heroesPresenter.getHeroe(at: indexPath.row) else { return }
 		self.heroesPresenter.onCellPressed(heroe: heroe)
 	}
 
 	func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? HeroesTableViewCell
-		highlightedCell?.heroeNameLabel.textColor = .white
-		highlightedCell?.heroeDescriptionLabel.textColor = .white
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		highlightedCell?.customNameLabel.textColor = .white
+		highlightedCell?.customDescriptionLabel.textColor = .white
 		highlightedCell?.backgroundColor = #colorLiteral(red: 1, green: 0.3005838394, blue: 0.2565174997, alpha: 1)
 	}
 
 	func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? HeroesTableViewCell
-		highlightedCell?.heroeNameLabel.textColor = .black
-		highlightedCell?.heroeDescriptionLabel.textColor = .lightGray
+		let highlightedCell = self.tableView.cellForRow(at: indexPath) as? CustomTableViewCell
+		highlightedCell?.customNameLabel.textColor = .black
+		highlightedCell?.customDescriptionLabel.textColor = .lightGray
 		highlightedCell?.backgroundColor = .white
 	}
 }
 
-extension HeroesView: UITableViewDataSource
+extension HeroesViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.heroesPresenter.getHeroesCount()
 	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = self.tableView.dequeueReusableCell(withIdentifier: HeroesTableViewCell.cellReuseIdentifier)
-			as? HeroesTableViewCell
+		let cell = self.tableView.dequeueReusableCell(withIdentifier: CustomTableViewCell.cellReuseIdentifier)
+			as? CustomTableViewCell
 		let character = self.heroesPresenter.getHeroe(at: indexPath.row)
 
 		if let name = character?.name, name.isEmpty == false {
-			cell?.heroeNameLabel.text = name
+			cell?.customNameLabel.text = name
 		}
 		else {
-			cell?.heroeNameLabel.text = "Noname"
+			cell?.customNameLabel.text = "Noname"
 		}
 
 		if let description = character?.resultDescription, description.isEmpty == false {
-			cell?.heroeDescriptionLabel.text = description
+			cell?.customDescriptionLabel.text = description
 		}
 		else {
-			cell?.heroeDescriptionLabel.text = "No info"
+			cell?.customDescriptionLabel.text = "No info"
 		}
 
 		if let heroeImageData = self.heroesPresenter.getHeroeImageData(at: indexPath.row) {
-			cell?.heroeImageView.image = UIImage(data: heroeImageData)
+			cell?.customImageView.image = UIImage(data: heroeImageData)
 		}
 
-		return cell ?? UITableViewCell(style: .default, reuseIdentifier: HeroesTableViewCell.cellReuseIdentifier)
+		return cell ?? UITableViewCell(style: .default, reuseIdentifier: CustomTableViewCell.cellReuseIdentifier)
 	}
 }
 
-extension HeroesView: UISearchBarDelegate
+extension HeroesViewController: UISearchBarDelegate
 {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		if self.searchController.searchBar.text?.isEmpty == false {
@@ -207,16 +207,16 @@ extension HeroesView: UISearchBarDelegate
 			self.loadHeroes(withHeroeName: heroeName)
 		}
 		else {
-			self.loadHeroes(withHeroeName: nil)
+			self.loadHeroes()
 		}
 	}
 
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		self.loadHeroes(withHeroeName: nil)
+		self.loadHeroes()
 	}
 }
 
-extension HeroesView: IHeroesView
+extension HeroesViewController: IHeroesView
 {
 	func reloadData(withHeroesCount count: Int) {
 		self.activityIndicator.stopAnimating()

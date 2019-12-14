@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AuthorsView: UIViewController
+final class AuthorsViewController: UIViewController
 {
 	private var authorsPresenter: IAuthorsPresenter
 
@@ -34,16 +34,19 @@ final class AuthorsView: UIViewController
 		self.settingsForNavigationBar()
 		self.settingsForSearchController()
 		self.setupTableView()
-		self.settingsForTableView()
 		self.setupActivityInticator()
 		self.setupImageViewAuthorsNotFound()
 		self.setupLabelAuthorsNotFound()
-		self.loadAuthors(withAuthorName: nil)
+		self.loadAuthors()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.navigationController?.navigationBar.prefersLargeTitles = true
+		self.removeSelectionFromCells()
+	}
+
+	func removeSelectionFromCells() {
 		if let indexPath = self.tableView.indexPathForSelectedRow{
 			let selectedCell = self.tableView.cellForRow(at: indexPath) as? AuthorsTableViewCell
 			selectedCell?.authorNameLabel.textColor = .black
@@ -53,7 +56,7 @@ final class AuthorsView: UIViewController
 
 	func settingsForNavigationBar() {
 		self.navigationItem.searchController = searchController
-		self.navigationController?.navigationBar.topItem?.title = "👨🏼‍🏫Authors"
+		self.navigationController?.navigationBar.topItem?.title = Titles.authorsTitle
 	}
 
 	func settingsForSearchController() {
@@ -72,10 +75,7 @@ final class AuthorsView: UIViewController
 			self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			self.tableView.bottomAnchor.constraint(equalTo: self.view.layoutMarginsGuide.bottomAnchor),
-			])
-	}
-
-	func settingsForTableView() {
+		])
 		self.tableView.register(AuthorsTableViewCell.self,
 								forCellReuseIdentifier: AuthorsTableViewCell.cellReuseIdentifier)
 		self.tableView.tableFooterView = UIView(frame: .zero)
@@ -116,12 +116,12 @@ final class AuthorsView: UIViewController
 		])
 		self.labelAuthorsNotFound.numberOfLines = 0
 		self.labelAuthorsNotFound.textAlignment = .center
-		self.labelAuthorsNotFound.font = UIFont(name: "Helvetica", size: 20)
+		self.labelAuthorsNotFound.font = Fonts.helvetica20
 		self.labelAuthorsNotFound.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
 		self.labelAuthorsNotFound.isHidden = true
 	}
 
-	func loadAuthors(withAuthorName name: String?) {
+	func loadAuthors(withAuthorName name: String? = nil) {
 		self.authorsPresenter.getAuthors(withAuthorName: name)
 		self.imageViewAuthorsNotFound.isHidden = true
 		self.labelAuthorsNotFound.isHidden = true
@@ -131,7 +131,7 @@ final class AuthorsView: UIViewController
 	}
 }
 
-extension AuthorsView: UITableViewDelegate
+extension AuthorsViewController: UITableViewDelegate
 {
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return TableViewConstants.tableViewCellHeight
@@ -162,7 +162,7 @@ extension AuthorsView: UITableViewDelegate
 	}
 }
 
-extension AuthorsView: UITableViewDataSource
+extension AuthorsViewController: UITableViewDataSource
 {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.authorsPresenter.getAuthorsCount()
@@ -188,7 +188,7 @@ extension AuthorsView: UITableViewDataSource
 	}
 }
 
-extension AuthorsView: UISearchBarDelegate
+extension AuthorsViewController: UISearchBarDelegate
 {
 	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 		if self.searchController.searchBar.text?.isEmpty == false {
@@ -196,16 +196,16 @@ extension AuthorsView: UISearchBarDelegate
 			self.loadAuthors(withAuthorName: authorName)
 		}
 		else {
-			self.loadAuthors(withAuthorName: nil)
+			self.loadAuthors()
 		}
 	}
 
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-		self.loadAuthors(withAuthorName: nil)
+		self.loadAuthors()
 	}
 }
 
-extension AuthorsView: IAuthorsView
+extension AuthorsViewController: IAuthorsView
 {
 	func reloadData(withAuthorsCount count: Int) {
 		self.activityIndicator.stopAnimating()

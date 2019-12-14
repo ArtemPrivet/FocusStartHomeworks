@@ -10,7 +10,7 @@ import Foundation
 
 final class ComicDetailsRouter
 {
-	weak var comicDetailsView: ComicDetailsView?
+	weak var comicDetailsView: ComicDetailsViewController?
 	private var factory: Factory
 
 	init(factory: Factory) {

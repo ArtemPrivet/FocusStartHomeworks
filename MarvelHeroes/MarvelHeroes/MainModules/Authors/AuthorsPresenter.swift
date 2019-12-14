@@ -61,7 +61,7 @@ extension AuthorsPresenter: IAuthorsPresenter
 	}
 }
 
-extension AuthorsPresenter
+private extension AuthorsPresenter
 {
 	private func loadAuthorsImages(withAuthorName name: String?) {
 		self.dispatchGroup.enter()
@@ -70,13 +70,17 @@ extension AuthorsPresenter
 			switch authorsResult {
 			case .success(let authorsDataWrapper):
 				self.authorsDataWrapper = authorsDataWrapper
+				self.getImages()
 			case .failure(let error):
 				assertionFailure(error.localizedDescription)
 			}
-			self.authors.removeAll()
 			self.dispatchGroup.leave()
 		}
 		self.dispatchGroup.wait()
+	}
+
+	func getImages() {
+		self.authors.removeAll()
 		self.authorsDataWrapper?.data?.results?.forEach { author in
 			if let path = author.thumbnail?.path, let thumbnailExtension = author.thumbnail?.thumbnailExtension {
 				self.authors.append(AuthorViewItem(imageUrl: path + ImageSize.medium + thumbnailExtension))
@@ -97,6 +101,5 @@ extension AuthorsPresenter
 				self.dispatchGroup.leave()
 			})
 		}
-		self.dispatchGroup.wait()
 	}
 }
