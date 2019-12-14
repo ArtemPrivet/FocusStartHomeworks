@@ -38,12 +38,17 @@ final class DetailViewController: UIViewController
 		super.viewDidLoad()
 		self.detailPresenter.attachViewController(viewController: self)
 		self.view.backgroundColor = .white
-		setupNavigationBarToDetailScreen()
+		//setupNavigationBarToDetailScreen()
 		setupImageView()
 		setupNameLabel()
 		setupTableView()
 		setupDescriptionLabel()
 		detailPresenter.getDataForTableView()
+	}
+
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		setupNavigationBarToDetailScreen()
 	}
 
 	override func viewWillDisappear(_ animated: Bool) {

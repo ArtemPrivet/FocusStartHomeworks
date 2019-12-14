@@ -10,6 +10,9 @@ import Foundation
 protocol IRouter
 {
 	func showDetail(model: StructForPresenterArray, presenterType: PresenterType)
+	func showDetailForDetailViewController(detailViewController: DetailViewController,
+										   model: StructForPresenterArray,
+										   presenterType: PresenterType)
 }
 
 final class Router

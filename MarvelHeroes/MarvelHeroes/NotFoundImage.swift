@@ -28,7 +28,6 @@ extension NotFoundImageView: INotFoundImageView
 		viewContainer.widthAnchor.constraint(equalToConstant: size.width / 1.3).isActive = true
 		viewContainer.centerXAnchor.constraint(equalTo: subview.centerXAnchor).isActive = true
 		viewContainer.centerYAnchor.constraint(equalTo: subview.centerYAnchor).isActive = true
-		print("viewContainerFrame = \(viewContainer.frame)")
 		viewContainer.addSubview(label)
 		viewContainer.addSubview(imageView)
 		let image = #imageLiteral(resourceName: "search_stub")
