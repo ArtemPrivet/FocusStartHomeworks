@@ -16,6 +16,11 @@ protocol ICharacterViewController: AnyObject
 
 final class CharacterViewController: UIViewController
 {
+	private let sizeOfTextNothingFoundLabel: CGFloat = 25
+	private let sizeOfTextValueNotFoundLabel: CGFloat = 20
+	private let placeholderOfSearchBar = "Find character"
+	private let titleOfView = "🦸‍♂️ Heroes"
+
 	private lazy var tableView: UITableView = {
 		let tableView = UITableView()
 		tableView.delegate = self
@@ -27,14 +32,14 @@ final class CharacterViewController: UIViewController
 		let controller = UISearchController(searchResultsController: nil)
 		controller.searchBar.delegate = self
 		controller.obscuresBackgroundDuringPresentation = false
-		controller.searchBar.placeholder = "Find character"
+		controller.searchBar.placeholder = placeholderOfSearchBar
 		self.navigationItem.searchController = controller
 		self.definesPresentationContext = true
 		return controller
 	}()
 
 	private lazy var notFoundImage: UIImageView = {
-		let imageView = UIImageView(image: #imageLiteral(resourceName: "Снимок экрана 2019-11-29 в 22.57.13"))
+		let imageView = UIImageView(image: #imageLiteral(resourceName: "search_stub"))
 		return imageView
 	}()
 
@@ -42,7 +47,7 @@ final class CharacterViewController: UIViewController
 		let label = UILabel(frame: .zero)
 		label.textAlignment = .center
 		label.textColor = .gray
-		label.font.withSize(25)
+		label.font.withSize(sizeOfTextNothingFoundLabel)
 		label.text = "Nothing found on query"
 		label.numberOfLines = 1
 		label.adjustsFontSizeToFitWidth = true
@@ -53,7 +58,7 @@ final class CharacterViewController: UIViewController
 		let label = UILabel(frame: .zero)
 		label.textAlignment = .center
 		label.textColor = .gray
-		label.font.withSize(20)
+		label.font.withSize(sizeOfTextValueNotFoundLabel)
 		label.text = searchController.searchBar.text
 		label.numberOfLines = 1
 		label.adjustsFontSizeToFitWidth = true
@@ -65,7 +70,6 @@ final class CharacterViewController: UIViewController
 		stackView.axis = .vertical
 		stackView.alignment = .fill
 		stackView.distribution = .fill
-		//stackView.spacing = 5
 		return stackView
 	}()
 
@@ -97,18 +101,8 @@ final class CharacterViewController: UIViewController
 		super.viewDidLoad()
 		view.addSubview(tableView)
 		view.addSubview(stackView)
-		tableView.register(CharacterCell.self, forCellReuseIdentifier: "Cell")
-		navigationController?.navigationBar.prefersLargeTitles = true
-		title = "🦸‍♂️ Heroes"
-		view.backgroundColor = .white
+		updateUI()
 		makeConstraints()
-		_ = searchController.searchBar
-	}
-
-	private func showNotFound() {
-		tableView.isHidden = true
-		stackView.isHidden = false
-		valueNotFoundLabel.text = searchController.searchBar.text
 	}
 }
 
@@ -135,8 +129,9 @@ extension CharacterViewController: UITableViewDataSource, UITableViewDelegate
 
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? CharacterCell
 		cell?.nameLabel.text = characters[indexPath.row].name
-		cell?.descriptionLabel.text =
-			characters[indexPath.row].description.isEmpty ? "No info" : characters[indexPath.row].description
+		cell?.descriptionLabel.text = characters[indexPath.row].description.isEmpty
+			? "No info"
+			: characters[indexPath.row].description
 
 		if let path = characters[indexPath.row].thumbnail.path,
 			let imageExtension = characters[indexPath.row].thumbnail.imageExtension {
@@ -165,9 +160,22 @@ extension CharacterViewController: UISearchBarDelegate
 	}
 }
 
-extension CharacterViewController
+private extension CharacterViewController
 {
-	private func makeConstraints() {
+	func updateUI() {
+		tableView.register(CharacterCell.self, forCellReuseIdentifier: "Cell")
+		navigationController?.navigationBar.prefersLargeTitles = true
+		title = titleOfView
+		view.backgroundColor = .white
+	}
+
+	func showNotFound() {
+		tableView.isHidden = true
+		stackView.isHidden = false
+		valueNotFoundLabel.text = searchController.searchBar.text
+	}
+
+	func makeConstraints() {
 
 		tableView.snp.makeConstraints { make in
 			make.leading.trailing.top.bottom.equalTo(self.view.safeAreaLayoutGuide)

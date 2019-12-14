@@ -18,8 +18,8 @@ final class CharacterRepository
 {
 	private let networkService: INetworkService
 
-	init(jsonService: INetworkService) {
-		self.networkService = jsonService
+	init(networkService: INetworkService) {
+		self.networkService = networkService
 	}
 }
 

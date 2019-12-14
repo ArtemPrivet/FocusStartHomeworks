@@ -24,7 +24,6 @@ final class CharacterRouter: ICharacterRouter
 
 	func showDetail(of character: Character) {
 		let detailViewController = factory.getDetailViewController(character: character)
-		viewController?.view.backgroundColor = .white
 		viewController?.navigationController?.pushViewController(detailViewController, animated: true)
 	}
 }

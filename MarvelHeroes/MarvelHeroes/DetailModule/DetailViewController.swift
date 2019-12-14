@@ -11,6 +11,9 @@ import  SnapKit
 
 final class DetailViewController: UIViewController
 {
+	private let sizeOfTextDescriptionTextView: CGFloat = 20
+	private let sizeOfTextNameLabel: CGFloat = 50
+
 	private lazy var characterImage: UIImageView = {
 		let imageView = UIImageView()
 		if let path = presenter.getCharacter().thumbnail.path,
@@ -27,7 +30,7 @@ final class DetailViewController: UIViewController
 
 	private lazy var descriptionTextView: UITextView = {
 		let textView = UITextView()
-		textView.font = UIFont.systemFont(ofSize: 20)
+		textView.font = UIFont.systemFont(ofSize: sizeOfTextDescriptionTextView)
 		textView.backgroundColor = .clear
 		textView.text = presenter.getCharacter().description
 		textView.isEditable = false
@@ -37,7 +40,7 @@ final class DetailViewController: UIViewController
 	private lazy var nameLabel: UILabel = {
 		let label = UILabel(frame: .zero)
 		label.textAlignment = .left
-		label.font = UIFont.boldSystemFont(ofSize: 50)
+		label.font = UIFont.boldSystemFont(ofSize: sizeOfTextNameLabel)
 		label.text = presenter.getCharacter().name
 		label.numberOfLines = 0
 		label.adjustsFontSizeToFitWidth = true
@@ -59,13 +62,10 @@ final class DetailViewController: UIViewController
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = .white
-		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-		self.navigationController?.navigationBar.shadowImage = UIImage()
-		navigationItem.largeTitleDisplayMode = .never
 		view.addSubview(characterImage)
 		view.addSubview(nameLabel)
 		view.addSubview(descriptionTextView)
+		updateUI()
 		makeConstraints()
 	}
 
@@ -75,8 +75,15 @@ final class DetailViewController: UIViewController
 	}
 }
 
-extension DetailViewController
+private extension DetailViewController
 {
+	func updateUI() {
+		view.backgroundColor = .white
+		self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+		self.navigationController?.navigationBar.shadowImage = UIImage()
+		navigationItem.largeTitleDisplayMode = .never
+	}
+
 	func makeConstraints() {
 
 		characterImage.snp.makeConstraints { make in
@@ -91,7 +98,6 @@ extension DetailViewController
 
 		descriptionTextView.snp.makeConstraints { make in
 			make.leading.trailing.equalToSuperview().offset(10)
-			//make.trailing.equalToSuperview().offset(-8)
 			make.top.equalTo(nameLabel.snp.bottom).offset(10)
 			make.bottom.equalTo(characterImage.snp.bottom)
 		}

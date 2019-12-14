@@ -6,8 +6,6 @@
 //  Copyright © 2019 MacBook Air. All rights reserved.
 //
 
-import Foundation
-
 enum ServiceError: Error
 {
 	case sessionError(Error)

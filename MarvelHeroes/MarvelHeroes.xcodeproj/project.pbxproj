@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		100215F436CB38AC3863652F /* Pods_MarvelHeroes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD25074F334500F51F92C561 /* Pods_MarvelHeroes.framework */; };
+		D0412B4623A54F9F0082690A /* MD5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0412B4523A54F9F0082690A /* MD5.swift */; };
+		D0412B4823A577290082690A /* URLConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0412B4723A577290082690A /* URLConstants.swift */; };
 		D05643E323970ED000FF72FE /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05643E223970ED000FF72FE /* Factory.swift */; };
 		D05643E82397127A00FF72FE /* CharacterRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05643E72397127A00FF72FE /* CharacterRouter.swift */; };
 		D05643EA2397129C00FF72FE /* CharacterPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05643E92397129C00FF72FE /* CharacterPresenter.swift */; };
@@ -20,14 +22,15 @@
 		D058A14323944743008057E5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D058A14123944743008057E5 /* LaunchScreen.storyboard */; };
 		D058A14C23947866008057E5 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = D058A14B23947866008057E5 /* Character.swift */; };
 		D058A14E23947DEC008057E5 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D058A14D23947DEC008057E5 /* ServiceError.swift */; };
-		D058A15323947F77008057E5 /* JsonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D058A15223947F77008057E5 /* JsonService.swift */; };
+		D058A15323947F77008057E5 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D058A15223947F77008057E5 /* NetworkService.swift */; };
 		D058A15623948628008057E5 /* CharacterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D058A15523948628008057E5 /* CharacterViewController.swift */; };
-		D0761A6223954C1D00CB5012 /* ConvertToMd5.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0761A6123954C1D00CB5012 /* ConvertToMd5.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		95F430B606AC01B1EF9802A7 /* Pods-MarvelHeroes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarvelHeroes.debug.xcconfig"; path = "Target Support Files/Pods-MarvelHeroes/Pods-MarvelHeroes.debug.xcconfig"; sourceTree = "<group>"; };
 		C465A086449EDE6C283423E5 /* Pods-MarvelHeroes.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MarvelHeroes.release.xcconfig"; path = "Target Support Files/Pods-MarvelHeroes/Pods-MarvelHeroes.release.xcconfig"; sourceTree = "<group>"; };
+		D0412B4523A54F9F0082690A /* MD5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MD5.swift; sourceTree = "<group>"; };
+		D0412B4723A577290082690A /* URLConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLConstants.swift; sourceTree = "<group>"; };
 		D05643E223970ED000FF72FE /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		D05643E72397127A00FF72FE /* CharacterRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterRouter.swift; sourceTree = "<group>"; };
 		D05643E92397129C00FF72FE /* CharacterPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterPresenter.swift; sourceTree = "<group>"; };
@@ -42,9 +45,8 @@
 		D058A14423944743008057E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D058A14B23947866008057E5 /* Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		D058A14D23947DEC008057E5 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
-		D058A15223947F77008057E5 /* JsonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = JsonService.swift; path = ../Model/JsonService.swift; sourceTree = "<group>"; };
+		D058A15223947F77008057E5 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = ../Model/NetworkService.swift; sourceTree = "<group>"; };
 		D058A15523948628008057E5 /* CharacterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewController.swift; sourceTree = "<group>"; };
-		D0761A6123954C1D00CB5012 /* ConvertToMd5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConvertToMd5.swift; path = ../NetworkService/ConvertToMd5.swift; sourceTree = "<group>"; };
 		FD25074F334500F51F92C561 /* Pods_MarvelHeroes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MarvelHeroes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -73,9 +75,10 @@
 			children = (
 				D05643E223970ED000FF72FE /* Factory.swift */,
 				D05643EB23971B6600FF72FE /* CharacterRepository.swift */,
-				D058A15223947F77008057E5 /* JsonService.swift */,
-				D0761A6123954C1D00CB5012 /* ConvertToMd5.swift */,
+				D058A15223947F77008057E5 /* NetworkService.swift */,
 				D058A14D23947DEC008057E5 /* ServiceError.swift */,
+				D0412B4523A54F9F0082690A /* MD5.swift */,
+				D0412B4723A577290082690A /* URLConstants.swift */,
 			);
 			path = BusinessLayer;
 			sourceTree = "<group>";
@@ -290,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0412B4623A54F9F0082690A /* MD5.swift in Sources */,
 				D058A14E23947DEC008057E5 /* ServiceError.swift in Sources */,
 				D058A15623948628008057E5 /* CharacterViewController.swift in Sources */,
 				D058A14C23947866008057E5 /* Character.swift in Sources */,
@@ -300,8 +304,8 @@
 				D058A1372394473A008057E5 /* AppDelegate.swift in Sources */,
 				D05643EA2397129C00FF72FE /* CharacterPresenter.swift in Sources */,
 				D05822FC2399A7A4001A6A2D /* DetailPresenter.swift in Sources */,
-				D058A15323947F77008057E5 /* JsonService.swift in Sources */,
-				D0761A6223954C1D00CB5012 /* ConvertToMd5.swift in Sources */,
+				D0412B4823A577290082690A /* URLConstants.swift in Sources */,
+				D058A15323947F77008057E5 /* NetworkService.swift in Sources */,
 				D05822FE2399A7E4001A6A2D /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

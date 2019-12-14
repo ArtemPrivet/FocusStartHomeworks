@@ -1,5 +1,5 @@
 //
-//  JsonService.swift
+//  NetworkService.swift
 //  MarvelHeroes
 //
 //  Created by MacBook Air on 02.12.2019.
@@ -20,18 +20,15 @@ protocol INetworkService
 
 final class NetworkService
 {
-	private let baseUrl = URL(string: "https://gateway.marvel.com/v1/public/characters?")
-	private let publicKey = "7e95fcb24f48e6f5664a04ab87cb1083"
-	private let privateKey = "bdd47bde424e1c094f2bf0be737288689439827a"
 	private let timestamp = "\(Date().timeIntervalSince1970)"
 
-	private lazy var hash = "\(timestamp)\(privateKey)\(publicKey)".md5
+	private lazy var hash = "\(timestamp)\(URLConstants.privateKey.rawValue)\(URLConstants.publicKey.rawValue)".md5
 
 	private func fetchData(from url: URL, _ completion: @escaping(DataResult) -> Void) {
 
 		let task = URLSession.shared.dataTask(with: url) { data, response, error in
-			if let newError = error {
-				completion(.failure(.sessionError(newError)))
+			if let error = error {
+				completion(.failure(.sessionError(error)))
 				return
 			}
 			if let data = data, let response = response as? HTTPURLResponse {
@@ -50,21 +47,18 @@ extension NetworkService: INetworkService
 {
 	func loadCharacter(name: String, _ completion: @escaping (CharacterResult) -> Void) {
 
-		let query = [
-		URLQueryItem(name: "nameStartsWith", value: name),
-		URLQueryItem(name: "limit", value: "100"),
-		URLQueryItem(name: "ts", value: timestamp),
-		URLQueryItem(name: "apikey", value: publicKey),
-		URLQueryItem(name: "hash", value: hash),
+		let queryItems = [
+			URLQueryItem(name: "nameStartsWith", value: name),
+			URLQueryItem(name: "limit", value: URLConstants.issueLimit.rawValue),
+			URLQueryItem(name: "ts", value: timestamp),
+			URLQueryItem(name: "apikey", value: URLConstants.publicKey.rawValue),
+			URLQueryItem(name: "hash", value: hash),
 		]
 
-		guard let url: URL = {
-			guard let baseUrl = baseUrl else { return nil }
-			var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)
-			urlComponents?.queryItems = query
-			let url = urlComponents?.url
-			return url
-			}() else { return }
+		guard let baseUrl = URL(string: URLConstants.baseUrlString.rawValue) else { return }
+		var urlComponents = URLComponents(url: baseUrl, resolvingAgainstBaseURL: true)
+		urlComponents?.queryItems = queryItems
+		guard let url = urlComponents?.url else { return }
 
 		fetchData(from: url) { dataResult in
 			switch dataResult {
